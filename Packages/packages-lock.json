@@ -208,6 +208,14 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.xue.urpextend": {
+      "version": "file:URPExtend",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "10.3.2"
+      }
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
