@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: Simple HUE
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity Asset
+    Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=7207\n848;92;1072;626;663.3998;365.3001;1;True;False\nNode;AmplifyShaderEditor.RangedFloatNode;2;-413.5179,6.410728;Float;False;Constant;_Float1;Float
+    1;0;0;1;0;0;0;1;FLOAT\nNode;AmplifyShaderEditor.FunctionInput;1;-408.5179,-209.5893;Float;False;Input;1;0;True;1;0;FLOAT;0.0;False;1;FLOAT\nNode;AmplifyShaderEditor.HSVToRGBNode;3;-201.5179,-187.5893;Float;False;3;0;FLOAT;0.0;False;1;FLOAT;0.0;False;2;FLOAT;0.0;False;4;FLOAT3;FLOAT;FLOAT;FLOAT\nNode;AmplifyShaderEditor.FunctionOutput;6;110.9821,-215.5893;Float;False;True;RGB;0;1;0;FLOAT3;0.0;False;0\nNode;AmplifyShaderEditor.FunctionOutput;7;111.4821,-128.5893;Float;False;False;R;1;1;0;FLOAT;0.0;False;0\nNode;AmplifyShaderEditor.FunctionOutput;8;114.4821,35.41073;Float;False;True;B;3;1;0;FLOAT;0.0;False;0\nNode;AmplifyShaderEditor.FunctionOutput;5;113.4821,-55.58927;Float;False;False;G;2;1;0;FLOAT;0.0;False;0\nWireConnection;3;0;1;0\nWireConnection;3;1;2;0\nWireConnection;3;2;2;0\nWireConnection;6;0;3;0\nWireConnection;7;0;3;1\nWireConnection;8;0;3;3\nWireConnection;5;0;3;2\nASEEND*/\n//CHKSM=47A5570DFC4487C498F141EA313AD2D9825590BD"
+  m_functionName: 
+  m_description: 

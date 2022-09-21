@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2425a2284af743826c689403a4924, type: 3}
+  m_Name: SRP Additional Light
+  m_EditorClassIdentifier: 
+  m_functionInfo: "// Made with Amplify Shader Editor\n// Available at the Unity Asset
+    Store - http://u3d.as/y3X \n/*ASEBEGIN\nVersion=18903\n-2306;98;1199;1062;1079.951;1299.86;1;True;False\nNode;AmplifyShaderEditor.CommentaryNode;67;-762.7209,462.2619;Inherit;False;1393.582;499.9396;;9;0;30;19;6;39;23;59;62;21;Main
+    Switch;1,1,1,1;0;0\nNode;AmplifyShaderEditor.CommentaryNode;66;-2609.233,465.7281;Inherit;False;581.5553;236.5492;;3;33;32;68;Shadow
+    Mask;1,1,1,1;0;0\nNode;AmplifyShaderEditor.CommentaryNode;65;-920.7385,-584.9739;Inherit;False;1591.506;791.9908;;11;55;49;18;14;15;27;61;13;16;63;64;Specular;1,1,1,1;0;0\nNode;AmplifyShaderEditor.CommentaryNode;60;-848.252,-1179.358;Inherit;False;1189.888;419.8453;;7;54;48;56;57;22;26;58;Half
+    Lambert;1,1,1,1;0;0\nNode;AmplifyShaderEditor.CommentaryNode;53;-2619.122,-57.4623;Inherit;False;1141.001;424.3999;;7;12;9;4;10;2;11;50;World
+    Normal;1,1,1,1;0;0\nNode;AmplifyShaderEditor.CommentaryNode;52;-2608.642,-424.6649;Inherit;False;467.4869;233;;2;44;3;World
+    Pos;1,1,1,1;0;0\nNode;AmplifyShaderEditor.CommentaryNode;40;-846.7464,-1664.293;Inherit;False;1082.843;405.3478;;7;38;25;41;51;47;37;5;Lambert;1,1,1,1;0;0\nNode;AmplifyShaderEditor.CommentaryNode;36;-844.4141,-2081.018;Inherit;False;987.3232;348.9314;;6;29;24;8;31;35;45;Flat;1,1,1,1;0;0\nNode;AmplifyShaderEditor.FunctionInput;18;-658.4189,-156.4711;Inherit;False;Smoothness;1;4;False;1;0;FLOAT;0.5;False;1;FLOAT;0\nNode;AmplifyShaderEditor.GetLocalVarNode;39;-702.373,659.6418;Inherit;False;38;lambertResult;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.RegisterLocalVarNode;58;99.63594,-1021.087;Inherit;False;halfLambertResult;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;55;-640.7715,-449.6685;Inherit;False;50;worldNormalValue;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;64;-504.154,75.26627;Inherit;False;33;shadowMaskValue;1;0;OBJECT;;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.GetLocalVarNode;30;-543.587,512.2619;Inherit;False;29;FlatResult;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionInput;14;-658.4189,-236.4712;Inherit;False;Specular
+    Color;3;3;False;1;0;FLOAT3;1,1,1;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;49;-611.2431,-534.9739;Inherit;False;44;worldPosValue;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.WorldNormalVector;4;-2409.121,153.5377;Inherit;False;False;1;0;FLOAT3;0,0,1;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3\nNode;AmplifyShaderEditor.FunctionSwitch;26;-137.4143,-1046.044;Inherit;False;Option;False;0;2;-1;In
+    0;In 1;Instance;24;9;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;59;-712.7209,760.9056;Inherit;False;58;halfLambertResult;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.Vector3Node;10;-2569.122,-6.462288;Inherit;False;Constant;_Vector0;Vector
+    0;0;0;Create;True;0;0;0;False;0;False;0,0,1;0,0,0;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3\nNode;AmplifyShaderEditor.Vector3Node;21;-65.63779,774.2015;Inherit;False;Constant;_Vector1;Vector
+    1;0;0;Create;True;0;0;0;False;0;False;0,0,0;0,0,0;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3\nNode;AmplifyShaderEditor.FunctionSwitch;27;98.46796,-286.2599;Inherit;False;Option;False;0;2;-1;In
+    0;In 1;Instance;24;9;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionSwitch;9;-1991.121,55.53762;Inherit;False;Normal
+    Space;False;0;2;1;Tangent Space;World Space;Object;-1;9;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.RegisterLocalVarNode;33;-2241.678,522.2767;Inherit;False;shadowMaskValue;-1;True;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.GetLocalVarNode;48;-723.7242,-1129.357;Inherit;False;44;worldPosValue;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionSwitchByPipeline;19;223.761,651.6014;Inherit;False;4;0;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.CustomExpressionNode;37;-450.795,-1603.666;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$int numLights = GetAdditionalLightsCount()@$for(int
+    i = 0@ i<numLights@i++)${$\tLight light = GetAdditionalLight(i, WorldPosition)@$\thalf3
+    AttLightColor = light.color *(light.distanceAttenuation * light.shadowAttenuation)@$\tColor
+    +=LightingLambert(AttLightColor, light.direction, WorldNormal)@$\t$}$#endif$return
+    Color@;3;Create;2;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;True;WorldNormal;FLOAT3;0,0,0;In;;Float;False;AdditionalLightsLambert;False;False;0;;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionSwitch;6;-110.1378,628.2015;Inherit;False;Lighting
+    Mode;False;0;3;0;Flat;Lambert;Specular;Object;-1;9;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;62;-418.3635,798.5036;Inherit;False;61;specularResult;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionInput;15;-658.4189,-332.4712;Inherit;False;View
+    Dir;3;2;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionSwitch;24;-308.8937,-1977.931;Inherit;False;Use
+    Shadow Mask;True;0;2;3;In 0;In 1;Object;-1;9;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;57;-798.252,-875.5127;Inherit;False;33;shadowMaskValue;1;0;OBJECT;;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.CustomExpressionNode;5;-472.2628,-1473.715;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$int numLights = GetAdditionalLightsCount()@$for(int
+    i = 0@ i<numLights@i++)${$#if ASE_SRP_VERSION >= 100000$\tLight light = GetAdditionalLight(i,
+    WorldPosition, ShadowMask)@$#else$\tLight light = GetAdditionalLight(i, WorldPosition)@$#endif$\thalf3
+    AttLightColor = light.color *(light.distanceAttenuation * light.shadowAttenuation)@$\tColor
+    +=LightingLambert(AttLightColor, light.direction, WorldNormal)@$\t$}$#endif$return
+    Color@;3;Create;3;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;True;WorldNormal;FLOAT3;0,0,0;In;;Float;False;True;ShadowMask;FLOAT4;0,0,0,0;In;;Inherit;False;AdditionalLightsLambertMask;False;False;0;;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT4;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionSwitch;25;-193.5493,-1609.208;Inherit;False;Option;False;0;2;-1;In
+    0;In 1;Instance;24;9;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;35;-820.8937,-1817.931;Inherit;False;33;shadowMaskValue;1;0;OBJECT;;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.CustomExpressionNode;13;-191.7135,-336.9496;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$Smoothness = exp2(10 * Smoothness + 1)@$int
+    numLights = GetAdditionalLightsCount()@$for(int i = 0@ i<numLights@i++)${$\tLight
+    light = GetAdditionalLight(i, WorldPosition)@$\thalf3 AttLightColor = light.color
+    *(light.distanceAttenuation * light.shadowAttenuation)@$\tColor += LightingSpecular(AttLightColor,
+    light.direction, WorldNormal, WorldView, half4(SpecColor, 0), Smoothness)@\t$}$#endif$return
+    Color@;3;Create;5;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;True;WorldNormal;FLOAT3;0,0,0;In;;Float;False;True;WorldView;FLOAT3;0,0,0;In;;Float;False;True;SpecColor;FLOAT3;0,0,0;In;;Float;False;True;Smoothness;FLOAT;0.5;In;;Float;False;AdditionalLightsSpecular;False;False;0;;False;5;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT;0.5;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;51;-833.5493,-1481.208;Inherit;False;50;worldNormalValue;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionInput;11;-2201.121,153.5377;Inherit;False;World
+    Normal;3;1;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;41;-833.5493,-1385.208;Inherit;False;33;shadowMaskValue;1;0;OBJECT;;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.RegisterLocalVarNode;38;46.45073,-1609.208;Inherit;False;lambertResult;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.WorldPosInputsNode;3;-2558.642,-374.6649;Inherit;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3\nNode;AmplifyShaderEditor.GetLocalVarNode;45;-820.8937,-2009.931;Inherit;False;44;worldPosValue;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.RegisterLocalVarNode;61;314.5895,-289.8391;Inherit;False;specularResult;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.WorldNormalVector;12;-2213.121,-7.462296;Inherit;False;False;1;0;FLOAT3;0,0,1;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3\nNode;AmplifyShaderEditor.RegisterLocalVarNode;50;-1697.1,29.00105;Inherit;False;worldNormalValue;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.RegisterLocalVarNode;29;-68.89375,-1977.931;Inherit;False;FlatResult;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionInput;32;-2409,520;Inherit;False;Shadow
+    Mask;4;5;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0\nNode;AmplifyShaderEditor.FunctionSwitch;23;-414.5746,660.2781;Inherit;False;Half
+    Lambert;True;0;2;2;In 0;In 1;Object;-1;9;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.Vector4Node;68;-2563.697,518.9551;Inherit;False;Constant;_Vector2;Vector
+    2;0;0;Create;True;0;0;0;False;0;False;1,1,1,1;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4\nNode;AmplifyShaderEditor.RegisterLocalVarNode;44;-2366.155,-370.2155;Inherit;False;worldPosValue;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.CustomExpressionNode;8;-564.8937,-1993.931;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$int numLights = GetAdditionalLightsCount()@$for(int
+    i = 0@ i<numLights@i++)${$\tLight light = GetAdditionalLight(i, WorldPosition)@$\tColor
+    += light.color *(light.distanceAttenuation * light.shadowAttenuation)@$\t$}$#endif$return
+    Color@;3;Create;1;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;AdditionalLightsFlat;False;False;0;;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;54;-750.6669,-996.535;Inherit;False;50;worldNormalValue;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.GetLocalVarNode;47;-833.5493,-1609.208;Inherit;False;44;worldPosValue;1;0;OBJECT;;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.CustomExpressionNode;31;-564.8937,-1913.931;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$int numLights = GetAdditionalLightsCount()@$for(int
+    i = 0@ i<numLights@i++)${$#if ASE_SRP_VERSION >= 100000$\tLight light = GetAdditionalLight(i,
+    WorldPosition, ShadowMask)@$#else$\tLight light = GetAdditionalLight(i, WorldPosition)@$#endif$\tColor
+    += light.color *(light.distanceAttenuation * light.shadowAttenuation)@$\t$}$#endif$return
+    Color@;3;Create;2;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;True;ShadowMask;FLOAT4;0,0,0,0;In;;Inherit;False;AdditionalLightsFlatMask;False;False;0;;False;2;0;FLOAT3;0,0,0;False;1;FLOAT4;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.CustomExpressionNode;22;-428.3495,-1080.747;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$int numLights = GetAdditionalLightsCount()@$for(int
+    i = 0@ i<numLights@i++)${$\tLight light = GetAdditionalLight(i, WorldPosition)@$\thalf3
+    AttLightColor = light.color *(light.distanceAttenuation * light.shadowAttenuation)@$\tColor
+    +=(dot(light.direction, WorldNormal)*0.5+0.5 )* AttLightColor@$\t$}$#endif$return
+    Color@;3;Create;2;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;True;WorldNormal;FLOAT3;0,0,0;In;;Float;False;AdditionalLightsHalfLambert;False;False;0;;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.FunctionInput;2;-2399.121,-6.462288;Inherit;False;Normal;3;0;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.CustomExpressionNode;63;-207.2385,-126.0936;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$Smoothness = exp2(10 * Smoothness + 1)@$int
+    numLights = GetAdditionalLightsCount()@$for(int i = 0@ i<numLights@i++)${$#if
+    ASE_SRP_VERSION >= 100000$\tLight light = GetAdditionalLight(i, WorldPosition,
+    ShadowMask)@$#else$\tLight light = GetAdditionalLight(i, WorldPosition)@$#endif$\thalf3
+    AttLightColor = light.color *(light.distanceAttenuation * light.shadowAttenuation)@$\tColor
+    += LightingSpecular(AttLightColor, light.direction, WorldNormal, WorldView, half4(SpecColor,
+    0), Smoothness)@\t$}$#endif$return Color@;3;Create;6;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;True;WorldNormal;FLOAT3;0,0,0;In;;Float;False;True;WorldView;FLOAT3;0,0,0;In;;Float;False;True;SpecColor;FLOAT3;0,0,0;In;;Float;False;True;Smoothness;FLOAT;0.5;In;;Float;False;True;ShadowMask;FLOAT4;0,0,0,0;In;;Inherit;False;AdditionalLightsSpecularMask;False;False;0;;False;6;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT;0.5;False;5;FLOAT4;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.CustomExpressionNode;56;-433.6657,-942.9171;Inherit;False;float3
+    Color = 0@$#ifdef _ADDITIONAL_LIGHTS$int numLights = GetAdditionalLightsCount()@$for(int
+    i = 0@ i<numLights@i++)${$#if ASE_SRP_VERSION >= 100000$\tLight light = GetAdditionalLight(i,
+    WorldPosition, ShadowMask)@$#else$\tLight light = GetAdditionalLight(i, WorldPosition)@$#endif$\thalf3
+    AttLightColor = light.color *(light.distanceAttenuation * light.shadowAttenuation)@$\tColor
+    +=(dot(light.direction, WorldNormal)*0.5+0.5 )* AttLightColor@$\t$}$#endif$return
+    Color@;3;Create;3;True;WorldPosition;FLOAT3;0,0,0;In;;Float;False;True;WorldNormal;FLOAT3;0,0,0;In;;Float;False;True;ShadowMask;FLOAT4;0,0,0,0;In;;Inherit;False;AdditionalLightsHalfLambertMask;False;False;0;;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT4;0,0,0,0;False;1;FLOAT3;0\nNode;AmplifyShaderEditor.ViewDirInputsCoordNode;16;-870.7385,-332.9706;Inherit;False;World;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3\nNode;AmplifyShaderEditor.FunctionOutput;0;495.8608,669.8015;Inherit;False;True;-1;Out;0;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0\nWireConnection;58;0;26;0\nWireConnection;26;0;22;0\nWireConnection;26;1;56;0\nWireConnection;27;0;13;0\nWireConnection;27;1;63;0\nWireConnection;9;0;12;0\nWireConnection;9;1;11;0\nWireConnection;33;0;32;0\nWireConnection;19;0;21;0\nWireConnection;19;3;21;0\nWireConnection;19;1;6;0\nWireConnection;19;2;21;0\nWireConnection;37;0;47;0\nWireConnection;37;1;51;0\nWireConnection;6;0;30;0\nWireConnection;6;1;23;0\nWireConnection;6;2;62;0\nWireConnection;15;0;16;0\nWireConnection;24;0;8;0\nWireConnection;24;1;31;0\nWireConnection;5;0;47;0\nWireConnection;5;1;51;0\nWireConnection;5;2;41;0\nWireConnection;25;0;37;0\nWireConnection;25;1;5;0\nWireConnection;13;0;49;0\nWireConnection;13;1;55;0\nWireConnection;13;2;15;0\nWireConnection;13;3;14;0\nWireConnection;13;4;18;0\nWireConnection;11;0;4;0\nWireConnection;38;0;25;0\nWireConnection;61;0;27;0\nWireConnection;12;0;2;0\nWireConnection;50;0;9;0\nWireConnection;29;0;24;0\nWireConnection;32;0;68;0\nWireConnection;23;0;39;0\nWireConnection;23;1;59;0\nWireConnection;44;0;3;0\nWireConnection;8;0;45;0\nWireConnection;31;0;45;0\nWireConnection;31;1;35;0\nWireConnection;22;0;48;0\nWireConnection;22;1;54;0\nWireConnection;2;0;10;0\nWireConnection;63;0;49;0\nWireConnection;63;1;55;0\nWireConnection;63;2;15;0\nWireConnection;63;3;14;0\nWireConnection;63;4;18;0\nWireConnection;63;5;64;0\nWireConnection;56;0;48;0\nWireConnection;56;1;54;0\nWireConnection;56;2;57;0\nWireConnection;0;0;19;0\nASEEND*/\n//CHKSM=172C975BC4B8265A7736E90F657433DCA22992AA"
+  m_functionName: 
+  m_description: 'Returns SRP''s additional lights information calculated with the
+    selected lighting mode.
+
+    Shadow mask option only applied on SRP 10 or greater.'
+  m_additionalIncludes:
+    m_additionalIncludes: []
+    m_outsideIncludes: []
+  m_additionalPragmas:
+    m_additionalPragmas: []
+    m_outsidePragmas: []
+  m_additionalDirectives:
+    m_validData: 0
+    m_isDirty: 1
+    m_moduleName: ' Additional Directives'
+    m_independentModule: 1
+    m_customEdited: 0
+    m_additionalDirectives:
+    - {fileID: 0}
+    - {fileID: 0}
+    m_shaderFunctionDirectives: []
+    m_nativeDirectives: []
+    m_nativeDirectivesIndex: -1
+    m_nativeDirectivesFoldout: 0
+    m_directivesSaveItems:
+    - LineType: 2
+      LineValue: multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+      GUIDToggle: 0
+      GUIDValue: 
+      Origin: 2
+    - LineType: 2
+      LineValue: multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
+      GUIDToggle: 0
+      GUIDValue: 
+      Origin: 2
+  m_nodeCategory: 3
+  m_customNodeCategory: 
+  m_previewPosition: 0
+  m_hidden: 0
