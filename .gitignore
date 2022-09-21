@@ -4,3 +4,7 @@ Logs/*
 *.csproj
 Temp/*
 *.sln
+Packages/packages-lock.json
+Packages/URPExtend/.svn/*
+obj/*
+.idea/*

@@ -1,0 +1,17 @@
+{
+  "name": "com.xue.urpextend",
+  "displayName": "URPExtend",
+  "version": "1.0.0",
+  "unity": "2020.3",
+  "unityRelease": "37f1",
+  "license": "MIT",
+  "dependencies": {
+    "com.unity.render-pipelines.universal": "10.3.2"
+  },
+  "author": {
+    "name": "xue_tao_lu",
+    "url": "https://github.com/xuetaolu"
+  },
+  "type": "tool",
+  "description": "URP һЩ�Զ��幦���߼�"
+}
