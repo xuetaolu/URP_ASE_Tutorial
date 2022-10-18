@@ -38,11 +38,11 @@ Material:
     - _Matellic: 0.877
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SmoothnessB: 0.859
-    - _SmoothnessT: 0.465
+    - _SmoothnessB: 0.868
+    - _SmoothnessT: 0.4
     - _Sperate_D_V: 0
     - _f90: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.7803922, b: 0.3450977, a: 0}
+    - _BaseColor: {r: 1, g: 0.7803922, b: 0.3450976, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
