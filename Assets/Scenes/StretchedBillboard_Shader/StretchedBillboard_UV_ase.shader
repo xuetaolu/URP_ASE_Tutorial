@@ -1,13 +1,15 @@
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "StretchedBillboard_UV_ase"
+Shader "StretchedBillboard_ase"
 {
 	Properties
 	{
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
-		[ASEBegin]_RefrenceObjectCenter("RefrenceObjectCenter", Vector) = (0,0,0,0)
-		[ASEEnd][Toggle(_CENTER_VUSE_UV0ZW_UV1X_ON)] _CENTER_vUSE_UV0ZW_UV1X("CENTER_vUSE_UV0ZW_UV1X", Float) = 0
+		[ASEBegin][Toggle]_UseTransform("UseTransform", Range( 0 , 1)) = 1
+		_RefrenceObjectCenter("RefrenceObjectCenter", Vector) = (0,0,0,0)
+		[Toggle(_CENTER_VUSE_UV0ZW_UV1X_ON)] _CENTER_vUSE_UV0ZW_UV1X("CENTER_vUSE_UV0ZW_UV1X", Float) = 0
+		[ASEEnd][Toggle(_SHOWUV_ON)] _ShowUV("ShowUV", Float) = 0
 
 		[HideInInspector]_QueueOffset("_QueueOffset", Float) = 0
         [HideInInspector]_QueueControl("_QueueControl", Float) = -1
@@ -190,6 +192,7 @@ Shader "StretchedBillboard_UV_ase"
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma shader_feature_local _CENTER_VUSE_UV0ZW_UV1X_ON
 			#pragma multi_compile_instancing
+			#pragma shader_feature_local _SHOWUV_ON
 
 
 			struct VertexInput
@@ -198,6 +201,7 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
 				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_color : COLOR;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -213,6 +217,7 @@ Shader "StretchedBillboard_UV_ase"
 				#ifdef ASE_FOG
 				float fogFactor : TEXCOORD2;
 				#endif
+				float4 ase_color : COLOR;
 				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
@@ -228,9 +233,10 @@ Shader "StretchedBillboard_UV_ase"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 						
@@ -241,7 +247,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -251,9 +257,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -263,9 +268,12 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
+				o.ase_color = v.ase_color;
 				o.ase_texcoord3 = v.ase_texcoord;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -306,6 +314,7 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
 				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_color : COLOR;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -325,6 +334,7 @@ Shader "StretchedBillboard_UV_ase"
 				o.ase_normal = v.ase_normal;
 				o.ase_texcoord = v.ase_texcoord;
 				o.ase_texcoord1 = v.ase_texcoord1;
+				o.ase_color = v.ase_color;
 				return o;
 			}
 
@@ -365,6 +375,7 @@ Shader "StretchedBillboard_UV_ase"
 				o.ase_normal = patch[0].ase_normal * bary.x + patch[1].ase_normal * bary.y + patch[2].ase_normal * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
 				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
+				o.ase_color = patch[0].ase_color * bary.x + patch[1].ase_color * bary.y + patch[2].ase_color * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -399,10 +410,15 @@ Shader "StretchedBillboard_UV_ase"
 						ShadowCoords = TransformWorldToShadowCoord( WorldPosition );
 					#endif
 				#endif
+				#ifdef _SHOWUV_ON
+				float4 staticSwitch108 = float4( IN.ase_texcoord3.xy, 0.0 , 0.0 );
+				#else
+				float4 staticSwitch108 = IN.ase_color;
+				#endif
 				
 				float3 BakedAlbedo = 0;
 				float3 BakedEmission = 0;
-				float3 Color = float3( IN.ase_texcoord3.xy ,  0.0 );
+				float3 Color = staticSwitch108.rgb;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
@@ -502,9 +518,10 @@ Shader "StretchedBillboard_UV_ase"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 			
@@ -518,7 +535,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( o );
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -528,9 +545,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -540,8 +556,10 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -774,9 +792,10 @@ Shader "StretchedBillboard_UV_ase"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 			
@@ -787,7 +806,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -797,9 +816,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -809,8 +827,10 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -1007,6 +1027,7 @@ Shader "StretchedBillboard_UV_ase"
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma shader_feature_local _CENTER_VUSE_UV0ZW_UV1X_ON
 			#pragma multi_compile_instancing
+			#pragma shader_feature_local _SHOWUV_ON
 
 
 			struct VertexInput
@@ -1015,6 +1036,7 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
 				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_color : COLOR;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -1030,6 +1052,7 @@ Shader "StretchedBillboard_UV_ase"
 				#ifdef ASE_FOG
 				float fogFactor : TEXCOORD2;
 				#endif
+				float4 ase_color : COLOR;
 				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
@@ -1045,9 +1068,10 @@ Shader "StretchedBillboard_UV_ase"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 						
@@ -1058,7 +1082,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -1068,9 +1092,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -1080,9 +1103,12 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
+				o.ase_color = v.ase_color;
 				o.ase_texcoord3 = v.ase_texcoord;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -1123,6 +1149,7 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
 				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_color : COLOR;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -1142,6 +1169,7 @@ Shader "StretchedBillboard_UV_ase"
 				o.ase_normal = v.ase_normal;
 				o.ase_texcoord = v.ase_texcoord;
 				o.ase_texcoord1 = v.ase_texcoord1;
+				o.ase_color = v.ase_color;
 				return o;
 			}
 
@@ -1182,6 +1210,7 @@ Shader "StretchedBillboard_UV_ase"
 				o.ase_normal = patch[0].ase_normal * bary.x + patch[1].ase_normal * bary.y + patch[2].ase_normal * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
 				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
+				o.ase_color = patch[0].ase_color * bary.x + patch[1].ase_color * bary.y + patch[2].ase_color * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -1216,10 +1245,15 @@ Shader "StretchedBillboard_UV_ase"
 						ShadowCoords = TransformWorldToShadowCoord( WorldPosition );
 					#endif
 				#endif
+				#ifdef _SHOWUV_ON
+				float4 staticSwitch108 = float4( IN.ase_texcoord3.xy, 0.0 , 0.0 );
+				#else
+				float4 staticSwitch108 = IN.ase_color;
+				#endif
 				
 				float3 BakedAlbedo = 0;
 				float3 BakedEmission = 0;
-				float3 Color = float3( IN.ase_texcoord3.xy ,  0.0 );
+				float3 Color = staticSwitch108.rgb;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
@@ -1316,9 +1350,10 @@ Shader "StretchedBillboard_UV_ase"
 			#endif
 			CBUFFER_END
 
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 			
@@ -1341,7 +1376,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -1351,9 +1386,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -1363,8 +1397,10 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -1554,9 +1590,10 @@ Shader "StretchedBillboard_UV_ase"
 			#endif
 			CBUFFER_END
 
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 			
@@ -1580,7 +1617,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -1590,9 +1627,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -1602,8 +1638,10 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -1802,9 +1840,10 @@ Shader "StretchedBillboard_UV_ase"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 			      
@@ -1823,7 +1862,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -1833,9 +1872,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -1845,8 +1883,10 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -2046,9 +2086,10 @@ Shader "StretchedBillboard_UV_ase"
 				float _TessMaxDisp;
 			#endif
 			CBUFFER_END
-			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_UV_ase)
+			UNITY_INSTANCING_BUFFER_START(StretchedBillboard_ase)
 				UNITY_DEFINE_INSTANCED_PROP(float4, _RefrenceObjectCenter)
-			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_UV_ase)
+				UNITY_DEFINE_INSTANCED_PROP(float, _UseTransform)
+			UNITY_INSTANCING_BUFFER_END(StretchedBillboard_ase)
 
 
 			
@@ -2067,7 +2108,7 @@ Shader "StretchedBillboard_UV_ase"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
-				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_UV_ase,_RefrenceObjectCenter);
+				float4 _RefrenceObjectCenter_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_RefrenceObjectCenter);
 				float3 appendResult62 = (float3(_RefrenceObjectCenter_Instance.xyz));
 				float3 appendResult58 = (float3(v.ase_texcoord.z , v.ase_texcoord.w , v.ase_texcoord1.x));
 				#ifdef _CENTER_VUSE_UV0ZW_UV1X_ON
@@ -2077,9 +2118,8 @@ Shader "StretchedBillboard_UV_ase"
 				#endif
 				float3 RefrenceCenter52 = staticSwitch61;
 				float3 unityObjectToViewPos10 = TransformWorldToView( TransformObjectToWorld( RefrenceCenter52) );
-				float2 appendResult12 = (float2(unityObjectToViewPos10.x , unityObjectToViewPos10.y));
-				float2 normalizeResult19 = normalize( appendResult12 );
-				float3 appendResult20 = (float3(normalizeResult19 , 0.0));
+				float3 normalizeResult19 = normalize( unityObjectToViewPos10 );
+				float3 appendResult20 = (float3(normalizeResult19));
 				float3 viewToObjDir84 = mul( UNITY_MATRIX_T_MV, float4( appendResult20, 0 ) ).xyz;
 				float3 break81 = viewToObjDir84;
 				float3 appendResult85 = (float3(break81.x , break81.y , 0.0));
@@ -2089,8 +2129,10 @@ Shader "StretchedBillboard_UV_ase"
 				float3 ViewSpaceZ23 = appendResult22;
 				float3 normalizeResult48 = normalize( cross( ViewSpaceZ23 , ViewSpaceX21 ) );
 				float3 ViewSpaceY25 = normalizeResult48;
-				float ShouldApplyTransform18 = ( ( 1.0 - step( abs( break81.x ) , 0.0 ) ) * ( 1.0 - step( abs( break81.y ) , 0.0 ) ) );
-				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ShouldApplyTransform18);
+				float dotResult107 = dot( unityObjectToViewPos10 , unityObjectToViewPos10 );
+				float ShouldApplyTransform18 = ( 1.0 - step( dotResult107 , 0.0 ) );
+				float _UseTransform_Instance = UNITY_ACCESS_INSTANCED_PROP(StretchedBillboard_ase,_UseTransform);
+				float3 lerpResult33 = lerp( v.vertex.xyz , mul( float3x3(ViewSpaceX21.x,ViewSpaceY25.x,ViewSpaceZ23.x,ViewSpaceX21.y,ViewSpaceY25.y,ViewSpaceZ23.y,ViewSpaceX21.z,ViewSpaceY25.z,ViewSpaceZ23.z ), v.vertex.xyz ) , ( ShouldApplyTransform18 * _UseTransform_Instance ));
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -2227,66 +2269,61 @@ Shader "StretchedBillboard_UV_ase"
 }
 /*ASEBEGIN
 Version=18935
-222;389;2560;784;1033.278;239.2464;1;True;False
+222;202;1906;481;10596.33;2004.697;6.615762;True;False
 Node;AmplifyShaderEditor.CommentaryNode;88;-3350.283,-1947.677;Inherit;False;1284.113;628.0005;Comment;7;59;56;54;58;62;61;52;RefrenceCenter;1,1,1,1;0;0
-Node;AmplifyShaderEditor.Vector4Node;54;-3300.283,-1897.677;Inherit;False;InstancedProperty;_RefrenceObjectCenter;RefrenceObjectCenter;1;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TexCoordVertexDataNode;56;-3271.283,-1677.677;Inherit;False;0;4;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TexCoordVertexDataNode;59;-3262.283,-1478.676;Inherit;False;1;2;0;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.Vector4Node;54;-3300.283,-1897.677;Inherit;False;InstancedProperty;_RefrenceObjectCenter;RefrenceObjectCenter;1;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.DynamicAppendNode;62;-2989.283,-1837.677;Inherit;False;FLOAT3;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.DynamicAppendNode;58;-3007.283,-1670.677;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.StaticSwitch;61;-2716.16,-1762.832;Inherit;False;Property;_CENTER_vUSE_UV0ZW_UV1X;CENTER_vUSE_UV0ZW_UV1X;2;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT3;0,0,0;False;0;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;4;FLOAT3;0,0,0;False;5;FLOAT3;0,0,0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.CommentaryNode;53;-2345.439,-1257.895;Inherit;False;3343.382;867.2013;Comment;20;10;81;20;19;12;18;25;51;48;50;24;21;49;23;22;73;86;85;84;87;Object Rotate Matrix X Y Z ;1,1,1,1;0;0
+Node;AmplifyShaderEditor.CommentaryNode;53;-2345.439,-1257.895;Inherit;False;3382.864;1056.15;Comment;19;19;73;18;25;48;50;24;23;49;21;22;86;85;81;84;20;10;87;107;Object Rotate Matrix X Y Z ;1,1,1,1;0;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;52;-2296.17,-1778.252;Inherit;False;RefrenceCenter;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.GetLocalVarNode;87;-2252.116,-1191.698;Inherit;False;52;RefrenceCenter;1;0;OBJECT;;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.UnityObjToViewPosHlpNode;10;-2006.646,-1191.779;Inherit;False;1;0;FLOAT3;0,0,0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
-Node;AmplifyShaderEditor.DynamicAppendNode;12;-1761.291,-1172.182;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.NormalizeNode;19;-1623.843,-1169.596;Inherit;False;False;1;0;FLOAT2;0,0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.DynamicAppendNode;20;-1463.054,-1168.683;Inherit;False;FLOAT3;4;0;FLOAT2;0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.NormalizeNode;19;-1692.048,-1174.667;Inherit;False;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.DynamicAppendNode;20;-1463.054,-1168.683;Inherit;False;FLOAT3;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.TransformDirectionNode;84;-1315.49,-1173.161;Inherit;False;View;Object;False;Fast;False;1;0;FLOAT3;0,0,0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
 Node;AmplifyShaderEditor.BreakToComponentsNode;81;-1083.206,-1168.016;Inherit;False;FLOAT3;1;0;FLOAT3;0,0,0;False;16;FLOAT;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT;5;FLOAT;6;FLOAT;7;FLOAT;8;FLOAT;9;FLOAT;10;FLOAT;11;FLOAT;12;FLOAT;13;FLOAT;14;FLOAT;15
 Node;AmplifyShaderEditor.DynamicAppendNode;85;-780.2004,-1019.398;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.NormalizeNode;86;-565.0085,-985.0386;Inherit;False;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.DynamicAppendNode;22;-468.5464,-1146.878;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.CommentaryNode;49;-776.6343,-756.8041;Inherit;False;384.9074;346.7183;各自是否为0;4;40;39;15;42;;1,1,1,1;0;0
+Node;AmplifyShaderEditor.NormalizeNode;86;-565.0085,-985.0386;Inherit;False;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;23;-261.1464,-1142.478;Inherit;False;ViewSpaceZ;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;21;-259.3312,-1012.829;Inherit;False;ViewSpaceX;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.AbsOpNode;40;-726.6343,-547.2084;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.AbsOpNode;39;-721.0129,-706.8041;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.DotProductOpNode;107;-1642.345,-645.8072;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.CrossProductOpNode;24;57.7406,-1046.45;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.CommentaryNode;50;-345.7314,-747.2549;Inherit;False;237.0131;314.8805;各自是否有效;2;44;43;;1,1,1,1;0;0
-Node;AmplifyShaderEditor.StepOpNode;15;-545.5446,-704.212;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.CommentaryNode;49;-1475.421,-710.5883;Inherit;False;389.3818;196.081;长度平方是否为0;1;15;;1,1,1,1;0;0
+Node;AmplifyShaderEditor.StepOpNode;15;-1338.293,-657.9962;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.CommentaryNode;50;-1023.637,-721.9195;Inherit;False;254.9106;189.598;是否有长度;1;43;;1,1,1,1;0;0
 Node;AmplifyShaderEditor.NormalizeNode;48;241.4548,-1055.709;Inherit;False;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.StepOpNode;42;-543.7266,-545.0858;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.CommentaryNode;51;-81.22864,-653.9752;Inherit;False;212;185;两者均有效;1;45;;1,1,1,1;0;0
-Node;AmplifyShaderEditor.OneMinusNode;43;-298.5454,-698.6083;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.OneMinusNode;43;-977.9429,-647.9182;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;25;440.5999,-1062.549;Inherit;False;ViewSpaceY;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.OneMinusNode;44;-295.7314,-543.3744;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;28;-1065.588,528.5519;Inherit;False;21;ViewSpaceX;1;0;OBJECT;;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;45;-31.2286,-603.9752;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;29;-1067.512,608.3089;Inherit;False;25;ViewSpaceY;1;0;OBJECT;;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.GetLocalVarNode;30;-1065.512,688.309;Inherit;False;23;ViewSpaceZ;1;0;OBJECT;;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;18;167.9527,-611.8403;Inherit;False;ShouldApplyTransform;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;18;-611.946,-656.6033;Inherit;False;ShouldApplyTransform;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.MatrixFromVectors;27;-787.9836,589.7423;Inherit;False;FLOAT3x3;False;4;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;1;FLOAT3x3;0
 Node;AmplifyShaderEditor.PosVertexDataNode;5;-760.595,972.7482;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;31;-306.5286,608.5054;Inherit;False;2;2;0;FLOAT3x3;0,0,0,0,1,1,1,0,1;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.PosVertexDataNode;32;89.99735,371.1466;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;34;-33.07449,892.402;Inherit;False;InstancedProperty;_UseTransform;UseTransform;0;1;[Toggle];Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;36;50.93514,699.4971;Inherit;False;18;ShouldApplyTransform;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleSubtractOpNode;73;-390.412,-864.8125;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RangedFloatNode;34;-33.07449,892.402;Inherit;False;InstancedProperty;_UseTransform;UseTransform;0;0;Create;True;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.LerpOp;33;366.3975,408.1109;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.TexCoordVertexDataNode;3;35.70573,92.81617;Inherit;False;0;2;0;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.PosVertexDataNode;32;89.99735,371.1466;Inherit;False;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;35;399.28,806.8212;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.VertexColorNode;72;177.3781,-103.3315;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;91;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;92;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;31;-306.5286,608.5054;Inherit;False;2;2;0;FLOAT3x3;0,0,0,1,1,1,1,0,1;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.VertexColorNode;72;154.3781,-75.3315;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TexCoordVertexDataNode;3;148.7057,111.8162;Inherit;False;0;2;0;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.StaticSwitch;108;384.4937,65.38956;Inherit;False;Property;_ShowUV;ShowUV;3;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp;33;366.3975,408.1109;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleSubtractOpNode;73;-390.412,-864.8125;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;89;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;0;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;94;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;Universal2D;0;5;Universal2D;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=Universal2D;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;98;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthNormalsOnly;0;9;DepthNormalsOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=DepthNormalsOnly;False;True;15;d3d9;d3d11_9x;d3d11;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;97;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthNormals;0;8;DepthNormals;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=DepthNormalsOnly;False;True;4;d3d11;glcore;gles;gles3;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;95;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;SceneSelectionPass;0;6;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;True;4;d3d11;glcore;gles;gles3;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;98;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthNormalsOnly;0;9;DepthNormalsOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=DepthNormalsOnly;False;True;15;d3d9;d3d11_9x;d3d11;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;96;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ScenePickingPass;0;7;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;True;4;d3d11;glcore;gles;gles3;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;90;609.6445,56.32774;Float;False;True;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;3;StretchedBillboard_ase;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;8;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;2;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=UniversalForwardOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;22;Surface;0;0;  Blend;0;0;Two Sided;0;638017756003554585;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;GPU Instancing;1;0;LOD CrossFade;0;0;Built-in Fog;0;0;DOTS Instancing;0;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,-1;0;  Type;0;0;  Tess;16,False,-1;0;  Min;10,False,-1;0;  Max;25,False,-1;0;  Edge Length;16,False,-1;0;  Max Displacement;25,False,-1;0;Vertex Position,InvertActionOnDeselection;0;638017756423000860;0;10;False;True;True;True;False;True;True;True;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;92;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;94;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;Universal2D;0;5;Universal2D;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=Universal2D;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;97;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;DepthNormals;0;8;DepthNormals;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=DepthNormalsOnly;False;True;4;d3d11;glcore;gles;gles3;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;93;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;Meta;0;4;Meta;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;90;609.6445,56.32774;Float;False;True;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;3;StretchedBillboard_UV_ase;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;8;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;2;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=UniversalForwardOnly;False;False;0;Hidden/InternalErrorShader;0;0;Standard;22;Surface;0;0;  Blend;0;0;Two Sided;0;638017756003554585;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;GPU Instancing;1;0;LOD CrossFade;0;0;Built-in Fog;0;0;DOTS Instancing;0;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,-1;0;  Type;0;0;  Tess;16,False,-1;0;  Min;10,False,-1;0;  Max;25,False,-1;0;  Edge Length;16,False,-1;0;  Max Displacement;25,False,-1;0;Vertex Position,InvertActionOnDeselection;0;638017756423000860;0;10;False;True;True;True;False;True;True;True;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;91;609.6445,56.32774;Float;False;False;-1;2;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;0;False;-1;False;False;False;False;False;False;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;True;17;d3d9;d3d11;glcore;gles;gles3;metal;vulkan;xbox360;xboxone;xboxseries;ps4;playstation;psp2;n3ds;wiiu;switch;nomrt;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;True;False;False;False;False;0;False;-1;False;False;False;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
 WireConnection;62;0;54;0
 WireConnection;58;0;56;3
 WireConnection;58;1;56;4
@@ -2295,9 +2332,7 @@ WireConnection;61;1;62;0
 WireConnection;61;0;58;0
 WireConnection;52;0;61;0
 WireConnection;10;0;87;0
-WireConnection;12;0;10;1
-WireConnection;12;1;10;2
-WireConnection;19;0;12;0
+WireConnection;19;0;10;0
 WireConnection;20;0;19;0
 WireConnection;84;0;20;0
 WireConnection;81;0;84;0
@@ -2306,31 +2341,29 @@ WireConnection;85;1;81;1
 WireConnection;86;0;85;0
 WireConnection;23;0;22;0
 WireConnection;21;0;86;0
-WireConnection;40;0;81;1
-WireConnection;39;0;81;0
+WireConnection;107;0;10;0
+WireConnection;107;1;10;0
 WireConnection;24;0;23;0
 WireConnection;24;1;21;0
-WireConnection;15;0;39;0
+WireConnection;15;0;107;0
 WireConnection;48;0;24;0
-WireConnection;42;0;40;0
 WireConnection;43;0;15;0
 WireConnection;25;0;48;0
-WireConnection;44;0;42;0
-WireConnection;45;0;43;0
-WireConnection;45;1;44;0
-WireConnection;18;0;45;0
+WireConnection;18;0;43;0
 WireConnection;27;0;28;0
 WireConnection;27;1;29;0
 WireConnection;27;2;30;0
-WireConnection;31;0;27;0
-WireConnection;31;1;5;0
-WireConnection;73;1;86;0
-WireConnection;33;0;32;0
-WireConnection;33;1;31;0
-WireConnection;33;2;36;0
 WireConnection;35;0;36;0
 WireConnection;35;1;34;0
-WireConnection;90;2;3;0
+WireConnection;31;0;27;0
+WireConnection;31;1;5;0
+WireConnection;108;1;72;0
+WireConnection;108;0;3;0
+WireConnection;33;0;32;0
+WireConnection;33;1;31;0
+WireConnection;33;2;35;0
+WireConnection;73;1;86;0
+WireConnection;90;2;108;0
 WireConnection;90;5;33;0
 ASEEND*/
-//CHKSM=0B0FAAAC05B191DF04C6E319F91C775E0B0E1961
+//CHKSM=6C9E89A9F9F13C71CAF61D89BD2CABC5F165C26E

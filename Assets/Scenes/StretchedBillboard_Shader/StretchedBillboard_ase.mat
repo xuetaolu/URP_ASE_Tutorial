@@ -7,11 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ase_UV
+  m_Name: StretchedBillboard_ase
   m_Shader: {fileID: 4800000, guid: 1bd64e767af009344905545289c49953, type: 3}
-  m_ValidKeywords:
-  - _SHOWUV_ON
-  m_InvalidKeywords: []
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _USETRANSFORM_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -39,9 +39,9 @@ Material:
     - _CENTER_vUSE_UV0ZW_UV1X: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ShowUV: 1
+    - _ShowUV: 0
     - _UseTransform: 1
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RefrenceObjectCenter: {r: 0, g: 0, b: -0.5, a: 0}
+    - _RefrenceObjectCenter: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
