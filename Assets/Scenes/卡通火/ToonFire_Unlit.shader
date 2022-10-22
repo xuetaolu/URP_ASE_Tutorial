@@ -1,4 +1,4 @@
-// shadertoy Á´½Ó
+// shadertoy é“¾æ¥
 // https://www.shadertoy.com/view/cdlGzS
 
 Shader "Unlit/ToonFire_Unlit"
@@ -105,14 +105,14 @@ Shader "Unlit/ToonFire_Unlit"
                 c3 = smoothstep(.5, 1., c3) * m; //sparkle
 
                 float4 col = (float4)0;
-                // Êµ¼Ê²âÊÔ²»Ã÷ÏÔ²»ÒªÁË
+                // å®é™…æµ‹è¯•ä¸æ˜æ˜¾ä¸è¦äº†
                 // col=fixed4(_SparkleColor_Instance.xyz, 1.0)*c3;//sparkle
                 col = lerp(col,fixed4(_OutColor_Instance.xyz, (uv.y + .8)), c0); //out
                 col = lerp(col,fixed4(lerp(_MidFireTop_Instance.xyz, _MidFireBottom_Instance.xyz, -uv.y), 1.0),
                            c1); //mid
                 col.xyz = lerp(col, _InnerColor_Instance, c2); //inner
 
-                // Unity 2021.3.10f1 ÏÂ²ÄÖÊÊôĞÔ Color »á×Ô¶¯½ÃÕıµ½ linear ÏÂ£¬µ¼ÖÂÑÕÉ«±¾À´¾Í°µÁË£¬²»ÓÃÊÖ¶¯×ª
+                // Unity 2021.3.10f1 ä¸‹æè´¨å±æ€§ Color ä¼šè‡ªåŠ¨çŸ«æ­£åˆ° linear ä¸‹ï¼Œå¯¼è‡´é¢œè‰²æœ¬æ¥å°±æš—äº†ï¼Œä¸ç”¨æ‰‹åŠ¨è½¬
                 // if (!IsGammaSpace())
                 // {
                 // col.xyz = FastSRGBToLinear(col.xyz);

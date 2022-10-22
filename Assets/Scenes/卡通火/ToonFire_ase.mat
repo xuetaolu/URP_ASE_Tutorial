@@ -39,9 +39,9 @@ Material:
     - _QueueOffset: 0
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerColor: {r: 0.9, g: 0.8, b: 0.19999993, a: 1}
-    - _MidFireBottom: {r: 0.9, g: 0.6, b: 0.19999993, a: 1}
-    - _MidFireTop: {r: 0.9, g: 0.29999995, b: 0.19999993, a: 1}
-    - _OutColor: {r: 0.95, g: 0.09999994, b: 0.19999993, a: 1}
-    - _SparkleColor: {r: 1, g: 0.39999995, b: 0.19999993, a: 1}
+    - _InnerColor: {r: 0.9, g: 0.8, b: 0.1999999, a: 1}
+    - _MidFireBottom: {r: 0.9, g: 0.6, b: 0.1999999, a: 1}
+    - _MidFireTop: {r: 0.9, g: 0.29999992, b: 0.1999999, a: 1}
+    - _OutColor: {r: 0.95, g: 0.09999991, b: 0.1999999, a: 1}
+    - _SparkleColor: {r: 1, g: 0.3999999, b: 0.1999999, a: 1}
   m_BuildTextureStacks: []
