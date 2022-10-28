@@ -1,0 +1,41 @@
+#ifndef XUE_HOUDINI_SH_INCLUDED
+#define XUE_HOUDINI_SH_INCLUDED
+
+
+// 详见：https://catlikecoding.com/unity/tutorials/rendering/part-5/
+// Spherical Harmonics Bands 部分
+// l0, l1, l2 等参数已经预乘了其他常数。
+half HoudiniSpaceShadeSH9(half3 direction, half4 l0l1, half4 l2_1stTo4th, half l2_5th)
+{
+    // l0l1.x   为 l0 的 Y0_0
+    // l0l1.yzw 为 l1 的 Y1_-1, Y1_0, Y1_1
+    half3 l0l1result = dot(direction.yzx, l0l1.yzw) + l0l1.x;
+
+    half x1, x2;
+    // 4 of the quadratic (L2) polynomials
+    half4 vB = direction.xyzz * direction.yzzx;
+    x1 = dot(l2_1stTo4th, vB);
+
+    // Final (5th) quadratic (L2) polynomial
+    half vC = direction.x*direction.x - direction.y*direction.y;
+    x2 = l2_5th * vC;
+    
+    return l0l1result + x1 + x2;
+}
+
+/**
+ * direction 为归一化方向
+ * l0, l1, l2 等参数是预乘了常量的参数
+ * 关于 l2 的 Y2_0 的预乘详见：
+ *   https://catlikecoding.com/unity/tutorials/rendering/part-5/
+ *   Spherical Harmonics Bands 部分
+ */
+half UnitySpaceShadeSH9(half3 direction, half4 l0l1, half4 l2_1stTo4th, half l2_5th )
+{
+    half3 houdiniDirection = half3(-direction.x, -direction.z, direction.y);
+    return HoudiniSpaceShadeSH9(houdiniDirection, l0l1, l2_1stTo4th, l2_5th);
+}
+
+
+
+#endif
