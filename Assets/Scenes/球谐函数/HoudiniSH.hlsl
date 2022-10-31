@@ -32,8 +32,20 @@ half HoudiniSpaceShadeSH9(half3 direction, half4 l0l1, half4 l2_1stTo4th, half l
  */
 half UnitySpaceShadeSH9(half3 direction, half4 l0l1, half4 l2_1stTo4th, half l2_5th )
 {
-    half3 houdiniDirection = half3(-direction.x, -direction.z, direction.y);
-    return HoudiniSpaceShadeSH9(houdiniDirection, l0l1, l2_1stTo4th, l2_5th);
+    // 做了调整不需要下面这样
+    // half3 houdiniDirection = half3(-direction.x, -direction.z, direction.y);
+    
+    // houdini 中计算sh参数，
+    //   极角(θ) 0~π 对应 +Z -> -Z，
+    //   方位角(φ) 0~2π 对应 -X -> +Y -> +X -> -Y -> -X。
+    // 对应Unity中
+    //    极角(θ) 0~π 对应 +Z -> -Z，
+    //    方位角(φ) 0~2π 对应 +X -> +Y -> -X -> -Y -> +X。
+    // 则Unity中sh计算过程涉及的 θ, φ 符合数学上球坐标与笛卡尔坐标对应关系。
+    // 可以直接使用直角坐标系表达式算球谐函数
+    // 直角坐标中的表达式参考：https://zh.wikipedia.org/wiki/%E7%90%83%E8%B0%90%E5%87%BD%E6%95%B0
+    
+    return HoudiniSpaceShadeSH9(direction, l0l1, l2_1stTo4th, l2_5th);
 }
 
 
