@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Inspector
   m_RootView: {fileID: 11}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 17
+  controlID: 31
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 196
+  controlID: 23
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 182
+  controlID: 153
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -229,7 +229,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 181
+  controlID: 152
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -350,7 +350,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 195
+  controlID: 22
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -478,22 +478,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - "Assets/Scenes/Earthbound Mother 2 \u7279\u6548"
+    - "Assets/Scenes/\u7403\u8C10\u51FD\u6570/houdini_project/vex"
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - "Assets/Scenes/Earthbound Mother 2 \u7279\u6548"
+  - "Assets/Scenes/\u7403\u8C10\u51FD\u6570/houdini_project/vex"
   m_LastFoldersGridSize: 16
   m_LastProjectPath: E:\project\URP_ASE_Tutorial
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 7c6f0000
-    m_LastClickedID: 28540
-    m_ExpandedIDs: 000000006e6f0000706f00007c6f00004671000000ca9a3bffffff7f
+    m_SelectedIDs: 5a710000
+    m_LastClickedID: 29018
+    m_ExpandedIDs: 00000000746f0000766f0000786f0000027100004e7100005a71000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -521,7 +521,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000006e6f0000706f0000
+    m_ExpandedIDs: 00000000746f0000766f0000786f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -548,22 +548,22 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000326d0000a8710000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: UVAnimLut 3
-      m_OriginalName: UVAnimLut 3
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 29644
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 6}
     m_CreateAssetUtility:
@@ -649,23 +649,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 64710000
       m_LastClickedID: 0
-      m_ExpandedIDs: 86b7ffff50edffff12f4ffffa6faffff
+      m_ExpandedIDs: 88faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Directional Light
-        m_OriginalName: Directional Light
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 29032
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -902,7 +902,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: -0.30870816, y: -1.3464088, z: -0.3804404}
     speed: 2
-    m_Value: {x: -0.37400675, y: -1.36053, z: -0.3740474}
+    m_Value: {x: -0.30870816, y: -1.3464088, z: -0.3804404}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -951,11 +951,11 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: 0.46645573, y: 0.13306355, z: -0.07121358, w: 0.8715771}
     speed: 2
-    m_Value: {x: 0.4624214, y: 0.1346927, z: -0.071307614, w: 0.87346417}
+    m_Value: {x: -0.46645573, y: -0.13306355, z: 0.07121358, w: -0.8715771}
   m_Size:
     m_Target: 1.6804292
     speed: 2
-    m_Value: 1.6080662
+    m_Value: 1.6804292
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1039,7 +1039,7 @@ MonoBehaviour:
     m_VAllowExceedBaseRangeMax: 1
     m_ScaleWithWindow: 0
     m_HSlider: 0
-    m_VSlider: 0
+    m_VSlider: 1
     m_IgnoreScrollWheelUntilClicked: 0
     m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
@@ -1052,7 +1052,7 @@ MonoBehaviour:
       y: 21
       width: 687
       height: 376
-    m_Scale: {x: 0.34814814, y: 0.34814814}
+    m_Scale: {x: 0.3578125, y: 0.3578125}
     m_Translation: {x: 343.5, y: 188}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -1060,12 +1060,12 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -986.649
-      y: -540
-      width: 1973.298
-      height: 1080
+      x: -960
+      y: -525.41486
+      width: 1920
+      height: 1050.8297
     m_MinimalGUI: 1
-  m_defaultScale: 0.34814814
+  m_defaultScale: 0.3578125
   m_LastWindowPixelSize: {x: 687, y: 397}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
