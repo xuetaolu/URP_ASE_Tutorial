@@ -19,6 +19,7 @@ Shader "Unlit/SH04"
         Pass
         {
             Name "FORWARD"
+            // Tags {"LightMode" = "ForwardBase"}
             Tags {"LightMode" = "UniversalForward"}
             CGPROGRAM
             #pragma vertex vert
@@ -128,6 +129,8 @@ Shader "Unlit/SH04"
                 float RampTexV = 0.2;
                 float2 RampTexUV = float2(lambert, RampTexV);
                 float3 rampTex = tex2D(_RampTex, RampTexUV);
+
+                rampTex *= smoothstep(0.0, 0.01, lambert);
                 
                 float3 finalRGB01 = rampTex * shadow;
                 float3 finalRGB02 = lambert * shadow;
