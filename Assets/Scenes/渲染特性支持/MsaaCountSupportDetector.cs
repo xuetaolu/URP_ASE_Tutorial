@@ -126,7 +126,7 @@ namespace Scenes.渲染特性支持
         
         public void Update()
         {
-            m_inited = false;
+            // m_inited = false;
             Init();
         }
 
