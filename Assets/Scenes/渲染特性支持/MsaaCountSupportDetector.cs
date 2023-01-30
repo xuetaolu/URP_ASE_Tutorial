@@ -232,6 +232,7 @@ namespace Scenes.渲染特性支持
         {
             if (m_defaultMaterial != null)
                 DestroyImmediate(m_defaultMaterial);
+            clearResult();
         }
     }
 }
