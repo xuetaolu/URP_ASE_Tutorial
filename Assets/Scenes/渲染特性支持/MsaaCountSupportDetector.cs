@@ -134,11 +134,9 @@ namespace Scenes.渲染特性支持
         {
             if (m_inited) return;
             
-            
             DrawRenderTextures();
             
-            m_resultList.Clear();
-            m_texture2DList.Clear();
+            clearResult();
             foreach (var rtHandle in m_rtHanles.Values)
             {
                 var texture2D = readRenderTexture(rtHandle.renderTexture);
@@ -160,6 +158,16 @@ namespace Scenes.渲染特性支持
             releaseRenderTextures();
             m_inited = true;
 
+        }
+
+        private void clearResult()
+        {
+            m_resultList.Clear();
+            for (int i = 0; i < m_texture2DList.Count; i++)
+            {
+                DestroyImmediate(m_texture2DList[i]);
+            }
+            m_texture2DList.Clear();
         }
 
         private Texture2D readRenderTexture(RenderTexture renderTexture)
