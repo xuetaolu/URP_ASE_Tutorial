@@ -10,9 +10,11 @@ using UnityEngine.Rendering;
 
 namespace Scenes.渲染特性支持
 {
-    [ExecuteAlways]
+    // [ExecuteAlways]
     public class MsaaCountSupportDetector : MonoBehaviour
     {
+        // 最大 msaa 8， 2^3
+        public static readonly int s_maxMsaaLog2 = 3;
 
         private Material m_defaultMaterial;
 
@@ -22,6 +24,9 @@ namespace Scenes.渲染特性支持
         private List<Texture2D> m_texture2DList = new List<Texture2D>();
         [NonSerialized]
         private bool m_inited;
+        
+        [NonSerialized]
+        private Dictionary<int, RenderTextureHandle> m_rtHanles;
 
         public Material defaultMaterial
         {
@@ -45,13 +50,16 @@ namespace Scenes.渲染特性支持
             }
         }
         
-        public Dictionary<int, RenderTextureHandle> m_rtHanles = new Dictionary<int, RenderTextureHandle>()
+        private void Awake()
         {
-            {1 , new RenderTextureHandle() {m_msaa = 1}},
-            {2 , new RenderTextureHandle() {m_msaa = 2}},
-            {4,  new RenderTextureHandle() {m_msaa = 4}},
-            {8 , new RenderTextureHandle() {m_msaa = 8}},
-        };
+            m_rtHanles = new Dictionary<int, RenderTextureHandle>();
+            for (int i = 0; i <= s_maxMsaaLog2; i++)
+            {
+                int msaa = 1 << i;
+                m_rtHanles.Add(msaa, new RenderTextureHandle() {m_msaa = msaa});
+            }
+        }
+
 
         public bool IsSupportMsaaCount(int msaa)
         {
@@ -75,11 +83,7 @@ namespace Scenes.渲染特性支持
         public class RenderTextureHandle
         {
             private RenderTexture m_renderTexture;
-            // private RenderTexture m_renderTexture2;
-            // private RenderTexture m_renderTexture3;
             public float result;
-            // public float result2;
-            // public float result3;
             public int m_msaa;
             
 
@@ -98,15 +102,13 @@ namespace Scenes.渲染特性支持
             private void CheckInit(ref RenderTexture renderTexture)
             {
                 if (renderTexture == null)
-                    renderTexture = RenderTexture.GetTemporary(1, 4, 0, RenderTextureFormat.Default,
+                    renderTexture = RenderTexture.GetTemporary(1, 256, 0, RenderTextureFormat.Default,
                     RenderTextureReadWrite.Linear, m_msaa);
             }
 
             public void DestoryRenderTexture()
             {
                 checkDestory(ref m_renderTexture);
-                // checkDestory(ref m_renderTexture2);
-                // checkDestory(ref m_renderTexture3);
             }
 
             private void checkDestory(ref RenderTexture renderTexture)
@@ -140,9 +142,18 @@ namespace Scenes.渲染特性支持
             foreach (var rtHandle in m_rtHanles.Values)
             {
                 var texture2D = readRenderTexture(rtHandle.renderTexture);
-                var color = texture2D.GetPixel(0, 0);
-                rtHandle.result = color.r;
-                m_resultList.Add(color.r);
+                float result = -1;
+                for (int h = 0; h < texture2D.height; h++) {
+                    var color = texture2D.GetPixel(0, h);
+                    float red = color.r;
+                    if (result < 0 || (red > 0 && red < result))
+                    {
+                        result = red;
+                    }
+                }
+
+                rtHandle.result = result;
+                m_resultList.Add(result);
                 m_texture2DList.Add(texture2D);
             }
 
@@ -181,11 +192,11 @@ namespace Scenes.渲染特性支持
             foreach (var rtHandle in m_rtHanles.Values)
             {
                 var rt = rtHandle.renderTexture;
-                drawHalfScreen(rt, defaultMaterial, 1.0f / rtHandle.m_msaa );
+                drawTriangle(rt, defaultMaterial );
             }
         }
 
-        private void drawHalfScreen(RenderTexture rt, Material mat, float present = 0.5f)
+        private void drawTriangle(RenderTexture rt, Material mat)
         {
             
             if (mat == null) return;
@@ -198,11 +209,11 @@ namespace Scenes.渲染特性支持
             GL.LoadOrtho();
 
             mat.SetPass(0);
-            GL.Begin(GL.QUADS);
+            GL.Begin(GL.TRIANGLES);
             GL.Vertex3(0, 0, 0);
-            GL.Vertex3(present, 0, 0);
-            GL.Vertex3(present, 1, 0);
-            GL.Vertex3(0, 1, 0);
+            GL.Vertex3(1, 0, 0);
+            GL.Vertex3(1, 1, 0);
+            // GL.Vertex3(0, 1, 0);
             GL.End();
 
             GL.PopMatrix();

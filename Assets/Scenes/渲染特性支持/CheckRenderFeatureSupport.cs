@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-[ExecuteAlways]
+// [ExecuteAlways]
 public class CheckRenderFeatureSupport : MonoBehaviour
 {
     public MsaaCountSupportDetector m_msaaCountSupportDetector;
@@ -33,25 +33,23 @@ public class CheckRenderFeatureSupport : MonoBehaviour
 
     private void OnGUI()
     {
+        int maxMsaaLog = MsaaCountSupportDetector.s_maxMsaaLog2;
         using (new GUILayout.VerticalScope())
         {
-            GUILayout.Label(GetMSAASupportInfo(1 << 0, false));
-            GUILayout.Label(GetMSAASupportInfo(1 << 1, false));
-            GUILayout.Label(GetMSAASupportInfo(1 << 2, false));
-            GUILayout.Label(GetMSAASupportInfo(1 << 3, false));
-            GUILayout.Label(GetMSAASupportInfo(1 << 0, true));
-            GUILayout.Label(GetMSAASupportInfo(1 << 1, true));
-            GUILayout.Label(GetMSAASupportInfo(1 << 2, true));
-            GUILayout.Label(GetMSAASupportInfo(1 << 3, true));
+            for (int i = 0; i <= maxMsaaLog; i++)
+            {
+                GUILayout.Label(GetMSAASupportInfo(1 << i, false));
+                GUILayout.Label(GetMSAASupportInfo(1 << i, true));
+            }
         }
 
         GUILayout.Label("bydetector: ");
         using (new GUILayout.VerticalScope())
         {
-            GUILayout.Label(GetMSAASupportInfoByDetector(1 << 0));
-            GUILayout.Label(GetMSAASupportInfoByDetector(1 << 1));
-            GUILayout.Label(GetMSAASupportInfoByDetector(1 << 2));
-            GUILayout.Label(GetMSAASupportInfoByDetector(1 << 3));
+            for (int i = 0; i <= maxMsaaLog; i++)
+            {
+                GUILayout.Label(GetMSAASupportInfoByDetector(1 << i));
+            }
         }
     }
 
