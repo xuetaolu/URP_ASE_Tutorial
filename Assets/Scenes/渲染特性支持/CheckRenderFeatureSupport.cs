@@ -21,7 +21,7 @@ public class CheckRenderFeatureSupport : MonoBehaviour
 
     void Start()
     {
-        m_msaaCountSupportDetector.Init();
+        m_msaaCountSupportDetector.ScheduleRenderResult();
     }
 
     // Update is called once per frame
