@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -161,6 +162,21 @@ namespace Scenes.渲染特性支持
             }
             return 0;
         }
+        
+        /// <summary>
+        /// 获取不大于指定 msaa 数量且支持的数值。 
+        /// </summary>
+        /// <param name="msaa"></param>
+        /// <returns></returns>
+        public int GetMinSupportMSAACount(int msaa)
+        {
+            while (!IsSupportMsaaCount(msaa) && msaa > 0)
+            {
+                msaa >>= 1;
+            }
+
+            return msaa;
+        }
 
         /// <summary>
         /// 调度开始渲染
@@ -214,6 +230,28 @@ namespace Scenes.渲染特性支持
             // m_hasUpdateResult = true;
             m_remainUpdateTime--;
 
+            if (m_remainUpdateTime <= 0)
+            {
+                // 最后一次更新结束 打印一下判断结果
+                Debug.Log(getResultString());
+            }
+
+        }
+
+        private String getResultString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{nameof(MsaaCountSupportDetector)} Detector Result:\n");
+            for (int i = 0; i <= s_maxMsaaLog2; i++)
+            {
+                int msaa = 1 << i;
+                int supportCount = GetMinSupportMSAACount(msaa);
+                float result = GetResult(msaa);
+                string line = $"msaa: {msaa,4}, support: {supportCount == msaa,5}, count: {supportCount,4}, result: {result}\n";
+                sb.Append(line);
+            }
+
+            return sb.ToString();
         }
 
         private void clearResult()

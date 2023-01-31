@@ -68,15 +68,6 @@ public class CheckRenderFeatureSupport : MonoBehaviour
         return result;
     }
     
-    private int checkMSAASupportCountByDetector(int msaa)
-    {
-        while (!m_msaaCountSupportDetector.IsSupportMsaaCount(msaa) && msaa > 0)
-        {
-            msaa >>= 1;
-        }
-
-        return msaa;
-    }
     
     private bool checkMSAASupport(int msaa, bool isHdr)
     {
@@ -91,7 +82,7 @@ public class CheckRenderFeatureSupport : MonoBehaviour
     
     public String GetMSAASupportInfoByDetector(int msaa)
     {
-        int supportCount = checkMSAASupportCountByDetector(msaa);
+        int supportCount = m_msaaCountSupportDetector.GetMinSupportMSAACount(msaa);
         float result = m_msaaCountSupportDetector.GetResult(msaa);
         return $"msaa: {msaa,4}, support: {supportCount == msaa,5}, count: {supportCount,4}, result: {result}";
     }
