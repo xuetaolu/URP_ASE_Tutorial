@@ -503,6 +503,7 @@ Shader /*ase_name*/ "Hidden/Universal/SimpleUnlit" /*end*/
 			Tags{ "LightMode" = "UniversalForwardOnly" }
 			
 			Blend One Zero
+			BlendOp Add
 			ZWrite On
 			ZTest LEqual
 			Offset 0,0

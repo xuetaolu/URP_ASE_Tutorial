@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 2ccb1ac97eaab344c999b63c1c732bc4
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _map_bgTile_hd: {fileID: 2800000, guid: 3bb1ae3c6ca2a70498f0505cd821f677, type: 3}
+  - _map_bgNoise: {fileID: 2800000, guid: d979e88c0f497f94aae7d7143cf14ebc, type: 3}
+  - _captureTexture2: {fileID: 2800000, guid: ed2ac4fcd4cacc849ac4880a4dc577ac, type: 3}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

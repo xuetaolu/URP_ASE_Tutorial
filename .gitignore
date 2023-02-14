@@ -8,6 +8,5 @@ Packages/packages-lock.json
 Packages/URPExtend/.svn/*
 obj/*
 .idea/*
-UserSettings/Layouts/default-2021.dwlt
-UserSettings/EditorUserSettings.asset
 apk
+UserSettings/*
