@@ -398,6 +398,9 @@ SubShader {
             if(y < 0.0)
             {
                 col += IN.sunColor * calcSunAttenuation(_MainLightPosition.xyz, -ray);
+                // col += float3(0,0,0.5) * calcSunAttenuation(_MainLightPosition.xyz, -ray);
+                // col = IN.sunColor * calcSunAttenuation(_MainLightPosition.xyz, -ray);
+                // col = IN.sunColor;
             }
         #endif
 
