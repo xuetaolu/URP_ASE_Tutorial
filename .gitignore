@@ -9,4 +9,5 @@ Packages/URPExtend/.svn/*
 obj/*
 .idea/*
 apk
-UserSettings/*
+UserSettings
+MemoryCaptures
