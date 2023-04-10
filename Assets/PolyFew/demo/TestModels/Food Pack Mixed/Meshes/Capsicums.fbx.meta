@@ -1,0 +1,142 @@
+fileFormatVersion: 2
+guid: fcf8f31ef53e31d4d81bc6cd15064de4
+timeCreated: 1568683943
+licenseType: Store
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Capsicum1_High__500_Tris_
+    100002: Capsicum1_Low__160_Tris_
+    100004: Capsicum1_Mid__260_Tris_
+    100006: Capsicum2_High__500_Tris_
+    100008: Capsicum2_Low__160_Tris_
+    100010: Capsicum2_Mid__260_Tris_
+    100012: Capsicum3_High__500_Tris_
+    100014: Capsicum3_Low__160_Tris_
+    100016: Capsicum3_Mid__260_Tris_
+    100018: //RootNode
+    100020: High
+    100022: Low
+    100024: Mid
+    400000: Capsicum1_High__500_Tris_
+    400002: Capsicum1_Low__160_Tris_
+    400004: Capsicum1_Mid__260_Tris_
+    400006: Capsicum2_High__500_Tris_
+    400008: Capsicum2_Low__160_Tris_
+    400010: Capsicum2_Mid__260_Tris_
+    400012: Capsicum3_High__500_Tris_
+    400014: Capsicum3_Low__160_Tris_
+    400016: Capsicum3_Mid__260_Tris_
+    400018: //RootNode
+    400020: High
+    400022: Low
+    400024: Mid
+    2100000: No Name
+    2300000: Capsicum1_High__500_Tris_
+    2300002: Capsicum1_Low__160_Tris_
+    2300004: Capsicum1_Mid__260_Tris_
+    2300006: Capsicum2_High__500_Tris_
+    2300008: Capsicum2_Low__160_Tris_
+    2300010: Capsicum2_Mid__260_Tris_
+    2300012: Capsicum3_High__500_Tris_
+    2300014: Capsicum3_Low__160_Tris_
+    2300016: Capsicum3_Mid__260_Tris_
+    3300000: Capsicum1_High__500_Tris_
+    3300002: Capsicum1_Low__160_Tris_
+    3300004: Capsicum1_Mid__260_Tris_
+    3300006: Capsicum2_High__500_Tris_
+    3300008: Capsicum2_Low__160_Tris_
+    3300010: Capsicum2_Mid__260_Tris_
+    3300012: Capsicum3_High__500_Tris_
+    3300014: Capsicum3_Low__160_Tris_
+    3300016: Capsicum3_Mid__260_Tris_
+    4300000: Capsicum1_High__500_Tris_
+    4300002: Capsicum2_High__500_Tris_
+    4300004: Capsicum3_High__500_Tris_
+    4300006: Capsicum1_Mid__260_Tris_
+    4300008: Capsicum2_Mid__260_Tris_
+    4300010: Capsicum3_Mid__260_Tris_
+    4300012: Capsicum1_Low__160_Tris_
+    4300014: Capsicum2_Low__160_Tris_
+    4300016: Capsicum3_Low__160_Tris_
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 14
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
