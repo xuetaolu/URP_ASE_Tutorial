@@ -1,6 +1,8 @@
 #ifndef MY_NODE_LIBRARY
 #define MY_NODE_LIBRARY
-
+// 参考：
+// https://docs.unity3d.com/Packages/com.unity.shadergraph@16.0/manual/Blackbody-Node.html
+// http://www.vendian.org/mncharity/dir3/blackbody/
 void Unity_Blackbody_float(float Temperature, out float3 Out)
 {
     float3 color = float3(255.0, 255.0, 255.0);
