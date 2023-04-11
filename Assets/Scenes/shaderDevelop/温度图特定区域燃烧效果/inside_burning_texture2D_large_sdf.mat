@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TemperatureMap:
-        m_Texture: {fileID: 2800000, guid: cdd5a30752454d84e81a3b1c5d901afe, type: 3}
+        m_Texture: {fileID: 2800000, guid: e588957f2e8aa07409326d205353d63a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
