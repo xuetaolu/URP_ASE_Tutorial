@@ -1,0 +1,74 @@
+/* COMPATIBILITY 
+   - HLSL compilers
+   - Cg   compilers
+   - FX11
+*/
+
+#include "compat_includes.inc"
+
+// ************
+// * UNIFORMS *
+// ************
+
+// The view projects and the texture are global uniforms,
+// not args to shader functions
+uniform float4x4 modelViewProj;
+uniform COMPAT_Texture2D(decal);
+
+// ***********
+// * STRUCTS *
+// ***********
+
+// Vertex shader output truct
+// Pixel shader input struct
+struct out_vertex
+{
+	float4 position : COMPAT_POS;
+	float2 texCoord : TEXCOORD0;
+#ifndef HLSL_4
+	float4 Color    : COLOR;
+#endif
+};
+
+// *****************
+// * VERTEX SHADER *
+// *****************
+
+// Vertex shader returns one struct, 'in_vertex'. no "out" shenanigans
+// It can not have more args
+// Uniforms are declared in global scope
+// Other args are passed to out_vertex for the rasterizer and the pixel shader to use
+out_vertex main_vertex(COMPAT_IN_VERTEX)
+{
+	out_vertex OUT;
+#ifdef HLSL_4
+	float4 position = VIN.position;
+	float2 texCoord = VIN.texCoord;
+#else
+	OUT.Color = color;
+#endif
+	OUT.position = mul(modelViewProj, position);
+	OUT.texCoord = texCoord;
+
+	return OUT;
+}
+
+// Instead of the shader above we could have used
+// 'COMPAT_DEFAULT_VS_SHADER'
+
+// ****************
+// * PIXEL SHADER *
+// ****************
+
+// Same as the vertex shader:
+// Uniforms are not here but declared in global scope
+// It can not have more args
+// There's no "uniform input IN" either,
+// shaders can refer to fields of the input struct (like 'ouput_size') as if they're globals ('output_size')
+float4 main_fragment(COMPAT_IN_FRAGMENT) : COMPAT_Output
+{
+	return COMPAT_Sample(decal, VOUT.texCoord);
+}
+
+// Add this at the end of every shader
+COMPAT_END

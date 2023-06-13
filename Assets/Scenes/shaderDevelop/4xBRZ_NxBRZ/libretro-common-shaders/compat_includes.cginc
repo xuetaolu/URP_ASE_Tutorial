@@ -1,0 +1,5 @@
+#include "include/compat_input_struct.cginc"
+#include "include/compat_macros.cginc"
+// #include "include/compat_orig_struct.cginc"
+// #include "include/compat_prev_struct.cginc"
+#include "include/compat_vertex_in_out.cginc"
