@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: "genship_skybox_1\u4E0A\u5348"
+  m_Shader: {fileID: 4800000, guid: 7565a4a01d68ade4c998d3a1017cee41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _MOON_PART_ENABLE_ON
+  - _STAR_PART_ENABLE_ON
+  - _SUN_PART_ENABLE_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: f3b102489e1bbe24abae9b67eb238aea, type: 3}
+        m_Scale: {x: 25, y: 25}
+        m_Offset: {x: 0, y: 0}
+    - _StarColorLut:
+        m_Texture: {fileID: 2800000, guid: b5978785a6b703f43a9c243cd8d61af1, type: 3}
+        m_Scale: {x: 0.5, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StarDotMap:
+        m_Texture: {fileID: 2800000, guid: 6e21b5f3a2ab1234b8849b9d1478f413, type: 3}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    - _TransmissionRGMap:
+        m_Texture: {fileID: 2800000, guid: abcb72a841198e24eb749f5bc5866425, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _LDotV_damping_factor: 0.23803
+    - _NoiseSpeed: 0.293
+    - _moon_intensity_control01: 3.29897
+    - _moon_intensity_max: 0.19794
+    - _moon_intensity_slider: 0.5
+    - _moon_part_enable: 1
+    - _moon_size: 0.19794
+    - _sky_color_intensity: 1.39769
+    - _sky_scatter: 0.49977
+    - _starColorIntensity: 0
+    - _starIntensityLinearDamping: 0.80829
+    - _star_part_enable: 1
+    - _sun_color_intensity: 0.50772
+    - _sun_disk_power_999: 1000
+    - _sun_part_enable: 1
+    - _sun_scatter: 0.42063
+    m_Colors:
+    - _moon_color: {r: 0.15592992, g: 0.18934995, b: 0.26609, a: 1}
+    - _moon_dir: {r: 0.51118, g: -0.46047, b: 0.72572, a: 0}
+    - _sky_color: {r: 0.45251, g: 0.81181, b: 1, a: 1}
+    - _sunOrgColorBeside: {r: 0.09048, g: 0.52162, b: 0.99188, a: 1}
+    - _sunOrgColorLookAt: {r: 0.02906, g: 0.27545, b: 0.65437, a: 1}
+    - _sunScatterColorBeside: {r: 0.04669, g: 0.21781996, b: 0.46457, a: 1}
+    - _sunScatterColorLookAt: {r: 0.00851, g: 0.12999997, b: 0.59707, a: 1}
+    - _sun_color: {r: 0.72967, g: 0.71656, b: 0.64076, a: 1}
+    - _sun_dir: {r: -0.3343, g: 0.51264, b: -0.79, a: 0}
+  m_BuildTextureStacks: []
