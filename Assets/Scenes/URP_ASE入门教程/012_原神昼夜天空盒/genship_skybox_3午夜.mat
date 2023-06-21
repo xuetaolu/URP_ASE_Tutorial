@@ -63,7 +63,7 @@ Material:
     - _sun_scatter: 0.2
     m_Colors:
     - _moon_color: {r: 0.22708994, g: 0.49370998, b: 0.75731, a: 1}
-    - _moon_dir: {r: 0, g: 0.34871, b: -0.93723065, a: 0}
+    - _moon_dir: {r: -0.18735029, g: 0.16472544, b: -0.9683829, a: 0}
     - _sky_color: {r: 0.00837, g: 0.105159976, b: 0.26225, a: 1}
     - _sunOrgColorBeside: {r: 0.053799957, g: 0.09840996, b: 0.2073, a: 1}
     - _sunOrgColorLookAt: {r: 0.053799957, g: 0.09840996, b: 0.2073, a: 1}
