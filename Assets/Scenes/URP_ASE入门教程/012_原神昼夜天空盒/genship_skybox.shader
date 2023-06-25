@@ -22,10 +22,10 @@ Shader "xue/genship_skybox"
         // -------------------------- */ 
         
         // /* night “πÕÌ: moon  Ù–‘ 
-        _moon_size("moon_size", Range(0, 1)) = 0.19794
-        _moon_intensity_control01("moon_intensity_control01", Range(0, 4)) = 3.29897
-        _moon_intensity_max("moon_intensity_max", Range(0, 1)) = 0.19794
-        _moon_intensity_slider("moon_intensity_slider", Range(0, 1)) = 0.5
+        _moon_size("c_moon_size", Range(0, 1)) = 0.19794
+        _moon_intensity_control01("c_moon_intensity_control01", Range(0, 4)) = 3.29897
+        _moon_intensity_max("c_moon_intensity_max", Range(0, 1)) = 0.19794
+        _moon_intensity_slider("c_moon_intensity_slider", Range(0, 1)) = 0.5
         _moon_color("moon_color", Color) = (0.15519, 0.18858, 0.2653, 1)
         // -------------------------- */
         
@@ -41,12 +41,12 @@ Shader "xue/genship_skybox"
         
         _NoiseMap("NoiseMap", 2D) = "white" {}
         [HideInInspector] _NoiseMap_ST("_NoiseMap_ST", Vector) = (25,25,0,0)
-        _NoiseSpeed("NoiseSpeed", Range( 0 , 1)) = 0.293
+        _NoiseSpeed("c_NoiseSpeed", Range( 0 , 1)) = 0.293
         // -------------------------- */
         
         // /* sun & moon dir
-        _moon_dir("moon_dir", Vector) = (-0.33274, -0.11934, 0.93544, 0)
         _sun_dir("sun_dir", Vector) = (-0.26102,0.12177,-0.95762, 0)
+        _moon_dir("moon_dir", Vector) = (-0.33274, -0.11934, 0.93544, 0)
         // -------------------------- */
         
         // /* misc 
@@ -193,6 +193,7 @@ Shader "xue/genship_skybox"
                 o.Varying_NoiseUV_large.zw = (v.uv * _NoiseMap_ST.xy * 2.0) + _timeScaleValue.zw;
 
                 float3 _viewDir = normalize(_worldPos.xyz - _WorldSpaceCameraPos);
+                // float3 _viewDir = normalize(_worldPos.xyz);
                 o.Varying_ViewDirAndMiuResult.xyz = float3( _viewDir.x, _viewDir.y, _viewDir.z );
 
                 float3 _lightDir = GetLightDir();
