@@ -35,9 +35,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _CausticsAlpha: 1
-    - _CausticsArea: 4.5
-    - _CausticsContrast: 3
+    - _CausticsAlpha: 0.468
+    - _CausticsArea: 3.23
+    - _CausticsContrast: 2.04
     - _CausticsPartFactor: 5
     - _NoiseSpeed: 0.75
     - _QueueControl: 0
@@ -52,6 +52,6 @@ Material:
     m_Colors:
     - _CausticsColor: {r: 0.86, g: 0.94, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _TexcoordST: {r: 1, g: 1, b: 0, a: 0}
-    - _WaterColor: {r: 0.65, g: 0.74, b: 0.85, a: 0}
+    - _TexcoordST: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _WaterColor: {r: 0.85882354, g: 0.9411765, b: 1, a: 1}
   m_BuildTextureStacks: []
