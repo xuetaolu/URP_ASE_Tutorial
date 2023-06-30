@@ -1,12 +1,12 @@
 ﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-Shader "xue/xBRZ"
+Shader "xue/xBRZ_manual"
 {
 	Properties
 	{
 		_MainTex("_MainTex (RGB)", 2D) = "white" {} //you should also set this in scripting with material.SetTexture ("_MainTex", your_MainTexTexture)
 //		texture_size("texture_size", Vector) = (256,224,0,0) // 直接用 _MainTex_
-//		[KeywordEnum(x2,x4,x6)] _SCALE("SCALE", Float) = 1
+		[KeywordEnum(x2,x4,x6)] _SCALE("SCALE", Float) = 1
 	}
 	SubShader
 	{

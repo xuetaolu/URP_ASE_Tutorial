@@ -46,9 +46,9 @@
 */ 
 #define HLSL_4
 #include "../../compat_includes.cginc"
-uniform COMPAT_Texture2D(decal) : TEXUNIT0;
-uniform float4 decal_TexelSize;
-#define COMPAT_texture_size (decal_TexelSize.zw)
+uniform COMPAT_Texture2D(_MainTex) : TEXUNIT0;
+uniform float4 _MainTex_TexelSize;
+#define COMPAT_texture_size (_MainTex_TexelSize.zw)
 uniform float4x4 modelViewProj;
 	
 #define BLEND_NONE 0
@@ -173,7 +173,7 @@ void ScalePixel(const int4 blend, const float3 k[9], inout float3 dst[4])
 
 
 /* FRAGMENT SHADER */
-float4 two_xBRZ(float2 texture_size, float4 t1, float4 t2, float4 t3, float4 t4, float4 t5, float4 t6, float4 t7, float2 texCoord, COMPAT_Texture2D(decal))
+float4 two_xBRZ(float2 texture_size, float4 t1, float4 t2, float4 t3, float4 t4, float4 t5, float4 t6, float4 t7, float2 texCoord, COMPAT_Texture2D(_MainTex))
 {
 	//---------------------------------------
 	// Input Pixel Mapping:  20|21|22|23|24
@@ -184,27 +184,27 @@ float4 two_xBRZ(float2 texture_size, float4 t1, float4 t2, float4 t3, float4 t4,
   
 	float3 src[25];
   
-	src[21] = COMPAT_SamplePoint(decal, t1.xw).rgb;
-	src[22] = COMPAT_SamplePoint(decal, t1.yw).rgb;
-	src[23] = COMPAT_SamplePoint(decal, t1.zw).rgb;
-	src[ 6] = COMPAT_SamplePoint(decal, t2.xw).rgb;
-	src[ 7] = COMPAT_SamplePoint(decal, t2.yw).rgb;
-	src[ 8] = COMPAT_SamplePoint(decal, t2.zw).rgb;
-	src[ 5] = COMPAT_SamplePoint(decal, t3.xw).rgb;
-	src[ 0] = COMPAT_SamplePoint(decal, t3.yw).rgb;
-	src[ 1] = COMPAT_SamplePoint(decal, t3.zw).rgb;
-	src[ 4] = COMPAT_SamplePoint(decal, t4.xw).rgb;
-	src[ 3] = COMPAT_SamplePoint(decal, t4.yw).rgb;
-	src[ 2] = COMPAT_SamplePoint(decal, t4.zw).rgb;
-	src[15] = COMPAT_SamplePoint(decal, t5.xw).rgb;
-	src[14] = COMPAT_SamplePoint(decal, t5.yw).rgb;
-	src[13] = COMPAT_SamplePoint(decal, t5.zw).rgb;
-	src[19] = COMPAT_SamplePoint(decal, t6.xy).rgb;
-	src[18] = COMPAT_SamplePoint(decal, t6.xz).rgb;
-	src[17] = COMPAT_SamplePoint(decal, t6.xw).rgb;
-	src[ 9] = COMPAT_SamplePoint(decal, t7.xy).rgb;
-	src[10] = COMPAT_SamplePoint(decal, t7.xz).rgb;
-	src[11] = COMPAT_SamplePoint(decal, t7.xw).rgb;
+	src[21] = COMPAT_SamplePoint(_MainTex, t1.xw).rgb;
+	src[22] = COMPAT_SamplePoint(_MainTex, t1.yw).rgb;
+	src[23] = COMPAT_SamplePoint(_MainTex, t1.zw).rgb;
+	src[ 6] = COMPAT_SamplePoint(_MainTex, t2.xw).rgb;
+	src[ 7] = COMPAT_SamplePoint(_MainTex, t2.yw).rgb;
+	src[ 8] = COMPAT_SamplePoint(_MainTex, t2.zw).rgb;
+	src[ 5] = COMPAT_SamplePoint(_MainTex, t3.xw).rgb;
+	src[ 0] = COMPAT_SamplePoint(_MainTex, t3.yw).rgb;
+	src[ 1] = COMPAT_SamplePoint(_MainTex, t3.zw).rgb;
+	src[ 4] = COMPAT_SamplePoint(_MainTex, t4.xw).rgb;
+	src[ 3] = COMPAT_SamplePoint(_MainTex, t4.yw).rgb;
+	src[ 2] = COMPAT_SamplePoint(_MainTex, t4.zw).rgb;
+	src[15] = COMPAT_SamplePoint(_MainTex, t5.xw).rgb;
+	src[14] = COMPAT_SamplePoint(_MainTex, t5.yw).rgb;
+	src[13] = COMPAT_SamplePoint(_MainTex, t5.zw).rgb;
+	src[19] = COMPAT_SamplePoint(_MainTex, t6.xy).rgb;
+	src[18] = COMPAT_SamplePoint(_MainTex, t6.xz).rgb;
+	src[17] = COMPAT_SamplePoint(_MainTex, t6.xw).rgb;
+	src[ 9] = COMPAT_SamplePoint(_MainTex, t7.xy).rgb;
+	src[10] = COMPAT_SamplePoint(_MainTex, t7.xz).rgb;
+	src[11] = COMPAT_SamplePoint(_MainTex, t7.xw).rgb;
 
 	float v[9];
 	v[0] = reduce(src[0]);
@@ -363,6 +363,6 @@ float4 two_xBRZ(float2 texture_size, float4 t1, float4 t2, float4 t3, float4 t4,
 
 float4 main_fragment(COMPAT_IN_FRAGMENT) : COMPAT_Output
 {
-	return two_xBRZ(COMPAT_texture_size, VOUT.t1, VOUT.t2, VOUT.t3, VOUT.t4, VOUT.t5, VOUT.t6, VOUT.t7, VOUT.texCoord, decal);
+	return two_xBRZ(COMPAT_texture_size, VOUT.t1, VOUT.t2, VOUT.t3, VOUT.t4, VOUT.t5, VOUT.t6, VOUT.t7, VOUT.texCoord, _MainTex);
 }
 COMPAT_END
