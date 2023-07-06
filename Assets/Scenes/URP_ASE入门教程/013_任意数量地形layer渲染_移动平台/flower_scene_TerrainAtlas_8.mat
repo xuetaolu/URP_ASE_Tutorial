@@ -38,7 +38,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexArray:
-        m_Texture: {fileID: 18700000, guid: 4b9b824d933f48446a1fdbaa7647ec7e, type: 3}
+        m_Texture: {fileID: 18700000, guid: d4d6c97b55920064792a388afe09b0ed, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexArray1:
@@ -79,5 +79,10 @@ Material:
     - __dirty: 0
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LayerTiles1: {r: 1, g: 1, b: 1, a: 2}
+    - _LayerTiles2: {r: 1, g: 1, b: 4, a: 1}
+    - _LayerTiles3: {r: 0, g: 0, b: 0, a: 0}
+    - _LayerTiles4: {r: 0, g: 0, b: 0, a: 0}
+    - _MainColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
     - _MainTex_ST: {r: 10, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []

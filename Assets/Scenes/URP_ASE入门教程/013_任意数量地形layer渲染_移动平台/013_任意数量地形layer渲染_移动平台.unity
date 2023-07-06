@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17421184, g: 0.21785995, b: 0.30006757, a: 1}
+  m_IndirectSpecularColor: {r: 0.4361221, g: 0.48353314, b: 0.56446433, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -142,7 +142,7 @@ RenderTexture:
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
-  m_ColorFormat: 4
+  m_ColorFormat: 8
   m_MipMap: 0
   m_GenerateMips: 1
   m_SRGB: 1
@@ -632,8 +632,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 978719839}
-  m_LocalRotation: {x: -0.4326421, y: 0.16158487, z: -0.07913449, w: -0.8834302}
-  m_LocalPosition: {x: 11.281754, y: 7.0573883, z: -90.66673}
+  m_LocalRotation: {x: 0.44441602, y: -0.111015216, z: 0.05564166, w: 0.88717204}
+  m_LocalPosition: {x: 154.64212, y: 226.34048, z: -205.69804}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1218,7 +1218,7 @@ RenderTexture:
   m_AntiAliasing: 1
   m_MipCount: -1
   m_DepthStencilFormat: 0
-  m_ColorFormat: 4
+  m_ColorFormat: 8
   m_MipMap: 0
   m_GenerateMips: 1
   m_SRGB: 1

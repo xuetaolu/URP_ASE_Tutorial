@@ -5,6 +5,7 @@
 
 using System.IO;
 using Common;
+using terrain_altas;
 using UnityEditor;
 using UnityEngine;
 

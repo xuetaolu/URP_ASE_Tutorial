@@ -79,5 +79,10 @@ Material:
     - __dirty: 0
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LayerTiles1: {r: 1, g: 1, b: 1, a: 1}
+    - _LayerTiles2: {r: 1, g: 1, b: 1, a: 1}
+    - _LayerTiles3: {r: 1, g: 1, b: 1, a: 2}
+    - _LayerTiles4: {r: 1, g: 1, b: 4, a: 1}
+    - _MainColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
     - _MainTex_ST: {r: 10, g: 10, b: 0, a: 0}
   m_BuildTextureStacks: []
