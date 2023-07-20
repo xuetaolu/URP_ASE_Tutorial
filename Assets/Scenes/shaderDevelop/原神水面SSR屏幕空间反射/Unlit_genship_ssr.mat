@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Unlit_genship_ssr
+  m_Shader: {fileID: 4800000, guid: 09a32e65313982d42b0f5c9feaf8eb5f, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _Linear_Tracing_AMOUNT_LENGTH: 17
+    m_Colors:
+    - _InfiniteScreenPos_ST: {r: 1.47305, g: 0.82843, b: -0.73652, a: -0.41421}
+    - _reflectInfiniteDistanceX_and_AlphaY: {r: 129, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
