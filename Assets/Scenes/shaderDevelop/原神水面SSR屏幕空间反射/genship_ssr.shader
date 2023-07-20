@@ -165,7 +165,7 @@ Shader "Unlit/genship_ssr"
                     // 注：原神的深度贴图已经预处理 Linear01Depth，故其逆向源码没有 Linear01Depth
                     float currentSampleEyeDepth = Linear01Depth(SampleSceneDepth(currentScreenPos).x) * _ProjectionParams.z;
                     float _WDistanceToSampleDepth = currentNonStereoScreenPos.z - currentSampleEyeDepth;
-                    // 准确的 surface eye depth 应该是 -currentViewPos.z ??
+                    // 准确的 surface eye depth 应该是 -currentViewPos.z ??，而不是 currentNonStereoScreenPos.z (即clippos.w) ??
                     // float _WDistanceToSampleDepth = -currentViewPos.z - currentSampleEyeDepth;
                     bool _bCloseToSampleDepth = abs(_WDistanceToSampleDepth) < 3.1875;
 
