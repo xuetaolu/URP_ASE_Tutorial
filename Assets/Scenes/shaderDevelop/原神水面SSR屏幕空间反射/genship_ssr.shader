@@ -267,6 +267,11 @@ Shader "Unlit/genship_ssr"
                 bool _meshEyeDepthLess7 = input.Varying_NotNormaizeScreenPosXYW.w < 7.0;
                 bool _bNearlyFadeoutFromScreen = _fadeToScreenEdge < 0.01;
 
+                // 追加一个直视水面不要反射的操作，视线需要与水面法线夹角大于 60°
+                // const float PI = 3.14159265;
+                const float limitAngleCos = cos(PI / 180 * 60); //60°
+                _reflectColorAdjust.w *= smoothstep(0.0, 0.1, limitAngleCos - dot(viewDir_normalize, input.Varying_WorldNormal));
+                
                 // 屏幕边边，靠近摄像机且alpha接近0的，直接 alpha 设置为0
                 bool _bNoReflect = _bNearlyFadeoutFromScreen || (_meshEyeDepthLess7 && _bReflectColorAlphaNearlyZero);
                 Output_1.w = _bNoReflect ? 0.0 : _reflectColorAdjust.w;
