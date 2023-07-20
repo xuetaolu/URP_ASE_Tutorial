@@ -11,7 +11,10 @@ EditorBuildSettings:
   - enabled: 0
     path: "Assets/Scenes/shaderDevelop/UV\u5355\u53CC\u901A\u9053\u5185\u5B58\u5360\u7528\u5BF9\u6BD4/UV\u5355\u53CC\u901A\u9053\u5185\u5B58\u5360\u7528\u5BF9\u6BD4.unity"
     guid: 49868dccbedac3e4599887f470e19c19
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/shaderDevelop/cameraDepth/zfighting_test.unity
     guid: 31123b6746012b541a7a801f717bc35d
+  - enabled: 1
+    path: "Assets/Scenes/shaderDevelop/\u539F\u795E\u6C34\u9762SSR\u5C4F\u5E55\u7A7A\u95F4\u53CD\u5C04/genship_scene_ssr.unity"
+    guid: d01abe5418bd63c4eacfd06b66f4df3c
   m_configObjects: {}

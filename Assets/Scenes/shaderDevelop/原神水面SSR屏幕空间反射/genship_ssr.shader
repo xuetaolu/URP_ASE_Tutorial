@@ -25,7 +25,7 @@ Shader "Unlit/genship_ssr"
             float4 _InfiniteScreenPos_ST;
             float _Linear_Tracing_AMOUNT_LENGTH;
             
-            #pragma enable_d3d11_debug_symbols
+            // #pragma enable_d3d11_debug_symbols
             #pragma vertex vert
             #pragma fragment frag
 
