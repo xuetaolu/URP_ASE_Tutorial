@@ -211,6 +211,8 @@ Shader "Unlit/genship_ssr"
                 // 找离屏幕中心近一点的，来反射
                 float2 _InfiniteAdjustClipPos_XY = (_InfiniteScreenPos * _InfiniteScreenPos_ST.xy) + _InfiniteScreenPos_ST.zw;
 
+                // 原始反混淆代码这里 viewPos.z 是 _InfiniteActualEyeDepth，但实际 unity 编辑器下 viewSpace 前方是 -z，修改后效果正确
+                // float3 _InfiniteAdjustViewPos = float3( _InfiniteActualEyeDepth * _InfiniteAdjustClipPos_XY, _InfiniteActualEyeDepth );
                 float3 _InfiniteAdjustViewPos = float3( _InfiniteActualEyeDepth * _InfiniteAdjustClipPos_XY, -_InfiniteActualEyeDepth );
 
                 float3 _InfiniteActualAdjustWorldPos = mul(UNITY_MATRIX_I_V, float4(_InfiniteAdjustViewPos, 1)).xyz;
