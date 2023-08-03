@@ -271,9 +271,16 @@ Shader "genship/role_outline"
                     // _negateWorldCameraPos.w = unity_MatrixV[3u].w;
                     _negateWorldCameraPos.xyzw = unity_MatrixV[3u];
 
-        
-                float _worldPos_snapToCameraDotNegateCameraPos;
-                    _worldPos_snapToCameraDotNegateCameraPos = dot(_negateWorldCameraPos, _worldPosButSnapToCamera);
+                // _worldPos_snapToCameraDotNegateCameraPos
+                //   为 0，   无限远, clipPos Z 变得无限远
+                //   为 0.01，很远， clipPos Z 变得很远
+                //   为 1，   正常， clipPos Z 很远
+                //   为 >1,   变近，当住原本内容
+                // 但 unity_MatrixV[3u] 恒为 float4(0, 0, 0, 1)
+                //   _worldPosButSnapToCamera  恒为 float4(x,y,z,1)
+                // 故 _worldPos_snapToCameraDotNegateCameraPos 恒为 1
+                // float _worldPos_snapToCameraDotNegateCameraPos;
+                //     _worldPos_snapToCameraDotNegateCameraPos = dot(_negateWorldCameraPos, _worldPosButSnapToCamera);
         
         
                 // #define _RenderMode  2.0 。
@@ -368,7 +375,9 @@ Shader "genship/role_outline"
                 //
                 // float4 _clipPos = _tmp26;
 
-                float4 _clipPos = mul(UNITY_MATRIX_P, float4(_normalBiasViewPos, _worldPos_snapToCameraDotNegateCameraPos));
+                // _worldPos_snapToCameraDotNegateCameraPos 恒为 1
+                // float4 _clipPos = mul(UNITY_MATRIX_P, float4(_normalBiasViewPos, _worldPos_snapToCameraDotNegateCameraPos));
+                float4 _clipPos = mul(UNITY_MATRIX_P, float4(_normalBiasViewPos, 1.0));
 
                 
                 // #define _OutlineScreenOffsetWZ float4(0.00015, 0.00069, 0.00044, 0.00012)
