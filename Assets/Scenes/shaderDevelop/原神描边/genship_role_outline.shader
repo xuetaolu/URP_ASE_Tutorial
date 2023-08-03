@@ -142,6 +142,22 @@ Shader "genship/role_outline"
             sampler2D _MainTex;
             float4 _MainTex_ST;
 
+            float EyeDepthRemap(float In, float2 InMinMax, float2 OutMinMax)
+            {
+                // float _newRangeLength = _eyeDepthParams_newRange.y - _eyeDepthParams_newRange.x; // _newRangeLength 是 [ _eyeDepthParams_newRange.x, _eyeDepthParams_newRange.y ] 之间的距离
+                
+                // float _oldRangeLength = _eyeDepthParams_oldRange.y - _eyeDepthParams_oldRange.x; // _oldRangeLength = 1.99
+                // _oldRangeLength = max(_oldRangeLength, 0.001);                           // _oldRangeLength = 1.99
+                // float _01InOldRange = (_eyeDepth_ofSnapToCamera * _fov45AdaptScale) - _eyeDepthParams_oldRange.x;
+                // _01InOldRange /= _oldRangeLength;                   // _01InOldRange 是 eyeDepth 在 [ _eyeDepthParams_oldRange.x, _eyeDepthParams_oldRange.y ] 之间的 0~1 比例
+                // _01InOldRange = clamp(_01InOldRange, 0.0, 1.0);   // 
+                
+                // float _eyeDepthInNewRange = (_01InOldRange * _newRangeLength) + _eyeDepthParams_newRange.x;
+                
+                float Out = OutMinMax.x + saturate((In - InMinMax.x) / max(InMinMax.y - InMinMax.x, 0.001)) * (OutMinMax.y - OutMinMax.x);
+                return Out;
+            }
+            
             v2f vert (appdata v)
             {
                 // layout(location = 0) in vec4 Vertex_Position;
@@ -155,7 +171,7 @@ Shader "genship/role_outline"
                 // layout(location = 2) in vec4 Vertex_FrontBackOffsetZ_DepthScaleW;
                 // 暂时写死这个顶点数据，
                 float4 Vertex_FrontBackOffsetZ_DepthScaleW = float4(0, 0, v.uv2.xy);
-                Vertex_FrontBackOffsetZ_DepthScaleW = float4(0, 0, 0.5, 0.5);
+                // Vertex_FrontBackOffsetZ_DepthScaleW = float4(0, 0, 0.5, 0.5);
 
                 // layout(location = 4) in vec4 Vertex_TANGENT;
                 float4 Vertex_TANGENT = v.tangent;
@@ -176,72 +192,77 @@ Shader "genship/role_outline"
                 _fixVertexPos1 = Vertex_Position;
                 // Varying_ColorRGBA.w = 1.0;
 
-                // 注意 Unity 本身和 mumu12 vulkan 下的 glsl 矩阵是转置的
-                // float3 _WorldViewLookAt = unity_ObjectToWorld[3u].xyz - _WorldSpaceCameraPos_maybe;
-                // float3 _WorldViewLookAt = unity_ObjectToWorld._14_24_34 - _WorldSpaceCameraPos_maybe;
-                // float3 _WorldViewLookAt = unity_ObjectToWorld[3u].xyz - _WorldSpaceCameraPos;
-                float3 _WorldViewLookAt = float3(unity_ObjectToWorld[0u].w, unity_ObjectToWorld[1u].w, unity_ObjectToWorld[2u].w) - _WorldSpaceCameraPos;
+                // // 注意 Unity 本身和 mumu12 vulkan 下的 glsl 矩阵是转置的
+                // // float3 _WorldViewLookAt = unity_ObjectToWorld[3u].xyz - _WorldSpaceCameraPos_maybe;
+                // // float3 _WorldViewLookAt = unity_ObjectToWorld._14_24_34 - _WorldSpaceCameraPos_maybe;
+                // // float3 _WorldViewLookAt = unity_ObjectToWorld[3u].xyz - _WorldSpaceCameraPos;
+                // float3 _WorldViewLookAt = float3(unity_ObjectToWorld[0u].w, unity_ObjectToWorld[1u].w, unity_ObjectToWorld[2u].w) - _WorldSpaceCameraPos;
+                //
+                // // objectToWorld, 但 T 是 _WorldViewLookAt;
+                // // 即 object 只生效旋转和缩放，然后位置是吸到摄像机上。
+                // float4 _row_x;
+                //     // _row_x.x = unity_ObjectToWorld[0u].x;
+                //     // _row_x.y = unity_ObjectToWorld[1u].x;
+                //     // _row_x.z = unity_ObjectToWorld[2u].x;
+                //     // _row_x.w = _WorldViewLookAt.x;
+                //     _row_x.xyzw = float4( unity_ObjectToWorld[0u].xyz, _WorldViewLookAt.x );
+                //
+                // float4 _row_y;
+                //     // _row_y.x = unity_ObjectToWorld[0u].y;
+                //     // _row_y.y = unity_ObjectToWorld[1u].y;
+                //     // _row_y.z = unity_ObjectToWorld[2u].y;
+                //     // _row_y.w = _WorldViewLookAt.y;
+                //     _row_y.xyzw = float4( unity_ObjectToWorld[1u].xyz, _WorldViewLookAt.y );
+                //
+                // float4 _row_z;
+                //     // _row_z.x = unity_ObjectToWorld[0u].z;
+                //     // _row_z.y = unity_ObjectToWorld[1u].z;
+                //     // _row_z.z = unity_ObjectToWorld[2u].z;
+                //     // _row_z.w = _WorldViewLookAt.z;
+                //     _row_z.xyzw = float4( unity_ObjectToWorld[2u].xyz, _WorldViewLookAt.z );
+                //
+                // float4 _row_w;
+                //     // _row_w.x = unity_ObjectToWorld[0u].w;
+                //     // _row_w.y = unity_ObjectToWorld[1u].w;
+                //     // _row_w.z = unity_ObjectToWorld[2u].w;
+                //     // _row_w.w = unity_ObjectToWorld[3u].w;
+                //     _row_w.xyzw = unity_ObjectToWorld[3u].xyzw;
+                //
+                //
+                // float4 _worldPosButSnapToCamera;
+                //     _worldPosButSnapToCamera.x = dot(_row_x, _fixVertexPos1);
+                //     _worldPosButSnapToCamera.y = dot(_row_y, _fixVertexPos1);
+                //     _worldPosButSnapToCamera.z = dot(_row_z, _fixVertexPos1);
+                //     _worldPosButSnapToCamera.w = dot(_row_w, _fixVertexPos1);
+
+                float4 _worldPosButSnapToCamera = mul(unity_ObjectToWorld, _fixVertexPos1);
+                _worldPosButSnapToCamera.xyz -= _WorldSpaceCameraPos;
         
-                // objectToWorld, 但 T 是 _WorldViewLookAt;
-                // 即 object 只生效旋转和缩放，然后位置是吸到摄像机上。
-                float4 _row_x;
-                    // _row_x.x = unity_ObjectToWorld[0u].x;
-                    // _row_x.y = unity_ObjectToWorld[1u].x;
-                    // _row_x.z = unity_ObjectToWorld[2u].x;
-                    // _row_x.w = _WorldViewLookAt.x;
-                    _row_x.xyzw = float4( unity_ObjectToWorld[0u].xyz, _WorldViewLookAt.x );
         
-                float4 _row_y;
-                    // _row_y.x = unity_ObjectToWorld[0u].y;
-                    // _row_y.y = unity_ObjectToWorld[1u].y;
-                    // _row_y.z = unity_ObjectToWorld[2u].y;
-                    // _row_y.w = _WorldViewLookAt.y;
-                    _row_y.xyzw = float4( unity_ObjectToWorld[1u].xyz, _WorldViewLookAt.y );
-        
-                float4 _row_z;
-                    // _row_z.x = unity_ObjectToWorld[0u].z;
-                    // _row_z.y = unity_ObjectToWorld[1u].z;
-                    // _row_z.z = unity_ObjectToWorld[2u].z;
-                    // _row_z.w = _WorldViewLookAt.z;
-                    _row_z.xyzw = float4( unity_ObjectToWorld[2u].xyz, _WorldViewLookAt.z );
-        
-                float4 _row_w;
-                    // _row_w.x = unity_ObjectToWorld[0u].w;
-                    // _row_w.y = unity_ObjectToWorld[1u].w;
-                    // _row_w.z = unity_ObjectToWorld[2u].w;
-                    // _row_w.w = unity_ObjectToWorld[3u].w;
-                    _row_w.xyzw = unity_ObjectToWorld[3u].xyzw;
-        
-        
-                float4 _worldPosButSnapToCamera;
-                    _worldPosButSnapToCamera.x = dot(_row_x, _fixVertexPos1);
-                    _worldPosButSnapToCamera.y = dot(_row_y, _fixVertexPos1);
-                    _worldPosButSnapToCamera.z = dot(_row_z, _fixVertexPos1);
-                    _worldPosButSnapToCamera.w = dot(_row_w, _fixVertexPos1);
-        
-        
-                float3 _rol2_x;
-                    // _rol2_x.x = unity_MatrixV[0u].x;
-                    // _rol2_x.y = unity_MatrixV[1u].x;
-                    // _rol2_x.z = unity_MatrixV[2u].x;
-                    _rol2_x.xyz = unity_MatrixV[0u];
-        
-                float3 _rol2_y;
-                    // _rol2_y.x = unity_MatrixV[0u].y;
-                    // _rol2_y.y = unity_MatrixV[1u].y;
-                    // _rol2_y.z = unity_MatrixV[2u].y;
-                    _rol2_y.xyz = unity_MatrixV[1u];
-        
-                float3 _rol2_z;
-                    // _rol2_z.x = unity_MatrixV[0u].z;
-                    // _rol2_z.y = unity_MatrixV[1u].z;
-                    // _rol2_z.z = unity_MatrixV[2u].z;
-                    _rol2_z.xyz = unity_MatrixV[2u];
-        
-                float4 _viewPosButSnapToCamera;
-                    _viewPosButSnapToCamera.x = dot(_rol2_x.xyz, _worldPosButSnapToCamera.xyz);
-                    _viewPosButSnapToCamera.y = dot(_rol2_y.xyz, _worldPosButSnapToCamera.xyz);
-                    _viewPosButSnapToCamera.z = dot(_rol2_z.xyz, _worldPosButSnapToCamera.xyz);
+                // float3 _rol2_x;
+                //     // _rol2_x.x = unity_MatrixV[0u].x;
+                //     // _rol2_x.y = unity_MatrixV[1u].x;
+                //     // _rol2_x.z = unity_MatrixV[2u].x;
+                //     _rol2_x.xyz = unity_MatrixV[0u];
+                //
+                // float3 _rol2_y;
+                //     // _rol2_y.x = unity_MatrixV[0u].y;
+                //     // _rol2_y.y = unity_MatrixV[1u].y;
+                //     // _rol2_y.z = unity_MatrixV[2u].y;
+                //     _rol2_y.xyz = unity_MatrixV[1u];
+                //
+                // float3 _rol2_z;
+                //     // _rol2_z.x = unity_MatrixV[0u].z;
+                //     // _rol2_z.y = unity_MatrixV[1u].z;
+                //     // _rol2_z.z = unity_MatrixV[2u].z;
+                //     _rol2_z.xyz = unity_MatrixV[2u];
+                //
+                // float4 _viewPos;
+                //     _viewPos.x = dot(_rol2_x.xyz, _worldPosButSnapToCamera.xyz);
+                //     _viewPos.y = dot(_rol2_y.xyz, _worldPosButSnapToCamera.xyz);
+                //     _viewPos.z = dot(_rol2_z.xyz, _worldPosButSnapToCamera.xyz);
+
+                float3 _viewPos = mul((float3x3)unity_MatrixV, _worldPosButSnapToCamera.xyz);
         
                 float4 _negateWorldCameraPos;
                     // _negateWorldCameraPos.x = unity_MatrixV[0u].w;
@@ -297,7 +318,7 @@ Shader "genship/role_outline"
                 //   FOV 越小，人物越大，描边在3D空间上变小，最终屏幕上粗度相应保持不变
                 float _fov45AdaptScale = 2.414 / UNITY_MATRIX_P[1u].y;
         
-                float _eyeDepth_ofSnapToCamera = -_viewPosButSnapToCamera.z;
+                float _eyeDepth_ofSnapToCamera = -_viewPos.z;
         
         
                 // #define _Property_EyeDepthRemapOldRanges float3(0.01, 2.00, 6.00)
@@ -306,19 +327,8 @@ Shader "genship/role_outline"
                 bool _eyeDepth_is_small = _eyeDepth_ofSnapToCamera * _fov45AdaptScale < _Property_EyeDepthRemapOldRanges.y;
                 float2 _eyeDepthParams_oldRange = _eyeDepth_is_small ? _Property_EyeDepthRemapOldRanges.xy : _Property_EyeDepthRemapOldRanges.yz;
                 float2 _eyeDepthParams_newRange = _eyeDepth_is_small ? _Property_EyeDepthRemapNewRanges.xy : _Property_EyeDepthRemapNewRanges.yz;
-        
-                
-                float _newRangeLength = _eyeDepthParams_newRange.y - _eyeDepthParams_newRange.x; // _newRangeLength 是 [ _eyeDepthParams_newRange.x, _eyeDepthParams_newRange.y ] 之间的距离
-        
-                
-            
-                float _oldRangeLength = _eyeDepthParams_oldRange.y - _eyeDepthParams_oldRange.x; // _oldRangeLength = 1.99
-                _oldRangeLength = max(_oldRangeLength, 0.001);                           // _oldRangeLength = 1.99
-                float _01InOldRange = (_eyeDepth_ofSnapToCamera * _fov45AdaptScale) - _eyeDepthParams_oldRange.x;
-                _01InOldRange /= _oldRangeLength;                   // _01InOldRange 是 eyeDepth 在 [ _eyeDepthParams_oldRange.x, _eyeDepthParams_oldRange.y ] 之间的 0~1 比例
-                _01InOldRange = clamp(_01InOldRange, 0.0, 1.0);   // 
-        
-                float _eyeDepthInNewRange = (_01InOldRange * _newRangeLength) + _eyeDepthParams_newRange.x;
+
+                float _eyeDepthInNewRange = EyeDepthRemap(_eyeDepth_ofSnapToCamera * _fov45AdaptScale, _eyeDepthParams_oldRange.xy, _eyeDepthParams_newRange.xy);
         
         
                 // #define _eyeDepthInNewRangeMulti1 0.03
@@ -333,18 +343,18 @@ Shader "genship/role_outline"
                 _eyeDepthInNewRangeScale *= Vertex_FrontBackOffsetZ_DepthScaleW.w;
         
         
-                float3 _viewPosButSnapToCamera_normalize = normalize(_viewPosButSnapToCamera.xyz);
+                float3 _viewPos_normalize = normalize(_viewPos);
         
         
                 // #define _ViewSpaceSnapVertexDirScale 1.00
                 float3 _viewSpaceDir_a_little;
-                _viewSpaceDir_a_little = _viewPosButSnapToCamera_normalize * _ViewSpaceSnapVertexDirScale;
+                _viewSpaceDir_a_little = _viewPos_normalize * _ViewSpaceSnapVertexDirScale;
                 _viewSpaceDir_a_little *= _eyeDepthInNewRangeMulti_0_01;
         
         
-                float3 _viewPosButSnapToCamera_bias = (_viewSpaceDir_a_little * (Vertex_FrontBackOffsetZ_DepthScaleW.z - 0.5)) + _viewPosButSnapToCamera.xyz;
+                float3 _viewPos_bias = (_viewSpaceDir_a_little * (Vertex_FrontBackOffsetZ_DepthScaleW.z - 0.5)) + _viewPos;
         
-                float3 _normalBiasViewPos = _viewPosButSnapToCamera_bias;
+                float3 _normalBiasViewPos = _viewPos_bias;
                 
                 _normalBiasViewPos.xy += _normalizeViewNormalXY * _eyeDepthInNewRangeScale;
         
