@@ -323,7 +323,7 @@ Shader "genship/role_outline"
                 // UNITY_MATRIX_P[1u].y = cot( 0.5 * FOV )
                 // FOV 越小，cot( 0.5 * FOV ) 越大，2.414 / UNITY_MATRIX_P[1u].y; 越小
                 //   FOV 越小，人物越大，描边在3D空间上变小，最终屏幕上粗度相应保持不变
-                float _fov45AdaptScale = 2.414 / UNITY_MATRIX_P[1u].y;
+                float _fov45AdaptScale = 2.414 / (UNITY_MATRIX_P[1u].y*_ProjectionParams.x);
         
                 float _eyeDepth_ofSnapToCamera = -_viewPos.z;
         
