@@ -64,3 +64,16 @@ M = DX_Projection*GLSL_Projection^-1
 0,   -1,    0,    0
 0,    0,   -2,    1
 0,    0,    0,    1
+
+
+vec4 GlslToDxClipPos(vec4 clipPos) {
+    clipPos.y = -clipPos.y;
+    clipPos.z = -0.5*clipPos.z + 0.5*clipPos.w;
+    return clipPos;
+}
+
+vec4 DxToGlslClipPos(vec4 clipPos) {
+    clipPos.y = -clipPos.y;
+    clipPos.z = -2*clipPos.z + clipPos.w;
+    return clipPos;
+}
