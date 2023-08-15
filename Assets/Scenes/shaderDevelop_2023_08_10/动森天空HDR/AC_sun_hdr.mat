@@ -23,7 +23,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _ScatterIntensity: 0.92808
-    - _ScatterMie: 0.03664
+    - _ScatterMie: 0.023
     - _ScatterRayleigh: 0.92808
     - _Uk_0_03: 0.377
     - _Uk_0_3_To_1: 1

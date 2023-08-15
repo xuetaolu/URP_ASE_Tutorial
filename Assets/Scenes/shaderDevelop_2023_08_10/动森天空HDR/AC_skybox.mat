@@ -51,27 +51,27 @@ Material:
     m_Ints: []
     m_Floats:
     - ScatterIntensity: 0.92808
-    - _FinalMainLightAffectFactor: 0.06961
+    - _FinalMainLightAffectFactor: 0.02253
     - _FinalMainLightAffectFactorY_: 0.06961
-    - _GalaxyAdditionA_Minus_0_to_n1: -0.20113
+    - _GalaxyAdditionA_Minus_0_to_n1: -0.31442
     - _GalaxyAdditionB_RelativeToNight: 0.1
-    - _GalaxyAdditionB_Scale: 26.03729
-    - _GalaxyFactor01: 0.53596
+    - _GalaxyAdditionB_Scale: 42.49
+    - _GalaxyFactor01: 0.96452
     - _MainLightAffectLumenScale: 98.6
     - _MainLightAroundIntensity: 0.1
     - _MoonAroundIntensity: 0.1
     - _RoateRadiusX: -0.05772
-    - _ScatterInstensity: 0.65766
+    - _ScatterInstensity: 0.30042
     - _ScatterIntensity: 0.92808
-    - _ScatterMie: 0.03664
+    - _ScatterMie: 0.023
     - _worldPosRotateOnly_YBaisY: 0
     m_Colors:
-    - _MainLightColorXYZ: {r: 0.62483, g: 0.74478, b: 0.67517, a: 1}
-    - _MieRedHdrColor: {r: 68.36447, g: 6.83645, b: 2.78375, a: 1}
+    - _MainLightColorXYZ: {r: 0.62352943, g: 0.74509805, b: 0.6745098, a: 1}
+    - _MieRedHdrColor: {r: 32.27, g: 3.227, b: 1.516, a: 1}
     - _MoonColorXYZ_MainLightAffectAroundIntensityW: {r: 0.62483, g: 0.74478, b: 0.67517, a: 1}
-    - _SkyColorRGB: {r: 6.78572, g: 3.07114, b: 7.2585, a: 1}
+    - _SkyColorRGB: {r: 3.37, g: 2.61, b: 10.5, a: 1}
     - _UV1_RS_Matrix: {r: 1.7, g: 0, b: 0, a: 15}
     - _UV1_T: {r: 0, g: -13.31543, b: 0, a: 0}
-    - _UV2_RS_Matrix: {r: -0.34421992, g: -0.938889, b: 0.938889, a: -0.34421992}
-    - _UV2_T: {r: 0.20268, g: 1.14154, b: 0, a: 0}
+    - _UV2_RS_Matrix: {r: 1, g: -0.00000017484555, b: 0.00000017484555, a: 1}
+    - _UV2_T: {r: -0.70061356, g: 0.27475643, b: 0, a: 0}
   m_BuildTextureStacks: []
