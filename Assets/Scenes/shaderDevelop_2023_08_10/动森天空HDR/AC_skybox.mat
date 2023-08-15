@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AC_skybox
+  m_Shader: {fileID: 4800000, guid: ffcf4333c978eba479dac33e536fe3dc, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _ColorStarMap:
+        m_Texture: {fileID: 2800000, guid: 3e54d33a23a114444aace56c116963f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EnvSingleMap:
+        m_Texture: {fileID: 2800000, guid: 800c3890a1640cd4da4a76ccba0490bd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _GalaxyMap:
+        m_Texture: {fileID: 2800000, guid: 2db4225244bf4c1459165cb5d867e835, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HdrMaskMap:
+        m_Texture: {fileID: 2800000, guid: f01ca133004ef8f40a64e36422e491f7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 8400000, guid: a24750ff2b228fe47bd3795501074015, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StarMap:
+        m_Texture: {fileID: 2800000, guid: 435f421a5ba45924cb6d3e5c2fdec9f0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SunHdrMap:
+        m_Texture: {fileID: 8400000, guid: a24750ff2b228fe47bd3795501074015, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - ScatterIntensity: 0.92808
+    - _FinalMainLightAffectFactor: 0.06961
+    - _FinalMainLightAffectFactorY_: 0.06961
+    - _GalaxyAdditionA_Minus_0_to_n1: -0.20113
+    - _GalaxyAdditionB_RelativeToNight: 0.1
+    - _GalaxyAdditionB_Scale: 26.03729
+    - _GalaxyFactor01: 0.53596
+    - _MainLightAffectLumenScale: 98.6
+    - _MainLightAroundIntensity: 0.1
+    - _MoonAroundIntensity: 0.1
+    - _RoateRadiusX: -0.05772
+    - _ScatterInstensity: 0.65766
+    - _ScatterIntensity: 0.92808
+    - _ScatterMie: 0.03664
+    - _worldPosRotateOnly_YBaisY: 0
+    m_Colors:
+    - _MainLightColorXYZ: {r: 0.62483, g: 0.74478, b: 0.67517, a: 1}
+    - _MieRedHdrColor: {r: 68.36447, g: 6.83645, b: 2.78375, a: 1}
+    - _MoonColorXYZ_MainLightAffectAroundIntensityW: {r: 0.62483, g: 0.74478, b: 0.67517, a: 1}
+    - _SkyColorRGB: {r: 6.78572, g: 3.07114, b: 7.2585, a: 1}
+    - _UV1_RS_Matrix: {r: 1.7, g: 0, b: 0, a: 15}
+    - _UV1_T: {r: 0, g: -13.31543, b: 0, a: 0}
+    - _UV2_RS_Matrix: {r: -0.34421992, g: -0.938889, b: 0.938889, a: -0.34421992}
+    - _UV2_T: {r: 0.20268, g: 1.14154, b: 0, a: 0}
+  m_BuildTextureStacks: []
