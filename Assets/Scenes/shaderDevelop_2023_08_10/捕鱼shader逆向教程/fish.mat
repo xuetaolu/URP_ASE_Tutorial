@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AC_sun_hdr
-  m_Shader: {fileID: 4800000, guid: 26c6b8982be06614ea195303b2cd99ce, type: 3}
+  m_Name: fish
+  m_Shader: {fileID: 4800000, guid: 4ca56274913ce564d895904017c6e8ea, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -19,15 +19,16 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _7:
+        m_Texture: {fileID: 2800000, guid: edad033ef4c94db42ad8585c29bcfb21, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _8:
+        m_Texture: {fileID: 2800000, guid: 074e9a7d294afd9429bbd9d275336678, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats:
-    - _ScatterIntensity: 0.92808
-    - _ScatterMie: 0.03664
-    - _ScatterRayleigh: 0.92808
-    - _Uk_0_03: 0.377
-    - _Uk_0_3_To_1: 1
-    m_Colors:
-    - _SunDirection: {r: 0.9637465, g: -0.013025624, b: 0.26650128, a: 0}
-    - _Uk_XYZ: {r: 0.974365, g: 0.14300717, b: 0.17367153, a: 0}
+    m_Floats: []
+    m_Colors: []
   m_BuildTextureStacks: []
