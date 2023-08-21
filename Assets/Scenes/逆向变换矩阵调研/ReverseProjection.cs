@@ -159,6 +159,9 @@ namespace Scenes.逆向变换矩阵调研
                     Vector3 cp1 = clipPoses[i - 1];
                     Vector3 cp2 = clipPoses[i];
 
+                    if (!dictionary.ContainsKey(cp1) || !dictionary.ContainsKey(cp2))
+                        continue;
+                    
                     Vector3 position1 = dictionary[cp1];
                     Vector3 position2 = dictionary[cp2];
                     Gizmos.color = GetColor01FromVector3n11(0.5f * (cp1 + cp2));
