@@ -14,6 +14,7 @@ namespace Scenes.shaderDevelop_2023_08_10.原神水底焦散
         public Texture m_texture;
         public RenderTexture m_depthRT;
         public bool m_awalyUpdate;
+        public bool m_keeyRawDepth;
 
         private Material _material;
 
@@ -48,6 +49,8 @@ namespace Scenes.shaderDevelop_2023_08_10.原神水底焦散
         {
             if (m_texture == null || m_depthRT == null || material == null)
                 return;
+            
+            material.EnableKeyword("_KEEP_RAW_DEPTH", m_keeyRawDepth);
             
             Graphics.Blit(m_texture, m_depthRT, material);
         }

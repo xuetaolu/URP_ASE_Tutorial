@@ -23,6 +23,7 @@ Shader "Unlit/DrawDepthUseRGBATexture"
             #pragma fragment frag
 
             #pragma multi_compile_local_fragment _INPUTDEPTHMODE_OPENGL _INPUTDEPTHMODE_DIRECT
+            #pragma multi_compile_local_fragment _ _KEEP_RAW_DEPTH
 
             #include "UnityCG.cginc"
 
@@ -95,8 +96,12 @@ Shader "Unlit/DrawDepthUseRGBATexture"
                     outputDepth = GlslToDxClipPos(float4(0,0,outputDepth,1)).z;
                 #endif
                 
-                
+                #ifdef _KEEP_RAW_DEPTH
+                o.depth = rawDepth;
+                #else
                 o.depth = outputDepth;
+                #endif
+                
                 return o;
             }
             ENDCG

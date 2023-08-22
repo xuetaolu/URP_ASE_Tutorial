@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: genship_water
+  m_Shader: {fileID: 4800000, guid: 6c5faaa104d30e24c92d26130a5c25e6, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _12:
+        m_Texture: {fileID: 8900000, guid: 9be4637073a14424593252b602dbef7e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _13:
+        m_Texture: {fileID: 2800000, guid: a4ef9d2cee50f0b458c5bb8be3a07803, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _14:
+        m_Texture: {fileID: 2800000, guid: a8fdd2f9aaa520948aac645c0b92ae7f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _15:
+        m_Texture: {fileID: 2800000, guid: f09c93104b459114a8ecf644e3c430b6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _19:
+        m_Texture: {fileID: 11700000, guid: 5887cb32a7d3fc5499949f41f0f1b981, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _20:
+        m_Texture: {fileID: 11700000, guid: 5887cb32a7d3fc5499949f41f0f1b981, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _21:
+        m_Texture: {fileID: 2800000, guid: 7f659de5e6c8de14ca4042eb8ac73079, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _22:
+        m_Texture: {fileID: 2800000, guid: 7f659de5e6c8de14ca4042eb8ac73079, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _23:
+        m_Texture: {fileID: 2800000, guid: 21dca87442b63d646a9f283c321b3d83, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _24:
+        m_Texture: {fileID: 2800000, guid: f3d467bec4e203b498f67c54eeb2eeb1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _7:
+        m_Texture: {fileID: 8400000, guid: ba9d89ff659e3384fbbefc3f3eacdb1e, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _8:
+        m_Texture: {fileID: 2800000, guid: dafd4aee0f0eebd42b8030697dc1def7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
