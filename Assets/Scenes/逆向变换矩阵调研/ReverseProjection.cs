@@ -75,6 +75,8 @@ namespace Scenes.逆向变换矩阵调研
             
             // String[] splits = Regex.Split(matrix_strs, @"[\n\r]+");
             // String[] fourLines = GetFourLines(splits);
+            if (matrix_strs == null)
+                return;
             
             String[] numbers = Regex.Split(matrix_strs.Trim(), @"[\t\n\r,; ]+");
             if (numbers.Length == 16)

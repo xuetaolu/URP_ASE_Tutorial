@@ -1,6 +1,6 @@
 #include "genship_cloud_common.hlsl"
 
-#define _58__m0 float4(1.00, 0.25, 6000.68506, 0.00017) // _58._m0
+// #define _ProjectionParams float4(1.00, 0.25, 6000.68506, 0.00017) // _58._m0
 // #define UNITY_MATRIX_M _58._m1
 // static const matrix UNITY_MATRIX_M = {
 //     float4(1.00, 0.00, 0.00, 0.00),
@@ -8,13 +8,15 @@
 //     float4(0.00, 0.00, 1.00, 0.00),
 //     float4(0.00, 0.00, 0.00, 1.00)
 // }; // _58._m1
-// #define _58__m2 _58._m2
-static const matrix _58__m2 = {
-    float4(-1.11146, 1.95758E-08, 0.57462, 0.57457         ),
-    float4(5.51985E-09, 2.41421, -8.32307E-09, -8.32238E-09),
-    float4(-0.78026, -1.08062E-08, -0.81853, -0.81846      ),
-    float4(-1.93807, -1207.10669, 3.5313, 4.03098          )
-}; //_58._m2
+// #define transpose(UNITY_MATRIX_VP) _58._m2
+// UNITY_MARRIX_V
+// UNITY_MATRIX_VP
+// static const matrix transpose(UNITY_MATRIX_VP) = {
+//     float4(-1.11146, 1.95758E-08, 0.57462, 0.57457         ),
+//     float4(5.51985E-09, 2.41421, -8.32307E-09, -8.32238E-09),
+//     float4(-0.78026, -1.08062E-08, -0.81853, -0.81846      ),
+//     float4(-1.93807, -1207.10669, 3.5313, 4.03098          )
+// }; //_58._m2
 #define _58__m3  float3(-3.48413, 195.00, 2.47919) // _58._m3
 #define _58__m4  float3(0.00, 1.00, 0.00         ) // _58._m4
 #define _58__m5  float3(0.00972, 0.02298, 0.06016) // _58._m5
@@ -47,7 +49,8 @@ static const matrix _58__m2 = {
 #define _58__m32 0.11        // _58._m32
 #define _58__m33 1.00        // _58._m33
 #define _58__m34 0.8299      // _58._m34
-#define _58__m35 float2( 2.00, 4.00 ) // _58._m35
+#define _MaskMapScale float2( 2.00, 4.00 ) // _58._m35
+// float2 _MaskMapScale;
 #define _58__m36 3.00        // _58._m36
 #define _58__m37 6.00        // _58._m37
 #define _58__m38 1.00        // _58._m38
@@ -63,12 +66,12 @@ v2f vert (appdata v)
     float4 Vertex_3 = fixed4( v.uv2, v.uv3 );
     v2f o;
     
-    float4 _13;
+
     
-    float4 _26;
+    
     float2 _29;
     bool _32;
-    float4 _33;
+
     float3 _35;
     float3 _36;
     float3 _37;
@@ -80,7 +83,7 @@ v2f vert (appdata v)
     float2 _44;
     float _45;
     float _46;
-    float _47;
+
     float _48;
     bool _49;
     float _50;
@@ -88,41 +91,74 @@ v2f vert (appdata v)
     float _52;
     
     float4 _25;
-    _25 = Vertex_Position.yyyy * UNITY_MATRIX_M[1u];
-    _25 = (UNITY_MATRIX_M[0u] * Vertex_Position.xxxx) + _25;
-    _25 = (UNITY_MATRIX_M[2u] * Vertex_Position.zzzz) + _25;
-    _25 += UNITY_MATRIX_M[3u];
-    _26 = _25.yyyy * _58__m2[1u].xyww;
-    _26 = (_58__m2[0u].xyww * _25.xxxx) + _26;
-    _26 = (_58__m2[2u].xyww * _25.zzzz) + _26;
-    _26 = (_58__m2[3u].xyww * _25.wwww) + _26;
-    o.vertex = GlslToDxClipPos(_26);
-    _47 = _26.y * _58__m0.x;
+    // _25 = Vertex_Position.yyyy * UNITY_MATRIX_M[1u];
+    // _25 = (UNITY_MATRIX_M[0u] * Vertex_Position.xxxx) + _25;
+    // _25 = (UNITY_MATRIX_M[2u] * Vertex_Position.zzzz) + _25;
+    // _25 += UNITY_MATRIX_M[3u];
+    _25 = mul(UNITY_MATRIX_M, Vertex_Position);
+    
+
+    // _26 = _25.yyyy * transpose(UNITY_MATRIX_VP)[1u].xyww;
+    // _26 = (transpose(UNITY_MATRIX_VP)[0u].xyww * _25.xxxx) + _26;
+    // _26 = (transpose(UNITY_MATRIX_VP)[2u].xyww * _25.zzzz) + _26;
+    // _26 = (transpose(UNITY_MATRIX_VP)[3u].xyww * _25.wwww) + _26;
+
+    // _26 = UNITY_MATRIX_VP._m00_m10_m30_m30 * _25.xxxx;
+    // _26 = UNITY_MATRIX_VP._m01_m11_m31_m31 * _25.yyyy + _26;
+    // _26 = UNITY_MATRIX_VP._m02_m12_m32_m32 * _25.zzzz + _26;
+    // _26 = UNITY_MATRIX_VP._m03_m13_m33_m33 * _25.wwww + _26;
+
+    float4 _clipPos = mul(UNITY_MATRIX_VP, _25);
+    _clipPos.z = _clipPos.w;
+
+    // float4 _clipPos = _clipPos;
+    
+    // o.vertex = GlslToDxClipPos(_26);
+    o.vertex = _clipPos;
+
+
+    // _47 = ;
 
     // #define _58__m3  float3(-3.48413, 195.00, 2.47919) // _58._m3
     _25.xyz = _25.xyz + (-_58__m3);
     // gl_Position = _26;
-    _33.w = _47 * 0.5;
-    float2 _158 = _26.xw * (0.5).xx;
-    _33 = float4(_158.x, _33.y, _158.y, _33.w);
-    _13 = float4(_13.x, _13.y, _26.ww.x, _26.ww.y);
-    float2 _169 = _33.zz + _33.xw;
-    _13 = float4(_169.x, _169.y, _13.z, _13.w);
-    _47 = (_58__m35.x * _58__m35.y) + (-1.0);
+    float4 _33;
+    _33.x = _clipPos.x * 0.5;
+    _33.w = _clipPos.y * _ProjectionParams.x * 0.5;
+    _33.z = _clipPos.w * 0.5;
+    // float2 _158 = _clipPos.xw * (0.5).xx;
+    // _33 = float4(_158.x, _33.y, _158.y, _33.w);
+
+
+    // _13 后面不需要用，这里是计算 ComputeNonStereoScreenPos() ?
+    // float4 _13;
+    // // _13 = float4(_13.x, _13.y, _clipPos.x, _clipPos.y);
+    // _13.zw = _clipPos.xy;
+    //
+    //
+    // float2 _169 = _33.zz + _33.xw;
+    // // _13 = float4(_169.x, _169.y, _13.z, _13.w);
+    // _13.xy = _169;
+
+    
+    float _47;
+    _47 = (_MaskMapScale.x * _MaskMapScale.y) + (-1.0);
     _47 = (Vertex_1.y * _47) + 0.5;
     _47 = floor(_47);
-    _26.x = _47 * _58__m35.x;
+    
+    float4 _26;
+    _26.x = _47 * _MaskMapScale.x;
     _32 = _26.x >= (-_26.x);
-    _26.x = _32 ? _58__m35.x : (-_58__m35.x);
+    _26.x = _32 ? _MaskMapScale.x : (-_MaskMapScale.x);
     _40 = 1.0 / _26.x;
     _40 = _47 * _40;
-    _47 /= _58__m35.x;
+    _47 /= _MaskMapScale.x;
     _33.y = floor(_47);
     _47 = frac(_40);
     _33.x = _47 * _26.x;
     float2 _233 = _33.xy + Vertex_2.xy;
     _26 = float4(_233.x, _233.y, _26.z, _26.w);
-    float2 _246 = float2(_26.x / _58__m35.x, _26.y / _58__m35.y);
+    float2 _246 = float2(_26.x / _MaskMapScale.x, _26.y / _MaskMapScale.y);
     o.Varying_0 = float4(_246.x, _246.y, o.Varying_0.z, o.Varying_0.w);
     _47 = _58__m26 * _58__m37;
     float2 _261 = (_47).xx * float2(1.2000000476837158203125, 0.800000011920928955078125);
