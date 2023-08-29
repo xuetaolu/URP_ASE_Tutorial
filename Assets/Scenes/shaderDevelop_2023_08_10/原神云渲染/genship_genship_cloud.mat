@@ -32,6 +32,18 @@ Material:
         m_Texture: {fileID: 2800000, guid: 157376338b950264697d8da2e278781f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _IrradianceMap:
+        m_Texture: {fileID: 2800000, guid: a490c6bad1f27224aaa175ab8aff0121, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskMapRGBA:
+        m_Texture: {fileID: 2800000, guid: 157376338b950264697d8da2e278781f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMapRGB:
+        m_Texture: {fileID: 2800000, guid: b18b7ff00f7acce449004d7cf0edb771, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
     m_Colors: []
