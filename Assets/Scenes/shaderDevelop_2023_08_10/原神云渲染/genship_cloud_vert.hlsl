@@ -28,7 +28,7 @@
 #define _58__m11 float3(0.00837, 0.10516, 0.26225) // _58._m11
 #define _58__m12 0.50 // _58._m12
 #define _58__m13 0.30 // _58._m13
-#define _58__m14 float3(0.00688, -0.84638, -0.53253) // _58._m14
+#define _lightDir_maybe float3(0.00688, -0.84638, -0.53253) // _58._m14
 #define _58__m15 float3(0.01938, 0.00651, 0.02122  ) // _58._m15
 #define _58__m16 4.09789 // _58._m16
 #define _58__m17 0.80205 // _58._m17
@@ -77,22 +77,24 @@ v2f vert (appdata v)
     float4 Vertex_Position = v.vertex;
 
     // Vertex_1.y = {0, 0.28235, 0.42745, 0.56863, 0.8549, 1.0}
-    float4 Vertex_1 = v.color;
+    float4 Vertex_GridIndexY_ = v.color;
     
     float4 Vertex_uv = float4( v.uv, 0,0 ) ;
     
-    // Vertex_3.x = 171.435
-    // Vertex_3.y = 17.8982 ~ 153.264
-    // Vertex_3.z = 0.4
-    // Vertex_3.w = 0.6
-    float4 Vertex_3 = fixed4( v.uv2, v.uv3 );
+    // Vertex_DensityParamsXYZW.x = 104.096           |  171.435
+    // Vertex_DensityParamsXYZW.y = 4.70795 ~ 102.966 |  17.8982 ~ 153.264
+
+    // Vertex_DensityParamsXYZW.y / Vertex_DensityParamsXYZW.x = {0.04, 0.12 0.13, 0.15, 0.23, 0.25, 0.37, 0.42, 0.49, 0.52, 0.53, ..., 0.989}
+    
+    // Vertex_DensityParamsXYZW.z = 0.4
+    // Vertex_DensityParamsXYZW.w = 0.6
+    float4 Vertex_DensityParamsXYZW = fixed4( v.uv2, v.uv3 );
     v2f o;
     
 
     
     
     float2 _29;
-    bool _32;
 
     float3 _35;
     float3 _36;
@@ -145,7 +147,7 @@ v2f vert (appdata v)
         // Vertex_1.y         = {0,     0.28235, 0.42745, 0.56863, 0.8549, 1.0}
         // Vertex_1.y * 7     = {0,     1.97645, 2.99215, 3.98041, 5.9843, 7.0}
         // floor(_gridIndex_0_7 + 0.5)  = {0,     2,       3,       4,       6,      7}
-        _gridIndex_0_7 = (Vertex_1.y * _gridIndex_0_7); // 0~7
+        _gridIndex_0_7 = (Vertex_GridIndexY_.y * _gridIndex_0_7); // 0~7
         _gridIndex_0_7 = floor(_gridIndex_0_7 + 0.5);
         
         
@@ -165,48 +167,40 @@ v2f vert (appdata v)
     // #define _58__m37 6.00        // _58._m37
     // #define _58__m36 3.00        // _58._m36
     o.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.zw = Vertex_uv.xy * _DisturbanceNoiseScale + float2(1.2, 0.8) * _DisturbanceNoiseOffset2 * _DisturbanceNoiseOffset;
+    
 
+        // float smoothstep(float t1, float t2, float x) {
+        //   x = clamp((x - t1) / (t2 - t1), 0.0, 1.0); 
+        //   return x * x * (3 - 2 * x);
+        // }
 
+    // #define _lightDir_maybe float3(0.00688, -0.84638, -0.53253) // _58._m14
+    float _LDotDir = dot(_relativeToRoleDir, _lightDir_maybe);
+    float _LDotDirRemap01 = _LDotDir * 0.5 + 0.5;
 
-    // Vertex_3.x = 171.435
-    // Vertex_3.y = 17.8982 ~ 153.264
-    // Vertex_3.z = 0.4
-    // Vertex_3.w = 0.6
-float _47;
-    _47 = (-Vertex_3.w) + 1.0;
-    _47 = 1.0 / _47;
-float4 _26;
-    _26.x = max(Vertex_3.x, 9.9999997473787516355514526367188e-06);
-    _26.x = Vertex_3.y / _26.x;
-    _26.x *= _58__m33;
-float _40;
-    _40 = (_26.x * _58__m38) + (-Vertex_3.w);
-    _26.x *= _58__m38;
-    _47 *= _40;
-    _47 = clamp(_47, 0.0, 1.0);
-    _40 = (_47 * (-2.0)) + 3.0;
-    _47 *= _47;
-    _47 = ((-_40) * _47) + 1.0;
-    _40 = 1.0 / Vertex_3.z;
-    _26.x = _40 * _26.x;
-    _26.x = clamp(_26.x, 0.0, 1.0);
-    _40 = (_26.x * (-2.0)) + 3.0;
-    _26.x *= _26.x;
-    _26.x *= _40;
-    _47 = ((-_26.x) * _47) + 1.0;
-    o.Varying_2.w = _47;
-    o.Varying_2.yz = Vertex_1.zw;
-    _42.x = dot(_relativeToRoleDir, _58__m14);
-    _35.z = (_42.x * 0.5) + 0.5;
-    o.Varying_2.x = _35.z * _58__m34;
-    _50 = max(_58__m10, 9.9999997473787516355514526367188e-05);
+    // #define _58__m34 0.8299      // _58._m34
+    o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x = _LDotDirRemap01 * _58__m34;
+
+    o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.yz = Vertex_GridIndexY_.zw;
+    
+    // #define _58__m33 1.00        // _58._m33
+    // #define _58__m38 1.00        // _58._m38
+    float _Vertex_y_present_fix = Vertex_DensityParamsXYZW.y / max(Vertex_DensityParamsXYZW.x, 1.0e-05) * _58__m33 * _58__m38;
+
+    // 1.0 - smoothstep(0, 0.4, x) * (1.0 - smoothstep(0.6, 1.0, x))
+    // o.Varying_2.w 是 _Vertex_y_present_fix 01 映射到 1 \ 0 / 1 的平滑图案，其中 0.4 处达到最低位 0, 0.6 处离开最低位 0
+    o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.w = 1.0 - smoothstep(0, Vertex_DensityParamsXYZW.z, _Vertex_y_present_fix) * (1.0 - smoothstep(Vertex_DensityParamsXYZW.w, 1.0, _Vertex_y_present_fix));
+    
+    
+    _50 = max(_58__m10, 1.0e-04);
     _50 = 1.0 / _50;
     _29.x = _50 * abs(_angle_up_to_down_1_n1);
     _29.y = 0.5;
     _44.y = 0.5;
+float _47;
     _47 = tex2Dlod(_IrradianceMap, float4(_29, 0.0, 0.0)).x;
-    _42.z = (_42.x * _58__m9) + (-_58__m9);
-    _42.x = (_42.x * _58__m31) + (-_58__m31);
+    _42.z = (_LDotDir * _58__m9) + (-_58__m9);
+    _42.x = (_LDotDir * _58__m31) + (-_58__m31);
     float2 _533 = _42.xz + (1.0);
     _42 = float3(_533.x, _42.y, _533.y);
     float2 _539 = max(_42.xz, (0.0));
@@ -225,13 +219,13 @@ float _40;
     _47 = tex2Dlod(_IrradianceMap, float4(_44, 0.0, 0.0)).y;
     _37 = float3(_58__m11.x * _58__m12, _58__m11.y * _58__m12, _58__m11.z * _58__m12);
     _37 = (_47) * _37;
-    _35.x = abs(_58__m14.y) + (-0.20000000298023223876953125);
+    _35.x = abs(_lightDir_maybe.y) + (-0.20000000298023223876953125);
     _35.x *= 3.3333332538604736328125;
     _35.x = clamp(_35.x, 0.0, 1.0);
     _50 = (_35.x * (-2.0)) + 3.0;
     _35.x *= _35.x;
     _35.x *= _50;
-    _50 = _35.z;
+    _50 = _LDotDirRemap01;
     _50 = clamp(_50, 0.0, 1.0);
     _50 += (-0.300000011920928955078125);
     _50 *= 1.4285714626312255859375;
@@ -245,7 +239,7 @@ float _40;
     _47 = dot(_relativeToRoleDir, _UpDir);
     _35.x = abs(_47) * _58__m18;
 float4 _33;
-    _33.x = dot(float3(_58__m14.x, _58__m14.y, _58__m14.z), _relativeToRoleDir);
+    _33.x = dot(float3(_lightDir_maybe.x, _lightDir_maybe.y, _lightDir_maybe.z), _relativeToRoleDir);
     _33.x = (_33.x * 0.5) + 0.5;
     _33.x = clamp(_33.x, 0.0, 1.0);
     _41.x = log2(_33.x);
@@ -320,8 +314,8 @@ float4 _33;
     _35.x *= 0.100000001490116119384765625;
     _35.x *= _35.x;
     _36 = _35.xxx * _58__m22;
-    _35.x = (_35.z * (-2.0)) + 3.0;
-    _46 = _35.z * _35.z;
+    _35.x = (_LDotDirRemap01 * (-2.0)) + 3.0;
+    _46 = _LDotDirRemap01 * _LDotDirRemap01;
     _35.x = _46 * _35.x;
     _35.x *= _58__m16;
     _35.x *= 0.125;
