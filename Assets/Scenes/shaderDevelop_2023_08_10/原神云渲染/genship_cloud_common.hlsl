@@ -21,7 +21,7 @@ struct v2f
 {
     float4 vertex : SV_POSITION;
     float4 Varying_0 : TEXCOORD0;
-    float4 Varying_1 : TEXCOORD1;
+    float4 Varying_RelativeToRoleDirXYZ_Angle1_n1 : TEXCOORD1;
     float4 Varying_2 : TEXCOORD2;
     float3 Varying_3 : TEXCOORD3;
     float3 Varying_4 : TEXCOORD4;

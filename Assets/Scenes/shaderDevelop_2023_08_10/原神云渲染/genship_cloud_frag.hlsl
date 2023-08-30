@@ -32,7 +32,7 @@ fixed4 frag (v2f i) : SV_Target
     _25 *= _25;
     _25 *= _35;
     _25 *= _45__m3;
-    _27.x = i.Varying_1.w + 0.100000001490116119384765625;
+    _27.x = i.Varying_RelativeToRoleDirXYZ_Angle1_n1.w + 0.100000001490116119384765625;
     _27.x *= 5.0;
     _27.x = clamp(_27.x, 0.0, 1.0);
     _39.x = (_27.x * (-2.0)) + 3.0;
@@ -68,7 +68,7 @@ fixed4 frag (v2f i) : SV_Target
     _38 = _27.x < 0.0;
     if ((int(_38) * (-1)) != 0)
     {
-        discard;
+        // discard;
     }
     _27.x = (-_39.x) + _39.y;
     _39.x = (-_39.x) + _33.z;
@@ -94,7 +94,7 @@ fixed4 frag (v2f i) : SV_Target
     _34.x = (_42 * (-2.0)) + 3.0;
     _42 *= _42;
     _42 *= _34.x;
-    _34.x = i.Varying_1.w * 10.0;
+    _34.x = i.Varying_RelativeToRoleDirXYZ_Angle1_n1.w * 10.0;
     _34.x = clamp(_34.x, 0.0, 1.0);
     _40 = (_34.x * (-2.0)) + 3.0;
     _34.x *= _34.x;
@@ -110,5 +110,6 @@ fixed4 frag (v2f i) : SV_Target
     
     fixed4 col = Output_0.xyzw;
     // col = fixed4(1,0,0,1);
+    // col = float4(i.Varying_1.w, 0,0,1);
     return col;
 }

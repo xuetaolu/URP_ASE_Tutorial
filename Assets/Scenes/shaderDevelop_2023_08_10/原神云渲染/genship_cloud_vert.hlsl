@@ -17,8 +17,8 @@
 //     float4(-0.78026, -1.08062E-08, -0.81853, -0.81846      ),
 //     float4(-1.93807, -1207.10669, 3.5313, 4.03098          )
 // }; //_58._m2
-#define _58__m3  float3(-3.48413, 195.00, 2.47919) // _58._m3
-#define _58__m4  float3(0.00, 1.00, 0.00         ) // _58._m4
+#define _RolePos_maybe  float3(-3.48413, 195.00, 2.47919) // _58._m3
+#define _UpDir  float3(0.00, 1.00, 0.00         ) // _58._m4
 #define _58__m5  float3(0.00972, 0.02298, 0.06016) // _58._m5
 #define _58__m6  float3(0.00972, 0.02298, 0.06016) // _58._m6
 #define _58__m7  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
@@ -57,12 +57,28 @@
 
 sampler2D _IrradianceMap;
 
+float FastAcosForAbsCos(float in_abs_cos) {
+    float _local_tmp = ((in_abs_cos * -0.0187292993068695068359375 + 0.074261002242565155029296875) * in_abs_cos - 0.212114393711090087890625) * in_abs_cos + 1.570728778839111328125;
+    return _local_tmp * sqrt(1.0 - in_abs_cos);
+}
+
+float FastAcos(float in_cos) {
+    float local_abs_cos = abs(in_cos);
+    float local_abs_acos = FastAcosForAbsCos(local_abs_cos);
+    return in_cos < 0.0 ?  UNITY_PI - local_abs_acos : local_abs_acos;
+}
+
 v2f vert (appdata v)
 {
 
     float4 Vertex_Position = v.vertex;
     float4 Vertex_1 = v.color;
     float4 Vertex_2 = float4( v.uv, 0,0 ) ;
+    
+    // Vertex_3.x = 171.435
+    // Vertex_3.y = 17.8982 ~ 153.264
+    // Vertex_3.z = 0.4
+    // Vertex_3.w = 0.6
     float4 Vertex_3 = fixed4( v.uv2, v.uv3 );
     v2f o;
     
@@ -79,66 +95,38 @@ v2f vert (appdata v)
     float _40;
     float3 _41;
     float3 _42;
-    float _43;
+
     float2 _44;
     float _45;
     float _46;
 
-    float _48;
-    bool _49;
+    float _miu;
+
     float _50;
     float _51;
     float _52;
     
-    float4 _25;
-    // _25 = Vertex_Position.yyyy * UNITY_MATRIX_M[1u];
-    // _25 = (UNITY_MATRIX_M[0u] * Vertex_Position.xxxx) + _25;
-    // _25 = (UNITY_MATRIX_M[2u] * Vertex_Position.zzzz) + _25;
-    // _25 += UNITY_MATRIX_M[3u];
-    _25 = mul(UNITY_MATRIX_M, Vertex_Position);
-    
 
-    // _26 = _25.yyyy * transpose(UNITY_MATRIX_VP)[1u].xyww;
-    // _26 = (transpose(UNITY_MATRIX_VP)[0u].xyww * _25.xxxx) + _26;
-    // _26 = (transpose(UNITY_MATRIX_VP)[2u].xyww * _25.zzzz) + _26;
-    // _26 = (transpose(UNITY_MATRIX_VP)[3u].xyww * _25.wwww) + _26;
-
-    // _26 = UNITY_MATRIX_VP._m00_m10_m30_m30 * _25.xxxx;
-    // _26 = UNITY_MATRIX_VP._m01_m11_m31_m31 * _25.yyyy + _26;
-    // _26 = UNITY_MATRIX_VP._m02_m12_m32_m32 * _25.zzzz + _26;
-    // _26 = UNITY_MATRIX_VP._m03_m13_m33_m33 * _25.wwww + _26;
-
-    float4 _clipPos = mul(UNITY_MATRIX_VP, _25);
+    float4 _WorldPos = mul(UNITY_MATRIX_M, Vertex_Position);
+    float4 _clipPos = mul(UNITY_MATRIX_VP, _WorldPos);
     _clipPos.z = _clipPos.w;
-
-    // float4 _clipPos = _clipPos;
-    
-    // o.vertex = GlslToDxClipPos(_26);
     o.vertex = _clipPos;
 
 
-    // _47 = ;
 
-    // #define _58__m3  float3(-3.48413, 195.00, 2.47919) // _58._m3
-    _25.xyz = _25.xyz + (-_58__m3);
-    // gl_Position = _26;
-    float4 _33;
-    _33.x = _clipPos.x * 0.5;
-    _33.w = _clipPos.y * _ProjectionParams.x * 0.5;
-    _33.z = _clipPos.w * 0.5;
-    // float2 _158 = _clipPos.xw * (0.5).xx;
-    // _33 = float4(_158.x, _33.y, _158.y, _33.w);
+    // #define _RolePos_maybe  float3(-3.48413, 195.00, 2.47919) // _58._m3
+    float3 _worldPos_relativeToRole = _WorldPos.xyz - _RolePos_maybe;
+    
+    float3 _relativeToRoleDir = normalize(_worldPos_relativeToRole);
+    
+    _miu = clamp(dot(_UpDir, _relativeToRoleDir), -1.0, 1.0);
+    
+    float _angle_up_to_down_1_n1 = (UNITY_HALF_PI - FastAcos(_miu)) * UNITY_INV_HALF_PI;
 
+    o.Varying_RelativeToRoleDirXYZ_Angle1_n1.w = _angle_up_to_down_1_n1;
+    o.Varying_RelativeToRoleDirXYZ_Angle1_n1.xyz = _relativeToRoleDir;
+    
 
-    // _13 后面不需要用，这里是计算 ComputeNonStereoScreenPos() ?
-    // float4 _13;
-    // // _13 = float4(_13.x, _13.y, _clipPos.x, _clipPos.y);
-    // _13.zw = _clipPos.xy;
-    //
-    //
-    // float2 _169 = _33.zz + _33.xw;
-    // // _13 = float4(_169.x, _169.y, _13.z, _13.w);
-    // _13.xy = _169;
 
     
     float _47;
@@ -153,41 +141,29 @@ v2f vert (appdata v)
     _40 = 1.0 / _26.x;
     _40 = _47 * _40;
     _47 /= _MaskMapScale.x;
+    float4 _33;
     _33.y = floor(_47);
     _47 = frac(_40);
     _33.x = _47 * _26.x;
-    float2 _233 = _33.xy + Vertex_2.xy;
-    _26 = float4(_233.x, _233.y, _26.z, _26.w);
-    float2 _246 = float2(_26.x / _MaskMapScale.x, _26.y / _MaskMapScale.y);
-    o.Varying_0 = float4(_246.x, _246.y, o.Varying_0.z, o.Varying_0.w);
+    _26.xy = _33.xy + Vertex_2.xy;
+
+    o.Varying_0.xy = float2(_26.x / _MaskMapScale.x, _26.y / _MaskMapScale.y);
     _47 = _58__m26 * _58__m37;
-    float2 _261 = (_47).xx * float2(1.2000000476837158203125, 0.800000011920928955078125);
-    _26 = float4(_261.x, _261.y, _26.z, _26.w);
-    float2 _273 = (Vertex_2.xy * (_58__m36).xx) + _26.xy;
-    o.Varying_0 = float4(o.Varying_0.x, o.Varying_0.y, _273.x, _273.y);
-    _47 = dot(_25.xyz, _25.xyz);
-    _47 = rsqrt(_47);
-    float3 _287 = (_47).xxx * _25.xyz;
-    _25 = float4(_287.x, _287.y, _287.z, _25.w);
-    _35.x = dot(_58__m4, _25.xyz);
-    _47 = max(_35.x, -1.0);
-    _48 = min(_47, 1.0);
-    _26.x = (abs(_48) * (-0.0187292993068695068359375)) + 0.074261002242565155029296875;
-    _26.x = (_26.x * abs(_48)) + (-0.212114393711090087890625);
-    _26.x = (_26.x * abs(_48)) + 1.570728778839111328125;
-    _40 = (-abs(_48)) + 1.0;
-    _49 = _48 < (-_48);
-    _40 = sqrt(_40);
-    _43 = _40 * _26.x;
-    _43 = (_43 * (-2.0)) + 3.1415927410125732421875;
-    _47 = _49 ? _43 : 0.0;
-    _47 = (_26.x * _40) + _47;
-    _47 = (-_47) + 1.57079637050628662109375;
-    _35.x = _47 * 0.6366198062896728515625;
-    o.Varying_1.w = _35.x;
-    o.Varying_1 = float4(_25.xyz.x, _25.xyz.y, _25.xyz.z, o.Varying_1.w);
+
+    _26.xy = _47 * float2(1.2, 0.8);
+
+    o.Varying_0.zw = Vertex_2.xy * _58__m36 + _26.xy;
+
+
+
+    // Vertex_3.x = 171.435
+    // Vertex_3.y = 17.8982 ~ 153.264
+    // Vertex_3.z = 0.4
+    // Vertex_3.w = 0.6
+    
     _47 = (-Vertex_3.w) + 1.0;
     _47 = 1.0 / _47;
+    
     _26.x = max(Vertex_3.x, 9.9999997473787516355514526367188e-06);
     _26.x = Vertex_3.y / _26.x;
     _26.x *= _58__m33;
@@ -206,13 +182,13 @@ v2f vert (appdata v)
     _26.x *= _40;
     _47 = ((-_26.x) * _47) + 1.0;
     o.Varying_2.w = _47;
-    o.Varying_2 = float4(o.Varying_2.x, Vertex_1.zw.x, Vertex_1.zw.y, o.Varying_2.w);
-    _42.x = dot(_25.xyz, float3(_58__m14.x, _58__m14.y, _58__m14.z));
+    o.Varying_2.yz = Vertex_1.zw;
+    _42.x = dot(_relativeToRoleDir, _58__m14);
     _35.z = (_42.x * 0.5) + 0.5;
     o.Varying_2.x = _35.z * _58__m34;
     _50 = max(_58__m10, 9.9999997473787516355514526367188e-05);
     _50 = 1.0 / _50;
-    _29.x = _50 * abs(_35.x);
+    _29.x = _50 * abs(_angle_up_to_down_1_n1);
     _29.y = 0.5;
     _44.y = 0.5;
     _47 = tex2Dlod(_IrradianceMap, float4(_29, 0.0, 0.0)).x;
@@ -232,7 +208,7 @@ v2f vert (appdata v)
     _36 = ((_47) * _36) + _37;
     _50 = max(_58__m13, 9.9999997473787516355514526367188e-05);
     _50 = 1.0 / _50;
-    _44.x = _50 * abs(_35.x);
+    _44.x = _50 * abs(_angle_up_to_down_1_n1);
     _47 = tex2Dlod(_IrradianceMap, float4(_44, 0.0, 0.0)).y;
     _37 = float3(_58__m11.x * _58__m12, _58__m11.y * _58__m12, _58__m11.z * _58__m12);
     _37 = (_47) * _37;
@@ -253,9 +229,9 @@ v2f vert (appdata v)
     _50 = ((-_51) * _50) + 1.0;
     _35.x = (_35.x * _50) + _52;
     _36 = (_37 * _35.xxx) + _36;
-    _47 = dot(_25.xyz, _58__m4);
+    _47 = dot(_relativeToRoleDir, _UpDir);
     _35.x = abs(_47) * _58__m18;
-    _33.x = dot(float3(_58__m14.x, _58__m14.y, _58__m14.z), _25.xyz);
+    _33.x = dot(float3(_58__m14.x, _58__m14.y, _58__m14.z), _relativeToRoleDir);
     _33.x = (_33.x * 0.5) + 0.5;
     _33.x = clamp(_33.x, 0.0, 1.0);
     _41.x = log2(_33.x);
@@ -287,9 +263,9 @@ v2f vert (appdata v)
     float3 _853 = (_41 * (_47)) + _36;
     _33 = float4(_853.x, _853.y, _853.z, _33.w);
     o.Varying_3 = _33.xyz;
-    _47 = dot(_58__m21, _25.xyz);
+    _47 = dot(_58__m21, _relativeToRoleDir);
     _47 = clamp(_47, 0.0, 1.0);
-    _35.x = dot(_25.xyz, _58__m21);
+    _35.x = dot(_relativeToRoleDir, _58__m21);
     _35.x = (_35.x * 0.5) + 0.5;
     float2 _886 = _35.xz + (-float2(_58__m17, _58__m17));
     _35 = float3(_886.x, _35.y, _886.y);
