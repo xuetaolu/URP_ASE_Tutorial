@@ -20,7 +20,7 @@ struct appdata
 struct v2f
 {
     float4 vertex : SV_POSITION;
-    float4 Varying_0 : TEXCOORD0;
+    float4 Varying_MaskMapUvXY_DisturbanceNoiseUvZW : TEXCOORD0;
     float4 Varying_RelativeToRoleDirXYZ_Angle1_n1 : TEXCOORD1;
     float4 Varying_2 : TEXCOORD2;
     float3 Varying_3 : TEXCOORD3;

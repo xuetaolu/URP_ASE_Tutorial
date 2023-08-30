@@ -49,11 +49,11 @@ fixed4 frag (v2f i) : SV_Target
     _35 += _39.x;
     _41 = (-_35) + _41;
     _41 = 1.0 / _41;
-    float3 _171 = tex2D(_NoiseMapRGB, i.Varying_0.zw).xyz;
+    float3 _171 = tex2D(_NoiseMapRGB, i.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.zw).xyz;
     _33 = float4(_171.x, _171.y, _171.z, _33.w);
     _31 = _33.xy + (-0.5);
     _31 = _33.zz * _31;
-    _30 = (_31 * float2(_45__m2, _45__m2)) + i.Varying_0.xy;
+    _30 = (_31 * float2(_45__m2, _45__m2)) + i.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.xy;
     _33 = tex2D(_MaskMapRGBA, _30);
     _35 = (-_35) + _33.z;
     _35 = _41 * _35;

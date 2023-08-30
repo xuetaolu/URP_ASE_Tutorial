@@ -40,7 +40,8 @@
 #define _58__m23 3.29897 // _58._m23
 #define _58__m24 0.19794 // _58._m24
 #define _58__m25 0.50    // _58._m25
-#define _58__m26 262.33862 // _58._m26
+#define _DisturbanceNoiseOffset2 262.33862 // _58._m26
+// uniform float _58__m26;
 #define _58__m27 float3(0.05199, 0.10301, 0.13598) // _58._m27
 #define _58__m28 float3(0.10391, 0.41824, 0.88688) // _58._m28
 #define _58__m29 float3(0.00, 0.03576, 0.12083   ) // _58._m29
@@ -49,10 +50,12 @@
 #define _58__m32 0.11        // _58._m32
 #define _58__m33 1.00        // _58._m33
 #define _58__m34 0.8299      // _58._m34
-#define _MaskMapScale float2( 2.00, 4.00 ) // _58._m35
-// float2 _MaskMapScale;
-#define _58__m36 3.00        // _58._m36
-#define _58__m37 6.00        // _58._m37
+#define _MaskMapGridSize float2( 2.00, 4.00 ) // _58._m35
+// float2 _MaskMapGridSize;
+#define _DisturbanceNoiseScale 3.00        // _58._m36
+#define _DisturbanceNoiseOffset 6.00        // _58._m37
+// uniform float _DisturbanceNoiseS;
+// uniform float _58__m37;
 #define _58__m38 1.00        // _58._m38
 
 sampler2D _IrradianceMap;
@@ -72,8 +75,11 @@ v2f vert (appdata v)
 {
 
     float4 Vertex_Position = v.vertex;
+
+    // Vertex_1.y = {0, 0.28235, 0.42745, 0.56863, 0.8549, 1.0}
     float4 Vertex_1 = v.color;
-    float4 Vertex_2 = float4( v.uv, 0,0 ) ;
+    
+    float4 Vertex_uv = float4( v.uv, 0,0 ) ;
     
     // Vertex_3.x = 171.435
     // Vertex_3.y = 17.8982 ~ 153.264
@@ -92,7 +98,7 @@ v2f vert (appdata v)
     float3 _36;
     float3 _37;
     float _39;
-    float _40;
+
     float3 _41;
     float3 _42;
 
@@ -129,30 +135,36 @@ v2f vert (appdata v)
 
 
     
-    float _47;
-    _47 = (_MaskMapScale.x * _MaskMapScale.y) + (-1.0);
-    _47 = (Vertex_1.y * _47) + 0.5;
-    _47 = floor(_47);
+    {
+        // #define _MaskMapGridSize float2( 2.00, 4.00 ) // _58._m35
+        // 测试发现，_MaskMapGridSize.x < 0 时需要改成 +1, _MaskMapGridSize.x < 0 才是正确的左右翻转效果
+        // 原神则均是 -1.0
+        float _gridIndex_0_7;
+        _gridIndex_0_7 = _MaskMapGridSize.x * _MaskMapGridSize.y + (_MaskMapGridSize.x >= 0 ? -1.0 : +1.0); // 7
+
+        // Vertex_1.y         = {0,     0.28235, 0.42745, 0.56863, 0.8549, 1.0}
+        // Vertex_1.y * 7     = {0,     1.97645, 2.99215, 3.98041, 5.9843, 7.0}
+        // floor(_gridIndex_0_7 + 0.5)  = {0,     2,       3,       4,       6,      7}
+        _gridIndex_0_7 = (Vertex_1.y * _gridIndex_0_7); // 0~7
+        _gridIndex_0_7 = floor(_gridIndex_0_7 + 0.5);
+        
+        
+        float _gridSizeX = abs(_MaskMapGridSize.x);
+        float _gridIndex_x = frac(_gridIndex_0_7 / _gridSizeX) * _gridSizeX;
+        
+        float _gridIndex_y = floor(_gridIndex_0_7 / _MaskMapGridSize.x);
+
+        float2 _gridRootIntUVAtLeftDown = float2(_gridIndex_x, _gridIndex_y);
+
+        float2 _gridUVStartAtLeftDown = _gridRootIntUVAtLeftDown + Vertex_uv.xy;
+
+        o.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.xy = _gridUVStartAtLeftDown/_MaskMapGridSize;
+    }
     
-    float4 _26;
-    _26.x = _47 * _MaskMapScale.x;
-    _32 = _26.x >= (-_26.x);
-    _26.x = _32 ? _MaskMapScale.x : (-_MaskMapScale.x);
-    _40 = 1.0 / _26.x;
-    _40 = _47 * _40;
-    _47 /= _MaskMapScale.x;
-    float4 _33;
-    _33.y = floor(_47);
-    _47 = frac(_40);
-    _33.x = _47 * _26.x;
-    _26.xy = _33.xy + Vertex_2.xy;
-
-    o.Varying_0.xy = float2(_26.x / _MaskMapScale.x, _26.y / _MaskMapScale.y);
-    _47 = _58__m26 * _58__m37;
-
-    _26.xy = _47 * float2(1.2, 0.8);
-
-    o.Varying_0.zw = Vertex_2.xy * _58__m36 + _26.xy;
+    // #define _58__m26 262.33862 // _58._m26
+    // #define _58__m37 6.00        // _58._m37
+    // #define _58__m36 3.00        // _58._m36
+    o.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.zw = Vertex_uv.xy * _DisturbanceNoiseScale + float2(1.2, 0.8) * _DisturbanceNoiseOffset2 * _DisturbanceNoiseOffset;
 
 
 
@@ -160,13 +172,14 @@ v2f vert (appdata v)
     // Vertex_3.y = 17.8982 ~ 153.264
     // Vertex_3.z = 0.4
     // Vertex_3.w = 0.6
-    
+float _47;
     _47 = (-Vertex_3.w) + 1.0;
     _47 = 1.0 / _47;
-    
+float4 _26;
     _26.x = max(Vertex_3.x, 9.9999997473787516355514526367188e-06);
     _26.x = Vertex_3.y / _26.x;
     _26.x *= _58__m33;
+float _40;
     _40 = (_26.x * _58__m38) + (-Vertex_3.w);
     _26.x *= _58__m38;
     _47 *= _40;
@@ -231,6 +244,7 @@ v2f vert (appdata v)
     _36 = (_37 * _35.xxx) + _36;
     _47 = dot(_relativeToRoleDir, _UpDir);
     _35.x = abs(_47) * _58__m18;
+float4 _33;
     _33.x = dot(float3(_58__m14.x, _58__m14.y, _58__m14.z), _relativeToRoleDir);
     _33.x = (_33.x * 0.5) + 0.5;
     _33.x = clamp(_33.x, 0.0, 1.0);
