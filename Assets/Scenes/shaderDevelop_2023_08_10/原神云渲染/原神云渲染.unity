@@ -140,12 +140,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1213621674280000219, guid: c47df89e1c7eb5347bc3bbac59913a6c, type: 3}
       propertyPath: m_Cameras.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1213621674280000219, guid: c47df89e1c7eb5347bc3bbac59913a6c, type: 3}
       propertyPath: m_Cameras.Array.data[0]
       value: 
       objectReference: {fileID: 1257071818}
+    - target: {fileID: 1213621674280000219, guid: c47df89e1c7eb5347bc3bbac59913a6c, type: 3}
+      propertyPath: m_Cameras.Array.data[1]
+      value: 
+      objectReference: {fileID: 7976858451229609037}
+    - target: {fileID: 1476206232007360570, guid: c47df89e1c7eb5347bc3bbac59913a6c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1867247379776368101, guid: c47df89e1c7eb5347bc3bbac59913a6c, type: 3}
       propertyPath: m_Texture
       value: 
@@ -168,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6486735669570401826, guid: c47df89e1c7eb5347bc3bbac59913a6c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 22.69
       objectReference: {fileID: 0}
     - target: {fileID: 6486735669570401826, guid: c47df89e1c7eb5347bc3bbac59913a6c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -687,7 +695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1474823604502273846
 AudioListener:
   m_ObjectHideFlags: 0
@@ -774,7 +782,7 @@ MonoBehaviour:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras:
   - {fileID: 1257071818}
   m_RendererIndex: -1
@@ -920,7 +928,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 100
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 32

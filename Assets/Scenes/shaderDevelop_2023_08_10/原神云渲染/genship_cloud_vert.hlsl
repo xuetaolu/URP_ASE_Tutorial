@@ -19,15 +19,15 @@
 // }; //_58._m2
 #define _RolePos_maybe  float3(-3.48413, 195.00, 2.47919) // _58._m3
 #define _UpDir  float3(0.00, 1.00, 0.00         ) // _58._m4
-#define _58__m5  float3(0.00972, 0.02298, 0.06016) // _58._m5
-#define _58__m6  float3(0.00972, 0.02298, 0.06016) // _58._m6
-#define _58__m7  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
-#define _58__m8  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
-#define _58__m9  0.49336  // _58._m9
-#define _58__m10 0.20     // _58._m10
-#define _58__m11 float3(0.00837, 0.10516, 0.26225) // _58._m11
-#define _58__m12 0.50 // _58._m12
-#define _58__m13 0.30 // _58._m13
+#define _SkyColorCenter  float3(0.00972, 0.02298, 0.06016) // _58._m5
+#define _SkyColorAround  float3(0.00972, 0.02298, 0.06016) // _58._m6
+#define _SunColorCenter  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
+#define _SunColorAround  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
+#define _LDotDir_n11_RemapDownAt0_A  0.49336  // _58._m9
+#define _IrradianceMapR_maxAngleRange 0.20     // _58._m10
+#define _IrradianceMapG_Color float3(0.00837, 0.10516, 0.26225) // _58._m11
+#define _IrradianceMapG_Intensity 0.50 // _58._m12
+#define _IrradianceMapG_maxAngleRange 0.30 // _58._m13
 #define _lightDir_maybe float3(0.00688, -0.84638, -0.53253) // _58._m14
 #define _58__m15 float3(0.01938, 0.00651, 0.02122  ) // _58._m15
 #define _58__m16 4.09789 // _58._m16
@@ -46,7 +46,7 @@
 #define _58__m28 float3(0.10391, 0.41824, 0.88688) // _58._m28
 #define _58__m29 float3(0.00, 0.03576, 0.12083   ) // _58._m29
 #define _58__m30 float3(0.02281, 0.05716, 0.14666) // _58._m30
-#define _58__m31 0.0881      // _58._m31
+#define _LDotDir_n11_RemapDownAt0_B 0.0881      // _58._m31
 #define _58__m32 0.11        // _58._m32
 #define _58__m33 1.00        // _58._m33
 #define _58__m34 0.8299      // _58._m34
@@ -94,7 +94,7 @@ v2f vert (appdata v)
 
     
     
-    float2 _29;
+    // float2 _29;
 
     float3 _35;
     float3 _36;
@@ -102,9 +102,9 @@ v2f vert (appdata v)
     float _39;
 
     float3 _41;
-    float3 _42;
 
-    float2 _44;
+
+    // float2 _44;
     float _45;
     float _46;
 
@@ -112,7 +112,7 @@ v2f vert (appdata v)
 
     float _50;
     float _51;
-    float _52;
+    // float _52;
     
 
     float4 _WorldPos = mul(UNITY_MATRIX_M, Vertex_Position);
@@ -126,9 +126,11 @@ v2f vert (appdata v)
     float3 _worldPos_relativeToRole = _WorldPos.xyz - _RolePos_maybe;
     
     float3 _relativeToRoleDir = normalize(_worldPos_relativeToRole);
-    
-    _miu = clamp(dot(_UpDir, _relativeToRoleDir), -1.0, 1.0);
-    
+
+    float _rawUpDotDir = dot(_UpDir, _relativeToRoleDir);
+    _miu = clamp(_rawUpDotDir, -1.0, 1.0);
+
+    // (1.57079632679 - acos(x)) * 0.636619772367
     float _angle_up_to_down_1_n1 = (UNITY_HALF_PI - FastAcos(_miu)) * UNITY_INV_HALF_PI;
 
     o.Varying_RelativeToRoleDirXYZ_Angle1_n1.w = _angle_up_to_down_1_n1;
@@ -168,12 +170,7 @@ v2f vert (appdata v)
     // #define _58__m36 3.00        // _58._m36
     o.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.zw = Vertex_uv.xy * _DisturbanceNoiseScale + float2(1.2, 0.8) * _DisturbanceNoiseOffset2 * _DisturbanceNoiseOffset;
     
-
-        // float smoothstep(float t1, float t2, float x) {
-        //   x = clamp((x - t1) / (t2 - t1), 0.0, 1.0); 
-        //   return x * x * (3 - 2 * x);
-        // }
-
+    
     // #define _lightDir_maybe float3(0.00688, -0.84638, -0.53253) // _58._m14
     float _LDotDir = dot(_relativeToRoleDir, _lightDir_maybe);
     float _LDotDirRemap01 = _LDotDir * 0.5 + 0.5;
@@ -191,60 +188,90 @@ v2f vert (appdata v)
     // o.Varying_2.w 是 _Vertex_y_present_fix 01 映射到 1 \ 0 / 1 的平滑图案，其中 0.4 处达到最低位 0, 0.6 处离开最低位 0
     o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.w = 1.0 - smoothstep(0, Vertex_DensityParamsXYZW.z, _Vertex_y_present_fix) * (1.0 - smoothstep(Vertex_DensityParamsXYZW.w, 1.0, _Vertex_y_present_fix));
     
+    // #define _IrradianceMapR_maxAngleRange 0.20     // _58._m10
+    // _irradianceMapR 最左边是 0 度的，最右边是 0.2*90°=18° 的，即只记录水平朝向的值，更高，更低的值都是 18° 的值。
+    float2 _irradianceMap_R_uv;
+        _irradianceMap_R_uv.x = abs(_angle_up_to_down_1_n1) / max(_IrradianceMapR_maxAngleRange, 1.0e-04);
+        _irradianceMap_R_uv.y = 0.5;
     
-    _50 = max(_58__m10, 1.0e-04);
-    _50 = 1.0 / _50;
-    _29.x = _50 * abs(_angle_up_to_down_1_n1);
-    _29.y = 0.5;
-    _44.y = 0.5;
+
+    float _irradianceMapR = tex2Dlod(_IrradianceMap, float4(_irradianceMap_R_uv, 0.0, 0.0)).x;
+    
+
+    // #define _LDotDir_n11_RemapDownAt0_A  0.49336  // _58._m9
+    // #define _LDotDir_n11_RemapDownAt0_B 0.0881      // _58._m31
+    // 意思是一条直线 y = 1
+    //    绕着 (1, 1) 点，在 x=0 处往下压，如果 是 0.8，那就变成 0~1 remap 到 0.2~1
+    // 后续这个值还会做 pow(, 3) 的运算，加速在 0 处的下降，只有接近 1 处有值，类似 sunDisk 的实现
+
+
+    float _LDotDirRemapA = _LDotDir * _LDotDir_n11_RemapDownAt0_A + (-_LDotDir_n11_RemapDownAt0_A) + 1.0;
+    float _LDotDirRemapB = _LDotDir * _LDotDir_n11_RemapDownAt0_B + (-_LDotDir_n11_RemapDownAt0_B) + 1.0;
+    _LDotDirRemapA = max(_LDotDirRemapA, 0);
+    _LDotDirRemapB = max(_LDotDirRemapB, 0);
+
+    float _LDotDirRemapA_pow3 = _LDotDirRemapA * _LDotDirRemapA * _LDotDirRemapA;
+    // #define _SunColorCenter  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
+    // #define _SunColorAround  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
+    // _sunColor 这里指 _irradianceMapR 为 1 的颜色，可能不是 sun
+    float3 _sunColor = lerp(_SunColorAround, _SunColorCenter, _LDotDirRemapA_pow3);
+    
+    // #define _SkyColorCenter  float3(0.00972, 0.02298, 0.06016) // _58._m5
+    // #define _SkyColorAround  float3(0.00972, 0.02298, 0.06016) // _58._m6
+    // _skyColor 这里指 _irradianceMapR 为 0 的颜色，理解成天空大气颜色 sky 可行
+    float3 _skyColor = lerp(_SkyColorAround, _SkyColorCenter, _LDotDirRemapA_pow3);
+
+    float3 _irradianceRColor = lerp( _skyColor, _sunColor, _irradianceMapR );
+
+    float2 _irradianceMap_G_uv;
+    // #define _IrradianceMapG_maxAngleRange 0.30 // _58._m13
+    // _irradianceMapR 最左边是 0 度的，最右边是 0.3*90°=27° 的，即只记录水平朝向的值，更高，更低的值都是 27° 的值。
+        _irradianceMap_G_uv.x = abs(_angle_up_to_down_1_n1) / max(_IrradianceMapG_maxAngleRange, 1.0e-04);
+        _irradianceMap_G_uv.y = 0.5;
+
+    float _irradianceMapG = tex2Dlod(_IrradianceMap, float4(_irradianceMap_G_uv, 0.0, 0.0)).y;
+
+    // #define _IrradianceMapG_Color float3(0.00837, 0.10516, 0.26225) // _58._m11
+    // #define _IrradianceMapG_Intensity 0.50 // _58._m12
+    float3 _irradianceMapGColor = _irradianceMapG * _IrradianceMapG_Color * _IrradianceMapG_Intensity;
+
+        // float smoothstep(float t1, float t2, float x) {
+        //   x = clamp((x - t1) / (t2 - t1), 0.0, 1.0); 
+        //   return x * x * (3 - 2 * x);
+        // }
+
+    // smoothstep(0, 1, clamp( (abs(x)-0.2) * 10/3, 0, 1))
+    // 从 0.2 处离开0，平滑上升，0.5 处开始达到最大 1.0 
+    float _lightDirY_remap_smooth01 = smoothstep(0, 1, clamp( (abs(_lightDir_maybe.y) - 0.2) * 10/3, 0, 1 ));
+    
+    // smoothstep(0, 1, max((clamp(x, 0.0, 1.0)-1)/0.7 + 1, 0.0))
+    // y=x 直线，固定 (1, 1) 点不动，旋转，使其斜率变成 1/0.7，加速衰减，并 smooth
+    float _LDotDir_01_remapFade_smooth = smoothstep(0, 1, max((clamp(_LDotDirRemap01, 0.0, 1.0)-1)/0.7 + 1, 0.0));
+
+    // 意思是优先判断高度，高的地方就是固定 _irradianceMapGColor
+    //       lightDirY > 0.5 处是 _irradianceMapGColor
+    //       lightDirY < 0.2 处是 _LDotDir_01_remapFade_smooth * _irradianceMapGColor
+    // 
+    // 其次判断 _LDotDir 
+    float _LDotDirFinalRemap = lerp(_LDotDir_01_remapFade_smooth, 1.0, _lightDirY_remap_smooth01);
+    
+    float3 _sumIrradianceRGColor = _irradianceMapGColor * _LDotDirFinalRemap + _irradianceRColor;
+    // _36 = _sumIrradianceRGColor;
+    
 float _47;
-    _47 = tex2Dlod(_IrradianceMap, float4(_29, 0.0, 0.0)).x;
-    _42.z = (_LDotDir * _58__m9) + (-_58__m9);
-    _42.x = (_LDotDir * _58__m31) + (-_58__m31);
-    float2 _533 = _42.xz + (1.0);
-    _42 = float3(_533.x, _42.y, _533.y);
-    float2 _539 = max(_42.xz, (0.0));
-    _42 = float3(_539.x, _42.y, _539.y);
-    _36.x = _42.z * _42.z;
-    _50 = _42.z * _36.x;
-    _36 = _58__m7 + (-_58__m8);
-    _36 = ((_50) * _36) + _58__m8;
-    _37 = _58__m5 + (-_58__m6);
-    _37 = ((_50) * _37) + _58__m6;
-    _36 += (-_37);
-    _36 = ((_47) * _36) + _37;
-    _50 = max(_58__m13, 9.9999997473787516355514526367188e-05);
-    _50 = 1.0 / _50;
-    _44.x = _50 * abs(_angle_up_to_down_1_n1);
-    _47 = tex2Dlod(_IrradianceMap, float4(_44, 0.0, 0.0)).y;
-    _37 = float3(_58__m11.x * _58__m12, _58__m11.y * _58__m12, _58__m11.z * _58__m12);
-    _37 = (_47) * _37;
-    _35.x = abs(_lightDir_maybe.y) + (-0.20000000298023223876953125);
-    _35.x *= 3.3333332538604736328125;
-    _35.x = clamp(_35.x, 0.0, 1.0);
-    _50 = (_35.x * (-2.0)) + 3.0;
-    _35.x *= _35.x;
-    _35.x *= _50;
-    _50 = _LDotDirRemap01;
-    _50 = clamp(_50, 0.0, 1.0);
-    _50 += (-0.300000011920928955078125);
-    _50 *= 1.4285714626312255859375;
-    _50 = max(_50, 0.0);
-    _51 = (_50 * (-2.0)) + 3.0;
-    _50 *= _50;
-    _52 = _50 * _51;
-    _50 = ((-_51) * _50) + 1.0;
-    _35.x = (_35.x * _50) + _52;
-    _36 = (_37 * _35.xxx) + _36;
-    _47 = dot(_relativeToRoleDir, _UpDir);
-    _35.x = abs(_47) * _58__m18;
+    // _47 = dot(_relativeToRoleDir, _UpDir);
+    // _47 = _rawUpDotDir;
+    _35.x = abs(_rawUpDotDir) * _58__m18;
 float4 _33;
-    _33.x = dot(float3(_lightDir_maybe.x, _lightDir_maybe.y, _lightDir_maybe.z), _relativeToRoleDir);
-    _33.x = (_33.x * 0.5) + 0.5;
-    _33.x = clamp(_33.x, 0.0, 1.0);
+    // _33.x = dot(_lightDir_maybe, _relativeToRoleDir);
+    // _33.x = _LDotDir;
+    // _33.x = (_33.x * 0.5) + 0.5;
+    // _33.x = _LDotDirRemap01;
+    _33.x = clamp(_LDotDirRemap01, 0.0, 1.0);
+    
     _41.x = log2(_33.x);
     _45 = _41.x * _35.x;
-    _37 = _35.xxx * float3(0.100000001490116119384765625, 0.00999999977648258209228515625, 0.5);
+    _37 = _35.xxx * float3(0.1, 0.01, 0.5);
     float2 _750 = _41.xx * _37.xy;
     _41 = float3(_750.x, _41.y, _750.y);
     float2 _755 = exp2(_41.xz);
@@ -259,7 +286,7 @@ float4 _33;
     _35.x = log2(_33.x);
     _35.x *= _37.z;
     _35.x = exp2(_35.x);
-    _35.x = _47 * _35.x;
+    _35.x = _rawUpDotDir * _35.x;
     _35.x = clamp(_35.x, 0.0, 1.0);
     _35.x *= _58__m20;
     _37 = _35.xxx * _58__m15;
@@ -268,7 +295,7 @@ float4 _33;
     _33.x = (_47 * (-2.0)) + 3.0;
     _47 *= _47;
     _47 *= _33.x;
-    float3 _853 = (_41 * (_47)) + _36;
+    float3 _853 = (_41 * (_47)) + _sumIrradianceRGColor;
     _33 = float4(_853.x, _853.y, _853.z, _33.w);
     o.Varying_3 = _33.xyz;
     _47 = dot(_58__m21, _relativeToRoleDir);
@@ -322,8 +349,9 @@ float4 _33;
     _35.x *= _35.x;
     _36 = (_58__m19 * _35.xxx) + _36;
     o.Varying_5 = (_50) * _36;
-    _35.x = _42.x * _42.x;
-    _35.x = _42.x * _35.x;
+    // _35.x = _LDotDirRemapB * _LDotDirRemapB;
+    _35.x = _LDotDirRemapB * _LDotDirRemapB * _LDotDirRemapB;
+float3 _42;
     _42 = _58__m27 + (-_58__m28);
     o.Varying_6 = (_35.xxx * _42) + _58__m28;
     _42 = _58__m29 + (-_58__m30);

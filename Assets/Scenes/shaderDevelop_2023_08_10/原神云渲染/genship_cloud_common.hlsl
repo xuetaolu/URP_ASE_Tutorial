@@ -8,6 +8,11 @@ float4 GlslToDxClipPos(float4 clipPos) {
     return clipPos;
 }
 
+float Remap(float In, float InMin, float InMax, float OutMin, float OutMax)
+{
+    return OutMin + (In - InMin) * (OutMax - OutMin) / (InMax - InMin);
+}
+
 struct appdata
 {
     float4 vertex : POSITION;
