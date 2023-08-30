@@ -2,7 +2,7 @@ Shader "xue/genship_skybox"
 {
     Properties
     {
-        // /* day °×Ìì: sun sky ÊôÐÔ start
+        // /* day ç™½å¤©: sun sky å±žæ€§ start
         _sunScatterColorLookAt("sunScatterColorLookAt", Color) = (0.00326,0.18243,0.63132,1)
         _sunScatterColorBeside("sunScatterColorBeside", Color) = (0.02948,0.1609,0.27936,1)
         _sunOrgColorLookAt("sunOrgColorLookAt", Color) = (0.30759,0.346,0.24592,1)
@@ -21,7 +21,7 @@ Shader "xue/genship_skybox"
         [NoScaleOffset]_TransmissionRGMap("TransmissionRGMap", 2D) = "white" {}
         // -------------------------- */ 
         
-        // /* night Ò¹Íí: moon ÊôÐÔ 
+        // /* night å¤œæ™š: moon å±žæ€§ 
         _moon_size("c_moon_size", Range(0, 1)) = 0.19794
         _moon_intensity_control01("c_moon_intensity_control01", Range(0, 4)) = 3.29897
         _moon_intensity_max("c_moon_intensity_max", Range(0, 1)) = 0.19794
@@ -29,7 +29,7 @@ Shader "xue/genship_skybox"
         _moon_color("moon_color", Color) = (0.15519, 0.18858, 0.2653, 1)
         // -------------------------- */
         
-        // /* night Ò¹Íí: star ÊôÐÔ 
+        // /* night å¤œæ™š: star å±žæ€§ 
         _starColorIntensity("starColorIntensity", Range(0, 10)) = 0.8466
         _starIntensityLinearDamping("starIntensityLinearDamping", Range(0, 1)) = 0.80829
         
@@ -66,7 +66,7 @@ Shader "xue/genship_skybox"
             #pragma vertex vert
             #pragma fragment frag
             
-            // /* day °×Ìì: sun sky ÊôÐÔ start
+            // /* day ç™½å¤©: sun sky å±žæ€§ start
             float3 _sunScatterColorLookAt;
             float3 _sunScatterColorBeside;
             float3 _sunOrgColorLookAt;
@@ -85,7 +85,7 @@ Shader "xue/genship_skybox"
             sampler2D _TransmissionRGMap;
             // -------------------------- */
             
-            // /* night Ò¹Íí: moon ÊôÐÔ 
+            // /* night å¤œæ™š: moon å±žæ€§ 
             float _moon_size;
             float _moon_intensity_control01;
             float _moon_intensity_max;
@@ -93,7 +93,7 @@ Shader "xue/genship_skybox"
             float3 _moon_color;
             // -------------------------- */
             
-            // /* night Ò¹Íí: star ÊôÐÔ 
+            // /* night å¤œæ™š: star å±žæ€§ 
             float _starColorIntensity;
             float _starIntensityLinearDamping;
             
@@ -134,23 +134,59 @@ Shader "xue/genship_skybox"
 
             #define _const_up_vector float3(0,1,0)
             
-            float MiuLut(float u) {
-                u = abs(u);
-                return ((u * (-0.0187292993068695068359375) + 0.074261002242565155029296875) 
-                    * u + (-0.212114393711090087890625))
-                        * u + 1.570728778839111328125;
+            // float MiuLut(float u) {
+            //     u = abs(u);
+            //     return ((u * (-0.0187292993068695068359375) + 0.074261002242565155029296875) 
+            //         * u + (-0.212114393711090087890625))
+            //             * u + 1.570728778839111328125;
+            // }
+            //
+            // float GetFinalMiuResult(float u) {
+            //     float _miuLut = MiuLut(u);
+            //     float _sqrtOneMinusMiu = sqrt(1.0 - abs(u));
+            //     float _sqrtOneMinusMiu_multi_lut = _sqrtOneMinusMiu * _miuLut;
+            //     float tmp0 = u < 0 ? (_sqrtOneMinusMiu_multi_lut * (-2.0)) + 3.1415927410125732421875 : 0.0;
+            //
+            //     tmp0 = (_sqrtOneMinusMiu_multi_lut) + tmp0;
+            //     tmp0 = (-tmp0) + 1.57079637050628662109375;
+            //     float finalMiuResult = tmp0 * 0.6366198062896728515625;
+            //     return finalMiuResult;
+            // }
+
+
+            float FastAcosForAbsCos(float in_abs_cos) {
+                float _local_tmp = ((in_abs_cos * -0.0187292993068695068359375 + 0.074261002242565155029296875) * in_abs_cos - 0.212114393711090087890625) * in_abs_cos + 1.570728778839111328125;
+                return _local_tmp * sqrt(1.0 - in_abs_cos);
             }
 
-            float GetFinalMiuResult(float u) {
-                float _miuLut = MiuLut(u);
-                float _sqrtOneMinusMiu = sqrt(1.0 - abs(u));
-                float _sqrtOneMinusMiu_multi_lut = _sqrtOneMinusMiu * _miuLut;
-                float tmp0 = u < 0 ? (_sqrtOneMinusMiu_multi_lut * (-2.0)) + 3.1415927410125732421875 : 0.0;
+            float FastAcos(float in_cos) {
+                float local_abs_cos = abs(in_cos);
+                float local_abs_acos = FastAcosForAbsCos(local_abs_cos);
+                return in_cos < 0.0 ?  PI - local_abs_acos : local_abs_acos;
+            }
 
-                tmp0 = (_sqrtOneMinusMiu_multi_lut) + tmp0;
-                tmp0 = (-tmp0) + 1.57079637050628662109375;
-                float finalMiuResult = tmp0 * 0.6366198062896728515625;
-                return finalMiuResult;
+            // å…¼å®¹åŽŸæœ¬çš„ GetFinalMiuResult(float u)
+            // çœŸæ­£çš„å«ä¹‰æ˜¯ acos(u) å¹¶å°† angle æ˜ å°„åˆ° up 1ï¼Œmiddle 0ï¼Œdown -1
+            float GetFinalMiuResult(float u)
+            {
+                // float abs_u = abs(u);
+                // float _miuLut =  ((abs_u * (-0.0187292993068695068359375) + 0.074261002242565155029296875) 
+                //      * abs_u + (-0.212114393711090087890625))
+                //          * abs_u + 1.570728778839111328125;
+                // float _sqrtOneMinusMiu = sqrt(1.0 - abs_u);
+                // float _sqrtOneMinusMiu_multi_lut = _sqrtOneMinusMiu * _miuLut;
+                //
+                // float tmp0 = 0;
+                // // tmp0 = u < 0 ? (_sqrtOneMinusMiu_multi_lut * (-2.0)) + 3.1415927410125732421875 : 0.0;
+                // tmp0 = u < 0 ? PI - _sqrtOneMinusMiu_multi_lut: _sqrtOneMinusMiu_multi_lut;
+
+                // float tmp0 = FastAcos(u);
+                float _acos = FastAcos(u);
+                
+                // tmp0 = HALF_PI - tmp0;
+                // float finalMiuResult = (HALF_PI - tmp0) * INV_HALF_PI;
+                float angle1_to_n1 = (HALF_PI - _acos) * INV_HALF_PI;
+                return angle1_to_n1;
             }
 
             float3 GetLightDir()
@@ -210,7 +246,7 @@ Shader "xue/genship_skybox"
 
                 float _LDotV01_smooth = smoothstep(0, 1, _LDotV_remap);
 
-                // ÓÅÏÈ¿¼ÂÇ LDotV ×÷ÎªÌ«ÑôÇ¿¶ÈÈ¨ÖØ£¬Æä´ÎÊ¹ÓÃ Ì«Ñô¹â Y µÄ¸ß¶È
+                // ä¼˜å…ˆè€ƒè™‘ LDotV ä½œä¸ºå¤ªé˜³å¼ºåº¦æƒé‡ï¼Œå…¶æ¬¡ä½¿ç”¨ å¤ªé˜³å…‰ Y çš„é«˜åº¦
                 float _sun_T_color_Instensity = lerp(_LDotV01_smooth, 1, _lightDir_y_remap);
 
                 float _sky_T = tex2Dlod(_TransmissionRGMap, float4( abs(finalMiuResult)/max(_sky_scatter, 0.0001), 0.5, 0.0, 0.0 )).y;
@@ -274,7 +310,7 @@ Shader "xue/genship_skybox"
                 float _moon_disk_pow4 = _moon_disk_pow2 * _moon_disk_pow2;
                 float _moon_disk_pow6 = _moon_disk_pow4 * _moon_disk_pow2;
                 
-                // ÉÏ¼ýÍ·ÐÎ×´£¬0.5 ×î¸ß ÊÇ 1£¬×óÓÒ 0¡¢1 ÊÇ 0
+                // ä¸Šç®­å¤´å½¢çŠ¶ï¼Œ0.5 æœ€é«˜ æ˜¯ 1ï¼Œå·¦å³ 0ã€1 æ˜¯ 0
                 float _moon_slider_value = -abs(_moon_intensity_slider - 0.5) * 2.0 + 1.0;
                 // #define _moon_intensity_max  (0.19794)       // _43._m9
                 float _moon_intensity = _moon_slider_value * _moon_intensity_max * _moon_disk_pow6;
@@ -295,7 +331,7 @@ Shader "xue/genship_skybox"
                 float _star_intensity = _star * _miuResult;
                 _star_intensity *= 3.0;
                 
-                // _starIntensityLinearDamping ÐÇÐÇÁÁ¶ÈÖ±ÏßÏÂ½µ£¬Ô½´óÔ½²»ÁÁ
+                // _starIntensityLinearDamping æ˜Ÿæ˜Ÿäº®åº¦ç›´çº¿ä¸‹é™ï¼Œè¶Šå¤§è¶Šä¸äº®
                 float _starColorNoise = tex2D(_NoiseMap, i.Varying_StarColorUVAndNoise_UV.zw).r;
                 float _starIntensityDamping = (_starColorNoise - _starIntensityLinearDamping) / (1.0 -_starIntensityLinearDamping);
                 _starIntensityDamping = clamp(_starIntensityDamping, 0.0, 1.0);
