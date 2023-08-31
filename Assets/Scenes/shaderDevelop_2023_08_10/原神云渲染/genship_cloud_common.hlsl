@@ -30,9 +30,9 @@ struct v2f
     float4 Varying_DesityRefW_ColorzwYZ_LDotDir01FixX : TEXCOORD2;
     float3 Varying_IrradianceColor : TEXCOORD3;
     float3 Varying_TwoPartColor : TEXCOORD4;
-    float3 Varying_MoreFadeTwoPartColor : TEXCOORD5;
-    float3 Varying_BColor_1 : TEXCOORD6;
-    float3 Varying_BColor_2 : TEXCOORD7;
+    float3 Varying_TransmissionTwoPartColor : TEXCOORD5;
+    float3 Varying_CloudColor_1 : TEXCOORD6;
+    float3 Varying_CloudColor_2 : TEXCOORD7;
 };
 
 #endif

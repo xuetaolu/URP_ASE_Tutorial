@@ -188,8 +188,8 @@ v2f vert (appdata v)
         // #define _BColor_1_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
         // #define _BColor_2_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
         // #define _BColor_2_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
-        o.Varying_BColor_1 = lerp(_BColor_1_Around, _BColor_1_Center, _LDotDirRemapB_pow3);
-        o.Varying_BColor_2 = lerp(_BColor_2_Around, _BColor_2_Center, _LDotDirRemapB_pow3);
+        o.Varying_CloudColor_1 = lerp(_BColor_1_Around, _BColor_1_Center, _LDotDirRemapB_pow3);
+        o.Varying_CloudColor_2 = lerp(_BColor_2_Around, _BColor_2_Center, _LDotDirRemapB_pow3);
     }
 
 
@@ -303,7 +303,7 @@ v2f vert (appdata v)
         
         float3 _moreFadeTwoPartColor = _moreFadeTwoPartColorA + _moreFadeTwoPartColorB;
 
-        o.Varying_MoreFadeTwoPartColor = _adjust_1_to_0_for_0d3_to_0d7 * _moreFadeTwoPartColor;
+        o.Varying_TransmissionTwoPartColor = _adjust_1_to_0_for_0d3_to_0d7 * _moreFadeTwoPartColor;
     }
 
     
