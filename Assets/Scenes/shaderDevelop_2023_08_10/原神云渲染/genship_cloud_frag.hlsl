@@ -7,6 +7,8 @@
 // 扰动 mask uv 噪声图，其中 rg 表示 uv.xy -0.5~0.5 的基础扰动，b 是扰动缩放
 sampler2D _NoiseMapRGB;
 
+// r cloud 染色，1 代表完全 CloudColor_1，0 代表完全 CloudColor_2
+// y 云浓度低时的透射区域，一般是边缘区域
 // z alpha 分子，
 // w alpha 全局
 sampler2D _MaskMapRGBA;

@@ -24,10 +24,10 @@
 #define _58__m24 0.19794 // _58._m24
 #define _01_RemapTo_Center1_TwoSide0 0.50    // _58._m25
 #define _DisturbanceNoiseOffset2 262.33862 // _58._m26
-#define _BColor_1_Center float3(0.05199, 0.10301, 0.13598) // _58._m27
-#define _BColor_1_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
-#define _BColor_2_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
-#define _BColor_2_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
+#define _CloudColor_1_Center float3(0.05199, 0.10301, 0.13598) // _58._m27
+#define _CloudColor_1_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
+#define _CloudColor_2_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
+#define _CloudColor_2_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
 #define _LDotDir_n11_RemapDownAt0_B 0.0881      // _58._m31
 #define _58__m32 0.11        // _58._m32
 #define _58__m33 1.00        // _58._m33
@@ -184,12 +184,12 @@ v2f vert (appdata v)
     // o.Varying_BColor_1
     // o.Varying_BColor_2
     {
-        // #define _BColor_1_Center float3(0.05199, 0.10301, 0.13598) // _58._m27
-        // #define _BColor_1_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
-        // #define _BColor_2_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
-        // #define _BColor_2_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
-        o.Varying_CloudColor_1 = lerp(_BColor_1_Around, _BColor_1_Center, _LDotDirRemapB_pow3);
-        o.Varying_CloudColor_2 = lerp(_BColor_2_Around, _BColor_2_Center, _LDotDirRemapB_pow3);
+        // #define _CloudColor_1_Center float3(0.05199, 0.10301, 0.13598) // _58._m27
+        // #define _CloudColor_1_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
+        // #define _CloudColor_2_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
+        // #define _CloudColor_2_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
+        o.Varying_CloudColor_1 = lerp(_CloudColor_1_Around, _CloudColor_1_Center, _LDotDirRemapB_pow3);
+        o.Varying_CloudColor_2 = lerp(_CloudColor_2_Around, _CloudColor_2_Center, _LDotDirRemapB_pow3);
     }
 
 
