@@ -28,11 +28,11 @@ struct v2f
     float4 Varying_MaskMapUvXY_DisturbanceNoiseUvZW : TEXCOORD0;
     float4 Varying_RelativeToRoleDirXYZ_Angle1_n1 : TEXCOORD1;
     float4 Varying_DesityRefW_ColorzwYZ_LDotDir01FixX : TEXCOORD2;
-    float3 Varying_3 : TEXCOORD3;
-    float3 Varying_4 : TEXCOORD4;
-    float3 Varying_5 : TEXCOORD5;
-    float3 Varying_6 : TEXCOORD6;
-    float3 Varying_7 : TEXCOORD7;
+    float3 Varying_IrradianceColor : TEXCOORD3;
+    float3 Varying_TwoPartColor : TEXCOORD4;
+    float3 Varying_MoreFadeTwoPartColor : TEXCOORD5;
+    float3 Varying_BColor_1 : TEXCOORD6;
+    float3 Varying_BColor_2 : TEXCOORD7;
 };
 
 #endif
