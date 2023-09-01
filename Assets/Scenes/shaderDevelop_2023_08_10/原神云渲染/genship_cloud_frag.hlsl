@@ -1,6 +1,7 @@
 #define _CloudMainColorAddition 0.11   // _45._m0
 #define _AlphaDiv10_Smooth 1.00   // _45._m1
-#define _DisturbanceScale 0.0123 // _45._m2
+// #define _DisturbanceScale 0.0123 // _45._m2
+float _DisturbanceScale;
 #define _Alpha 1.00   // _45._m3
 #define _Alpha_Numerator_Bias 1.00   // _45._m4
 

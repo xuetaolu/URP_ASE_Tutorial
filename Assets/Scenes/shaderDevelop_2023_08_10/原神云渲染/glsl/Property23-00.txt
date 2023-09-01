@@ -1,0 +1,59 @@
+VS:
+_child0    1.00, 0.25, 6000.00, 0.00017          0   float4
+_child1                                          16  float4[4]
+_child1[0] 1.00, 0.00, 0.00, 0.00                16  float4
+_child1[1] 0.00, 1.00, 0.00, 0.00                32  float4
+_child1[2] 0.00, 0.00, 1.00, 0.00                48  float4
+_child1[3] 0.00, 0.00, 0.00, 1.00                64  float4
+_child2                                          80  float4[4]
+_child2[0] -1.32406, -0.0001, 0.22249, 0.22247   80  float4
+_child2[1] 4.28463E-10, 2.41421, 0.00, 0.00      96  float4
+_child2[2] -0.30169, 0.00045, -0.97502, -0.97494 112 float4
+_child2[3] -1.35973, -1207.10852, 3.3236, 3.8233 128 float4
+_child3    -1.82556, 160.00, 3.505               144 float3
+_child4    0.00, 1.00, 0.00                      160 float3
+_child5    0.00972, 0.02298, 0.06016             176 float3
+_child6    0.00972, 0.02298, 0.06016             192 float3
+_child7    0.0538, 0.09841, 0.2073               208 float3
+_child8    0.0538, 0.09841, 0.2073               224 float3
+_child9    0.51189                               236 float
+_child10   0.20                                  240 float
+_child11   0.01258, 0.18286, 0.46707             256 float3
+_child12   0.50333                               268 float
+_child13   0.30                                  272 float
+_child14   -0.08911, -0.94979, 0.29993           288 float3
+_child15   0.01938, 0.00651, 0.02122             304 float3
+_child16   3.36934                               316 float
+_child17   0.99918                               320 float
+_child18   103.39355                             324 float
+_child19   0.01938, 0.00651, 0.02122             336 float3
+_child20   -0.00556                              348 float
+_child21   0.58802, 0.7932, -0.15834             352 float3
+_child22   0.28049, 0.26639, 0.23747             368 float3
+_child23   7.01662                               380 float
+_child24   0.20                                  384 float
+_child25   0.50                                  388 float
+_child26   60.85411                              392 float
+_child27   0.00035, 0.14015, 0.33154             400 float3
+_child28   0.12649, 0.28959, 0.4889              416 float3
+_child29   0.00, 0.03576, 0.12083                432 float3
+_child30   0.02281, 0.05716, 0.14666             448 float3
+_child31   0.50565                               460 float
+_child32   0.11                                  464 float
+_child33   1.00                                  468 float
+_child34   0.4537                                472 float
+_child35   2.00, 4.00                            480 float2
+_child36   3.00                                  488 float
+_child37   6.00                                  492 float
+_child38   1.00                                  496 float
+
+
+PS:
+_child0 0.11 0 float
+_child1 1.00 4 float
+_child2 0.0123 8 float
+_child3 1.00 12 float
+_child4 1.00 16 float
+
+
+specID4 0 0 uint

@@ -1,41 +1,54 @@
 #include "genship_cloud_common.hlsl"
 
-#define _RolePos_maybe  float3(-3.48413, 195.00, 2.47919) // _58._m3
-#define _UpDir  float3(0.00, 1.00, 0.00         ) // _58._m4
-#define _SkyColorCenter  float3(0.00972, 0.02298, 0.06016) // _58._m5
-#define _SkyColorAround  float3(0.00972, 0.02298, 0.06016) // _58._m6
-#define _SunColorCenter  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
-#define _SunColorAround  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
-#define _LDotDir_n11_RemapDownAt0_A  0.49336  // _58._m9
-#define _IrradianceMapR_maxAngleRange 0.20     // _58._m10
-#define _IrradianceMapG_Color float3(0.00837, 0.10516, 0.26225) // _58._m11
-#define _IrradianceMapG_Intensity 0.50 // _58._m12
-#define _IrradianceMapG_maxAngleRange 0.30 // _58._m13
-#define _lightDir_maybe float3(0.00688, -0.84638, -0.53253) // _58._m14
-#define _58__m15 float3(0.01938, 0.00651, 0.02122  ) // _58._m15
-#define _58__m16 4.09789 // _58._m16
-#define _58__m17 0.80205 // _58._m17
-#define _UpIrradianceFadePow 8.30078 // _58._m18
-#define _58__m19 float3(0.01938, 0.00651, 0.02122) // _58._m19
-#define _58__m20 0.01039 // _58._m20
-#define _Uk_dir float3(0.31638, 0.70655, 0.633) // _58._m21
-#define _58__m22 float3(0.29669, 0.64985, 1.00 ) // _58._m22
-#define _58__m23 3.29897 // _58._m23
-#define _58__m24 0.19794 // _58._m24
-#define _01_RemapTo_Center1_TwoSide0 0.50    // _58._m25
-#define _DisturbanceNoiseOffset2 262.33862 // _58._m26
-#define _CloudColor_1_Center float3(0.05199, 0.10301, 0.13598) // _58._m27
-#define _CloudColor_1_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
-#define _CloudColor_2_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
-#define _CloudColor_2_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
-#define _LDotDir_n11_RemapDownAt0_B 0.0881      // _58._m31
-#define _58__m32 0.11        // _58._m32
-#define _58__m33 1.00        // _58._m33
-#define _58__m34 0.8299      // _58._m34
-#define _MaskMapGridSize float2( 2.00, 4.00 ) // _58._m35
-#define _DisturbanceNoiseScale 3.00        // _58._m36
-#define _DisturbanceNoiseOffset 6.00        // _58._m37
-#define _58__m38 1.00        // _58._m38
+#define _RolePos_maybe                        float3(-3.48413, 195.00, 2.47919) // _58._m3
+#define _UpDir                                float3(0.00, 1.00, 0.00         ) // _58._m4
+// #define _sunScatterColorLookAt                       float3(0.00972, 0.02298, 0.06016) // _58._m5
+// #define _sunScatterColorBeside                       float3(0.00972, 0.02298, 0.06016) // _58._m6
+// #define _sunOrgColorLookAt                       float3(0.0538, 0.09841, 0.2073  ) // _58._m7
+// #define _sunOrgColorBeside                       float3(0.0538, 0.09841, 0.2073  ) // _58._m8
+// #define _LDotDir_n11_RemapDownAt0_A           0.49336  // _58._m9
+float3 _sunScatterColorLookAt; 
+float3 _sunScatterColorBeside; 
+float3 _sunOrgColorLookAt; 
+float3 _sunOrgColorBeside; 
+float _LDotDir_n11_RemapDownAt0_A; 
+#define _IrradianceMapR_maxAngleRange         0.20     // _58._m10
+#define _IrradianceMapG_Color                 float3(0.00837, 0.10516, 0.26225) // _58._m11
+#define _IrradianceMapG_Intensity             0.50 // _58._m12
+#define _IrradianceMapG_maxAngleRange         0.30 // _58._m13
+// #define _sun_dir                       float3(0.00688, -0.84638, -0.53253) // _58._m14
+float3 _sun_dir; 
+#define _58__m15                              float3(0.01938, 0.00651, 0.02122  ) // _58._m15
+#define _58__m16                              4.09789 // _58._m16
+#define _58__m17                              0.80205 // _58._m17
+#define _UpIrradianceFadePow                  8.30078 // _58._m18
+#define _58__m19                              float3(0.01938, 0.00651, 0.02122) // _58._m19
+#define _58__m20                              0.01039 // _58._m20
+// #define _moon_dir                               float3(0.31638, 0.70655, 0.633) // _58._m21
+float3 _moon_dir; 
+#define _58__m22                              float3(0.29669, 0.64985, 1.00 ) // _58._m22
+#define _58__m23                              3.29897 // _58._m23
+#define _58__m24                              0.19794 // _58._m24
+#define _01_RemapTo_Center1_TwoSide0          0.50    // _58._m25
+#define _DisturbanceNoiseOffset2              262.33862 // _58._m26
+// #define _CloudColor_Bright_Center                  float3(0.05199, 0.10301, 0.13598) // _58._m27
+// #define _CloudColor_Bright_Around                  float3(0.10391, 0.41824, 0.88688) // _58._m28
+// #define _CloudColor_Dark_Center                  float3(0.00, 0.03576, 0.12083   ) // _58._m29
+// #define _CloudColor_Dark_Around                  float3(0.02281, 0.05716, 0.14666) // _58._m30
+// #define _LDotDir_n11_RemapDownAt0_B           0.0881      // _58._m31
+float3 _CloudColor_Bright_Center;
+float3 _CloudColor_Bright_Around;
+float3 _CloudColor_Dark_Center;
+float3 _CloudColor_Dark_Around;
+float _LDotDir_n11_RemapDownAt0_B;
+
+#define _58__m32                              0.11        // _58._m32 // const
+#define _58__m33                              1.00        // _58._m33 // const
+#define _58__m34                              0.8299      // _58._m34
+#define _MaskMapGridSize                      float2( 2.00, 4.00 ) // _58._m35 // const
+#define _DisturbanceNoiseScale                3.00        // _58._m36 // const
+#define _DisturbanceNoiseOffset               6.00        // _58._m37 // const
+#define _58__m38                              1.00        // _58._m38 // const
 
 sampler2D _IrradianceMap;
 
@@ -96,10 +109,10 @@ v2f vert (appdata v)
     float _angle_up_to_down_1_n1 = (UNITY_HALF_PI - FastAcos(_miu)) * UNITY_INV_HALF_PI;
 
 
-    // #define _lightDir_maybe float3(0.00688, -0.84638, -0.53253) // _58._m14
-    float _LDotDir = dot(_relativeToRoleDir, _lightDir_maybe);
+    // #define _sun_dir float3(0.00688, -0.84638, -0.53253) // _58._m14
+    float _LDotDir = dot(_relativeToRoleDir, _sun_dir);
     float _LDotDirRemap01 = _LDotDir * 0.5 + 0.5;
-    float _UkDirDotDirRemap01 = dot(_relativeToRoleDir, _Uk_dir) * 0.5 + 0.5;
+    float _UkDirDotDirRemap01 = dot(_relativeToRoleDir, _moon_dir) * 0.5 + 0.5;
     
     
     // #define _LDotDir_n11_RemapDownAt0_A  0.49336  // _58._m9
@@ -184,12 +197,12 @@ v2f vert (appdata v)
     // o.Varying_BColor_1
     // o.Varying_BColor_2
     {
-        // #define _CloudColor_1_Center float3(0.05199, 0.10301, 0.13598) // _58._m27
-        // #define _CloudColor_1_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
-        // #define _CloudColor_2_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
-        // #define _CloudColor_2_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
-        o.Varying_CloudColor_1 = lerp(_CloudColor_1_Around, _CloudColor_1_Center, _LDotDirRemapB_pow3);
-        o.Varying_CloudColor_2 = lerp(_CloudColor_2_Around, _CloudColor_2_Center, _LDotDirRemapB_pow3);
+        // #define _CloudColor_Bright_Center float3(0.05199, 0.10301, 0.13598) // _58._m27
+        // #define _CloudColor_Bright_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
+        // #define _CloudColor_Dark_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
+        // #define _CloudColor_Dark_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
+        o.Varying_CloudColor_1 = lerp(_CloudColor_Bright_Around, _CloudColor_Bright_Center, _LDotDirRemapB_pow3);
+        o.Varying_CloudColor_2 = lerp(_CloudColor_Dark_Around, _CloudColor_Dark_Center, _LDotDirRemapB_pow3);
     }
 
 
@@ -205,15 +218,15 @@ v2f vert (appdata v)
 
         float _irradianceMapR = tex2Dlod(_IrradianceMap, float4(_irradianceMap_R_uv, 0.0, 0.0)).x;
         
-        // #define _SunColorCenter  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
-        // #define _SunColorAround  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
+        // #define _sunOrgColorLookAt  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
+        // #define _sunOrgColorBeside  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
         // _sunColor 这里指 _irradianceMapR 为 1 的颜色，可能不是 sun
-        float3 _sunColor = lerp(_SunColorAround, _SunColorCenter, _LDotDirRemapA_pow3);
+        float3 _sunColor = lerp(_sunOrgColorBeside, _sunOrgColorLookAt, _LDotDirRemapA_pow3);
         
-        // #define _SkyColorCenter  float3(0.00972, 0.02298, 0.06016) // _58._m5
-        // #define _SkyColorAround  float3(0.00972, 0.02298, 0.06016) // _58._m6
+        // #define _sunScatterColorLookAt  float3(0.00972, 0.02298, 0.06016) // _58._m5
+        // #define _sunScatterColorBeside  float3(0.00972, 0.02298, 0.06016) // _58._m6
         // _skyColor 这里指 _irradianceMapR 为 0 的颜色，理解成天空大气颜色 sky 可行
-        float3 _skyColor = lerp(_SkyColorAround, _SkyColorCenter, _LDotDirRemapA_pow3);
+        float3 _skyColor = lerp(_sunScatterColorBeside, _sunScatterColorLookAt, _LDotDirRemapA_pow3);
         
         float3 _irradianceRColor = lerp( _skyColor, _sunColor, _irradianceMapR );
 
@@ -236,7 +249,7 @@ v2f vert (appdata v)
 
         // smoothstep(0, 1, clamp( (abs(x)-0.2) * 10/3, 0, 1))
         // 从 0.2 处离开0，平滑上升，0.5 处开始达到最大 1.0 
-        float _lightDirY_remap_smooth01 = smoothstep(0, 1, clamp( (abs(_lightDir_maybe.y) - 0.2) * 10/3, 0, 1 ));
+        float _lightDirY_remap_smooth01 = smoothstep(0, 1, clamp( (abs(_sun_dir.y) - 0.2) * 10/3, 0, 1 ));
         
         // smoothstep(0, 1, max((clamp(x, 0.0, 1.0)-1)/0.7 + 1, 0.0))
         // y=x 直线，固定 (1, 1) 点不动，旋转，使其斜率变成 1/0.7，加速衰减，并 smooth
@@ -264,8 +277,8 @@ v2f vert (appdata v)
     
     // o.Varying_TwoPartColor
     {
-        // #define _Uk_dir float3(0.31638, 0.70655, 0.633) // _58._m21
-        float _UkDirDotDirClamp01 = clamp(dot(_Uk_dir, _relativeToRoleDir), 0.0, 1.0);
+        // #define _moon_dir float3(0.31638, 0.70655, 0.633) // _58._m21
+        float _UkDirDotDirClamp01 = clamp(dot(_moon_dir, _relativeToRoleDir), 0.0, 1.0);
         
         // #define _58__m22 float3(0.29669, 0.64985, 1.00 ) // _58._m22
         // #define _58__m23 3.29897 // _58._m23

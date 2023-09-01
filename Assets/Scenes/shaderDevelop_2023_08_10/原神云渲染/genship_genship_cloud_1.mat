@@ -49,6 +49,29 @@ Material:
     - _58__m26: 262.33862
     - _58__m36: 3
     - _58__m37: 6
+    - _DisturbanceScale: 0.015
+    - _LDotDir_n11_RemapDownAt0_A: 0.49336
+    - _LDotDir_n11_RemapDownAt0_B: 0.0881
     m_Colors:
     - _58__m35: {r: 2, g: 4, b: 0, a: 0}
+    - _CloudColor_1_Around: {r: 0.10391, g: 0.41824, b: 0.88688, a: 1}
+    - _CloudColor_1_Center: {r: 0.05199, g: 0.10301, b: 0.13598, a: 1}
+    - _CloudColor_2_Around: {r: 0.02281, g: 0.05716, b: 0.14666, a: 1}
+    - _CloudColor_2_Center: {r: 0, g: 0.03576, b: 0.12083, a: 1}
+    - _CloudColor_Bright_Around: {r: 0.10391, g: 0.41824, b: 0.88688, a: 1}
+    - _CloudColor_Bright_Center: {r: 0.05199, g: 0.10301, b: 0.13598, a: 1}
+    - _CloudColor_Dark_Around: {r: 0.02281, g: 0.05716, b: 0.14666, a: 1}
+    - _CloudColor_Dark_Center: {r: 0, g: 0.03576, b: 0.12083, a: 1}
+    - _SkyColorAround: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _SkyColorCenter: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _SunColorAround: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
+    - _SunColorCenter: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
+    - _Uk_dir: {r: 0.31638, g: 0.70655, b: 0.633, a: 1}
+    - _lightDir_maybe: {r: 0.00688, g: -0.84638, b: -0.53253, a: 1}
+    - _moon_dir: {r: 0.31638, g: 0.70655, b: 0.633, a: 1}
+    - _sunOrgColorBeside: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
+    - _sunOrgColorLookAt: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
+    - _sunScatterColorBeside: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _sunScatterColorLookAt: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _sun_dir: {r: 0.00688, g: -0.84638, b: -0.53253, a: 1}
   m_BuildTextureStacks: []
