@@ -46,22 +46,38 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _01_RemapTo_Center1_TwoSide0: 0.5
+    - _58__m16: 4.09789
+    - _58__m17: 0.80205
+    - _58__m20: 0.01039
+    - _58__m23: 3.29897
+    - _58__m24: 0.19794
     - _58__m26: -304.5
+    - _58__m34: 0.8299
     - _58__m36: 3
     - _58__m37: 0.01
+    - _DisturbanceNoiseOffset2: 262.33862
     - _DisturbanceScale: 0.0123
+    - _IrradianceMapG_Intensity: 0.5
+    - _IrradianceMapG_maxAngleRange: 0.3
+    - _IrradianceMapR_maxAngleRange: 0.2
     - _LDotDir_n11_RemapDownAt0_A: 0.49336
     - _LDotDir_n11_RemapDownAt0_B: 0.0881
+    - _UpIrradianceFadePow: 8.30078
     m_Colors:
+    - _58__m15: {r: 0.01938, g: 0.00651, b: 0.02122, a: 1}
+    - _58__m19: {r: 0.01938, g: 0.00651, b: 0.02122, a: 1}
+    - _58__m22: {r: 0.29669, g: 0.64985, b: 1, a: 1}
     - _58__m35: {r: 4.86, g: 4, b: 0, a: 0}
     - _CloudColor_1_Around: {r: 0.10391, g: 0.41824, b: 0.88688, a: 1}
     - _CloudColor_1_Center: {r: 0.05199, g: 0.10301, b: 0.13598, a: 1}
     - _CloudColor_2_Around: {r: 0.02281, g: 0.05716, b: 0.14666, a: 1}
     - _CloudColor_2_Center: {r: 0, g: 0.03576, b: 0.12083, a: 1}
     - _CloudColor_Bright_Around: {r: 0.10391, g: 0.41824, b: 0.88688, a: 1}
-    - _CloudColor_Bright_Center: {r: 0.05199, g: 0.10301, b: 0.13598, a: 1}
+    - _CloudColor_Bright_Center: {r: 0.8679245, g: 0.8287888, b: 0.6755073, a: 1}
     - _CloudColor_Dark_Around: {r: 0.02281, g: 0.05716, b: 0.14666, a: 1}
     - _CloudColor_Dark_Center: {r: 0, g: 0.03576, b: 0.12083, a: 1}
+    - _IrradianceMapG_Color: {r: 0.00837, g: 0.10516, b: 0.26225, a: 1}
     - _SkyColorAround: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
     - _SkyColorCenter: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
     - _SunColorAround: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}

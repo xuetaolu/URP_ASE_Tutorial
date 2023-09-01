@@ -252,11 +252,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1542039171}
+    m_TransformParent: {fileID: 1206805355}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9e07ec1b7f9a5cb4ba75edd4a494fc6a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9e07ec1b7f9a5cb4ba75edd4a494fc6a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -424,11 +424,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1542039171}
+    m_TransformParent: {fileID: 1206805355}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1e50d50e5b712b146ab4d72b39ce8fa6, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1e50d50e5b712b146ab4d72b39ce8fa6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -532,7 +532,7 @@ MonoBehaviour:
   m_setCloudSpecialProperty: 1
   _LDotDir_n11_RemapDownAt0_A: 0
   _IrradianceMapR_maxAngleRange: 0
-  _IrradianceMapG_Color: {x: 0, y: 0, z: 0, w: 0}
+  _IrradianceMapG_Color: {r: 0, g: 0, b: 0, a: 0}
   _IrradianceMapG_Intensity: 0
   _IrradianceMapG_maxAngleRange: 0
   _58__m15: {x: 0, y: 0, z: 0, w: 0}
@@ -741,6 +741,60 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e07ec1b7f9a5cb4ba75edd4a494fc6a, type: 3}
   m_PrefabInstance: {fileID: 602400299}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1206805353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1206805355}
+  - component: {fileID: 1206805354}
+  m_Layer: 0
+  m_Name: cloud_rotate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!95 &1206805354
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206805353}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!4 &1206805355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206805353}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 849787494}
+  - {fileID: 1112759886}
+  m_Father: {fileID: 1542039171}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1257071816
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1082,8 @@ PlayableDirector:
     value: {fileID: 1659790280}
   - key: {fileID: 8275786924692071309, guid: 386b44cb75395514790cb77a09cfd71f, type: 2}
     value: {fileID: 957169970}
+  - key: {fileID: 5720346344989086833, guid: 386b44cb75395514790cb77a09cfd71f, type: 2}
+    value: {fileID: 1206805354}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1542039171
@@ -1043,8 +1099,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 957169969}
-  - {fileID: 849787494}
-  - {fileID: 1112759886}
+  - {fileID: 1206805355}
   - {fileID: 1659790279}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -1058,7 +1113,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 22967cf5756a0d7498ea26be09f2a8e6, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22967cf5756a0d7498ea26be09f2a8e6, type: 3}
       propertyPath: m_LocalScale.x
