@@ -243,8 +243,8 @@ fixed4 frag (v2f i) : SV_Target
     _87 *= _41.xxx;
     _87 = lerp(_87, _151__m5.xyz, (_38));
     _41 = lerp(_45.xyz, _151__m8.xyz, (_38));
-    _35 = 1.0 / i.Varying_2.w;
-    float2 _253 = (_35) * i.Varying_2.xy;
+    _35 = 1.0 / i.Varying_NonStereoScreenPos.w;
+    float2 _253 = (_35) * i.Varying_NonStereoScreenPos.xy;
     _47 = float3(_253.x, _253.y, _47.z);
     _108 = i.Varying_4.xz + _151__m4.xz;
     float2 _269 = _108 * float2(_151__m83, _151__m83);
@@ -270,7 +270,7 @@ fixed4 frag (v2f i) : SV_Target
     _127 = rsqrt(_127);
     float3 _369 = (_127) * _45.xyz;
     _45 = float4(_369.x, _369.y, _369.z, _45.w);
-    float2 _376 = i.Varying_2.xy / i.Varying_2.ww;
+    float2 _376 = i.Varying_NonStereoScreenPos.xy / i.Varying_NonStereoScreenPos.ww;
     _51 = float3(_376.x, _376.y, _51.z);
     _35 = tex2D(_7, _51.xy).x;
     _35 = (_151__m3.z * _35) + _151__m3.w;
@@ -286,7 +286,7 @@ fixed4 frag (v2f i) : SV_Target
     _67 = (-_61) + i.Varying_4.yxyz;
     _128 = dot(_67.yzw, _67.yzw);
     _128 = sqrt(_128);
-    _129 = i.Varying_2.w + _151__m87;
+    _129 = i.Varying_NonStereoScreenPos.w + _151__m87;
     float2 _459 = _45.xz * (_151__m60);
     _100 = float3(_459.x, _459.y, _100.z);
     _35 += (-_129);
@@ -294,7 +294,7 @@ fixed4 frag (v2f i) : SV_Target
     float2 _472 = (_35) * _100.xy;
     _68 = float3(_472.x, _472.y, _68.z);
     _68.z = 0.0;
-    _100 = _68 + i.Varying_2.xyw;
+    _100 = _68 + i.Varying_NonStereoScreenPos.xyw;
     float2 _484 = _100.xy / _100.zz;
     _100 = float3(_484.x, _484.y, _100.z);
     _35 = tex2D(_7, _100.xy).x;
@@ -302,7 +302,7 @@ fixed4 frag (v2f i) : SV_Target
     _35 = 1.0 / _35;
     _35 = (-_129) + _35;
     _35 = clamp(_35, 0.0, 1.0);
-    _100 = ((_35) * _68) + i.Varying_2.xyw;
+    _100 = ((_35) * _68) + i.Varying_NonStereoScreenPos.xyw;
     _35 = 1.0 / _100.z;
     float2 _521 = (_35) * _100.xy;
     _68 = float3(_521.x, _521.y, _68.z);
@@ -472,7 +472,7 @@ fixed4 frag (v2f i) : SV_Target
     _100 = max(_100, (0.0));
     _100 = (-_69) + _100;
     _100 = (float3(_151__m59, _151__m59, _151__m59) * _100) + _69;
-    _35 += (-i.Varying_2.w);
+    _35 += (-i.Varying_NonStereoScreenPos.w);
     _123 = sqrt(_123);
     _138 = _123 * 0.00999999977648258209228515625;
     _77.x = (_123 * 0.20000000298023223876953125) + (-20.0);
@@ -700,13 +700,13 @@ fixed4 frag (v2f i) : SV_Target
     _104 *= _122;
     _41 = ((_104) * _41) + i.Varying_1.xyz;
     _104 = min(_138, 1.0);
-    _104 = (i.Varying_0.y * (-_104)) + i.Varying_0.y;
+    _104 = (i.Varying_ColorXYW.y * (-_104)) + i.Varying_ColorXYW.y;
     _76.x = _123 + (-_151__m42);
     _76.x /= _151__m43;
-    _103.x = i.Varying_0.x * _151__m37;
+    _103.x = i.Varying_ColorXYW.x * _151__m37;
     _122 = max(_67.x, 0.0);
     _122 = min(_103.x, _122);
-    _103.x = (_151__m37 * i.Varying_0.x) + 9.9999997473787516355514526367188e-05;
+    _103.x = (_151__m37 * i.Varying_ColorXYW.x) + 9.9999997473787516355514526367188e-05;
     _122 /= _103.x;
     _122 = (-_122) + 1.0;
     float2 _2353 = float2(_151__m0.y * _151__m34.z, _151__m0.y * _151__m34.w);
@@ -743,7 +743,7 @@ fixed4 frag (v2f i) : SV_Target
     _87 = (_98 * _87.xxx) + _76;
     _35 *= _151__m61;
     _35 = clamp(_35, 0.0, 1.0);
-    _35 *= i.Varying_0.w;
+    _35 *= i.Varying_ColorXYW.w;
     _43 = _151__m58 == 1.0;
     if (_43)
     {

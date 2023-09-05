@@ -2,6 +2,9 @@ Shader "Unlit/genship_water"
 {
     Properties
     {
+//        _38__m5 ("_38__m5", Vector) = (-0.04413, -0.03476, -0.0106, 1.00)
+//        _38__m2 ("_38__m2", Vector) = (0.00, 0.12654, 0.00, 0.20238     )
+        
 //        _MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_7 ("_7 ", 2D) = "white" {}
         [NoScaleOffset]_8 ("_8 ", 2D) = "white" {}
