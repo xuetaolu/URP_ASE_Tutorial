@@ -53,12 +53,14 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
         [Special(shaderPropertyName = "_SunAdditionIntensity")] public float _IrradianceMapG_Intensity;
         [Special] public float _IrradianceMapG_maxAngleRange;
         
+        [Special(shaderPropertyName = "_sun_disk_power_999")] public float _UpIrradianceFadePow;
+        [Special(shaderPropertyName = "_sun_color")] public Vector4 _58__m19;
+        [Special(shaderPropertyName = "_sun_color_intensity")] public float _58__m20;
+        
         [Special] public Vector4 _58__m15;
         [Special] public float _58__m16;
         [Special] public float _58__m17;
-        [Special] public float _UpIrradianceFadePow;
-        [Special] public Vector4 _58__m19;
-        [Special] public float _58__m20;
+        
         
         
         [Special] public Vector4 _58__m22;

@@ -1,3 +1,6 @@
+#include "genship_cloud_common.hlsl"
+#include ".\sky_common.hlsl"
+
 #define _CloudMainColorAddition 0.11   // _45._m0
 #define _AlphaDiv10_Smooth 1.00   // _45._m1
 // #define _DisturbanceScale 0.0123 // _45._m2
@@ -94,7 +97,7 @@ fixed4 frag (v2f i) : SV_Target
     
     float _tmp42_2 = lerp(_angle_up_to_down_1_n1_scale_smooth_2, 1.0, smoothstep(0, 1, (_CloudMainColorAddition - 0.4) * 10/3.0));
     
-    Output_0.xyz = lerp( i.Varying_IrradianceColor, _sumCloudColor * _tmp42, _tmp42_2);
+    Output_0.xyz = lerp( i.Varying_DayPartColor, _sumCloudColor * _tmp42, _tmp42_2);
     Output_0.w = _output_alpha;
     
     fixed4 col = Output_0.xyzw;

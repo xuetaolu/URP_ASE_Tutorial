@@ -76,14 +76,14 @@ Material:
     - _downPartSkyColor: {r: 0.04305, g: 0.26222, b: 0.46968, a: 1}
     - _downPartSunColor: {r: 0.30759, g: 0.346, b: 0.24592, a: 1}
     - _moon_color: {r: 0.15518996, g: 0.18857998, b: 0.26529998, a: 1}
-    - _moon_dir: {r: -0.64578825, g: -0.00039922443, b: -0.7635164, a: 0}
+    - _moon_dir: {r: -0.43207487, g: 0.15702929, b: -0.88806146, a: 0}
     - _sky_color: {r: 0.90409, g: 0.7345, b: 0.13708997, a: 1}
     - _sunOrgColorBeside: {r: 0.043049984, g: 0.26221997, b: 0.46968, a: 1}
     - _sunOrgColorLookAt: {r: 0.30758998, g: 0.34599996, b: 0.24591997, a: 1}
     - _sunScatterColorBeside: {r: 0.029479997, g: 0.16089997, b: 0.27935997, a: 1}
     - _sunScatterColorLookAt: {r: 0.00326, g: 0.18242997, b: 0.63132006, a: 1}
     - _sun_color: {r: 0.90625006, g: 0.43018997, b: 0.11742998, a: 1}
-    - _sun_dir: {r: 0.49825445, g: 0.009578246, b: -0.86697793, a: 0}
+    - _sun_dir: {r: 0.27305844, g: -0.5450609, b: -0.79268384, a: 0}
     - _upPartSkyColor: {r: 0.02948, g: 0.1609, b: 0.27936, a: 1}
     - _upPartSunColor: {r: 0.00326, g: 0.18243, b: 0.63132, a: 1}
   m_BuildTextureStacks: []

@@ -23,13 +23,18 @@ float _IrradianceMapG_maxAngleRange;
 // #define _SunAdditionIntensity             0.50 // _58._m12
 // #define _IrradianceMapG_maxAngleRange         0.30 // _58._m13
 // #define _sun_dir                       float3(0.00688, -0.84638, -0.53253) // _58._m14
+
+float _sun_disk_power_999; // _58._m18
+float3 _sun_color; // _58._m19
+float _sun_color_intensity; // _58._m20 
+
 float3 _sun_dir; 
 #define _58__m15                              float3(0.01938, 0.00651, 0.02122  ) // _58._m15
 #define _58__m16                              4.09789 // _58._m16
 #define _58__m17                              0.80205 // _58._m17
-#define _UpIrradianceFadePow                  8.30078 // _58._m18
-#define _58__m19                              float3(0.01938, 0.00651, 0.02122) // _58._m19
-#define _58__m20                              0.01039 // _58._m20
+// #define _sun_disk_power_999                  8.30078 // _58._m18
+// #define _sun_color                              float3(0.01938, 0.00651, 0.02122) // _58._m19
+// #define _sun_color_intensity                              0.01039 // _58._m20
 // #define _moon_dir                               float3(0.31638, 0.70655, 0.633) // _58._m21
 float3 _moon_dir; 
 #define _58__m22                              float3(0.29669, 0.64985, 1.00 ) // _58._m22
@@ -124,8 +129,8 @@ v2f vert (appdata v)
     float _VDotSunDampingA_pow3 = _VDotSunDampingA * _VDotSunDampingA * _VDotSunDampingA;
     float _VDotSunDampingCloud_pow3 = _VDotSunDampingCloud * _VDotSunDampingCloud * _VDotSunDampingCloud;
     
-    // #define _UpIrradianceFadePow 8.30078 // _58._m18
-    float _UpDotDirMulti = abs(_rawUpDotDir) * _UpIrradianceFadePow;
+    // #define _sun_disk_power_999 8.30078 // _58._m18
+    float _VDotUp_Multi999 = abs(_rawUpDotDir) * _sun_disk_power_999;
 
 
     // #define _58__m32 0.11        // _58._m32
@@ -260,12 +265,15 @@ v2f vert (appdata v)
         float3 _sumIrradianceRGColor = _mainColor + _additionPart;
 
         
-        // #define _58__m20 0.01039 // _58._m20
-        // #define _58__m19 float3(0.01938, 0.00651, 0.02122) // _58._m19
-        float _UpAdjustSumIrradianceRGColor = min( 1, pow(_VDotSunRemap01Clamp, _UpDotDirMulti * float3(1, 0.1, 0.01))) * float3(1, 0.12, 0.03) * _58__m20 * _58__m19;
+        // #define _sun_color_intensity 0.01039 // _58._m20
+        // #define _sun_color float3(0.01938, 0.00651, 0.02122) // _58._m19
+        float _sun_disk = dot(
+                            min( 1, pow(_VDotSunRemap01Clamp, _VDotUp_Multi999 * float3(1, 0.1, 0.01))),
+                            float3(1, 0.12, 0.03))
+                            * _sun_color_intensity * _sun_color;
         
-        float _LDotDirClampn11 = 2 * _VDotSunRemap01Clamp - 1.0;
-        o.Varying_IrradianceColor = _UpAdjustSumIrradianceRGColor * smoothstep(0, 1, _LDotDirClampn11) + _sumIrradianceRGColor;
+        float _LDotDirClampn11_smooth = smoothstep(0, 1, 2 * _VDotSunRemap01Clamp - 1.0);
+        o.Varying_DayPartColor = _sun_disk * _LDotDirClampn11_smooth + _sumIrradianceRGColor;
     }
 
     
@@ -281,9 +289,9 @@ v2f vert (appdata v)
         float _01_remap_center1 = -abs(_01_RemapTo_Center1_TwoSide0 - 0.5) * 2.0 + 1.0;
         float3 _tmp36 = smoothstep(0, 1, 2 * pow(_UkDirDotDirClamp01, 5) - 1.0)  * _58__m22 * clamp(_58__m23, 0.0, 0.8) * _58__m24 * _01_remap_center1;
         
-        // #define _58__m20 0.01039 // _58._m20
+        // #define _sun_color_intensity 0.01039 // _58._m20
         // #define _58__m15 float3(0.01938, 0.00651, 0.02122  ) // _58._m15
-        float3 _tmp37 = clamp(pow( _VDotSunRemap01Clamp, _UpDotDirMulti * 0.5 ) * _rawUpDotDir, 0.0, 1.0) * _58__m15 * _58__m20;
+        float3 _tmp37 = clamp(pow( _VDotSunRemap01Clamp, _VDotUp_Multi999 * 0.5 ) * _rawUpDotDir, 0.0, 1.0) * _58__m15 * _sun_color_intensity;
         
         float3 _twoPartColor = _tmp36 + _tmp37;
         
@@ -304,9 +312,9 @@ v2f vert (appdata v)
         
         // 原版没有 clamp，需要自行保证 _VDotSunRemap01 = saturate(_VDotSunRemap01)
         // #define _58__m16 4.09789 // _58._m16
-        // #define _58__m19 float3(0.01938, 0.00651, 0.02122) // _58._m19
+        // #define _sun_color float3(0.01938, 0.00651, 0.02122) // _58._m19
         float _LDirDotDirMoreFadeMulti = smoothstep(_58__m17, 1.0, _VDotSunRemap01) * _58__m16 * 0.125;
-        float _moreFadeTwoPartColorB = _LDirDotDirMoreFadeMulti * _LDirDotDirMoreFadeMulti * _58__m19;
+        float _moreFadeTwoPartColorB = _LDirDotDirMoreFadeMulti * _LDirDotDirMoreFadeMulti * _sun_color;
         
         float3 _moreFadeTwoPartColor = _moreFadeTwoPartColorA + _moreFadeTwoPartColorB;
 

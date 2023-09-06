@@ -28,7 +28,7 @@ struct v2f
     float4 Varying_MaskMapUvXY_DisturbanceNoiseUvZW : TEXCOORD0;
     float4 Varying_ViewDirAndAngle1_n1 : TEXCOORD1;
     float4 Varying_DesityRefW_ColorzwYZ_LDotDir01FixX : TEXCOORD2;
-    float3 Varying_IrradianceColor : TEXCOORD3;
+    float3 Varying_DayPartColor : TEXCOORD3;
     float3 Varying_TwoPartColor : TEXCOORD4;
     float3 Varying_TransmissionTwoPartColor : TEXCOORD5;
     float3 Varying_CloudColor_1 : TEXCOORD6;

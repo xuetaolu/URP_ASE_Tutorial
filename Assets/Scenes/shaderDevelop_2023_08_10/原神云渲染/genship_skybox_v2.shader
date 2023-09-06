@@ -3,22 +3,22 @@ Shader "xue/genship_skybox"
     Properties
     {
         // /* day 白天: sun sky 属性 start
-        [Header(_IrradianceMapR)]
+        [Header(_IrradianceMapR Rayleigh Scatter)]
         _upPartSunColor("高空近太阳颜色", Color) = (0.00326,0.18243,0.63132,1)
         _upPartSkyColor("高空远太阳颜色", Color) = (0.02948,0.1609,0.27936,1)
         _downPartSunColor("水平线近太阳颜色", Color) = (0.30759,0.346,0.24592,1)
         _downPartSkyColor("水平线远太阳颜色", Color) = (0.04305,0.26222,0.46968,1)
         _mainColorSunGatherFactor("近太阳颜色聚集程度", Range(0, 1)) = 0.31277
         _IrradianceMapR_maxAngleRange("天空主色垂直变化范围", Range(0, 1)) = 0.44837
-        [Header(_IrradianceMapG)]
+        [Header(_IrradianceMapG Mie Scatter)]
         _SunAdditionColor("太阳追加点颜色", Color) = (0.90409,0.7345,0.13709, 1)
         _SunAdditionIntensity("太阳追加点颜色强度", Range(0, 3)) = 1.48499
         _IrradianceMapG_maxAngleRange("太阳追加点垂直变化范围", Range(0, 1)) = 0.69804
         
-        [Header(________________)]
-        _sun_disk_power_999("sun_disk_power_999", Range(0, 1000)) = 1000
-        _sun_color("sun_color", Color) = (0.90625, 0.43019, 0.11743, 1)
-        _sun_color_intensity("sun_color_intensity", Range(0, 3)) = 1.18529
+        [Header(Sun Disk)]
+        _sun_disk_power_999("太阳圆盘power", Range(0, 1000)) = 1000
+        _sun_color("太阳圆盘颜色", Color) = (0.90625, 0.43019, 0.11743, 1)
+        _sun_color_intensity("太阳圆盘颜色强度", Range(0, 10)) = 1.18529
         
         
         [NoScaleOffset]_IrradianceMap("_IrradianceMap", 2D) = "white" {}
@@ -45,18 +45,14 @@ Shader "xue/genship_skybox"
         _NoiseMap("NoiseMap", 2D) = "white" {}
         [HideInInspector] _NoiseMap_ST("_NoiseMap_ST", Vector) = (25,25,0,0)
         _NoiseSpeed("c_NoiseSpeed", Range( 0 , 1)) = 0.293
-        // -------------------------- */
+
         
-        // /* sun & moon dir
+        [Header(Misc)]
         _sun_dir("sun_dir", Vector) = (-0.26102,0.12177,-0.95762, 0)
         _moon_dir("moon_dir", Vector) = (-0.33274, -0.11934, 0.93544, 0)
-        // -------------------------- */
-        
-        // /* misc 
         [Toggle]_star_part_enable("star_part_enable", Float) = 1
         [Toggle]_sun_part_enable("sun_part_enable", Float) = 1
         [Toggle]_moon_part_enable("moon_part_enable", Float) = 1
-        // -------------------------- */
     }
     SubShader
     {
@@ -277,30 +273,24 @@ Shader "xue/genship_skybox"
                 float _VDotUp = dot(_viewDirNormalize, _UpDir);
                 
                 float _VDotUp_Multi999 = abs(_VDotUp) * _sun_disk_power_999;
-
-                // float3 _lightDir = GetLightDir();
-                float3 _lightDir = _sun_dir;
-                float _VDotSun = dot(_lightDir, _viewDirNormalize);
+                
+                float _VDotSun = dot(_sun_dir, _viewDirNormalize);
                 float _MoonDotV = dot(_moon_dir, _viewDirNormalize);
 
                 _MoonDotV = clamp(_MoonDotV, 0.0, 1.0);
                 
-                float _LDotV_remap01 = (_VDotSun * 0.5) + 0.5;
-                _LDotV_remap01 = clamp(_LDotV_remap01, 0.0, 1.0);
+                float _VDotSunRemap01Clamp = clamp(_VDotSun * 0.5 + 0.5, 0, 1);
 
-                float _LDotV_Pow_0_1  = pow(_LDotV_remap01, _VDotUp_Multi999 * 0.1);
-                float _LDotV_Pow_0_01 = pow(_LDotV_remap01, _VDotUp_Multi999 * 0.01);
-                float _LDotV_Pow      = pow(_LDotV_remap01, _VDotUp_Multi999);
-                _LDotV_Pow_0_1        = min(_LDotV_Pow_0_1, 1.0);
-                _LDotV_Pow_0_01       = min(_LDotV_Pow_0_01, 1.0);
-                _LDotV_Pow            = min(_LDotV_Pow, 1.0);
+                float3 _sun_disk = dot(
+                                    min(1, pow(_VDotSunRemap01Clamp, _VDotUp_Multi999 * float3(1, 0.1, 0.01))),
+                                    float3(1, 0.12, 0.03))
+                                    * _sun_color_intensity * _sun_color;
 
-                float _LDotV_Pow_Scale = (_LDotV_Pow_0_01 * 0.03) + (_LDotV_Pow_0_1 * 0.12) + _LDotV_Pow.x;
-                float3 _sun_disk = _LDotV_Pow_Scale * _sun_color_intensity * _sun_color;
-
-                float _LDotV_smooth = smoothstep(0, 1, _VDotSun);
                 
-                float3 _sun_part_color = (_LDotV_smooth * _sun_disk * _sun_part_enable) + i.Varying_IrradianceColor.xyz;
+
+                float _LDotDirClampn11_smooth = smoothstep(0, 1, _VDotSun);
+                
+                float3 _day_part_color = (_sun_disk * _LDotDirClampn11_smooth * _sun_part_enable) + i.Varying_IrradianceColor.xyz;
                 
                 float _moon_size_rcp = 1.0 / max(_moon_size * 0.1, 0.00001);
 
@@ -321,7 +311,7 @@ Shader "xue/genship_skybox"
                 float _is_no_moon_here = float((_moon_intensity * _moon_part_enable) <= 0.05);
                 
                 _moon_part_color = clamp(_moon_intensity_control01, 0.0, 1.0) * _moon_part_color;
-                float3 _sun_moon_color = (_moon_part_color * _moon_part_enable) + _sun_part_color;
+                float3 _sun_moon_color = (_moon_part_color * _moon_part_enable) + _day_part_color;
 
                 float _starExistNoise1 = tex2D(_NoiseMap, i.Varying_NoiseUV_large.xy).r;
                 float _starExistNoise2 = tex2D(_NoiseMap, i.Varying_NoiseUV_large.zw).r;
