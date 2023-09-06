@@ -49,24 +49,24 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
         [Special(shaderPropertyName = "_mainColorSunGatherFactor")] public float _LDotDir_n11_RemapDownAt0_A;
         
         [Special] public float _IrradianceMapR_maxAngleRange;
-        [Special(shaderPropertyName = "_SunAdditionColor")] public Color _IrradianceMapG_Color;
-        [Special(shaderPropertyName = "_SunAdditionIntensity")] public float _IrradianceMapG_Intensity;
+        [Special(shaderPropertyName = "_SunAdditionColor")] public Color _SunAdditionColor;
+        [Special(shaderPropertyName = "_SunAdditionIntensity")] public float _SunAdditionIntensity;
         [Special] public float _IrradianceMapG_maxAngleRange;
         
-        [Special(shaderPropertyName = "_sun_disk_power_999")] public float _UpIrradianceFadePow;
-        [Special(shaderPropertyName = "_sun_color")] public Vector4 _58__m19;
-        [Special(shaderPropertyName = "_sun_color_intensity")] public float _58__m20;
+        [Special(shaderPropertyName = "_sun_disk_power_999")] public float _sun_disk_power_999;
+        [Special(shaderPropertyName = "_sun_color")] public Vector4 _sun_color;
+        [Special(shaderPropertyName = "_sun_color_intensity")] public float _sun_color_intensity;
         
-        [Special] public Vector4 _58__m15;
-        [Special] public float _58__m16;
-        [Special] public float _58__m17;
+        [Special(shaderPropertyName = "_sun_shine_color")] public Vector4 _sun_shine_color;
+        [Special(shaderPropertyName = "_SunTransmission")] public float _SunTransmission;
+        [Special(shaderPropertyName = "_TransmissionLDotVStartAt")] public float _TransmissionLDotVStartAt;
         
         
         
-        [Special] public Vector4 _58__m22;
-        [Special] public float _58__m23;
-        [Special] public float _58__m24;
-        [Special] public float _01_RemapTo_Center1_TwoSide0;
+        [Special(shaderPropertyName = "_moon_shine_color")] public Vector4 _moon_shine_color;
+        [Special(shaderPropertyName = "_MoonTransmission")] public float _MoonTransmission;
+        [Special(shaderPropertyName = "_moon_intensity_max")] public float _moon_intensity_max;
+        [Special(shaderPropertyName = "_moon_intensity_slider")] public float _moon_intensity_slider;
         [Special] public float _DisturbanceNoiseOffset2;
 
 

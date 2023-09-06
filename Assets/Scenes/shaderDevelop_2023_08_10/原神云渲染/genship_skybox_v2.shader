@@ -24,17 +24,18 @@ Shader "xue/genship_skybox"
         [NoScaleOffset]_IrradianceMap("_IrradianceMap", 2D) = "white" {}
         // -------------------------- */ 
         
+        [Header(Moon)]
         // /* night 夜晚: moon 属性 
+        _moon_intensity_slider("月亮大小0.5最大", Range(0, 1)) = 0.5
+        _moon_color("_moon_color", Color) = (0.15519, 0.18858, 0.2653, 1)
+        _moon_intensity_max("c_moon_intensity_max", Range(0, 1)) = 0.19794
         _moon_size("c_moon_size", Range(0, 1)) = 0.19794
         _moon_intensity_control01("c_moon_intensity_control01", Range(0, 4)) = 3.29897
-        _moon_intensity_max("c_moon_intensity_max", Range(0, 1)) = 0.19794
-        _moon_intensity_slider("c_moon_intensity_slider", Range(0, 1)) = 0.5
-        _moon_color("moon_color", Color) = (0.15519, 0.18858, 0.2653, 1)
         // -------------------------- */
         
-        // /* night 夜晚: star 属性 
-        _starColorIntensity("starColorIntensity", Range(0, 10)) = 0.8466
-        _starIntensityLinearDamping("starIntensityLinearDamping", Range(0, 1)) = 0.80829
+        [Header(Star)]
+        _starColorIntensity("星星颜色强度", Range(0, 10)) = 0.8466
+        _starIntensityLinearDamping("星星遮蔽", Range(0, 1)) = 0.80829
         
         _StarDotMap("StarDotMap", 2D) = "white" {}
         [HideInInspector]_StarDotMap_ST("StarDotMap_ST", Vector) = (10,10,0,0)
@@ -275,26 +276,22 @@ Shader "xue/genship_skybox"
                 float _VDotUp_Multi999 = abs(_VDotUp) * _sun_disk_power_999;
                 
                 float _VDotSun = dot(_sun_dir, _viewDirNormalize);
-                float _MoonDotV = dot(_moon_dir, _viewDirNormalize);
 
-                _MoonDotV = clamp(_MoonDotV, 0.0, 1.0);
-                
                 float _VDotSunRemap01Clamp = clamp(_VDotSun * 0.5 + 0.5, 0, 1);
 
                 float3 _sun_disk = dot(
                                     min(1, pow(_VDotSunRemap01Clamp, _VDotUp_Multi999 * float3(1, 0.1, 0.01))),
                                     float3(1, 0.12, 0.03))
                                     * _sun_color_intensity * _sun_color;
-
                 
-
                 float _LDotDirClampn11_smooth = smoothstep(0, 1, _VDotSun);
                 
                 float3 _day_part_color = (_sun_disk * _LDotDirClampn11_smooth * _sun_part_enable) + i.Varying_IrradianceColor.xyz;
-                
-                float _moon_size_rcp = 1.0 / max(_moon_size * 0.1, 0.00001);
 
-                float _moon_disk = (_MoonDotV - 1.0) * _moon_size_rcp + 1.0;
+                
+                float _VDotMoonClamp01 = clamp(dot(_moon_dir, _viewDirNormalize), 0, 1);
+                
+                float _moon_disk = lerp(1.0, _VDotMoonClamp01, 1.0 / max(_moon_size * 0.1, 0.00001));
                 _moon_disk = max(_moon_disk, 0.0);
                 
                 float _moon_disk_pow2 = _moon_disk * _moon_disk;
@@ -302,9 +299,10 @@ Shader "xue/genship_skybox"
                 float _moon_disk_pow6 = _moon_disk_pow4 * _moon_disk_pow2;
                 
                 // 上箭头形状，0.5 最高 是 1，左右 0、1 是 0
+                // -abs(x-0.5)*2+1
                 float _moon_slider_value = -abs(_moon_intensity_slider - 0.5) * 2.0 + 1.0;
                 // #define _moon_intensity_max  (0.19794)       // _43._m9
-                float _moon_intensity = _moon_slider_value * _moon_intensity_max * _moon_disk_pow6;
+                float _moon_intensity = _moon_slider_value * _moon_disk_pow6 * _moon_intensity_max;
 
                 float3 _moon_part_color = _moon_intensity * _moon_color;
                 

@@ -19,17 +19,21 @@ Shader "genship/genship_cloud"
         _sun_disk_power_999 ("太阳圆盘power", Range(0, 1000)) = 8.30078 // _58._m18
         _sun_color ("太阳圆盘颜色", Color) = (0.01938, 0.00651, 0.02122) // _58._m19
         _sun_color_intensity ("太阳圆盘颜色强度", Range(0, 10)) = 0.01039 // _58._m20
+        _sun_shine_color ("_sun_shine_color", Color) = (0.01938, 0.00651, 0.02122  ) // _58._m15
         
         _IrradianceMap ("_IrradianceMap", 2D) = "white" {}
         
-        _58__m15 ("_58__m15", Color) = (0.01938, 0.00651, 0.02122  ) // _58._m15
-        _58__m16 ("_58__m16", float) = 4.09789 // _58._m16
-        _58__m17 ("_58__m17", float) = 0.80205 // _58._m17
+        [Header(Moon)]
+        _moon_intensity_slider ("月亮大小0.5最大", Range(0, 1)) = 0.50    // _58._m25
+        _moon_shine_color ("_moon_shine_color", Color) = (0.29669, 0.64985, 1.00 ) // _58._m22
+        _moon_intensity_max ("_moon_intensity_max", Range(0, 1)) = 0.19794 // _58._m24s
         
-        _58__m22 ("_58__m22", Color) = (0.29669, 0.64985, 1.00 ) // _58._m22
-        _58__m23 ("_58__m23", float) = 3.29897 // _58._m23
-        _58__m24 ("_58__m24", float) = 0.19794 // _58._m24
-        _01_RemapTo_Center1_TwoSide0 ("_01_RemapTo_Center1_TwoSide0", float) = 0.50    // _58._m25
+        [Header(Transmission)]
+        _SunTransmission ("_SunTransmission", Range(0, 10)) = 4.09789 // _58._m16
+        _MoonTransmission ("_MoonTransmission", Range(0, 10)) = 3.29897 // _58._m23
+        _TransmissionLDotVStartAt ("_TransmissionLDotVStartAt", Range(0, 1)) = 0.80205 // _58._m17
+        
+        [Header(__________)]
         _DisturbanceNoiseOffset2 ("_DisturbanceNoiseOffset2", float) = 262.33862 // _58._m26
         
         _CloudColor_Bright_Center ("_CloudColor_Bright_Center", Color) = (0.05199, 0.10301, 0.13598) // _58._m27

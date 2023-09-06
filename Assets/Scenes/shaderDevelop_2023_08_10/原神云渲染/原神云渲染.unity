@@ -532,19 +532,19 @@ MonoBehaviour:
   m_setCloudSpecialProperty: 1
   _LDotDir_n11_RemapDownAt0_A: 0
   _IrradianceMapR_maxAngleRange: 0
-  _IrradianceMapG_Color: {r: 0, g: 0, b: 0, a: 0}
-  _IrradianceMapG_Intensity: 0
+  _SunAdditionColor: {r: 0, g: 0, b: 0, a: 0}
+  _SunAdditionIntensity: 0
   _IrradianceMapG_maxAngleRange: 0
-  _58__m15: {x: 0, y: 0, z: 0, w: 0}
-  _58__m16: 0
-  _58__m17: 0
-  _UpIrradianceFadePow: 0
-  _58__m19: {x: 0, y: 0, z: 0, w: 0}
-  _58__m20: 0
-  _58__m22: {x: 0, y: 0, z: 0, w: 0}
-  _58__m23: 0
-  _58__m24: 0
-  _01_RemapTo_Center1_TwoSide0: 0
+  _sun_disk_power_999: 0
+  _sun_color: {x: 0, y: 0, z: 0, w: 0}
+  _sun_color_intensity: 0
+  _sun_shine_color: {x: 0, y: 0, z: 0, w: 0}
+  _SunTransmission: 0
+  _TransmissionLDotVStartAt: 0
+  _moon_shine_color: {x: 0, y: 0, z: 0, w: 0}
+  _MoonTransmission: 0
+  _moon_intensity_max: 0
+  _moon_intensity_slider: 0
   _DisturbanceNoiseOffset2: 0
   _CloudColor_Bright_Center: {r: 1.015, g: 0, b: 0, a: 0}
   _CloudColor_Bright_Around: {r: 0.12649, g: 1, b: 0.4889, a: 0}

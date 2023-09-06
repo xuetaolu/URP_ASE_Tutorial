@@ -3,11 +3,8 @@
 
 #define _RolePos_maybe                        float3(-3.48413, 195.00, 2.47919) // _58._m3
 #define _UpDir                                float3(0.00, 1.00, 0.00         ) // _58._m4
-// #define _upPartSunColor                       float3(0.00972, 0.02298, 0.06016) // _58._m5
-// #define _upPartSkyColor                       float3(0.00972, 0.02298, 0.06016) // _58._m6
-// #define _downPartSunColor                       float3(0.0538, 0.09841, 0.2073  ) // _58._m7
-// #define _downPartSkyColor                       float3(0.0538, 0.09841, 0.2073  ) // _58._m8
-// #define _mainColorSunGatherFactor           0.49336  // _58._m9
+
+// _IrradianceMapR Rayleigh Scatter
 float3 _upPartSunColor; 
 float3 _upPartSkyColor; 
 float3 _downPartSunColor; 
@@ -15,45 +12,37 @@ float3 _downPartSkyColor;
 float _mainColorSunGatherFactor;
 float _IrradianceMapR_maxAngleRange;
 
+// _IrradianceMapG Mie Scatter
 float3 _SunAdditionColor;
 float _SunAdditionIntensity;
 float _IrradianceMapG_maxAngleRange;
-// #define _IrradianceMapR_maxAngleRange         0.20     // _58._m10
-// #define _SunAdditionColor                 float3(0.00837, 0.10516, 0.26225) // _58._m11
-// #define _SunAdditionIntensity             0.50 // _58._m12
-// #define _IrradianceMapG_maxAngleRange         0.30 // _58._m13
-// #define _sun_dir                       float3(0.00688, -0.84638, -0.53253) // _58._m14
 
+// Sun Disk
 float _sun_disk_power_999; // _58._m18
 float3 _sun_color; // _58._m19
 float _sun_color_intensity; // _58._m20 
+float3 _sun_shine_color; // _58._m15
 
-float3 _sun_dir; 
-#define _58__m15                              float3(0.01938, 0.00651, 0.02122  ) // _58._m15
-#define _58__m16                              4.09789 // _58._m16
-#define _58__m17                              0.80205 // _58._m17
-// #define _sun_disk_power_999                  8.30078 // _58._m18
-// #define _sun_color                              float3(0.01938, 0.00651, 0.02122) // _58._m19
-// #define _sun_color_intensity                              0.01039 // _58._m20
-// #define _moon_dir                               float3(0.31638, 0.70655, 0.633) // _58._m21
-float3 _moon_dir; 
-#define _58__m22                              float3(0.29669, 0.64985, 1.00 ) // _58._m22
-#define _58__m23                              3.29897 // _58._m23
-#define _58__m24                              0.19794 // _58._m24
-#define _01_RemapTo_Center1_TwoSide0          0.50    // _58._m25
+// Moon
+float _moon_intensity_slider; // _58._m25
+float3 _moon_shine_color;           // _58._m22
+float _moon_intensity_max;    // _58._m24
+
+// Transmission
+float _SunTransmission;
+float _MoonTransmission;      // _58._m23
+float _TransmissionLDotVStartAt;
+
+
 #define _DisturbanceNoiseOffset2              262.33862 // _58._m26
-// #define _CloudColor_Bright_Center                  float3(0.05199, 0.10301, 0.13598) // _58._m27
-// #define _CloudColor_Bright_Around                  float3(0.10391, 0.41824, 0.88688) // _58._m28
-// #define _CloudColor_Dark_Center                  float3(0.00, 0.03576, 0.12083   ) // _58._m29
-// #define _CloudColor_Dark_Around                  float3(0.02281, 0.05716, 0.14666) // _58._m30
-// #define _LDotV_damping_factor_cloud           0.0881      // _58._m31
+
 float3 _CloudColor_Bright_Center;
 float3 _CloudColor_Bright_Around;
 float3 _CloudColor_Dark_Center;
 float3 _CloudColor_Dark_Around;
 float _LDotV_damping_factor_cloud;
 
-#define _58__m32                              0.11        // _58._m32 // const
+#define _LightingOcclusion                              0.11        // _58._m32 // const
 #define _58__m33                              1.00        // _58._m33 // const
 #define _58__m34                              0.8299      // _58._m34
 #define _MaskMapGridSize                      float2( 2.00, 4.00 ) // _58._m35 // const
@@ -62,6 +51,9 @@ float _LDotV_damping_factor_cloud;
 #define _58__m38                              1.00        // _58._m38 // const
 
 sampler2D _IrradianceMap;
+
+float3 _sun_dir;
+float3 _moon_dir; 
 
 float FastAcosForAbsCos(float in_abs_cos) {
     float _local_tmp = ((in_abs_cos * -0.0187292993068695068359375 + 0.074261002242565155029296875) * in_abs_cos - 0.212114393711090087890625) * in_abs_cos + 1.570728778839111328125;
@@ -133,9 +125,7 @@ v2f vert (appdata v)
     float _VDotUp_Multi999 = abs(_rawUpDotDir) * _sun_disk_power_999;
 
 
-    // #define _58__m32 0.11        // _58._m32
-    // -2.5*(x-0.3)+1, y=-x 移动到(0.3, 1) 固定(0.3, 1) 旋转至斜率 -2.5，从 0.3 开始离开最高1，从0.7到达最低0，并 smooth
-    float _adjust_1_to_0_for_0d3_to_0d7 = smoothstep(0, 1, -2.5*(_58__m32-0.3)+1);
+
     
     // o.Varying_ViewDirAndAngle1_n1
     {
@@ -276,26 +266,34 @@ v2f vert (appdata v)
         o.Varying_DayPartColor = _sun_disk * _LDotDirClampn11_smooth + _sumIrradianceRGColor;
     }
 
+
+    // #define _LightingOcclusion 0.11        // _58._m32 // const
+    // 那么 _adjust_1_to_0_for_0d3_to_0d7 = 1; // const
+    // smoothstep(0, 1, -2.5*(x-0.3)+1), y=-x 移动到(0.3, 1) 固定(0.3, 1) 旋转至斜率 -2.5，从 0.3 开始离开最高1，从0.7到达最低0，并 smooth
+    float _adjust_1_to_0_for_0d3_to_0d7 = smoothstep(0, 1, -2.5*(_LightingOcclusion-0.3)+1);
     
     // o.Varying_TwoPartColor
     {
         // #define _moon_dir float3(0.31638, 0.70655, 0.633) // _58._m21
-        float _UkDirDotDirClamp01 = clamp(dot(_moon_dir, _viewDir), 0.0, 1.0);
+        float _VDotMoonClamp01 = clamp(dot(_moon_dir, _viewDir), 0.0, 1.0);
         
-        // #define _58__m22 float3(0.29669, 0.64985, 1.00 ) // _58._m22
-        // #define _58__m23 3.29897 // _58._m23
-        // #define _58__m24 0.19794 // _58._m24
-        // #define _01_RemapTo_Center1_TwoSide0 0.50    // _58._m25
-        float _01_remap_center1 = -abs(_01_RemapTo_Center1_TwoSide0 - 0.5) * 2.0 + 1.0;
-        float3 _tmp36 = smoothstep(0, 1, 2 * pow(_UkDirDotDirClamp01, 5) - 1.0)  * _58__m22 * clamp(_58__m23, 0.0, 0.8) * _58__m24 * _01_remap_center1;
+        // #define _moon_shine_color float3(0.29669, 0.64985, 1.00 ) // _58._m22
+        // #define _MoonTransmission 3.29897 // _58._m23
+        // #define _moon_intensity_max 0.19794 // _58._m24
+        
+        // 上箭头形状，0.5 最高 是 1，左右 0、1 是 0
+        // -abs(x-0.5)*2+1
+        float _moon_slider_value = -abs(_moon_intensity_slider - 0.5) * 2.0 + 1.0;
+        float _VDotMoonPow5_mod_smooth = smoothstep(0, 1, 2 * pow(_VDotMoonClamp01, 5) - 1.0);
+        float3 _moonShine = _moon_slider_value * _VDotMoonPow5_mod_smooth * _moon_shine_color * clamp(_MoonTransmission, 0.0, 0.8) * _moon_intensity_max;
         
         // #define _sun_color_intensity 0.01039 // _58._m20
-        // #define _58__m15 float3(0.01938, 0.00651, 0.02122  ) // _58._m15
-        float3 _tmp37 = clamp(pow( _VDotSunRemap01Clamp, _VDotUp_Multi999 * 0.5 ) * _rawUpDotDir, 0.0, 1.0) * _58__m15 * _sun_color_intensity;
+        // #define _sun_shine_color float3(0.01938, 0.00651, 0.02122  ) // _58._m15
+        float3 _sunShine = clamp(pow( _VDotSunRemap01Clamp, _VDotUp_Multi999 * 0.5 ) * _rawUpDotDir, 0.0, 1.0) * _sun_shine_color * _sun_color_intensity;
         
-        float3 _twoPartColor = _tmp36 + _tmp37;
+        float3 _twoPartColor = _moonShine + _sunShine;
         
-        o.Varying_TwoPartColor = _adjust_1_to_0_for_0d3_to_0d7 * _twoPartColor;
+        o.Varying_ShineColor = _adjust_1_to_0_for_0d3_to_0d7 * _twoPartColor;
     }
 
 
@@ -304,21 +302,21 @@ v2f vert (appdata v)
     {
         // _35.z = _VDotSunRemap01; // _35.z 实际有用途，就是后面的 _VDotSunRemap01 实际需要被 减 和除，做和 _VDotMoonRemap01 类似的 加速 Fade 运算
 
-        // #define _58__m17 0.80205 // _58._m17
-        // #define _58__m23 3.29897 // _58._m23
-        // #define _58__m22 float3(0.29669, 0.64985, 1.00 ) // _58._m22
-        float _UkDirDotDirMoreFadeMulti = smoothstep(_58__m17, 1.0, _VDotMoonRemap01) * _58__m23 * 0.1;
-        float3 _moreFadeTwoPartColorA = _UkDirDotDirMoreFadeMulti * _UkDirDotDirMoreFadeMulti * _58__m22;
+        // #define _TransmissionLDotVStartAt 0.80205 // _58._m17
+        // #define _MoonTransmission 3.29897 // _58._m23
+        // #define _moon_shine_color float3(0.29669, 0.64985, 1.00 ) // _58._m22
+        float _VDotMoonMoreFadeMulti = smoothstep(_TransmissionLDotVStartAt, 1.0, _VDotMoonRemap01) * _MoonTransmission * 0.1;
+        float3 _moonTransmission = _VDotMoonMoreFadeMulti * _VDotMoonMoreFadeMulti * _moon_shine_color;
         
         // 原版没有 clamp，需要自行保证 _VDotSunRemap01 = saturate(_VDotSunRemap01)
-        // #define _58__m16 4.09789 // _58._m16
+        // #define _SunTransmission 4.09789 // _58._m16
         // #define _sun_color float3(0.01938, 0.00651, 0.02122) // _58._m19
-        float _LDirDotDirMoreFadeMulti = smoothstep(_58__m17, 1.0, _VDotSunRemap01) * _58__m16 * 0.125;
-        float _moreFadeTwoPartColorB = _LDirDotDirMoreFadeMulti * _LDirDotDirMoreFadeMulti * _sun_color;
+        float _LDirDotDirMoreFadeMulti = smoothstep(_TransmissionLDotVStartAt, 1.0, _VDotSunRemap01) * _SunTransmission * 0.125;
+        float _sunTransmission = _LDirDotDirMoreFadeMulti * _LDirDotDirMoreFadeMulti * _sun_color;
         
-        float3 _moreFadeTwoPartColor = _moreFadeTwoPartColorA + _moreFadeTwoPartColorB;
+        float3 _moreFadeTwoPartColor = _moonTransmission + _sunTransmission;
 
-        o.Varying_TransmissionTwoPartColor = _adjust_1_to_0_for_0d3_to_0d7 * _moreFadeTwoPartColor;
+        o.Varying_TransmissionColor = _adjust_1_to_0_for_0d3_to_0d7 * _moreFadeTwoPartColor;
     }
 
     

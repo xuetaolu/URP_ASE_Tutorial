@@ -11067,7 +11067,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Intensity
+    attribute: _SunAdditionIntensity
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -11303,7 +11303,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.x
+    attribute: _sun_shine_color.x
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -11421,7 +11421,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.y
+    attribute: _sun_shine_color.y
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -11539,7 +11539,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.z
+    attribute: _sun_shine_color.z
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -11657,7 +11657,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.w
+    attribute: _sun_shine_color.w
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -11775,7 +11775,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m16
+    attribute: _SunTransmission
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -11893,7 +11893,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m17
+    attribute: _TransmissionLDotVStartAt
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12011,7 +12011,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _UpIrradianceFadePow
+    attribute: _sun_disk_power_999
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12129,7 +12129,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.x
+    attribute: _sun_color.x
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12247,7 +12247,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.y
+    attribute: _sun_color.y
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12365,7 +12365,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.z
+    attribute: _sun_color.z
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12483,7 +12483,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.w
+    attribute: _sun_color.w
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12601,7 +12601,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m20
+    attribute: _sun_color_intensity
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12728,7 +12728,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.x
+    attribute: _moon_shine_color.x
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12855,7 +12855,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.y
+    attribute: _moon_shine_color.y
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -12982,7 +12982,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.z
+    attribute: _moon_shine_color.z
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -13109,7 +13109,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.w
+    attribute: _moon_shine_color.w
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -13227,7 +13227,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m23
+    attribute: _MoonTransmission
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -13345,7 +13345,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m24
+    attribute: _moon_intensity_max
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -13463,7 +13463,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _01_RemapTo_Center1_TwoSide0
+    attribute: _moon_intensity_slider
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -13817,7 +13817,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.r
+    attribute: _SunAdditionColor.r
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -13935,7 +13935,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.g
+    attribute: _SunAdditionColor.g
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -14053,7 +14053,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.b
+    attribute: _SunAdditionColor.b
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -14171,7 +14171,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.a
+    attribute: _SunAdditionColor.a
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -14290,7 +14290,7 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 4212134518
+      attribute: 3817251427
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
@@ -14304,112 +14304,112 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 4010975483
+      attribute: 1618737129
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2551550061
+      attribute: 394053503
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 18661847
+      attribute: 2390070981
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2610150528
+      attribute: 3008783758
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 3969158166
+      attribute: 1767239918
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 3359843309
+      attribute: 554403476
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 3859306911
+      attribute: 619321490
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2433706249
+      attribute: 1408051204
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 134625459
+      attribute: 3403971006
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1507674742
+      attribute: 2187537467
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 4175960464
+      attribute: 642861586
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2414815494
+      attribute: 1364621956
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 384202940
+      attribute: 3361680190
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 3235126220
+      attribute: 1187505413
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1588629103
+      attribute: 65752627
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1430628874
+      attribute: 1090035725
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
@@ -14430,21 +14430,21 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2599943375
+      attribute: 3647053563
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 4146731044
+      attribute: 3032250896
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2269179051
+      attribute: 3302395551
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
@@ -14479,28 +14479,28 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2142092650
+      attribute: 4039436920
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1991721998
+      attribute: 3025470723
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1750533121
+      attribute: 3069073283
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 508149009
+      attribute: 1574952741
       script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
       typeID: 114
       customType: 0
@@ -16883,7 +16883,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Intensity
+    attribute: _SunAdditionIntensity
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17119,7 +17119,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.x
+    attribute: _sun_shine_color.x
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17237,7 +17237,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.y
+    attribute: _sun_shine_color.y
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17355,7 +17355,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.z
+    attribute: _sun_shine_color.z
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17473,7 +17473,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m15.w
+    attribute: _sun_shine_color.w
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17591,7 +17591,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m16
+    attribute: _SunTransmission
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17709,7 +17709,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m17
+    attribute: _TransmissionLDotVStartAt
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17827,7 +17827,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _UpIrradianceFadePow
+    attribute: _sun_disk_power_999
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -17945,7 +17945,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.x
+    attribute: _sun_color.x
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18063,7 +18063,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.y
+    attribute: _sun_color.y
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18181,7 +18181,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.z
+    attribute: _sun_color.z
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18299,7 +18299,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m19.w
+    attribute: _sun_color.w
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18417,7 +18417,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m20
+    attribute: _sun_color_intensity
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18544,7 +18544,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.x
+    attribute: _moon_shine_color.x
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18671,7 +18671,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.y
+    attribute: _moon_shine_color.y
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18798,7 +18798,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.z
+    attribute: _moon_shine_color.z
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -18925,7 +18925,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m22.w
+    attribute: _moon_shine_color.w
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19043,7 +19043,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m23
+    attribute: _MoonTransmission
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19161,7 +19161,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m24
+    attribute: _moon_intensity_max
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19279,7 +19279,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _01_RemapTo_Center1_TwoSide0
+    attribute: _moon_intensity_slider
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19633,7 +19633,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.r
+    attribute: _SunAdditionColor.r
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19751,7 +19751,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.g
+    attribute: _SunAdditionColor.g
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19869,7 +19869,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.b
+    attribute: _SunAdditionColor.b
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19987,7 +19987,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _IrradianceMapG_Color.a
+    attribute: _SunAdditionColor.a
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}

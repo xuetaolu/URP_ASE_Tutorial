@@ -84,9 +84,9 @@ fixed4 frag (v2f i) : SV_Target
 
     float3 _sumCloudColor;
         _sumCloudColor = _cloudMainColor;
-        _sumCloudColor += i.Varying_TransmissionTwoPartColor * _transmission;
+        _sumCloudColor += i.Varying_TransmissionColor * _transmission;
         _sumCloudColor += i.Varying_CloudColor_1 * _CloudMainColorAddition * 0.4;
-        _sumCloudColor += i.Varying_TwoPartColor * _maskMapSample.x;
+        _sumCloudColor += i.Varying_ShineColor * _maskMapSample.x;
     
     
     float _tmp42 = i.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x + 1.0;
