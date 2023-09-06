@@ -1,4 +1,4 @@
-Shader "xue/genship_skybox"
+Shader "xue/genship_skybox_v2"
 {
     Properties
     {
