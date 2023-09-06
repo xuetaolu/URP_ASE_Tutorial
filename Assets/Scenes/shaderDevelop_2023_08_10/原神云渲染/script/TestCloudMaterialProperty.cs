@@ -14,7 +14,7 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
 {
     public class SpecialAttribute : Attribute
     {
-        
+        [FormerlySerializedAs("propertyName")] public string shaderPropertyName = null;
     }
 
     [ExecuteAlways]
@@ -42,7 +42,7 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
         public bool m_setCloudSpecialProperty = true;
         
         
-        [Special] public float _LDotDir_n11_RemapDownAt0_A;
+        [Special(shaderPropertyName = "_LDotV_damping_factor")] public float _LDotDir_n11_RemapDownAt0_A;
         
         [Special] public float _IrradianceMapR_maxAngleRange;
         [Special] public Color _IrradianceMapG_Color;
@@ -69,7 +69,7 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
         [Special] public Color _CloudColor_Dark_Center = new Color(0.00f, 0.03576f, 0.12083f   );
         [Special] public Color _CloudColor_Dark_Around = new Color(0.02281f, 0.05716f, 0.14666f);
 
-        [Special] public float _LDotDir_n11_RemapDownAt0_B = 0.0881f;
+        [Special(shaderPropertyName = "_LDotV_damping_factor_cloud")] public float _LDotDir_n11_RemapDownAt0_B = 0.0881f;
 
         [Special] public float _58__m34;
 
@@ -119,17 +119,19 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
                     {
                         Type type = fieldInfo.FieldType;
 
+                        string propertyName = specialAttribute.shaderPropertyName ?? fieldInfo.Name;
+
                         if (type == typeof(float))
                         {
-                            toMpb.SetFloat(fieldInfo.Name, (float)fieldInfo.GetValue(this));
+                            toMpb.SetFloat(propertyName, (float)fieldInfo.GetValue(this));
                         }
                         else if (type == typeof(Color))
                         {
-                            toMpb.SetColor(fieldInfo.Name, (Color)fieldInfo.GetValue(this));
+                            toMpb.SetColor(propertyName, (Color)fieldInfo.GetValue(this));
                         }
                         else if (type == typeof(Vector4))
                         {
-                            toMpb.SetVector(fieldInfo.Name, (Vector4)fieldInfo.GetValue(this));
+                            toMpb.SetVector(propertyName, (Vector4)fieldInfo.GetValue(this));
                         }
                     }
                 }

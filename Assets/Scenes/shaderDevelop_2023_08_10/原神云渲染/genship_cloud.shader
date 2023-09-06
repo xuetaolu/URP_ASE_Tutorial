@@ -7,7 +7,7 @@ Shader "genship/genship_cloud"
         _sunOrgColorLookAt ("_sunOrgColorLookAt", Color) = (0.0538, 0.09841, 0.2073  )
         _sunOrgColorBeside ("_sunOrgColorBeside", Color) = (0.0538, 0.09841, 0.2073  )
         
-        _LDotDir_n11_RemapDownAt0_A ("_LDotDir_n11_RemapDownAt0_A", float) = 0.49336 // _58._m9
+        _LDotV_damping_factor ("_LDotV_damping_factor", float) = 0.49336 // _58._m9
         
         _IrradianceMapR_maxAngleRange ("_IrradianceMapR_maxAngleRange", float) = 0.20     // _58._m10
         _IrradianceMapG_Color ("_IrradianceMapG_Color", Vector) = (0.00837, 0.10516, 0.26225) // _58._m11
@@ -32,7 +32,7 @@ Shader "genship/genship_cloud"
         _CloudColor_Dark_Center ("_CloudColor_Dark_Center", Color) = (0.00, 0.03576, 0.12083   ) // _58._m29
         _CloudColor_Dark_Around ("_CloudColor_Dark_Around", Color) = (0.02281, 0.05716, 0.14666) // _58._m30
         
-        _LDotDir_n11_RemapDownAt0_B ("_LDotDir_n11_RemapDownAt0_B", float) = 0.0881 // _58._m31
+        _LDotV_damping_factor_cloud ("_LDotV_damping_factor_cloud", float) = 0.0881 // _58._m31
         
         
         _58__m34 ("_58__m34", float) = 0.8299 // _58._m34

@@ -1,4 +1,5 @@
 #include "genship_cloud_common.hlsl"
+#include ".\sky_common.hlsl"
 
 #define _RolePos_maybe                        float3(-3.48413, 195.00, 2.47919) // _58._m3
 #define _UpDir                                float3(0.00, 1.00, 0.00         ) // _58._m4
@@ -6,15 +7,15 @@
 // #define _sunScatterColorBeside                       float3(0.00972, 0.02298, 0.06016) // _58._m6
 // #define _sunOrgColorLookAt                       float3(0.0538, 0.09841, 0.2073  ) // _58._m7
 // #define _sunOrgColorBeside                       float3(0.0538, 0.09841, 0.2073  ) // _58._m8
-// #define _LDotDir_n11_RemapDownAt0_A           0.49336  // _58._m9
+// #define _LDotV_damping_factor           0.49336  // _58._m9
 float3 _sunScatterColorLookAt; 
 float3 _sunScatterColorBeside; 
 float3 _sunOrgColorLookAt; 
 float3 _sunOrgColorBeside; 
-float _LDotDir_n11_RemapDownAt0_A; 
+float _LDotV_damping_factor; 
 #define _IrradianceMapR_maxAngleRange         0.20     // _58._m10
-#define _IrradianceMapG_Color                 float3(0.00837, 0.10516, 0.26225) // _58._m11
-#define _IrradianceMapG_Intensity             0.50 // _58._m12
+#define _SkyColor                 float3(0.00837, 0.10516, 0.26225) // _58._m11
+#define _SkyColorIntensity             0.50 // _58._m12
 #define _IrradianceMapG_maxAngleRange         0.30 // _58._m13
 // #define _sun_dir                       float3(0.00688, -0.84638, -0.53253) // _58._m14
 float3 _sun_dir; 
@@ -35,12 +36,12 @@ float3 _moon_dir;
 // #define _CloudColor_Bright_Around                  float3(0.10391, 0.41824, 0.88688) // _58._m28
 // #define _CloudColor_Dark_Center                  float3(0.00, 0.03576, 0.12083   ) // _58._m29
 // #define _CloudColor_Dark_Around                  float3(0.02281, 0.05716, 0.14666) // _58._m30
-// #define _LDotDir_n11_RemapDownAt0_B           0.0881      // _58._m31
+// #define _LDotV_damping_factor_cloud           0.0881      // _58._m31
 float3 _CloudColor_Bright_Center;
 float3 _CloudColor_Bright_Around;
 float3 _CloudColor_Dark_Center;
 float3 _CloudColor_Dark_Around;
-float _LDotDir_n11_RemapDownAt0_B;
+float _LDotV_damping_factor_cloud;
 
 #define _58__m32                              0.11        // _58._m32 // const
 #define _58__m33                              1.00        // _58._m33 // const
@@ -85,62 +86,59 @@ v2f vert (appdata v)
     
     
 
-    float4 _WorldPos = mul(UNITY_MATRIX_M, Vertex_Position);
+    float4 _worldPos = mul(UNITY_MATRIX_M, Vertex_Position);
 
     // o.vertex
     {
-        float4 _clipPos = mul(UNITY_MATRIX_VP, _WorldPos);
+        float4 _clipPos = mul(UNITY_MATRIX_VP, _worldPos);
         _clipPos.z = _clipPos.w;
         o.vertex = _clipPos;
     }
     
 
-
-    // #define _RolePos_maybe  float3(-3.48413, 195.00, 2.47919) // _58._m3
-    float3 _worldPos_relativeToRole = _WorldPos.xyz - _RolePos_maybe;
     
-    float3 _relativeToRoleDir = normalize(_worldPos_relativeToRole);
+    // #define _RolePos_maybe  float3(-3.48413, 195.00, 2.47919) // _58._m3
+    float3 _viewDir = normalize(_worldPos.xyz - _RolePos_maybe);
 
-    float _rawUpDotDir = dot(_UpDir, _relativeToRoleDir);
+    
+
+    // (1.57079632679 - acos(x)) * 0.636619772367
+    
+
+    
+    float _VDotSun = dot(_viewDir, _sun_dir);
+    float _VDotSunRemap01 = _VDotSun * 0.5 + 0.5;
+    float _VDotSunRemap01Clamp = clamp(_VDotSunRemap01, 0.0, 1.0);
+
+    float _rawUpDotDir = dot(_UpDir, _viewDir);
 
     float _miu = clamp(_rawUpDotDir, -1.0, 1.0);
 
-    // (1.57079632679 - acos(x)) * 0.636619772367
     float _angle_up_to_down_1_n1 = (UNITY_HALF_PI - FastAcos(_miu)) * UNITY_INV_HALF_PI;
-
-
-    // #define _sun_dir float3(0.00688, -0.84638, -0.53253) // _58._m14
-    float _LDotDir = dot(_relativeToRoleDir, _sun_dir);
-    float _LDotDirRemap01 = _LDotDir * 0.5 + 0.5;
-    float _UkDirDotDirRemap01 = dot(_relativeToRoleDir, _moon_dir) * 0.5 + 0.5;
+    
+    float _VDotMoonRemap01 = dot(_viewDir, _moon_dir) * 0.5 + 0.5;
     
     
-    // #define _LDotDir_n11_RemapDownAt0_A  0.49336  // _58._m9
-    // #define _LDotDir_n11_RemapDownAt0_B 0.0881      // _58._m31
-    // 意思是一条直线 y = 1
-    //    绕着 (1, 1) 点，在 x=0 处往下压，如果 是 0.8，那就变成 0~1 remap 到 0.2~1
-    // 后续这个值还会做 pow(, 3) 的运算，加速在 0 处的下降，只有接近 1 处有值，类似 sunDisk 的实现
-    float _LDotDirRemapA = _LDotDir * _LDotDir_n11_RemapDownAt0_A + (-_LDotDir_n11_RemapDownAt0_A) + 1.0;
-    float _LDotDirRemapB = _LDotDir * _LDotDir_n11_RemapDownAt0_B + (-_LDotDir_n11_RemapDownAt0_B) + 1.0;
-    _LDotDirRemapA = max(_LDotDirRemapA, 0);
-    _LDotDirRemapB = max(_LDotDirRemapB, 0);
-
-    float _LDotDirRemapA_pow3 = _LDotDirRemapA * _LDotDirRemapA * _LDotDirRemapA;
-    float _LDotDirRemapB_pow3 = _LDotDirRemapB * _LDotDirRemapB * _LDotDirRemapB;
+    // #define _LDotV_damping_factor  0.49336  // _58._m9
+    // #define _LDotV_damping_factor_cloud 0.0881      // _58._m31
+    float _VDotSunDampingA = max(0, lerp( 1, _VDotSun, _LDotV_damping_factor ));
+    float _VDotSunDampingCloud = max(0, lerp( 1, _VDotSun, _LDotV_damping_factor_cloud ));
+    
+    float _VDotSunDampingA_pow3 = _VDotSunDampingA * _VDotSunDampingA * _VDotSunDampingA;
+    float _VDotSunDampingCloud_pow3 = _VDotSunDampingCloud * _VDotSunDampingCloud * _VDotSunDampingCloud;
     
     // #define _UpIrradianceFadePow 8.30078 // _58._m18
     float _UpDotDirMulti = abs(_rawUpDotDir) * _UpIrradianceFadePow;
-    float _LDotDirRemap01Clamp = clamp(_LDotDirRemap01, 0.0, 1.0);
 
 
     // #define _58__m32 0.11        // _58._m32
     // -2.5*(x-0.3)+1, y=-x 移动到(0.3, 1) 固定(0.3, 1) 旋转至斜率 -2.5，从 0.3 开始离开最高1，从0.7到达最低0，并 smooth
     float _adjust_1_to_0_for_0d3_to_0d7 = smoothstep(0, 1, -2.5*(_58__m32-0.3)+1);
     
-    // o.Varying_RelativeToRoleDirXYZ_Angle1_n1
+    // o.Varying_ViewDirAndAngle1_n1
     {
-        o.Varying_RelativeToRoleDirXYZ_Angle1_n1.w = _angle_up_to_down_1_n1;
-        o.Varying_RelativeToRoleDirXYZ_Angle1_n1.xyz = _relativeToRoleDir;
+        o.Varying_ViewDirAndAngle1_n1.w = _angle_up_to_down_1_n1;
+        o.Varying_ViewDirAndAngle1_n1.xyz = _viewDir;
     }
 
     // o.Varying_MaskMapUvXY_DisturbanceNoiseUvZW
@@ -180,7 +178,7 @@ v2f vert (appdata v)
     // o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX
     {
         // #define _58__m34 0.8299      // _58._m34
-        o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x = _LDotDirRemap01 * _58__m34;
+        o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x = _VDotSunRemap01 * _58__m34;
 
         o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.yz = Vertex_GridIndexY_.zw;
         
@@ -201,8 +199,8 @@ v2f vert (appdata v)
         // #define _CloudColor_Bright_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
         // #define _CloudColor_Dark_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
         // #define _CloudColor_Dark_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
-        o.Varying_CloudColor_1 = lerp(_CloudColor_Bright_Around, _CloudColor_Bright_Center, _LDotDirRemapB_pow3);
-        o.Varying_CloudColor_2 = lerp(_CloudColor_Dark_Around, _CloudColor_Dark_Center, _LDotDirRemapB_pow3);
+        o.Varying_CloudColor_1 = lerp(_CloudColor_Bright_Around, _CloudColor_Bright_Center, _VDotSunDampingCloud_pow3);
+        o.Varying_CloudColor_2 = lerp(_CloudColor_Dark_Around, _CloudColor_Dark_Center, _VDotSunDampingCloud_pow3);
     }
 
 
@@ -220,15 +218,18 @@ v2f vert (appdata v)
         
         // #define _sunOrgColorLookAt  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
         // #define _sunOrgColorBeside  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
-        // _sunColor 这里指 _irradianceMapR 为 1 的颜色，可能不是 sun
-        float3 _sunColor = lerp(_sunOrgColorBeside, _sunOrgColorLookAt, _LDotDirRemapA_pow3);
+        // _sunBrightColor 这里指 _irradianceMapR 为 1 的颜色，理解成太阳 disk 颜色
+        float3 _sunBrightColor = lerp(_sunOrgColorBeside, _sunOrgColorLookAt, _VDotSunDampingA_pow3);
         
         // #define _sunScatterColorLookAt  float3(0.00972, 0.02298, 0.06016) // _58._m5
         // #define _sunScatterColorBeside  float3(0.00972, 0.02298, 0.06016) // _58._m6
-        // _skyColor 这里指 _irradianceMapR 为 0 的颜色，理解成天空大气颜色 sky 可行
-        float3 _skyColor = lerp(_sunScatterColorBeside, _sunScatterColorLookAt, _LDotDirRemapA_pow3);
+        // _sunDarkColor 这里指 _irradianceMapR 为 0 的颜色，理解成太阳散射到附近大气的颜色
+        float3 _sunDarkColor = lerp(_sunScatterColorBeside, _sunScatterColorLookAt, _VDotSunDampingA_pow3);
+
+        // sun color
+        float3 _sunPartColor = lerp( _sunDarkColor, _sunBrightColor, _irradianceMapR );
+
         
-        float3 _irradianceRColor = lerp( _skyColor, _sunColor, _irradianceMapR );
 
         float2 _irradianceMap_G_uv;
         // #define _IrradianceMapG_maxAngleRange 0.30 // _58._m13
@@ -238,39 +239,34 @@ v2f vert (appdata v)
 
         float _irradianceMapG = tex2Dlod(_IrradianceMap, float4(_irradianceMap_G_uv, 0.0, 0.0)).y;
 
-        // #define _IrradianceMapG_Color float3(0.00837, 0.10516, 0.26225) // _58._m11
-        // #define _IrradianceMapG_Intensity 0.50 // _58._m12
-        float3 _irradianceMapGColor = _irradianceMapG * _IrradianceMapG_Color * _IrradianceMapG_Intensity;
+        // #define _SkyColor float3(0.00837, 0.10516, 0.26225) // _58._m11
+        // #define _SkyColorIntensity 0.50 // _58._m12
+        // sky color
+        float3 _skyPartColor = _irradianceMapG * _SkyColor * _SkyColorIntensity;
 
-            // float smoothstep(float t1, float t2, float x) {
-            //   x = clamp((x - t1) / (t2 - t1), 0.0, 1.0); 
-            //   return x * x * (3 - 2 * x);
-            // }
 
         // smoothstep(0, 1, clamp( (abs(x)-0.2) * 10/3, 0, 1))
         // 从 0.2 处离开0，平滑上升，0.5 处开始达到最大 1.0 
-        float _lightDirY_remap_smooth01 = smoothstep(0, 1, clamp( (abs(_sun_dir.y) - 0.2) * 10/3, 0, 1 ));
+        float _upFactor = smoothstep(0, 1, clamp((abs(_sun_dir.y) - 0.2) * 10/3, 0, 1));
         
         // smoothstep(0, 1, max((clamp(x, 0.0, 1.0)-1)/0.7 + 1, 0.0))
         // y=x 直线，固定 (1, 1) 点不动，旋转，使其斜率变成 1/0.7，加速衰减，并 smooth
-        float _LDotDir_01_remapFade_smooth = smoothstep(0, 1, (clamp(_LDotDirRemap01, 0.0, 1.0)-1)/0.7 + 1);
+        float _VDotSunFactor = smoothstep(0, 1, (_VDotSunRemap01Clamp-1)/0.7 + 1);
 
-        // 意思是优先判断高度，高的地方就是固定 _irradianceMapGColor
-        //       lightDirY > 0.5 处是 _irradianceMapGColor
-        //       lightDirY < 0.2 处是 _LDotDir_01_remapFade_smooth * _irradianceMapGColor
-        // 
-        // 其次判断 _LDotDir 
-        float _LDotDirFinalRemap = lerp(_LDotDir_01_remapFade_smooth, 1.0, _lightDirY_remap_smooth01);
+        // 意思是优先判断高度，高的地方就是全额 _skyPartColor
+        //       lightDirY > 0.5 处是 1.0 
+        //       lightDirY < 0.2 处是 _VDotSunFactor
+        float _skyPartFactor = lerp(_VDotSunFactor, 1.0, _upFactor);
+
+
+        float3 _sumIrradianceRGColor = _skyPartColor * _skyPartFactor + _sunPartColor;
+
         
-        float3 _sumIrradianceRGColor = _irradianceMapGColor * _LDotDirFinalRemap + _irradianceRColor;
-
-
-
         // #define _58__m20 0.01039 // _58._m20
         // #define _58__m19 float3(0.01938, 0.00651, 0.02122) // _58._m19
-        float _UpAdjustSumIrradianceRGColor = min( 1, pow(_LDotDirRemap01Clamp, _UpDotDirMulti * float3(1, 0.1, 0.01))) * float3(1, 0.12, 0.03) * _58__m20 * _58__m19;
+        float _UpAdjustSumIrradianceRGColor = min( 1, pow(_VDotSunRemap01Clamp, _UpDotDirMulti * float3(1, 0.1, 0.01))) * float3(1, 0.12, 0.03) * _58__m20 * _58__m19;
         
-        float _LDotDirClampn11 = 2 * _LDotDirRemap01Clamp - 1.0;
+        float _LDotDirClampn11 = 2 * _VDotSunRemap01Clamp - 1.0;
         o.Varying_IrradianceColor = _UpAdjustSumIrradianceRGColor * smoothstep(0, 1, _LDotDirClampn11) + _sumIrradianceRGColor;
     }
 
@@ -278,7 +274,7 @@ v2f vert (appdata v)
     // o.Varying_TwoPartColor
     {
         // #define _moon_dir float3(0.31638, 0.70655, 0.633) // _58._m21
-        float _UkDirDotDirClamp01 = clamp(dot(_moon_dir, _relativeToRoleDir), 0.0, 1.0);
+        float _UkDirDotDirClamp01 = clamp(dot(_moon_dir, _viewDir), 0.0, 1.0);
         
         // #define _58__m22 float3(0.29669, 0.64985, 1.00 ) // _58._m22
         // #define _58__m23 3.29897 // _58._m23
@@ -289,7 +285,7 @@ v2f vert (appdata v)
         
         // #define _58__m20 0.01039 // _58._m20
         // #define _58__m15 float3(0.01938, 0.00651, 0.02122  ) // _58._m15
-        float3 _tmp37 = clamp(pow( _LDotDirRemap01Clamp, _UpDotDirMulti * 0.5 ) * _rawUpDotDir, 0.0, 1.0) * _58__m15 * _58__m20;
+        float3 _tmp37 = clamp(pow( _VDotSunRemap01Clamp, _UpDotDirMulti * 0.5 ) * _rawUpDotDir, 0.0, 1.0) * _58__m15 * _58__m20;
         
         float3 _twoPartColor = _tmp36 + _tmp37;
         
@@ -300,18 +296,18 @@ v2f vert (appdata v)
     
     // o.Varying_MoreFadeTwoPartColor
     {
-        // _35.z = _LDotDirRemap01; // _35.z 实际有用途，就是后面的 _LDotDirRemap01 实际需要被 减 和除，做和 _UkDirDotDirRemap01 类似的 加速 Fade 运算
+        // _35.z = _VDotSunRemap01; // _35.z 实际有用途，就是后面的 _VDotSunRemap01 实际需要被 减 和除，做和 _VDotMoonRemap01 类似的 加速 Fade 运算
 
         // #define _58__m17 0.80205 // _58._m17
         // #define _58__m23 3.29897 // _58._m23
         // #define _58__m22 float3(0.29669, 0.64985, 1.00 ) // _58._m22
-        float _UkDirDotDirMoreFadeMulti = smoothstep(_58__m17, 1.0, _UkDirDotDirRemap01) * _58__m23 * 0.1;
+        float _UkDirDotDirMoreFadeMulti = smoothstep(_58__m17, 1.0, _VDotMoonRemap01) * _58__m23 * 0.1;
         float3 _moreFadeTwoPartColorA = _UkDirDotDirMoreFadeMulti * _UkDirDotDirMoreFadeMulti * _58__m22;
         
-        // 原版没有 clamp，需要自行保证 _LDotDirRemap01 = saturate(_LDotDirRemap01)
+        // 原版没有 clamp，需要自行保证 _VDotSunRemap01 = saturate(_VDotSunRemap01)
         // #define _58__m16 4.09789 // _58._m16
         // #define _58__m19 float3(0.01938, 0.00651, 0.02122) // _58._m19
-        float _LDirDotDirMoreFadeMulti = smoothstep(_58__m17, 1.0, _LDotDirRemap01) * _58__m16 * 0.125;
+        float _LDirDotDirMoreFadeMulti = smoothstep(_58__m17, 1.0, _VDotSunRemap01) * _58__m16 * 0.125;
         float _moreFadeTwoPartColorB = _LDirDotDirMoreFadeMulti * _LDirDotDirMoreFadeMulti * _58__m19;
         
         float3 _moreFadeTwoPartColor = _moreFadeTwoPartColorA + _moreFadeTwoPartColorB;

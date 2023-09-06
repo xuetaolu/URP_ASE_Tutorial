@@ -46,7 +46,7 @@ fixed4 frag (v2f i) : SV_Target
     float _alpha_numerator = _alpha_numerator_part + (_Alpha_Numerator_Bias - 1.0);
 
     
-    float _angle_up_to_down_1_n1_bias_0d1 = i.Varying_RelativeToRoleDirXYZ_Angle1_n1.w + 0.1;
+    float _angle_up_to_down_1_n1_bias_0d1 = i.Varying_ViewDirAndAngle1_n1.w + 0.1;
     float _angle_up_to_down_1_n1_scale_smooth = smoothstep(0, 1, _angle_up_to_down_1_n1_bias_0d1 * 5.0);
 
     // (x- max(x - 0.09804, 0.0) + 1-1) / (min(x+0.09804, 1.0) - max(x-0.09804, 0.0))
@@ -89,7 +89,7 @@ fixed4 frag (v2f i) : SV_Target
     float _tmp42 = i.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x + 1.0;
     
     
-    float _angle_up_to_down_1_n1_scale_smooth_2 = min(1.0, smoothstep(0, 1, i.Varying_RelativeToRoleDirXYZ_Angle1_n1.w * 10.0));
+    float _angle_up_to_down_1_n1_scale_smooth_2 = min(1.0, smoothstep(0, 1, i.Varying_ViewDirAndAngle1_n1.w * 10.0));
 
     
     float _tmp42_2 = lerp(_angle_up_to_down_1_n1_scale_smooth_2, 1.0, smoothstep(0, 1, (_CloudMainColorAddition - 0.4) * 10/3.0));

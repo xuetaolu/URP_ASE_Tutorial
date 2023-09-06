@@ -1,0 +1,5 @@
+#ifndef SKY_COMMON_INCLUDED
+#define SKY_COMMON_INCLUDED
+
+
+#endif
