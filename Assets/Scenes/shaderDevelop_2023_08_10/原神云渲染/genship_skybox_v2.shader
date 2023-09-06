@@ -3,22 +3,25 @@ Shader "xue/genship_skybox"
     Properties
     {
         // /* day 白天: sun sky 属性 start
-        _sunScatterColorLookAt("sunScatterColorLookAt", Color) = (0.00326,0.18243,0.63132,1)
-        _sunScatterColorBeside("sunScatterColorBeside", Color) = (0.02948,0.1609,0.27936,1)
-        _sunOrgColorLookAt("sunOrgColorLookAt", Color) = (0.30759,0.346,0.24592,1)
-        _sunOrgColorBeside("sunOrgColorBeside", Color) = (0.04305,0.26222,0.46968,1)
+        [Header(_IrradianceMapR)]
+        _upPartSunColor("高空近太阳颜色", Color) = (0.00326,0.18243,0.63132,1)
+        _upPartSkyColor("高空远太阳颜色", Color) = (0.02948,0.1609,0.27936,1)
+        _downPartSunColor("水平线近太阳颜色", Color) = (0.30759,0.346,0.24592,1)
+        _downPartSkyColor("水平线远太阳颜色", Color) = (0.04305,0.26222,0.46968,1)
+        _mainColorSunGatherFactor("近太阳颜色聚集程度", Range(0, 1)) = 0.31277
+        _IrradianceMapR_maxAngleRange("天空主色垂直变化范围", Range(0, 1)) = 0.44837
+        [Header(_IrradianceMapG)]
+        _SunAdditionColor("太阳追加点颜色", Color) = (0.90409,0.7345,0.13709, 1)
+        _SunAdditionIntensity("太阳追加点颜色强度", Range(0, 3)) = 1.48499
+        _IrradianceMapG_maxAngleRange("太阳追加点垂直变化范围", Range(0, 1)) = 0.69804
         
+        [Header(________________)]
         _sun_disk_power_999("sun_disk_power_999", Range(0, 1000)) = 1000
         _sun_color("sun_color", Color) = (0.90625, 0.43019, 0.11743, 1)
         _sun_color_intensity("sun_color_intensity", Range(0, 3)) = 1.18529
         
-        _LDotV_damping_factor("LDotV_damping_factor", Range(0, 1)) = 0.31277
-        _sun_scatter("sun_scatter", Range(0, 1)) = 0.44837
-        _sky_color("sky_color", Color) = (0.90409,0.7345,0.13709, 1)
-        _sky_color_intensity("sky_color_intensity", Range(0, 3)) = 1.48499
-        _sky_scatter("sky_scatter", Range(0, 1)) = 0.69804
         
-        [NoScaleOffset]_IrradianceMap("TransmissionRGMap", 2D) = "white" {}
+        [NoScaleOffset]_IrradianceMap("_IrradianceMap", 2D) = "white" {}
         // -------------------------- */ 
         
         // /* night 夜晚: moon 属性 
@@ -67,20 +70,23 @@ Shader "xue/genship_skybox"
             #pragma fragment frag
             
             // /* day 白天: sun sky 属性 start
-            float3 _sunScatterColorLookAt;
-            float3 _sunScatterColorBeside;
-            float3 _sunOrgColorLookAt;
-            float3 _sunOrgColorBeside;
+            float3 _upPartSunColor;
+            float3 _upPartSkyColor;
+            float3 _downPartSunColor;
+            float3 _downPartSkyColor;
+            float _mainColorSunGatherFactor;
+            float _IrradianceMapR_maxAngleRange;
 
+
+            float3 _SunAdditionColor;
+            float _SunAdditionIntensity;
+            float _IrradianceMapG_maxAngleRange;
+            
             float _sun_disk_power_999;
             float3 _sun_color;
             float _sun_color_intensity;
 
-            float _LDotV_damping_factor;
-            float _sun_scatter;
-            float3 _sky_color;
-            float _sky_color_intensity;
-            float _sky_scatter;
+
             
             sampler2D _IrradianceMap;
             // -------------------------- */
@@ -207,38 +213,38 @@ Shader "xue/genship_skybox"
                     o.Varying_ViewDirAndAngle1_n1.w = _angle_up_to_down_1_n1;
                 }
 
-                // 注1：_irradianceMapR 关联应该是天空颜色，因为 _irradianceMapR 采样为 0 时，是有值的，lerp(_sunScatterColorBeside, _sunScatterColorLookAt, _VDotSunDampingA_pow3)
+                // 注1：_irradianceMapR 关联应该是天空颜色，因为 _irradianceMapR 采样为 0 时，是有值的，lerp(_upPartSkyColor, _upPartSunColor, _VDotSunDampingA_pow3)
                 //   故输入的 4 个颜色，分两组应该分上下，其中上部分(抬头)对应 _irradianceMapR 采样为0，下部分(地平线)对应 _irradianceMapR 采样为1
                 // 注2：_irradianceMapG 关联应该是太阳disk追加颜色，因为 _irradianceMapG 采样为 0 时，是没值的，
 
-                // _irradianceMapR 最左边是 0 度的，最右边是 _sky_scatter 0.2 *90°=18° 的，即只记录水平朝向的值，更高，更低的值都是 18° 的值。
-                //   如果 _sun_scatter 小，例如 0.01，则 1° 以上就没值了，表示 _sunPartColor (sun color) 只有水平地方有
-                //   如果 _sun_scatter 小，例如 1.0，则 90° 应该还有值，表示 _sunPartColor (sun color) 高处也有
+                // _irradianceMapR 最左边是 0 度的，最右边是 _IrradianceMapG_maxAngleRange 0.2 *90°=18° 的，即只记录水平朝向的值，更高，更低的值都是 18° 的值。
+                //   如果 _IrradianceMapR_maxAngleRange 小，例如 0.01，则 1° 以上就没值了，表示 _mainColor (sun color) 只有水平地方有
+                //   如果 _IrradianceMapR_maxAngleRange 小，例如 1.0，则 90° 应该还有值，表示 _mainColor (sun color) 高处也有
                 float2 _irradianceMap_R_uv;
-                    _irradianceMap_R_uv.x = abs(_angle_up_to_down_1_n1) / max(_sun_scatter, 1.0e-04);
+                    _irradianceMap_R_uv.x = abs(_angle_up_to_down_1_n1) / max(_IrradianceMapR_maxAngleRange, 1.0e-04);
                     _irradianceMap_R_uv.y = 0.5;
                 
                 float _irradianceMapR = tex2Dlod(_IrradianceMap, float4( _irradianceMap_R_uv, 0.0, 0.0 )).x;
                 
-                float _VDotSunDampingA = max(0, lerp( 1, _VDotSun, _LDotV_damping_factor ));
+                float _VDotSunDampingA = max(0, lerp( 1, _VDotSun, _mainColorSunGatherFactor ));
                 
                 float _VDotSunDampingA_pow3 = _VDotSunDampingA * _VDotSunDampingA * _VDotSunDampingA;
 
-                float3 _sunOrgColor_adapt_LDotV = lerp(_sunOrgColorBeside, _sunOrgColorLookAt, _VDotSunDampingA_pow3);
-                float3 _sunScatterColor_adapt_LDotV = lerp(_sunScatterColorBeside, _sunScatterColorLookAt, _VDotSunDampingA_pow3);
+                float3 _downPartColor = lerp(_downPartSkyColor, _downPartSunColor, _VDotSunDampingA_pow3);
+                float3 _upPartColor = lerp(_upPartSkyColor, _upPartSunColor, _VDotSunDampingA_pow3);
                 
-                float3 _sunPartColor = lerp(_sunScatterColor_adapt_LDotV, _sunOrgColor_adapt_LDotV, _irradianceMapR);
+                float3 _mainColor = lerp(_upPartColor, _downPartColor, _irradianceMapR);
 
                 
-                // _irradianceMapG 最左边是 0 度的，最右边是 _sky_scatter 0.3 *90°=27° 的，即只记录水平朝向的值，更高，更低的值都是 27° 的值。
-                //   如果 _sky_scatter 小，例如 0.01，则 1° 以上就没值了，表示 _skyPartColor (sky color) 只有水平地方有
-                //   如果 _sky_scatter 小，例如 1.0，则 90° 应该还有值，表示 _skyPartColor (sky color) 高处也有
+                // _irradianceMapG 最左边是 0 度的，最右边是 _IrradianceMapG_maxAngleRange 0.3 *90°=27° 的，即只记录水平朝向的值，更高，更低的值都是 27° 的值。
+                //   如果 _IrradianceMapG_maxAngleRange 小，例如 0.01，则 1° 以上就没值了，表示 _sunAdditionPartColor (sky color) 只有水平地方有
+                //   如果 _IrradianceMapG_maxAngleRange 小，例如 1.0，则 90° 应该还有值，表示 _sunAdditionPartColor (sky color) 高处也有
                 float2 _irradianceMap_G_uv;
-                    _irradianceMap_G_uv.x = abs(_angle_up_to_down_1_n1) / max(_sky_scatter, 1.0e-04);
+                    _irradianceMap_G_uv.x = abs(_angle_up_to_down_1_n1) / max(_IrradianceMapG_maxAngleRange, 1.0e-04);
                     _irradianceMap_G_uv.y = 0.5;
                 float _irradianceMapG = tex2Dlod(_IrradianceMap, float4( _irradianceMap_G_uv, 0.0, 0.0 )).y;
-                // sky color
-                float3 _skyPartColor = _irradianceMapG * _sky_color * _sky_color_intensity;
+                
+                float3 _sunAdditionPartColor = _irradianceMapG * _SunAdditionColor * _SunAdditionIntensity;
 
                 
 
@@ -250,13 +256,14 @@ Shader "xue/genship_skybox"
                 // y=x 直线，固定 (1, 1) 点不动，旋转，使其斜率变成 1/0.7，加速衰减，并 smooth
                 float _VDotSunFactor = smoothstep(0, 1, (_VDotSunRemap01Clamp-1)/0.7 + 1);
 
-                // 意思是优先判断高度，高的地方就是全额 _skyPartColor
+                // 意思是优先判断高度，高的地方就是全额 _sunAdditionPartColor
                 //       lightDirY > 0.5 处是 1.0 
                 //       lightDirY < 0.2 处是 _VDotSunFactor
-                float _skyPartFactor = lerp(_VDotSunFactor, 1.0, _upFactor);
+                float _sunAdditionPartFactor = lerp(_VDotSunFactor, 1.0, _upFactor);
 
+                float3 _additionPart = _sunAdditionPartColor * _sunAdditionPartFactor;
 
-                float3 _sumIrradianceRGColor = _skyPartColor * _skyPartFactor + _sunPartColor;
+                float3 _sumIrradianceRGColor = _mainColor + _additionPart;
                 o.Varying_IrradianceColor.xyz = _sumIrradianceRGColor;
                 o.Varying_IrradianceColor.w = _VDotSunDampingA_pow3;  // 这个实际没用
                 

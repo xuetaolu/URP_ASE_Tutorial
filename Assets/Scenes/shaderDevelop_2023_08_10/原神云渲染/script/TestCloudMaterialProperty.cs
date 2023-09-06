@@ -22,13 +22,17 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
     {
         public static List<Tuple<string, string, Type>> s_propertyMap = new List<Tuple<string, string, Type>>()
         {
-            new ("_sunScatterColorLookAt", "_sunScatterColorLookAt",            typeof(Color)),
-           
-            new ("_sunScatterColorBeside", "_sunScatterColorBeside",            typeof(Color)),
-            new ("_sunOrgColorLookAt",     "_sunOrgColorLookAt",            typeof(Color)),
-            new ("_sunOrgColorBeside",     "_sunOrgColorBeside",            typeof(Color)),
+            // new ("_sunScatterColorLookAt", "_sunScatterColorLookAt",            typeof(Color)),
+            // new ("_sunScatterColorBeside", "_sunScatterColorBeside",            typeof(Color)),
+            // new ("_sunOrgColorLookAt",     "_sunOrgColorLookAt",            typeof(Color)),
+            // new ("_sunOrgColorBeside",     "_sunOrgColorBeside",            typeof(Color)),
             
-            // new ("_LDotV_damping_factor", "_LDotDir_n11_RemapDownAt0_A", typeof(float)),
+            new ("_upPartSunColor",       "_upPartSunColor",            typeof(Color)),
+            new ("_upPartSkyColor",       "_upPartSkyColor",            typeof(Color)),
+            new ("_downPartSunColor",     "_downPartSunColor",            typeof(Color)),
+            new ("_downPartSkyColor",     "_downPartSkyColor",            typeof(Color)),
+            
+            // new ("_mainColorSunGatherFactor", "_mainColorSunGatherFactor", typeof(float)),
             
             new ("_sun_dir" , "_sun_dir",                         typeof(Vector4)),
             new ("_moon_dir", "_moon_dir",                                 typeof(Vector4)),
@@ -42,11 +46,11 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
         public bool m_setCloudSpecialProperty = true;
         
         
-        [Special(shaderPropertyName = "_LDotV_damping_factor")] public float _LDotDir_n11_RemapDownAt0_A;
+        [Special(shaderPropertyName = "_mainColorSunGatherFactor")] public float _LDotDir_n11_RemapDownAt0_A;
         
         [Special] public float _IrradianceMapR_maxAngleRange;
-        [Special] public Color _IrradianceMapG_Color;
-        [Special] public float _IrradianceMapG_Intensity;
+        [Special(shaderPropertyName = "_SunAdditionColor")] public Color _IrradianceMapG_Color;
+        [Special(shaderPropertyName = "_SunAdditionIntensity")] public float _IrradianceMapG_Intensity;
         [Special] public float _IrradianceMapG_maxAngleRange;
         
         [Special] public Vector4 _58__m15;

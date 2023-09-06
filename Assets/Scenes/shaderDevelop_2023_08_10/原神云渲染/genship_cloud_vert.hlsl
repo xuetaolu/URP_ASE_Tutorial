@@ -3,20 +3,25 @@
 
 #define _RolePos_maybe                        float3(-3.48413, 195.00, 2.47919) // _58._m3
 #define _UpDir                                float3(0.00, 1.00, 0.00         ) // _58._m4
-// #define _sunScatterColorLookAt                       float3(0.00972, 0.02298, 0.06016) // _58._m5
-// #define _sunScatterColorBeside                       float3(0.00972, 0.02298, 0.06016) // _58._m6
-// #define _sunOrgColorLookAt                       float3(0.0538, 0.09841, 0.2073  ) // _58._m7
-// #define _sunOrgColorBeside                       float3(0.0538, 0.09841, 0.2073  ) // _58._m8
-// #define _LDotV_damping_factor           0.49336  // _58._m9
-float3 _sunScatterColorLookAt; 
-float3 _sunScatterColorBeside; 
-float3 _sunOrgColorLookAt; 
-float3 _sunOrgColorBeside; 
-float _LDotV_damping_factor; 
-#define _IrradianceMapR_maxAngleRange         0.20     // _58._m10
-#define _SkyColor                 float3(0.00837, 0.10516, 0.26225) // _58._m11
-#define _SkyColorIntensity             0.50 // _58._m12
-#define _IrradianceMapG_maxAngleRange         0.30 // _58._m13
+// #define _upPartSunColor                       float3(0.00972, 0.02298, 0.06016) // _58._m5
+// #define _upPartSkyColor                       float3(0.00972, 0.02298, 0.06016) // _58._m6
+// #define _downPartSunColor                       float3(0.0538, 0.09841, 0.2073  ) // _58._m7
+// #define _downPartSkyColor                       float3(0.0538, 0.09841, 0.2073  ) // _58._m8
+// #define _mainColorSunGatherFactor           0.49336  // _58._m9
+float3 _upPartSunColor; 
+float3 _upPartSkyColor; 
+float3 _downPartSunColor; 
+float3 _downPartSkyColor; 
+float _mainColorSunGatherFactor;
+float _IrradianceMapR_maxAngleRange;
+
+float3 _SunAdditionColor;
+float _SunAdditionIntensity;
+float _IrradianceMapG_maxAngleRange;
+// #define _IrradianceMapR_maxAngleRange         0.20     // _58._m10
+// #define _SunAdditionColor                 float3(0.00837, 0.10516, 0.26225) // _58._m11
+// #define _SunAdditionIntensity             0.50 // _58._m12
+// #define _IrradianceMapG_maxAngleRange         0.30 // _58._m13
 // #define _sun_dir                       float3(0.00688, -0.84638, -0.53253) // _58._m14
 float3 _sun_dir; 
 #define _58__m15                              float3(0.01938, 0.00651, 0.02122  ) // _58._m15
@@ -99,12 +104,6 @@ v2f vert (appdata v)
     
     // #define _RolePos_maybe  float3(-3.48413, 195.00, 2.47919) // _58._m3
     float3 _viewDir = normalize(_worldPos.xyz - _RolePos_maybe);
-
-    
-
-    // (1.57079632679 - acos(x)) * 0.636619772367
-    
-
     
     float _VDotSun = dot(_viewDir, _sun_dir);
     float _VDotSunRemap01 = _VDotSun * 0.5 + 0.5;
@@ -119,9 +118,7 @@ v2f vert (appdata v)
     float _VDotMoonRemap01 = dot(_viewDir, _moon_dir) * 0.5 + 0.5;
     
     
-    // #define _LDotV_damping_factor  0.49336  // _58._m9
-    // #define _LDotV_damping_factor_cloud 0.0881      // _58._m31
-    float _VDotSunDampingA = max(0, lerp( 1, _VDotSun, _LDotV_damping_factor ));
+    float _VDotSunDampingA = max(0, lerp( 1, _VDotSun, _mainColorSunGatherFactor ));
     float _VDotSunDampingCloud = max(0, lerp( 1, _VDotSun, _LDotV_damping_factor_cloud ));
     
     float _VDotSunDampingA_pow3 = _VDotSunDampingA * _VDotSunDampingA * _VDotSunDampingA;
@@ -216,18 +213,18 @@ v2f vert (appdata v)
 
         float _irradianceMapR = tex2Dlod(_IrradianceMap, float4(_irradianceMap_R_uv, 0.0, 0.0)).x;
         
-        // #define _sunOrgColorLookAt  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
-        // #define _sunOrgColorBeside  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
-        // _sunBrightColor 这里指 _irradianceMapR 为 1 的颜色，理解成太阳 disk 颜色
-        float3 _sunBrightColor = lerp(_sunOrgColorBeside, _sunOrgColorLookAt, _VDotSunDampingA_pow3);
+        // #define _downPartSunColor  float3(0.0538, 0.09841, 0.2073  ) // _58._m7
+        // #define _downPartSkyColor  float3(0.0538, 0.09841, 0.2073  ) // _58._m8
+        // _downPartColor 这里指 _irradianceMapR 为 1 的颜色，理解成太阳 disk 颜色
+        float3 _downPartColor = lerp(_downPartSkyColor, _downPartSunColor, _VDotSunDampingA_pow3);
         
-        // #define _sunScatterColorLookAt  float3(0.00972, 0.02298, 0.06016) // _58._m5
-        // #define _sunScatterColorBeside  float3(0.00972, 0.02298, 0.06016) // _58._m6
-        // _sunDarkColor 这里指 _irradianceMapR 为 0 的颜色，理解成太阳散射到附近大气的颜色
-        float3 _sunDarkColor = lerp(_sunScatterColorBeside, _sunScatterColorLookAt, _VDotSunDampingA_pow3);
+        // #define _upPartSunColor  float3(0.00972, 0.02298, 0.06016) // _58._m5
+        // #define _upPartSkyColor  float3(0.00972, 0.02298, 0.06016) // _58._m6
+        // _upPartColor 这里指 _irradianceMapR 为 0 的颜色，理解成太阳散射到附近大气的颜色
+        float3 _upPartColor = lerp(_upPartSkyColor, _upPartSunColor, _VDotSunDampingA_pow3);
 
         // sun color
-        float3 _sunPartColor = lerp( _sunDarkColor, _sunBrightColor, _irradianceMapR );
+        float3 _mainColor = lerp( _upPartColor, _downPartColor, _irradianceMapR );
 
         
 
@@ -239,10 +236,10 @@ v2f vert (appdata v)
 
         float _irradianceMapG = tex2Dlod(_IrradianceMap, float4(_irradianceMap_G_uv, 0.0, 0.0)).y;
 
-        // #define _SkyColor float3(0.00837, 0.10516, 0.26225) // _58._m11
-        // #define _SkyColorIntensity 0.50 // _58._m12
+        // #define _SunAdditionColor float3(0.00837, 0.10516, 0.26225) // _58._m11
+        // #define _SunAdditionIntensity 0.50 // _58._m12
         // sky color
-        float3 _skyPartColor = _irradianceMapG * _SkyColor * _SkyColorIntensity;
+        float3 _sunAdditionPartColor = _irradianceMapG * _SunAdditionColor * _SunAdditionIntensity;
 
 
         // smoothstep(0, 1, clamp( (abs(x)-0.2) * 10/3, 0, 1))
@@ -253,13 +250,14 @@ v2f vert (appdata v)
         // y=x 直线，固定 (1, 1) 点不动，旋转，使其斜率变成 1/0.7，加速衰减，并 smooth
         float _VDotSunFactor = smoothstep(0, 1, (_VDotSunRemap01Clamp-1)/0.7 + 1);
 
-        // 意思是优先判断高度，高的地方就是全额 _skyPartColor
+        // 意思是优先判断高度，高的地方就是全额 _sunAdditionPartColor
         //       lightDirY > 0.5 处是 1.0 
         //       lightDirY < 0.2 处是 _VDotSunFactor
-        float _skyPartFactor = lerp(_VDotSunFactor, 1.0, _upFactor);
+        float _sunAdditionPartFactor = lerp(_VDotSunFactor, 1.0, _upFactor);
 
+        float3 _additionPart = _sunAdditionPartColor * _sunAdditionPartFactor;
 
-        float3 _sumIrradianceRGColor = _skyPartColor * _skyPartFactor + _sunPartColor;
+        float3 _sumIrradianceRGColor = _mainColor + _additionPart;
 
         
         // #define _58__m20 0.01039 // _58._m20

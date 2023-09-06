@@ -1057,7 +1057,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorLookAt.r
+    attribute: material._upPartSunColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -1184,7 +1184,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorLookAt.g
+    attribute: material._upPartSunColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -1311,7 +1311,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorLookAt.b
+    attribute: material._upPartSunColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -1438,7 +1438,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorBeside.r
+    attribute: material._upPartSkyColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -1565,7 +1565,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorBeside.g
+    attribute: material._upPartSkyColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -1692,7 +1692,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorBeside.b
+    attribute: material._upPartSkyColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -1819,7 +1819,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorLookAt.r
+    attribute: material._downPartSunColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -1946,7 +1946,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorLookAt.g
+    attribute: material._downPartSunColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -2073,7 +2073,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorLookAt.b
+    attribute: material._downPartSunColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -2200,7 +2200,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorBeside.r
+    attribute: material._downPartSkyColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -2327,7 +2327,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorBeside.g
+    attribute: material._downPartSkyColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -2454,7 +2454,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorBeside.b
+    attribute: material._downPartSkyColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -2835,7 +2835,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._LDotV_damping_factor
+    attribute: material._mainColorSunGatherFactor
     path: 
     classID: 23
     script: {fileID: 0}
@@ -2962,7 +2962,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sun_scatter
+    attribute: material._IrradianceMapR_maxAngleRange
     path: 
     classID: 23
     script: {fileID: 0}
@@ -3089,7 +3089,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color.r
+    attribute: material._SunAdditionColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -3216,7 +3216,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color.g
+    attribute: material._SunAdditionColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -3343,7 +3343,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color.b
+    attribute: material._SunAdditionColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -3470,7 +3470,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color_intensity
+    attribute: material._SunAdditionIntensity
     path: 
     classID: 23
     script: {fileID: 0}
@@ -3597,7 +3597,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_scatter
+    attribute: material._IrradianceMapG_maxAngleRange
     path: 
     classID: 23
     script: {fileID: 0}
@@ -4295,84 +4295,84 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1338517620
+      attribute: 1301980191
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1606953076
+      attribute: 1570415647
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1875388532
+      attribute: 1838851103
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1148886521
+      attribute: 1151889839
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1417321977
+      attribute: 1420325295
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1685757433
+      attribute: 1688760751
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1145171380
+      attribute: 1097570063
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1413606836
+      attribute: 1366005519
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1682042292
+      attribute: 1634440975
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1341347897
+      attribute: 1213809343
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1609783353
+      attribute: 1482244799
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1878218809
+      attribute: 1750680255
       script: {fileID: 0}
       typeID: 23
       customType: 22
@@ -4393,49 +4393,49 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2210029067
+      attribute: 2389993446
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2360038250
+      attribute: 2296381850
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1265002080
+      attribute: 1285079615
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1533437536
+      attribute: 1553515071
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 1801872992
+      attribute: 1821950527
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2184087452
+      attribute: 2206638691
       script: {fileID: 0}
       typeID: 23
       customType: 22
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 0
-      attribute: 2372783497
+      attribute: 2399477854
       script: {fileID: 0}
       typeID: 23
       customType: 22
@@ -5201,7 +5201,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorLookAt.r
+    attribute: material._upPartSunColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -5328,7 +5328,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorLookAt.g
+    attribute: material._upPartSunColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -5455,7 +5455,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorLookAt.b
+    attribute: material._upPartSunColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -5582,7 +5582,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorBeside.r
+    attribute: material._upPartSkyColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -5709,7 +5709,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorBeside.g
+    attribute: material._upPartSkyColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -5836,7 +5836,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunScatterColorBeside.b
+    attribute: material._upPartSkyColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -5963,7 +5963,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorLookAt.r
+    attribute: material._downPartSunColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -6090,7 +6090,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorLookAt.g
+    attribute: material._downPartSunColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -6217,7 +6217,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorLookAt.b
+    attribute: material._downPartSunColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -6344,7 +6344,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorBeside.r
+    attribute: material._downPartSkyColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -6471,7 +6471,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorBeside.g
+    attribute: material._downPartSkyColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -6598,7 +6598,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sunOrgColorBeside.b
+    attribute: material._downPartSkyColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -6979,7 +6979,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._LDotV_damping_factor
+    attribute: material._mainColorSunGatherFactor
     path: 
     classID: 23
     script: {fileID: 0}
@@ -7106,7 +7106,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sun_scatter
+    attribute: material._IrradianceMapR_maxAngleRange
     path: 
     classID: 23
     script: {fileID: 0}
@@ -7233,7 +7233,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color.r
+    attribute: material._SunAdditionColor.r
     path: 
     classID: 23
     script: {fileID: 0}
@@ -7360,7 +7360,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color.g
+    attribute: material._SunAdditionColor.g
     path: 
     classID: 23
     script: {fileID: 0}
@@ -7487,7 +7487,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color.b
+    attribute: material._SunAdditionColor.b
     path: 
     classID: 23
     script: {fileID: 0}
@@ -7614,7 +7614,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_color_intensity
+    attribute: material._SunAdditionIntensity
     path: 
     classID: 23
     script: {fileID: 0}
@@ -7741,7 +7741,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: material._sky_scatter
+    attribute: material._IrradianceMapG_maxAngleRange
     path: 
     classID: 23
     script: {fileID: 0}
