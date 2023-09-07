@@ -57,8 +57,9 @@ Shader "xue/genship_skybox_v2"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
         LOD 100
+        ZWrite Off
 
         Pass
         {

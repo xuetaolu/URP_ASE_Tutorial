@@ -93,7 +93,12 @@ v2f vert (appdata v)
     // o.vertex
     {
         float4 _clipPos = mul(UNITY_MATRIX_VP, _worldPos);
-        _clipPos.z = _clipPos.w;
+         _clipPos.z = _clipPos.w;
+        #if defined(UNITY_REVERSED_Z)
+        #if UNITY_REVERSED_Z == 1
+            _clipPos.z = 0;
+        #endif
+        #endif
         o.vertex = _clipPos;
     }
     
