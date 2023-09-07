@@ -67,7 +67,7 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
         [Special(shaderPropertyName = "_MoonTransmission")] public float _MoonTransmission;
         [Special(shaderPropertyName = "_moon_intensity_max")] public float _moon_intensity_max;
         [Special(shaderPropertyName = "_moon_intensity_slider")] public float _moon_intensity_slider;
-        [Special] public float _DisturbanceNoiseOffset2;
+        [Special(shaderPropertyName = "_DisturbanceNoiseOffset")] public float _DisturbanceNoiseOffset2;
 
 
         [Special] public Color _CloudColor_Bright_Center = new Color(0.05199f, 0.10301f, 0.13598f);
@@ -77,7 +77,7 @@ namespace Scenes.shaderDevelop_2023_08_10.原神云渲染.script
 
         [Special(shaderPropertyName = "_LDotV_damping_factor_cloud")] public float _LDotDir_n11_RemapDownAt0_B = 0.0881f;
 
-        [Special] public float _58__m34;
+        [Special(shaderPropertyName = "_CloudMoreBright")] public float _CloudMoreBright;
 
         private void Update()
         {

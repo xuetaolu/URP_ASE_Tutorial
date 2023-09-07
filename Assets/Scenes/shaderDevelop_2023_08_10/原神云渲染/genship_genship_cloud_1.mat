@@ -47,11 +47,31 @@ Material:
     m_Ints: []
     m_Floats:
     - _58__m26: 262.33862
+    - _58__m34: 0.8299
     - _58__m36: 3
     - _58__m37: 6
+    - _CloudMoreBright: 0.8299
+    - _DisturbanceNoiseOffset: 262.33862
+    - _DisturbanceNoiseOffset2: 262.33862
     - _DisturbanceScale: 0.015
+    - _IrradianceMapG_maxAngleRange: 0.3
+    - _IrradianceMapR_maxAngleRange: 0.2
     - _LDotDir_n11_RemapDownAt0_A: 0.49336
     - _LDotDir_n11_RemapDownAt0_B: 0.0881
+    - _LDotV_damping_factor_cloud: 0.0881
+    - _MoonTransmission: 3.29897
+    - _SunAdditionIntensity: 0.5
+    - _SunTransmission: 4.09789
+    - _TransmissionLDotVStartAt: 0.80205
+    - _affectWidthColorAlpha: 0.35
+    - _affectWidthColorB: 0.37
+    - _debug: 0.09804
+    - _mainColorSunGatherFactor: 0.49336
+    - _moon_intensity_max: 0.19794
+    - _moon_intensity_slider: 0.5
+    - _sun_color_intensity: 0.01039
+    - _sun_disk_power_999: 8.30078
+    - _w_input: 0.24
     m_Colors:
     - _58__m35: {r: 2, g: 4, b: 0, a: 0}
     - _CloudColor_1_Around: {r: 0.10391, g: 0.41824, b: 0.88688, a: 1}
@@ -64,14 +84,22 @@ Material:
     - _CloudColor_Dark_Center: {r: 0, g: 0.03576, b: 0.12083, a: 1}
     - _SkyColorAround: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
     - _SkyColorCenter: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _SunAdditionColor: {r: 0.00837, g: 0.10516, b: 0.26225, a: 1}
     - _SunColorAround: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
     - _SunColorCenter: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
     - _Uk_dir: {r: 0.31638, g: 0.70655, b: 0.633, a: 1}
+    - _downPartSkyColor: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
+    - _downPartSunColor: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
     - _lightDir_maybe: {r: 0.00688, g: -0.84638, b: -0.53253, a: 1}
     - _moon_dir: {r: 0.31638, g: 0.70655, b: 0.633, a: 1}
+    - _moon_shine_color: {r: 0.29669, g: 0.64985, b: 1, a: 1}
     - _sunOrgColorBeside: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
     - _sunOrgColorLookAt: {r: 0.0538, g: 0.09841, b: 0.2073, a: 1}
     - _sunScatterColorBeside: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
     - _sunScatterColorLookAt: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _sun_color: {r: 0.01938, g: 0.00651, b: 0.02122, a: 1}
     - _sun_dir: {r: 0.00688, g: -0.84638, b: -0.53253, a: 1}
+    - _sun_shine_color: {r: 0.01938, g: 0.00651, b: 0.02122, a: 1}
+    - _upPartSkyColor: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _upPartSunColor: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
   m_BuildTextureStacks: []

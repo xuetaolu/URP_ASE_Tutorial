@@ -33,20 +33,25 @@ Shader "genship/genship_cloud"
         _MoonTransmission ("_MoonTransmission", Range(0, 10)) = 3.29897 // _58._m23
         _TransmissionLDotVStartAt ("_TransmissionLDotVStartAt", Range(0, 1)) = 0.80205 // _58._m17
         
-        [Header(__________)]
-        _DisturbanceNoiseOffset2 ("_DisturbanceNoiseOffset2", float) = 262.33862 // _58._m26
+        [Header(Cloud)]
         
-        _CloudColor_Bright_Center ("_CloudColor_Bright_Center", Color) = (0.05199, 0.10301, 0.13598) // _58._m27
-        _CloudColor_Bright_Around ("_CloudColor_Bright_Around", Color) = (0.10391, 0.41824, 0.88688) // _58._m28
-        _CloudColor_Dark_Center ("_CloudColor_Dark_Center", Color) = (0.00, 0.03576, 0.12083   ) // _58._m29
-        _CloudColor_Dark_Around ("_CloudColor_Dark_Around", Color) = (0.02281, 0.05716, 0.14666) // _58._m30
+        _CloudColor_Bright_Center ("云亮部近太阳颜色", Color) = (0.05199, 0.10301, 0.13598) // _58._m27
+        _CloudColor_Bright_Around ("云亮部远太阳颜色", Color) = (0.10391, 0.41824, 0.88688) // _58._m28
+        _CloudColor_Dark_Center ("云暗部近太阳颜色", Color) = (0.00, 0.03576, 0.12083   ) // _58._m29
+        _CloudColor_Dark_Around ("云暗部远太阳颜色", Color) = (0.02281, 0.05716, 0.14666) // _58._m30
         
-        _LDotV_damping_factor_cloud ("_LDotV_damping_factor_cloud", float) = 0.0881 // _58._m31
+        _LDotV_damping_factor_cloud ("云近太阳颜色聚集程度", float) = 0.0881 // _58._m31
+        
+        _CloudMoreBright ("云增亮", Range(0, 1)) = 0.8299 // _58._m34
+        
+        _DisturbanceNoiseOffset ("云扰动贴图偏移值", float) = 262.33862 // _58._m26
+        _DisturbanceScale ("云扰动贴图偏移值缩放", float) = 0.0123
+        
+//        _affectWidthColorB ("_affectWidthColorB", Range(0, 1)) = 0.09804
+//        _affectWidthColorAlpha ("_affectWidthColorAlpha", Range(0, 1)) = 0.09804
+//        _w_input ("_w_input", Range(0, 1)) = 0.09804
         
         
-        _58__m34 ("_58__m34", float) = 0.8299 // _58._m34
-        
-        _DisturbanceScale ("_DisturbanceScale", float) = 0.0123
         
         _NoiseMapRGB ("_NoiseMapRGB", 2D) = "white" {}
         _MaskMapRGBA ("_MaskMapRGBA", 2D) = "white" {}

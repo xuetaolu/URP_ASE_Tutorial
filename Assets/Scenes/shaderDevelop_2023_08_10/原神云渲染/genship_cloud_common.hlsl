@@ -31,8 +31,8 @@ struct v2f
     float3 Varying_DayPartColor : TEXCOORD3;
     float3 Varying_ShineColor : TEXCOORD4;
     float3 Varying_TransmissionColor : TEXCOORD5;
-    float3 Varying_CloudColor_1 : TEXCOORD6;
-    float3 Varying_CloudColor_2 : TEXCOORD7;
+    float3 Varying_CloudColor_Bright : TEXCOORD6;
+    float3 Varying_CloudColor_Dark : TEXCOORD7;
 };
 
 #endif

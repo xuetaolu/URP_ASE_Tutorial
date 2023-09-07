@@ -33,8 +33,8 @@ float _SunTransmission;
 float _MoonTransmission;      // _58._m23
 float _TransmissionLDotVStartAt;
 
-
-#define _DisturbanceNoiseOffset2              262.33862 // _58._m26
+float _DisturbanceNoiseOffset;
+// #define _DisturbanceNoiseOffset              262.33862 // _58._m26
 
 float3 _CloudColor_Bright_Center;
 float3 _CloudColor_Bright_Around;
@@ -44,10 +44,11 @@ float _LDotV_damping_factor_cloud;
 
 #define _LightingOcclusion                              0.11        // _58._m32 // const
 #define _58__m33                              1.00        // _58._m33 // const
-#define _58__m34                              0.8299      // _58._m34
+float _CloudMoreBright; //                              0.8299      // _58._m34
+// #define _CloudMoreBright                              0.8299      // _58._m34
 #define _MaskMapGridSize                      float2( 2.00, 4.00 ) // _58._m35 // const
 #define _DisturbanceNoiseScale                3.00        // _58._m36 // const
-#define _DisturbanceNoiseOffset               6.00        // _58._m37 // const
+#define _DisturbanceNoiseOffsetScale               6.00        // _58._m37 // const
 #define _58__m38                              1.00        // _58._m38 // const
 
 sampler2D _IrradianceMap;
@@ -162,15 +163,15 @@ v2f vert (appdata v)
         // #define _58__m26 262.33862 // _58._m26
         // #define _58__m37 6.00        // _58._m37
         // #define _58__m36 3.00        // _58._m36
-        o.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.zw = Vertex_uv.xy * _DisturbanceNoiseScale + float2(1.2, 0.8) * _DisturbanceNoiseOffset2 * _DisturbanceNoiseOffset;
+        o.Varying_MaskMapUvXY_DisturbanceNoiseUvZW.zw = Vertex_uv.xy * _DisturbanceNoiseScale + float2(1.2, 0.8) * _DisturbanceNoiseOffset * _DisturbanceNoiseOffsetScale;
       
     }
     
     
     // o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX
     {
-        // #define _58__m34 0.8299      // _58._m34
-        o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x = _VDotSunRemap01 * _58__m34;
+        // #define _CloudMoreBright 0.8299      // _58._m34
+        o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x = _VDotSunRemap01 * _CloudMoreBright;
 
         o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.yz = Vertex_GridIndexY_.zw;
         
@@ -191,8 +192,8 @@ v2f vert (appdata v)
         // #define _CloudColor_Bright_Around float3(0.10391, 0.41824, 0.88688) // _58._m28
         // #define _CloudColor_Dark_Center float3(0.00, 0.03576, 0.12083   ) // _58._m29
         // #define _CloudColor_Dark_Around float3(0.02281, 0.05716, 0.14666) // _58._m30
-        o.Varying_CloudColor_1 = lerp(_CloudColor_Bright_Around, _CloudColor_Bright_Center, _VDotSunDampingCloud_pow3);
-        o.Varying_CloudColor_2 = lerp(_CloudColor_Dark_Around, _CloudColor_Dark_Center, _VDotSunDampingCloud_pow3);
+        o.Varying_CloudColor_Bright = lerp(_CloudColor_Bright_Around, _CloudColor_Bright_Center, _VDotSunDampingCloud_pow3);
+        o.Varying_CloudColor_Dark = lerp(_CloudColor_Dark_Around, _CloudColor_Dark_Center, _VDotSunDampingCloud_pow3);
     }
 
 

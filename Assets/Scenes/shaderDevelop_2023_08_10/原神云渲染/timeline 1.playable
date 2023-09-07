@@ -13699,7 +13699,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m34
+    attribute: _CloudMoreBright
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}
@@ -19515,7 +19515,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: _58__m34
+    attribute: _CloudMoreBright
     path: 
     classID: 114
     script: {fileID: 11500000, guid: d84ef85ad4624226b0dfc39d3a2fe256, type: 3}

@@ -17,17 +17,24 @@ sampler2D _NoiseMapRGB;
 // w alpha 全局
 sampler2D _MaskMapRGBA;
 
+// float _affectWidthColorB;
+// float _affectWidthColorAlpha;
+// float _w_input;
+
 fixed4 frag (v2f i) : SV_Target
 {
     float4 Output_0;
 
     // o.Varying_2.w 是 _Vertex_y_present_fix 01 映射到 1 \ 0 / 1 的平滑图案，其中 0.4 处达到最低位 0, 0.6 处离开最低位 0
     float varying_2_w_input = i.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.w;
+    // varying_2_w_input = _w_input;
 
     // 截帧 _vertex_color_w_affectWidthColorB  _vertex_color_w_affectWidthColorAlpha  是一样的 都是 0.09804
     float _vertex_color_w_affectWidthColorB = i.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.y;
     float _vertex_color_w_affectWidthColorAlpha = i.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.z;
-    
+
+    // _vertex_color_w_affectWidthColorB = _affectWidthColorB;
+    // _vertex_color_w_affectWidthColorAlpha = _affectWidthColorAlpha;
     
     // _vertex_color_w_affectWidthColorB 都是 0.09804
     // _alpha_denominator alpha 分母是台阶状，0~0.5 是 0.09804 变大到 2*0.09804 保持，0.5~1 则镜像
@@ -80,24 +87,24 @@ fixed4 frag (v2f i) : SV_Target
     // 当 varying_2_w_input 输入接近 0，则使用描边状 _maskMapSample.y 作为透射系数，否则保持为 2，最后变成 0
     float _transmission = lerp(_maskMapSample.y, _alpha_div_oneMinus * 4.0, varying_2_w_input);
 
-    float3 _cloudMainColor = lerp(i.Varying_CloudColor_2,  i.Varying_CloudColor_1, _maskMapSample.x);
+    float3 _cloudMainColor = lerp(i.Varying_CloudColor_Dark,  i.Varying_CloudColor_Bright, _maskMapSample.x);
 
     float3 _sumCloudColor;
         _sumCloudColor = _cloudMainColor;
         _sumCloudColor += i.Varying_TransmissionColor * _transmission;
-        _sumCloudColor += i.Varying_CloudColor_1 * _CloudMainColorAddition * 0.4;
+        _sumCloudColor += i.Varying_CloudColor_Bright * _CloudMainColorAddition * 0.4;
         _sumCloudColor += i.Varying_ShineColor * _maskMapSample.x;
     
     
-    float _tmp42 = i.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x + 1.0;
+    float _cloudMoreBright = i.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x + 1.0;
     
     
     float _angle_up_to_down_1_n1_scale_smooth_2 = min(1.0, smoothstep(0, 1, i.Varying_ViewDirAndAngle1_n1.w * 10.0));
 
     
-    float _tmp42_2 = lerp(_angle_up_to_down_1_n1_scale_smooth_2, 1.0, smoothstep(0, 1, (_CloudMainColorAddition - 0.4) * 10/3.0));
+    float _cloudVisableFactor = lerp(_angle_up_to_down_1_n1_scale_smooth_2, 1.0, smoothstep(0, 1, (_CloudMainColorAddition - 0.4) * 10/3.0));
     
-    Output_0.xyz = lerp( i.Varying_DayPartColor, _sumCloudColor * _tmp42, _tmp42_2);
+    Output_0.xyz = lerp( i.Varying_DayPartColor, _sumCloudColor * _cloudMoreBright, _cloudVisableFactor);
     Output_0.w = _output_alpha;
     
     fixed4 col = Output_0.xyzw;

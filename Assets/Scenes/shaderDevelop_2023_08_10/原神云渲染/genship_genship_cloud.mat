@@ -53,9 +53,11 @@ Material:
     - _58__m23: 3.29897
     - _58__m24: 0.19794
     - _58__m26: -304.5
-    - _58__m34: 0.8299
+    - _58__m34: 0.42
     - _58__m36: 3
     - _58__m37: 0.01
+    - _CloudMoreBright: 0.8299
+    - _DisturbanceNoiseOffset: 262.33862
     - _DisturbanceNoiseOffset2: 262.33862
     - _DisturbanceScale: 0.0123
     - _IrradianceMapG_Intensity: 0.5
@@ -70,12 +72,16 @@ Material:
     - _SunTransmission: 4.09789
     - _TransmissionLDotVStartAt: 0.80205
     - _UpIrradianceFadePow: 8.30078
+    - _affectWidthColorAlpha: 0.47
+    - _affectWidthColorB: 1
+    - _debug: 0.09804
     - _mainColorSunGatherFactor: 0.49336
     - _moon_intensity_max: 0.19794
     - _moon_intensity_slider: 0.5
     - _moon_slider_value: 0.5
     - _sun_color_intensity: 0.01039
     - _sun_disk_power_999: 8.30078
+    - _w_input: 0.09804
     m_Colors:
     - _58__m15: {r: 0.01938, g: 0.00651, b: 0.02122, a: 1}
     - _58__m19: {r: 0.01938, g: 0.00651, b: 0.02122, a: 1}

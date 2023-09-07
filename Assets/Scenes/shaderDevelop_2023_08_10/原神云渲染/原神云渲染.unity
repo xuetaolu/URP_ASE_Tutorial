@@ -480,7 +480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1e50d50e5b712b146ab4d72b39ce8fa6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e50d50e5b712b146ab4d72b39ce8fa6, type: 3}
@@ -551,7 +551,7 @@ MonoBehaviour:
   _CloudColor_Dark_Center: {r: 0, g: 0.03576, b: 0.12083, a: 0}
   _CloudColor_Dark_Around: {r: 0.02281, g: 0.05716, b: 0.14666, a: 0}
   _LDotDir_n11_RemapDownAt0_B: 0.76665
-  _58__m34: 0
+  _CloudMoreBright: 0
 --- !u!4 &957169969
 Transform:
   m_ObjectHideFlags: 0
@@ -1054,7 +1054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741725e5863a09949a860be24e726cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 4
+  m_speed: 2
 --- !u!320 &1542039170
 PlayableDirector:
   m_ObjectHideFlags: 0
