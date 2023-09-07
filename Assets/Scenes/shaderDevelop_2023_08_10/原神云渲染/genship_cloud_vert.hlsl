@@ -1,5 +1,4 @@
 #include "genship_cloud_common.hlsl"
-#include ".\sky_common.hlsl"
 
 #define _RolePos_maybe                        float3(-3.48413, 195.00, 2.47919) // _58._m3
 #define _UpDir                                float3(0.00, 1.00, 0.00         ) // _58._m4

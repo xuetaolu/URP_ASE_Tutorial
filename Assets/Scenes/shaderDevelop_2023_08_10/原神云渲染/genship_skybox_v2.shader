@@ -123,7 +123,6 @@ Shader "xue/genship_skybox_v2"
             // -------------------------- */
             
 			#include "UnityCG.cginc"
-            #include ".\sky_common.hlsl"
 
             #define _UpDir float3(0,1,0)
             

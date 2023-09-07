@@ -1,5 +1,4 @@
 #include "genship_cloud_common.hlsl"
-#include ".\sky_common.hlsl"
 
 #define _CloudMainColorAddition 0.11   // _45._m0
 #define _AlphaDiv10_Smooth 1.00   // _45._m1
