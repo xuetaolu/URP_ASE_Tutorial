@@ -45,7 +45,7 @@ Shader "genship/genship_cloud"
         _CloudMoreBright ("云增亮", Range(0, 1)) = 0.8299 // _58._m34
         
         _DisturbanceNoiseOffset ("云扰动贴图偏移值", float) = 262.33862 // _58._m26
-        _DisturbanceScale ("云扰动贴图偏移值缩放", float) = 0.0123
+        _DisturbanceScale ("云扰动贴图缩放", float) = 0.0123
         
 //        _affectWidthColorB ("_affectWidthColorB", Range(0, 1)) = 0.09804
 //        _affectWidthColorAlpha ("_affectWidthColorAlpha", Range(0, 1)) = 0.09804

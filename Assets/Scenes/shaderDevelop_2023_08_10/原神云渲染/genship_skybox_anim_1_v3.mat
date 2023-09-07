@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: genship_skybox_anim_v2
+  m_Name: genship_skybox_anim_1_v3
   m_Shader: {fileID: 4800000, guid: b29914ac0a427d04f9bbdef4b2a302da, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:

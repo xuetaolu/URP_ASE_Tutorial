@@ -101,5 +101,5 @@ Material:
     - _sun_dir: {r: 0.00688, g: -0.84638, b: -0.53253, a: 1}
     - _sun_shine_color: {r: 0.01938, g: 0.00651, b: 0.02122, a: 1}
     - _upPartSkyColor: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
-    - _upPartSunColor: {r: 0.00972, g: 0.02298, b: 0.06016, a: 1}
+    - _upPartSunColor: {r: 0.33383763, g: 0.40601966, b: 0.5849056, a: 1}
   m_BuildTextureStacks: []
