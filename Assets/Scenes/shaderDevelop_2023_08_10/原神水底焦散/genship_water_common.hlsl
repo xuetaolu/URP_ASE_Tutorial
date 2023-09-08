@@ -13,12 +13,6 @@ struct v2f
     float4 vertex : SV_POSITION;
 };
 
-float4 GlslToDxClipPos(float4 clipPos) {
-    clipPos.y = -clipPos.y;
-    clipPos.z = -0.5*clipPos.z + 0.5*clipPos.w;
-    return clipPos;
-}
-
 struct appdata
 {
     float4 vertex : POSITION;

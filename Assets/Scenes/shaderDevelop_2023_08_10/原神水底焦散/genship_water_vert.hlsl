@@ -15,7 +15,7 @@
 // };//_11__m0[_28 / 8]._m0
 
 #define _RolePos float3(-76.56767, 199.90689, 87.00145   ) //_38._m0
-#define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017     ) //_38._m1
+// #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017     ) //_38._m1
  static float4 _FoamParamsYW = float4(0.00, 0.12654, 0.00, 0.20238     ); //_38._m2
 // #define _38__m3 float4(0.00, 0.15191, 0.00, 0.28788     ) //_38._m3
 // #define _38__m4 float4(0.00, 0.19486, 0.00, 0.45829     ) //_38._m4
@@ -37,6 +37,14 @@ static const matrix  _38__m7 =
 }; //_38._m7
 // #define _38__m8 0    // _38._m8
 #define _ClipPosZ_01_Offset 0.00 // _38._m9
+
+float4 GlslToDxClipPos(float4 clipPos) {
+    clipPos.y = -clipPos.y;
+    clipPos.z = -0.5*clipPos.z + 0.5*clipPos.w;
+    return clipPos;
+}
+
+
 v2f vert (appdata v)
 {
     v2f o;
@@ -55,13 +63,13 @@ v2f vert (appdata v)
     o.Varying_4.xyz = _worldPos;
     o.Varying_4.w = 0.0;
 
-    float4 _clipPos = mul(transpose(_38__m7), float4(_worldPos, 1));
-    // float4 _clipPos = mul(UNITY_MATRIX_VP, float4(_worldPos, 1));
+    // float4 _clipPos = mul(transpose(_38__m7), float4(_worldPos, 1));
+    float4 _clipPos = mul(UNITY_MATRIX_VP, float4(_worldPos, 1));
     
     _clipPos.z += (_ClipPosZ_01_Offset * _clipPos.w);
 
-    o.vertex = GlslToDxClipPos(_clipPos);
-    // o.vertex = _clipPos;
+    // o.vertex = GlslToDxClipPos(_clipPos);
+    o.vertex = _clipPos;
     
     o.Varying_ColorXYW = Vertex_Color;
 

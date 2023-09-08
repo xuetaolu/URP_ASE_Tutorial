@@ -3,8 +3,8 @@
 // #define _151__m0 float4(10.69632, 213.92641, 427.85281, 641.77924 )//_151._m0
 #define _151__m0 _Time//_151._m0
 #define _151__m1 float3(-76.56767, 199.90689, 87.00145            )//_151._m1
-#define _151__m2 float4(1.00, 0.25, 6000.00, 0.00017              )//_151._m2
-#define _151__m3 float4(-23999.00, 24000.00, -3.99983, 4.00       )//_151._m3
+// #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017              )//_151._m2
+// #define _ZBufferParams float4(-23999.00, 24000.00, -3.99983, 4.00       )//_151._m3
 #define _151__m4 float4(1934.36584, 0.00, -1266.34216, 0.00       )//_151._m4
 #define _151__m5 float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
 static const float4 _151__m6[] = {float4(0.63206, -0.34567, 0.69355, 0.00         ),
@@ -109,7 +109,7 @@ static const float4 _151__m55[] = {float4(0.00, 0.00, 0.00, 0.00),
 #define _151__m88 float4(1.00, 1.00, 1.00, 1.00) // _151._m88
 #define _151__m89 1.00 // _151._m89
 
-sampler2D _7 ;
+sampler2D _DepthTexture ;
 sampler2D _8 ;
 samplerCUBE _12;
 sampler2D _13;
@@ -272,8 +272,8 @@ fixed4 frag (v2f i) : SV_Target
     _45 = float4(_369.x, _369.y, _369.z, _45.w);
     float2 _376 = i.Varying_NonStereoScreenPos.xy / i.Varying_NonStereoScreenPos.ww;
     _51 = float3(_376.x, _376.y, _51.z);
-    _35 = tex2D(_7, _51.xy).x;
-    _35 = (_151__m3.z * _35) + _151__m3.w;
+    _35 = tex2D(_DepthTexture, _51.xy).x;
+    _35 = (_ZBufferParams.z * _35) + _ZBufferParams.w;
     _35 = 1.0 / _35;
     _123 = 1.0 / i.Varying_3.w;
     _123 = (-_35) * _123;
@@ -297,8 +297,8 @@ fixed4 frag (v2f i) : SV_Target
     _100 = _68 + i.Varying_NonStereoScreenPos.xyw;
     float2 _484 = _100.xy / _100.zz;
     _100 = float3(_484.x, _484.y, _100.z);
-    _35 = tex2D(_7, _100.xy).x;
-    _35 = (_151__m3.z * _35) + _151__m3.w;
+    _35 = tex2D(_DepthTexture, _100.xy).x;
+    _35 = (_ZBufferParams.z * _35) + _ZBufferParams.w;
     _35 = 1.0 / _35;
     _35 = (-_129) + _35;
     _35 = clamp(_35, 0.0, 1.0);
@@ -309,8 +309,8 @@ fixed4 frag (v2f i) : SV_Target
     _69 = tex2D(_23, _68.xy).xyz;
     float2 _533 = _100.xy / _100.zz;
     _100 = float3(_533.x, _533.y, _100.z);
-    _35 = tex2D(_7, _100.xy).x;
-    _35 = (_151__m3.z * _35) + _151__m3.w;
+    _35 = tex2D(_DepthTexture, _100.xy).x;
+    _35 = (_ZBufferParams.z * _35) + _ZBufferParams.w;
     _35 = 1.0 / _35;
     _129 = 1.0 / i.Varying_3.w;
     _129 = (-_35) * _129;
@@ -377,7 +377,7 @@ fixed4 frag (v2f i) : SV_Target
     _132 = clamp(_132, 0.0, 1.0);
     _74 = (_151__m1.y * _151__m17.z) + _151__m17.w;
     _74 = clamp(_74, 0.0, 1.0);
-    _102 = _151__m2.z * 0.99989998340606689453125;
+    _102 = _ProjectionParams.z * 0.99989998340606689453125;
     _131 = (-_129) >= _102;
     _117 = _127 * _151__m14.w;
     _127 = _131 ? _117 : _127;
