@@ -20,15 +20,15 @@
 // #define _38__m3 float4(0.00, 0.15191, 0.00, 0.28788     ) //_38._m3
 // #define _38__m4 float4(0.00, 0.19486, 0.00, 0.45829     ) //_38._m4
  static float4 _FoamColorNegate  = float4(-0.04413, -0.03476, -0.0106, 1.00); //_38._m5
-// static const matrix _38__m6 = 
+// static const matrix UNITY_MATRIX_V_T = 
 // {
 //     float4(0.63206, -0.34567, 0.69355, 0.00     ),
 //     float4(0.00, 0.895, 0.44607, 0.00           ),
 //     float4(0.77492, 0.28194, -0.56569, 0.00     ),
 //     float4(-19.02394, -229.91272, 13.14762, 1.00)
 // };//_38._m6
-// #define _38__m6 transpose(UNITY_MATRIX_V)
-static const matrix  _38__m7 = 
+// #define UNITY_MATRIX_V_T transpose(UNITY_MATRIX_V)
+static const matrix  UNITY_MATRIX_VP_T = 
 {
     float4(0.85884, -0.83339, -0.69361, -0.69355      ),
     float4(0.00033, 2.16144, -0.44611, -0.44607       ),
@@ -63,7 +63,7 @@ v2f vert (appdata v)
     o.Varying_4.xyz = _worldPos;
     o.Varying_4.w = 0.0;
 
-    // float4 _clipPos = mul(transpose(_38__m7), float4(_worldPos, 1));
+    // float4 _clipPos = mul(transpose(UNITY_MATRIX_VP_T), float4(_worldPos, 1));
     float4 _clipPos = mul(UNITY_MATRIX_VP, float4(_worldPos, 1));
     
     _clipPos.z += (_ClipPosZ_01_Offset * _clipPos.w);
