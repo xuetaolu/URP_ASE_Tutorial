@@ -7,17 +7,17 @@ Shader "Unlit/genship_water"
         
 //        _MainTex ("Texture", 2D) = "white" {}
         [NoScaleOffset]_DepthTexture ("_DepthTexture ", 2D) = "white" {}
-        [NoScaleOffset]_8 ("_8 ", 2D) = "white" {}
-        [NoScaleOffset]_12("_12", Cube) = "white" {}
-        [NoScaleOffset]_13("_13", 2D) = "white" {}
-        [NoScaleOffset]_14("_14", 2D) = "white" {}
-        [NoScaleOffset]_15("_15", 2D) = "white" {}
-        [NoScaleOffset]_19("_19", 3D) = "white" {}
-        [NoScaleOffset]_20("_20", 3D) = "white" {}
-        [NoScaleOffset]_21("_21", 2D) = "white" {}
-        [NoScaleOffset]_22("_22", 2D) = "white" {}
-        [NoScaleOffset]_23("_23", 2D) = "white" {}
-        [NoScaleOffset]_24("_24", 2D) = "white" {}
+        [NoScaleOffset]_8_sampler2D   ("_8_sampler2D ", 2D) = "white" {}
+        [NoScaleOffset]_12_samplerCUBE("_12_samplerCUBE", Cube) = "white" {}
+        [NoScaleOffset]_13_sampler2D  ("_13_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_14_sampler2D  ("_14_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_15_sampler2D  ("_15_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_19_sampler3D  ("_19_sampler3D", 3D) = "white" {}
+        [NoScaleOffset]_20_sampler3D  ("_20_sampler3D", 3D) = "white" {}
+        [NoScaleOffset]_21_sampler2D  ("_21_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_22_sampler2D  ("_22_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_23_sampler2D  ("_23_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_24_sampler2D  ("_24_sampler2D", 2D) = "white" {}
     }
     SubShader
     {

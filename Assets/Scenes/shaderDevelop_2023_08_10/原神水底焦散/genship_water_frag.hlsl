@@ -106,29 +106,28 @@ static const float4 _151__m55[] = {float4(0.00, 0.00, 0.00, 0.00),
 #define _151__m84 0.87 // _151._m84
 #define _151__m85 2.49 // _151._m85
 #define _151__m86 1.00 // _151._m86
-#define _151__m87 0.00 // _151._m87
+#define _151__m87 0.00 // _151._m87 
 #define _151__m88 float4(1.00, 1.00, 1.00, 1.00) // _151._m88
 #define _151__m89 1.00 // _151._m89
 
 sampler2D _DepthTexture ;
-sampler2D _8 ;
-samplerCUBE _12;
-sampler2D _13;
-sampler2D _14;
-sampler2D _15;
-sampler3D _19;
-sampler3D _20;
-sampler2D _21;
-sampler2D _22;
-sampler2D _23;
-sampler2D _24;
+sampler2D _8_sampler2D ;
+samplerCUBE _12_samplerCUBE;
+sampler2D _13_sampler2D;
+sampler2D _14_sampler2D;
+sampler2D _15_sampler2D;
+sampler3D _19_sampler3D;
+sampler3D _20_sampler3D;
+sampler2D _21_sampler2D;
+sampler2D _22_sampler2D;
+sampler2D _23_sampler2D;
+sampler2D _24_sampler2D;
 
 fixed4 frag (v2f i) : SV_Target
 {
     float4 Output_0;
     
     float _35;
-    bool _38;
     float3 _41;
     float _42;
     bool _43;
@@ -227,11 +226,7 @@ fixed4 frag (v2f i) : SV_Target
     float _141;
     float _142;
     float _143;
-    // float _3490;
-    // uint _3494;
-    // float3 _3499 = (255.0);
     
-    _38 = _151__m5.w < 0.5;
     _87 = ((-i.Varying_4.xyz) * _151__m5.www) + _151__m5.xyz;
     _41.x = dot(_87, _87);
     _89.x = (_41.x * _151__m49.x) + 1.0;
@@ -242,8 +237,8 @@ fixed4 frag (v2f i) : SV_Target
     _45 = float4(_218.x, _218.y, _218.z, _45.w);
     _41.x = rsqrt(_41.x);
     _87 *= _41.xxx;
-    _87 = lerp(_87, _151__m5.xyz, (_38));
-    _41 = lerp(_45.xyz, _151__m8.xyz, (_38));
+    _87 = _151__m5.w < 0.5 ? _151__m5.xyz : _87;
+    _41 = _151__m5.w < 0.5 ? _151__m8.xyz : _45.xyz;
     _35 = 1.0 / i.Varying_NonStereoScreenPos.w;
     float2 _253 = (_35) * i.Varying_NonStereoScreenPos.xy;
     _47 = float3(_253.x, _253.y, _47.z);
@@ -251,14 +246,14 @@ fixed4 frag (v2f i) : SV_Target
     float2 _269 = _108 * float2(_151__m83, _151__m83);
     _51 = float3(_269.x, _269.y, _51.z);
     _109 = (_151__m0.yy * float2(_151__m44, _151__m45)) + _51.xy;
-    _59 = tex2Dlod(_14, float4(_109, 0.0, 0.0)).xyz;
+    _59 = tex2Dlod(_14_sampler2D, float4(_109, 0.0, 0.0)).xyz;
     float3 _296 = (_59 * (2.0)) + (-1.0);
     _45 = float4(_296.x, _296.y, _296.z, _45.w);
     float2 _307 = _45.xy * float2(_151__m48, _151__m48);
     _62 = float3(_307.x, _62.y, _307.y);
     float2 _323 = (_151__m0.yy * float2(_151__m46, _151__m47)) + _51.xy;
     _51 = float3(_323.x, _323.y, _51.z);
-    _55 = tex2Dlod(_15, float4(_51.xy, 0.0, 0.0)).xyz;
+    _55 = tex2Dlod(_15_sampler2D, float4(_51.xy, 0.0, 0.0)).xyz;
     _45.w = -1.0;
     float3 _337 = (_55.xzy * (2.0)) + _45.wzw;
     _45 = float4(_337.x, _337.y, _337.z, _45.w);
@@ -307,7 +302,7 @@ fixed4 frag (v2f i) : SV_Target
     _35 = 1.0 / _100.z;
     float2 _521 = (_35) * _100.xy;
     _68 = float3(_521.x, _521.y, _68.z);
-    _69 = tex2D(_23, _68.xy).xyz;
+    _69 = tex2D(_23_sampler2D, _68.xy).xyz;
     float2 _533 = _100.xy / _100.zz;
     _100 = float3(_533.x, _533.y, _100.z);
     _35 = tex2D(_DepthTexture, _100.xy).x;
@@ -511,7 +506,7 @@ fixed4 frag (v2f i) : SV_Target
     _122 = clamp(_122, 0.0, 1.0);
     _87.x = _122 * _87.x;
     _98 = _41 * float3(_151__m62, _151__m62, _151__m62);
-    _122 = tex2D(_8, _51.xy).x;
+    _122 = tex2D(_8_sampler2D, _51.xy).x;
     _56 = _151__m86 == 1.0;
     _122 = _56 ? _122 : 1.0;
     float2 _1413 = float2(_151__m44, _151__m45) * (25.0);
@@ -603,8 +598,8 @@ fixed4 frag (v2f i) : SV_Target
         _100 += _151__m54[3u].xyz;
         float2 _1816 = (i.Varying_4.xz * _151__m56.xy) + _151__m56.zw;
         _77 = float3(_1816.x, _1816.y, _77.z);
-        _101 = tex3D(_19, _100).x;
-        _116 = tex2D(_21, _77.xy).x;
+        _101 = tex3D(_19_sampler3D, _100).x;
+        _116 = tex2D(_21_sampler2D, _77.xy).x;
         _100.x = (_101 * _151__m52[1u].z) + _151__m52[1u].w;
         _100.x = clamp(_100.x, 0.0, 1.0);
         _77 = (-i.Varying_4.xyz) + _151__m52[0u].xyz;
@@ -635,8 +630,8 @@ fixed4 frag (v2f i) : SV_Target
                 _85 = (_151__m55[2u].xyz * i.Varying_4.zzz) + _85;
                 _85 += _151__m55[3u].xyz;
                 _86 = (i.Varying_4.xz * _151__m57.xy) + _151__m57.zw;
-                _133 = tex3D(_20, _85).x;
-                _142 = tex2D(_22, _86).x;
+                _133 = tex3D(_20_sampler3D, _85).x;
+                _142 = tex2D(_22_sampler2D, _86).x;
                 _132 = (_133 * _151__m52[3u].z) + _151__m52[3u].w;
                 _132 = clamp(_132, 0.0, 1.0);
                 _85 = (-i.Varying_4.xyz) + _151__m52[2u].xyz;
@@ -669,7 +664,7 @@ fixed4 frag (v2f i) : SV_Target
     _96 = dot(_99, _99);
     _96 = rsqrt(_96);
     _99 = (_96) * _99;
-    _46 = texCUBElod(_12, float4(_99, 0.0));
+    _46 = texCUBElod(_12_samplerCUBE, float4(_99, 0.0));
     _76.x = _46.w + (-1.0);
     _76.x = (_151__m71.w * _76.x) + 1.0;
     _76.x = log2(_76.x);
@@ -682,7 +677,7 @@ fixed4 frag (v2f i) : SV_Target
     _96 *= _151__m73;
     float2 _2184 = (_57.xz * (_96)) + _47.xy;
     _47 = float3(_2184.x, _2184.y, _47.z);
-    _63 = tex2D(_24, _47.xy);
+    _63 = tex2D(_24_sampler2D, _47.xy);
     _47.x = _63.w * _151__m76;
     _47.x *= _151__m75;
     _47.x = clamp(_47.x, 0.0, 1.0);
@@ -718,7 +713,7 @@ fixed4 frag (v2f i) : SV_Target
     _47 = float3(_2358.x, _2358.y, _47.z);
     float2 _2368 = (_151__m34.xy * _108) + _47.xy;
     _47 = float3(_2368.x, _2368.y, _47.z);
-    _49 = tex2D(_13, _47.xy).x;
+    _49 = tex2D(_13_sampler2D, _47.xy).x;
     _92 = _108.y + _108.x;
     _92 *= _151__m41;
     _92 = (_151__m35 * _151__m0.y) + _92;
@@ -756,8 +751,8 @@ fixed4 frag (v2f i) : SV_Target
         _41 += _151__m54[3u].xyz;
         float2 _2560 = (i.Varying_4.xz * _151__m56.xy) + _151__m56.zw;
         _47 = float3(_2560.x, _2560.y, _47.z);
-        _42 = tex3D(_19, _41).x;
-        _90 = tex2D(_21, _47.xy).x;
+        _42 = tex3D(_19_sampler3D, _41).x;
+        _90 = tex2D(_21_sampler2D, _47.xy).x;
         _41.x = (_42 * _151__m52[1u].z) + _151__m52[1u].w;
         _41.x = clamp(_41.x, 0.0, 1.0);
         _47 = (-i.Varying_4.xyz) + _151__m52[0u].xyz;
@@ -778,8 +773,8 @@ fixed4 frag (v2f i) : SV_Target
                 _47 = (_151__m55[2u].xyz * i.Varying_4.zzz) + _47;
                 _47 += _151__m55[3u].xyz;
                 _105 = (i.Varying_4.xz * _151__m57.xy) + _151__m57.zw;
-                _49 = tex3D(_20, _47).x;
-                _106 = tex2D(_22, _105).x;
+                _49 = tex3D(_20_sampler3D, _47).x;
+                _106 = tex2D(_22_sampler2D, _105).x;
                 _123 = (_49 * _151__m52[3u].z) + _151__m52[3u].w;
                 _123 = clamp(_123, 0.0, 1.0);
                 _47 = (-i.Varying_4.xyz) + _151__m52[2u].xyz;
@@ -812,8 +807,8 @@ fixed4 frag (v2f i) : SV_Target
                 _89 += _151__m55[3u].xyz;
                 float2 _2793 = (i.Varying_4.xz * _151__m57.xy) + _151__m57.zw;
                 _47 = float3(_2793.x, _2793.y, _47.z);
-                _90 = tex3D(_20, _89).x;
-                _106 = tex2D(_22, _47.xy).x;
+                _90 = tex3D(_20_sampler3D, _89).x;
+                _106 = tex2D(_22_sampler2D, _47.xy).x;
                 _89.x = (_90 * _151__m52[3u].z) + _151__m52[3u].w;
                 _89.x = clamp(_89.x, 0.0, 1.0);
                 _47 = (-i.Varying_4.xyz) + _151__m52[2u].xyz;
@@ -886,10 +881,9 @@ fixed4 frag (v2f i) : SV_Target
     _95 = sqrt(_95);
     _109.x = (_95 * _151__m17.x) + _151__m17.y;
     _109.x = clamp(_109.x, 0.0, 1.0);
-    _38 = (-_35) >= _102;
     _128 = _76.x * _151__m14.w;
-    _76.x = _38 ? _128 : _76.x;
-    _103.x = _38 ? _74 : _109.x;
+    _76.x = (-_35) >= _102 ? _128 : _76.x;
+    _103.x = (-_35) >= _102 ? _74 : _109.x;
     _35 = (_124 * _129) + _151__m7.w;
     _110 = _76.x + 9.9999997473787516355514526367188e-05;
     _110 = log2(_110);
