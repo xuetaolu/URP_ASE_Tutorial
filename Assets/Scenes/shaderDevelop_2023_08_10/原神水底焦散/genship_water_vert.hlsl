@@ -14,7 +14,7 @@
 //     float4(-63.74597, 196.06, 34.72217, 1.00)
 // };//_11__m0[_28 / 8]._m0
 
-#define _RolePos float3(-76.56767, 199.90689, 87.00145   ) //_38._m0
+// #define _WorldSpaceCameraPos float3(-76.56767, 199.90689, 87.00145   ) //_38._m0
 // #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017     ) //_38._m1
  static float4 _FoamParamsYW = float4(0.00, 0.12654, 0.00, 0.20238     ); //_38._m2
 // #define _38__m3 float4(0.00, 0.15191, 0.00, 0.28788     ) //_38._m3
@@ -55,10 +55,11 @@ v2f vert (appdata v)
 
 
     float3 _worldPos = mul( UNITY_MATRIX_M, float4(Vertex_Position.xyz, 1.0) );
-    float3 _worldPos2 = mul( UNITY_MATRIX_M, Vertex_Position ).xyz;
+    // Vertex_Position.w È±Ê¡ÖµÊÇ 1
+    // float3 _worldPos2 = mul( UNITY_MATRIX_M, Vertex_Position ).xyz;
 
     
-    float3 _relativeToRolePos = _RolePos - _worldPos2;
+    float3 _viewDir = _WorldSpaceCameraPos - _worldPos;
     
     o.Varying_WorldPosXYZ.xyz = _worldPos;
     o.Varying_WorldPosXYZ.w = 0.0;
@@ -80,8 +81,9 @@ v2f vert (appdata v)
     o.Varying_NonStereoScreenPos.xy = (_clipPos.w * 0.5) + float2( _clipPos.x * 0.5, _clipPos.y * _ProjectionParams.x * 0.5 );
     o.Varying_NonStereoScreenPos.zw = _clipPos.zw;
 
-    o.Varying_3.w = dot(UNITY_MATRIX_V[2u].xyz, _relativeToRolePos);
-    o.Varying_3.xyz = _relativeToRolePos;
+    float3 _worldCameraBack = UNITY_MATRIX_V[2u].xyz;
+    o.Varying_ViewDirXYZ_BackDotVW.w = dot(_worldCameraBack, _viewDir);
+    o.Varying_ViewDirXYZ_BackDotVW.xyz = _viewDir;
     
 
     

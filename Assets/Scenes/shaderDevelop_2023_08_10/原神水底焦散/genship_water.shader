@@ -10,8 +10,10 @@ Shader "Unlit/genship_water"
         _WorldPosXY_Offset ("_WorldPosXY_Offset", Vector) = (1934.36584, 0.00, -1266.34216, 0.00)
         _WorldPosXY_Scale ("_WorldPosXY_Scale", Range(0, 1)) = 0.05
         
-        _WorldPosXY_SpeedX ("_WorldPosXY_SpeedX", Range(-1, 1)) = -0.02
-        _WorldPosXY_SpeedY ("_WorldPosXY_SpeedY", Range(-1, 1)) = -0.01
+        _WorldPosXY_Speed1X ("_WorldPosXY_Speed1X", Range(-1, 1))  = -0.02
+        _WorldPosXY_Speed1Y ("_WorldPosXY_Speed1Y", Range(-1, 1))  = -0.01
+        _WorldPosXY_Speed2X ("_WorldPosXY_Speed2X", Range(-1, 1))  =  0.05
+        _WorldPosXY_Speed2Y ("_WorldPosXY_Speed2Y", Range(-1, 1))  = -0.04
         
         _NormalScale1 ("_NormalScale1", Range(0, 1)) = 0.7
         
@@ -25,7 +27,7 @@ Shader "Unlit/genship_water"
         [NoScaleOffset]_20_sampler3D  ("_20_sampler3D", 3D) = "white" {}
         [NoScaleOffset]_21_sampler2D  ("_21_sampler2D", 2D) = "white" {}
         [NoScaleOffset]_22_sampler2D  ("_22_sampler2D", 2D) = "white" {}
-        [NoScaleOffset]_23_sampler2D  ("_23_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_GrabTexture  ("_GrabTexture", 2D) = "white" {}
         [NoScaleOffset]_ScreenReflectTexture  ("_ScreenReflectTexture", 2D) = "white" {}
     }
     SubShader

@@ -124,6 +124,14 @@ Material:
         m_Texture: {fileID: 11700000, guid: 5887cb32a7d3fc5499949f41f0f1b981, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap1:
+        m_Texture: {fileID: 2800000, guid: a8fdd2f9aaa520948aac645c0b92ae7f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap2:
+        m_Texture: {fileID: 2800000, guid: f09c93104b459114a8ecf644e3c430b6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ScreenMaskMap:
         m_Texture: {fileID: 2800000, guid: dafd4aee0f0eebd42b8030697dc1def7, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -133,10 +141,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _151__m44: -0.02
+    - _151__m83: 0.05
+    - _NormalScale1: 0.7
+    - _WorldPosXY_Scale: 0.05
+    - _WorldPosXY_Speed: -0.02
+    - _WorldPosXY_Speed1X: -0.02
+    - _WorldPosXY_Speed1Y: -0.01
+    - _WorldPosXY_Speed2X: 0.05
+    - _WorldPosXY_Speed2Y: -0.04
+    - _WorldPosXY_SpeedX: -0.02
+    - _WorldPosXY_SpeedY: -0.01
     m_Colors:
+    - _151__m4: {r: 1934.3658, g: 0, b: -1266.3422, a: 0}
     - _151__m8: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
     - _38__m2: {r: 0, g: 0.12654, b: 0, a: 0.20238}
     - _38__m5: {r: -0.04413, g: -0.03476, b: -0.0106, a: 1}
     - _CausticColor: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
+    - _WorldPosXY_Offset: {r: 1934.3658, g: 0, b: -1266.3422, a: 0}
   m_BuildTextureStacks: []
