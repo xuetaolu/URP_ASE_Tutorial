@@ -6,7 +6,7 @@ Shader "genship/role_outline"
         
         _OutlineColor ("_OutlineColor", Color) = (0.5, 0.5, 0.5, 1)
         
-        // 0.0 Òş²Ø£¬ 1.0 Õı³££¬2.0 Ãè±ß£¿ Ä¿Ç°»¹Ô­µ½unity Ö»ÓĞ 2 ÓĞº¬Òå
+        // 0.0 éšè—ï¼Œ 1.0 æ­£å¸¸ï¼Œ2.0 æè¾¹ï¼Ÿ ç›®å‰è¿˜åŸåˆ°unity åªæœ‰ 2 æœ‰å«ä¹‰
         [IntRange]_RenderMode ("_RenderMode", Range(0, 2)) = 2
         _eyeDepthInNewRangeMulti1 ("_eyeDepthInNewRangeMulti1", float) = 0.03
         _ViewSpaceSnapVertexDirScale ("_ViewSpaceSnapVertexDirScale", float) = 1.0
@@ -16,7 +16,7 @@ Shader "genship/role_outline"
         _AffectProjectionXYWhenLessThan_0_95 ("_AffectProjectionXYWhenLessThan_0_95", float) = 1.00
         _eyeDepthInNewRangeMulti2 ("_eyeDepthInNewRangeMulti2", float) = 1.82
         
-        // WZ µ÷Õû×îÖÕÃè±ßÆÁÄ»Æ«ÒÆ£¬ĞèÒª _AffectProjectionXYWhenLessThan_0_95 Ğ¡ÓÚ 0.95 ²ÅÉúĞ§
+        // WZ è°ƒæ•´æœ€ç»ˆæè¾¹å±å¹•åç§»ï¼Œéœ€è¦ _AffectProjectionXYWhenLessThan_0_95 å°äº 0.95 æ‰ç”Ÿæ•ˆ
         _OutlineScreenOffsetWZ ("_OutlineScreenOffsetWZ", Vector) = (0, 0, 0.00044, 0.00012)
         
         _normalizeViewNormalXYScale ("_normalizeViewNormalXYScale", Range(0, 100)) = 1
@@ -144,12 +144,12 @@ Shader "genship/role_outline"
 
             float EyeDepthRemap(float In, float2 InMinMax, float2 OutMinMax)
             {
-                // float _newRangeLength = _eyeDepthParams_newRange.y - _eyeDepthParams_newRange.x; // _newRangeLength ÊÇ [ _eyeDepthParams_newRange.x, _eyeDepthParams_newRange.y ] Ö®¼äµÄ¾àÀë
+                // float _newRangeLength = _eyeDepthParams_newRange.y - _eyeDepthParams_newRange.x; // _newRangeLength æ˜¯ [ _eyeDepthParams_newRange.x, _eyeDepthParams_newRange.y ] ä¹‹é—´çš„è·ç¦»
                 
                 // float _oldRangeLength = _eyeDepthParams_oldRange.y - _eyeDepthParams_oldRange.x; // _oldRangeLength = 1.99
                 // _oldRangeLength = max(_oldRangeLength, 0.001);                           // _oldRangeLength = 1.99
                 // float _01InOldRange = (_eyeDepth_ofSnapToCamera * _fov45AdaptScale) - _eyeDepthParams_oldRange.x;
-                // _01InOldRange /= _oldRangeLength;                   // _01InOldRange ÊÇ eyeDepth ÔÚ [ _eyeDepthParams_oldRange.x, _eyeDepthParams_oldRange.y ] Ö®¼äµÄ 0~1 ±ÈÀı
+                // _01InOldRange /= _oldRangeLength;                   // _01InOldRange æ˜¯ eyeDepth åœ¨ [ _eyeDepthParams_oldRange.x, _eyeDepthParams_oldRange.y ] ä¹‹é—´çš„ 0~1 æ¯”ä¾‹
                 // _01InOldRange = clamp(_01InOldRange, 0.0, 1.0);   // 
                 
                 // float _eyeDepthInNewRange = (_01InOldRange * _newRangeLength) + _eyeDepthParams_newRange.x;
@@ -166,15 +166,16 @@ Shader "genship/role_outline"
                 // layout(location = 1) in vec3 Vertex_Normal;
                 float3 Vertex_Normal = v.normal;
                 
-                // Z ÊÇÇ°ºóÆ«ÒÆ¿ØÖÆ 0.5 ±íÊ¾ÖĞ¼ä£¬ÄæÏòÄ£ĞÍµÄ Z ¶¼ÊÇ 0.5
-                // W ÊÇ eyeDepth Ëõ·Å¿ØÖÆ£¬ÄæÏòÄ£ĞÍ´ó²¿·ÖÊÇ 0.5£¬Ò²ÓĞ 0.4£¬0 µÄ
+                // Z æ˜¯å‰ååç§»æ§åˆ¶ 0.5 è¡¨ç¤ºä¸­é—´ï¼Œé€†å‘æ¨¡å‹çš„ Z éƒ½æ˜¯ 0.5
+                // W æ˜¯ eyeDepth ç¼©æ”¾æ§åˆ¶ï¼Œé€†å‘æ¨¡å‹å¤§éƒ¨åˆ†æ˜¯ 0.5ï¼Œä¹Ÿæœ‰ 0.4ï¼Œ0 çš„
                 // layout(location = 2) in vec4 Vertex_FrontBackOffsetZ_DepthScaleW;
-                // ÔİÊ±Ğ´ËÀÕâ¸ö¶¥µãÊı¾İ£¬
+                // æš‚æ—¶å†™æ­»è¿™ä¸ªé¡¶ç‚¹æ•°æ®ï¼Œ
                 float4 Vertex_FrontBackOffsetZ_DepthScaleW = float4(0, 0, v.uv2.xy);
                 // Vertex_FrontBackOffsetZ_DepthScaleW = float4(0, 0, 0.5, 0.5);
 
                 // layout(location = 4) in vec4 Vertex_TANGENT;
                 float4 Vertex_TANGENT = v.tangent;
+                // float4 Vertex_TANGENT = float4(v.normal, 1.0);
 
 
 
@@ -186,20 +187,20 @@ Shader "genship/role_outline"
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
                 
-        /// ÕæÕıÓĞÓÃµÄ´úÂë £¬Ãè±ß¼·³ö ¼ÆËã ClipPos ============ 
+        /// çœŸæ­£æœ‰ç”¨çš„ä»£ç  ï¼Œæè¾¹æŒ¤å‡º è®¡ç®— ClipPos ============ 
                 
                 float4 _fixVertexPos1;
                 _fixVertexPos1 = Vertex_Position;
                 // Varying_ColorRGBA.w = 1.0;
 
-                // // ×¢Òâ Unity ±¾ÉíºÍ mumu12 vulkan ÏÂµÄ glsl ¾ØÕóÊÇ×ªÖÃµÄ
+                // // æ³¨æ„ Unity æœ¬èº«å’Œ mumu12 vulkan ä¸‹çš„ glsl çŸ©é˜µæ˜¯è½¬ç½®çš„
                 // // float3 _WorldViewLookAt = unity_ObjectToWorld[3u].xyz - _WorldSpaceCameraPos_maybe;
                 // // float3 _WorldViewLookAt = unity_ObjectToWorld._14_24_34 - _WorldSpaceCameraPos_maybe;
                 // // float3 _WorldViewLookAt = unity_ObjectToWorld[3u].xyz - _WorldSpaceCameraPos;
                 // float3 _WorldViewLookAt = float3(unity_ObjectToWorld[0u].w, unity_ObjectToWorld[1u].w, unity_ObjectToWorld[2u].w) - _WorldSpaceCameraPos;
                 //
-                // // objectToWorld, µ« T ÊÇ _WorldViewLookAt;
-                // // ¼´ object Ö»ÉúĞ§Ğı×ªºÍËõ·Å£¬È»ºóÎ»ÖÃÊÇÎüµ½ÉãÏñ»úÉÏ¡£
+                // // objectToWorld, ä½† T æ˜¯ _WorldViewLookAt;
+                // // å³ object åªç”Ÿæ•ˆæ—‹è½¬å’Œç¼©æ”¾ï¼Œç„¶åä½ç½®æ˜¯å¸åˆ°æ‘„åƒæœºä¸Šã€‚
                 // float4 _row_x;
                 //     // _row_x.x = unity_ObjectToWorld[0u].x;
                 //     // _row_x.y = unity_ObjectToWorld[1u].x;
@@ -272,19 +273,19 @@ Shader "genship/role_outline"
                     _negateWorldCameraPos.xyzw = unity_MatrixV[3u];
 
                 // _worldPos_snapToCameraDotNegateCameraPos
-                //   Îª 0£¬   ÎŞÏŞÔ¶, clipPos Z ±äµÃÎŞÏŞÔ¶
-                //   Îª 0.01£¬ºÜÔ¶£¬ clipPos Z ±äµÃºÜÔ¶
-                //   Îª 1£¬   Õı³££¬ clipPos Z ºÜÔ¶
-                //   Îª >1,   ±ä½ü£¬µ±×¡Ô­±¾ÄÚÈİ
-                // µ« unity_MatrixV[3u] ºãÎª float4(0, 0, 0, 1)
-                //   _worldPosButSnapToCamera  ºãÎª float4(x,y,z,1)
-                // ¹Ê _worldPos_snapToCameraDotNegateCameraPos ºãÎª 1
+                //   ä¸º 0ï¼Œ   æ— é™è¿œ, clipPos Z å˜å¾—æ— é™è¿œ
+                //   ä¸º 0.01ï¼Œå¾ˆè¿œï¼Œ clipPos Z å˜å¾—å¾ˆè¿œ
+                //   ä¸º 1ï¼Œ   æ­£å¸¸ï¼Œ clipPos Z å¾ˆè¿œ
+                //   ä¸º >1,   å˜è¿‘ï¼Œå½“ä½åŸæœ¬å†…å®¹
+                // ä½† unity_MatrixV[3u] æ’ä¸º float4(0, 0, 0, 1)
+                //   _worldPosButSnapToCamera  æ’ä¸º float4(x,y,z,1)
+                // æ•… _worldPos_snapToCameraDotNegateCameraPos æ’ä¸º 1
                 // float _worldPos_snapToCameraDotNegateCameraPos;
                 //     _worldPos_snapToCameraDotNegateCameraPos = dot(_negateWorldCameraPos, _worldPosButSnapToCamera);
         
         
-                // #define _RenderMode  2.0 ¡£
-                // 1.0 Ê¹ÓÃ Vertex_Normal ×÷Îª·¨Ïß£¬·ñÔòÓÃ Vertex_TANGENT ×÷Îª·¨Ïß
+                // #define _RenderMode  2.0 ã€‚
+                // 1.0 ä½¿ç”¨ Vertex_Normal ä½œä¸ºæ³•çº¿ï¼Œå¦åˆ™ç”¨ Vertex_TANGENT ä½œä¸ºæ³•çº¿
                 float3 _vertex_normal = _RenderMode == 1.0 ? Vertex_Normal : Vertex_TANGENT.xyz ;
         
         
@@ -319,10 +320,10 @@ Shader "genship/role_outline"
         
         
         
-                // cot( 0.5*45¡ã ) = 2.414
+                // cot( 0.5*45Â° ) = 2.414
                 // UNITY_MATRIX_P[1u].y = cot( 0.5 * FOV )
-                // FOV Ô½Ğ¡£¬cot( 0.5 * FOV ) Ô½´ó£¬2.414 / UNITY_MATRIX_P[1u].y; Ô½Ğ¡
-                //   FOV Ô½Ğ¡£¬ÈËÎïÔ½´ó£¬Ãè±ßÔÚ3D¿Õ¼äÉÏ±äĞ¡£¬×îÖÕÆÁÄ»ÉÏ´Ö¶ÈÏàÓ¦±£³Ö²»±ä
+                // FOV è¶Šå°ï¼Œcot( 0.5 * FOV ) è¶Šå¤§ï¼Œ2.414 / UNITY_MATRIX_P[1u].y; è¶Šå°
+                //   FOV è¶Šå°ï¼Œäººç‰©è¶Šå¤§ï¼Œæè¾¹åœ¨3Dç©ºé—´ä¸Šå˜å°ï¼Œæœ€ç»ˆå±å¹•ä¸Šç²—åº¦ç›¸åº”ä¿æŒä¸å˜
                 float _fov45AdaptScale = 2.414 / (UNITY_MATRIX_P[1u].y*_ProjectionParams.x);
         
                 float _eyeDepth_ofSnapToCamera = -_viewPos.z;
@@ -375,7 +376,7 @@ Shader "genship/role_outline"
                 //
                 // float4 _clipPos = _tmp26;
 
-                // _worldPos_snapToCameraDotNegateCameraPos ºãÎª 1
+                // _worldPos_snapToCameraDotNegateCameraPos æ’ä¸º 1
                 // float4 _clipPos = mul(UNITY_MATRIX_P, float4(_normalBiasViewPos, _worldPos_snapToCameraDotNegateCameraPos));
                 float4 _clipPos = mul(UNITY_MATRIX_P, float4(_normalBiasViewPos, 1.0));
 
@@ -390,7 +391,7 @@ Shader "genship/role_outline"
                 _clipPos.xy = _AffectProjectionXYWhenLessThan_0_95 < 0.95 ? _clipPosApplyXYOffset : _clipPos.xy;
                 // gl_Position = _clipPos;
 
-        /// ÕæÕıÓĞÓÃµÄ´úÂë £¬Ãè±ß¼·³ö ¼ÆËã ClipPos ============ end
+        /// çœŸæ­£æœ‰ç”¨çš„ä»£ç  ï¼Œæè¾¹æŒ¤å‡º è®¡ç®— ClipPos ============ end
                 o.vertex = _clipPos;
                 
                 return o;
