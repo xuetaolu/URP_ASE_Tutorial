@@ -12,7 +12,7 @@ Shader "Unlit/genship_water"
         [NoScaleOffset]_13_sampler2D  ("_13_sampler2D", 2D) = "white" {}
         [NoScaleOffset]_14_sampler2D  ("_14_sampler2D", 2D) = "white" {}
         [NoScaleOffset]_15_sampler2D  ("_15_sampler2D", 2D) = "white" {}
-        [NoScaleOffset]_19_sampler3D  ("_19_sampler3D", 3D) = "white" {}
+        [NoScaleOffset]_Noise3DMap  ("_Noise3DMap", 3D) = "white" {}
         [NoScaleOffset]_20_sampler3D  ("_20_sampler3D", 3D) = "white" {}
         [NoScaleOffset]_21_sampler2D  ("_21_sampler2D", 2D) = "white" {}
         [NoScaleOffset]_22_sampler2D  ("_22_sampler2D", 2D) = "white" {}

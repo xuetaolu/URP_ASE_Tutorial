@@ -6,7 +6,7 @@
 // #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017              )//_151._m2
 // #define _ZBufferParams float4(-23999.00, 24000.00, -3.99983, 4.00       )//_151._m3
 #define _151__m4 float4(1934.36584, 0.00, -1266.34216, 0.00       )//_151._m4
-#define _151__m5 float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
+#define _LightDir float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
 // static const float4 UNITY_MATRIX_V_T[] = {float4(0.63206, -0.34567, 0.69355, 0.00         ),
 //                         float4(0.00, 0.895, 0.44607, 0.00               ),
 //                         float4(0.77492, 0.28194, -0.56569, 0.00         ),
@@ -67,7 +67,7 @@ static const float4 _151__m53[] = {float4(0.00, 0.00, 0.00, 0.00),
                          float4(0.00, 0.00, 0.00, 0.00),
                          float4(0.00, 0.00, 0.00, 0.00),
                          float4(0.00, 0.00, 0.00, 0.00)};//_151._m53
-static const float4 _151__m54[] = {float4(0.00, 0.00, 0.00, 0.00),
+static const matrix _Matrix_custom_V_maybe = {float4(0.00, 0.00, 0.00, 0.00),
                          float4(0.00, 0.00, 0.00, 0.00),
                          float4(0.00, 0.00, 0.00, 0.00),
                          float4(0.00, 0.00, 0.00, 0.00)};//_151._m54
@@ -116,7 +116,7 @@ samplerCUBE _12_samplerCUBE;
 sampler2D _13_sampler2D;
 sampler2D _14_sampler2D;
 sampler2D _15_sampler2D;
-sampler3D _19_sampler3D;
+sampler3D _Noise3DMap;
 sampler3D _20_sampler3D;
 sampler2D _21_sampler2D;
 sampler2D _22_sampler2D;
@@ -227,7 +227,8 @@ fixed4 frag (v2f i) : SV_Target
     float _142;
     float _143;
     
-    _87 = ((-i.Varying_4.xyz) * _151__m5.www) + _151__m5.xyz;
+    // #define _LightDir float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
+    _87 = ((-i.Varying_WorldPosXYZ.xyz) * _LightDir.www) + _LightDir.xyz;
     _41.x = dot(_87, _87);
     _89.x = (_41.x * _151__m49.x) + 1.0;
     _89.x = 1.0 / _89.x;
@@ -237,12 +238,12 @@ fixed4 frag (v2f i) : SV_Target
     _45 = float4(_218.x, _218.y, _218.z, _45.w);
     _41.x = rsqrt(_41.x);
     _87 *= _41.xxx;
-    _87 = _151__m5.w < 0.5 ? _151__m5.xyz : _87;
-    _41 = _151__m5.w < 0.5 ? _151__m8.xyz : _45.xyz;
+    _87 = _LightDir.w < 0.5 ? _LightDir.xyz : _87;
+    _41 = _LightDir.w < 0.5 ? _151__m8.xyz : _45.xyz;
     _35 = 1.0 / i.Varying_NonStereoScreenPos.w;
     float2 _253 = (_35) * i.Varying_NonStereoScreenPos.xy;
     _47 = float3(_253.x, _253.y, _47.z);
-    _108 = i.Varying_4.xz + _151__m4.xz;
+    _108 = i.Varying_WorldPosXYZ.xz + _151__m4.xz;
     float2 _269 = _108 * float2(_151__m83, _151__m83);
     _51 = float3(_269.x, _269.y, _51.z);
     _109 = (_151__m0.yy * float2(_151__m44, _151__m45)) + _51.xy;
@@ -275,11 +276,11 @@ fixed4 frag (v2f i) : SV_Target
     _123 = (-_35) * _123;
     _57 = (_123) * i.Varying_3.xyz;
     _61 = (i.Varying_3.yxyz * (_123)) + _151__m1.yxyz;
-    _64 = (-i.Varying_4.yxyz) + _151__m1.yxyz;
+    _64 = (-i.Varying_WorldPosXYZ.yxyz) + _151__m1.yxyz;
     _123 = dot(_64.yzw, _64.yzw);
     _109.x = rsqrt(_123);
     _66 = _109.xxxx * _64;
-    _67 = (-_61) + i.Varying_4.yxyz;
+    _67 = (-_61) + i.Varying_WorldPosXYZ.yxyz;
     _128 = dot(_67.yzw, _67.yzw);
     _128 = sqrt(_128);
     _129 = i.Varying_NonStereoScreenPos.w + _151__m87;
@@ -592,17 +593,25 @@ fixed4 frag (v2f i) : SV_Target
     if (_60)
     {
         _57 = max(_51, (9.9999997473787516355514526367188e-05));
-        _100 = i.Varying_4.yyy * _151__m54[1u].xyz;
-        _100 = (_151__m54[0u].xyz * i.Varying_4.xxx) + _100;
-        _100 = (_151__m54[2u].xyz * i.Varying_4.zzz) + _100;
-        _100 += _151__m54[3u].xyz;
-        float2 _1816 = (i.Varying_4.xz * _151__m56.xy) + _151__m56.zw;
-        _77 = float3(_1816.x, _1816.y, _77.z);
-        _101 = tex3D(_19_sampler3D, _100).x;
+        // _100 = i.Varying_WorldPosXYZ.yyy * _Matrix_custom_V_maybe[1u].xyz;
+        // _100 = (_Matrix_custom_V_maybe[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _100;
+        // _100 = (_Matrix_custom_V_maybe[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _100;
+        // _100 += _Matrix_custom_V_maybe[3u].xyz;
+
+        float3 _customViewPos = mul(_Matrix_custom_V_maybe, float4(i.Varying_WorldPosXYZ.xyz, 1.0)).xyz;
+        _100 = _customViewPos;
+
+        
+        _77.xy = (i.Varying_WorldPosXYZ.xz * _151__m56.xy) + _151__m56.zw;
+
+        
+        _101 = tex3D(_Noise3DMap, _customViewPos).x;
+
+        
         _116 = tex2D(_21_sampler2D, _77.xy).x;
         _100.x = (_101 * _151__m52[1u].z) + _151__m52[1u].w;
         _100.x = clamp(_100.x, 0.0, 1.0);
-        _77 = (-i.Varying_4.xyz) + _151__m52[0u].xyz;
+        _77 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[0u].xyz;
         _132 = dot(_77, _77);
         _132 = sqrt(_132);
         _132 = (_132 * _151__m52[1u].x) + _151__m52[1u].y;
@@ -625,16 +634,16 @@ fixed4 frag (v2f i) : SV_Target
             _134 = _100.x < 0.00196078442968428134918212890625;
             if (_134)
             {
-                _85 = i.Varying_4.yyy * _151__m55[1u].xyz;
-                _85 = (_151__m55[0u].xyz * i.Varying_4.xxx) + _85;
-                _85 = (_151__m55[2u].xyz * i.Varying_4.zzz) + _85;
+                _85 = i.Varying_WorldPosXYZ.yyy * _151__m55[1u].xyz;
+                _85 = (_151__m55[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _85;
+                _85 = (_151__m55[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _85;
                 _85 += _151__m55[3u].xyz;
-                _86 = (i.Varying_4.xz * _151__m57.xy) + _151__m57.zw;
+                _86 = (i.Varying_WorldPosXYZ.xz * _151__m57.xy) + _151__m57.zw;
                 _133 = tex3D(_20_sampler3D, _85).x;
                 _142 = tex2D(_22_sampler2D, _86).x;
                 _132 = (_133 * _151__m52[3u].z) + _151__m52[3u].w;
                 _132 = clamp(_132, 0.0, 1.0);
-                _85 = (-i.Varying_4.xyz) + _151__m52[2u].xyz;
+                _85 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[2u].xyz;
                 _143 = dot(_85, _85);
                 _143 = sqrt(_143);
                 _143 = (_143 * _151__m52[3u].x) + _151__m52[3u].y;
@@ -745,17 +754,17 @@ fixed4 frag (v2f i) : SV_Target
     _43 = _151__m58 == 1.0;
     if (_43)
     {
-        _41 = i.Varying_4.yyy * _151__m54[1u].xyz;
-        _41 = (_151__m54[0u].xyz * i.Varying_4.xxx) + _41;
-        _41 = (_151__m54[2u].xyz * i.Varying_4.zzz) + _41;
-        _41 += _151__m54[3u].xyz;
-        float2 _2560 = (i.Varying_4.xz * _151__m56.xy) + _151__m56.zw;
+        _41 = i.Varying_WorldPosXYZ.yyy * _Matrix_custom_V_maybe[1u].xyz;
+        _41 = (_Matrix_custom_V_maybe[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _41;
+        _41 = (_Matrix_custom_V_maybe[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _41;
+        _41 += _Matrix_custom_V_maybe[3u].xyz;
+        float2 _2560 = (i.Varying_WorldPosXYZ.xz * _151__m56.xy) + _151__m56.zw;
         _47 = float3(_2560.x, _2560.y, _47.z);
-        _42 = tex3D(_19_sampler3D, _41).x;
+        _42 = tex3D(_Noise3DMap, _41).x;
         _90 = tex2D(_21_sampler2D, _47.xy).x;
         _41.x = (_42 * _151__m52[1u].z) + _151__m52[1u].w;
         _41.x = clamp(_41.x, 0.0, 1.0);
-        _47 = (-i.Varying_4.xyz) + _151__m52[0u].xyz;
+        _47 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[0u].xyz;
         _105.x = dot(_47, _47);
         _105.x = sqrt(_105.x);
         _105.x = (_105.x * _151__m52[1u].x) + _151__m52[1u].y;
@@ -768,16 +777,16 @@ fixed4 frag (v2f i) : SV_Target
             _107 = _41.x < 0.00196078442968428134918212890625;
             if (_107)
             {
-                _47 = i.Varying_4.yyy * _151__m55[1u].xyz;
-                _47 = (_151__m55[0u].xyz * i.Varying_4.xxx) + _47;
-                _47 = (_151__m55[2u].xyz * i.Varying_4.zzz) + _47;
+                _47 = i.Varying_WorldPosXYZ.yyy * _151__m55[1u].xyz;
+                _47 = (_151__m55[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _47;
+                _47 = (_151__m55[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _47;
                 _47 += _151__m55[3u].xyz;
-                _105 = (i.Varying_4.xz * _151__m57.xy) + _151__m57.zw;
+                _105 = (i.Varying_WorldPosXYZ.xz * _151__m57.xy) + _151__m57.zw;
                 _49 = tex3D(_20_sampler3D, _47).x;
                 _106 = tex2D(_22_sampler2D, _105).x;
                 _123 = (_49 * _151__m52[3u].z) + _151__m52[3u].w;
                 _123 = clamp(_123, 0.0, 1.0);
-                _47 = (-i.Varying_4.xyz) + _151__m52[2u].xyz;
+                _47 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[2u].xyz;
                 _47.x = dot(_47, _47);
                 _47.x = sqrt(_47.x);
                 _47.x = (_47.x * _151__m52[3u].x) + _151__m52[3u].y;
@@ -801,17 +810,17 @@ fixed4 frag (v2f i) : SV_Target
             _91 = _41.x < 0.00196078442968428134918212890625;
             if (_91)
             {
-                _89 = i.Varying_4.yyy * _151__m55[1u].xyz;
-                _89 = (_151__m55[0u].xyz * i.Varying_4.xxx) + _89;
-                _89 = (_151__m55[2u].xyz * i.Varying_4.zzz) + _89;
+                _89 = i.Varying_WorldPosXYZ.yyy * _151__m55[1u].xyz;
+                _89 = (_151__m55[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _89;
+                _89 = (_151__m55[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _89;
                 _89 += _151__m55[3u].xyz;
-                float2 _2793 = (i.Varying_4.xz * _151__m57.xy) + _151__m57.zw;
+                float2 _2793 = (i.Varying_WorldPosXYZ.xz * _151__m57.xy) + _151__m57.zw;
                 _47 = float3(_2793.x, _2793.y, _47.z);
                 _90 = tex3D(_20_sampler3D, _89).x;
                 _106 = tex2D(_22_sampler2D, _47.xy).x;
                 _89.x = (_90 * _151__m52[3u].z) + _151__m52[3u].w;
                 _89.x = clamp(_89.x, 0.0, 1.0);
-                _47 = (-i.Varying_4.xyz) + _151__m52[2u].xyz;
+                _47 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[2u].xyz;
                 _123 = dot(_47, _47);
                 _123 = sqrt(_123);
                 _123 = (_123 * _151__m52[3u].x) + _151__m52[3u].y;
@@ -827,14 +836,14 @@ fixed4 frag (v2f i) : SV_Target
     {
         Output_0.w = _35;
     }
-    _41 = i.Varying_4.xyz + (-_151__m1);
+    _41 = i.Varying_WorldPosXYZ.xyz + (-_151__m1);
     _35 = dot(_41, _forward);
     if (_65)
     {
         _125 = _151__m27.y < 0.5;
         if (_125)
         {
-            _47 = i.Varying_4.xyz + (-_151__m22.xyz);
+            _47 = i.Varying_WorldPosXYZ.xyz + (-_151__m22.xyz);
             _123 = dot(_47, _47);
             _123 = sqrt(_123);
             _123 = (_123 * _151__m24.z) + _151__m24.w;
@@ -844,7 +853,7 @@ fixed4 frag (v2f i) : SV_Target
         }
         else
         {
-            _123 = i.Varying_4.y + (-_151__m22.y);
+            _123 = i.Varying_WorldPosXYZ.y + (-_151__m22.y);
             _47.x = 1.0 / _151__m22.w;
             _123 *= _47.x;
             _123 = clamp(_123, 0.0, 1.0);
@@ -891,7 +900,7 @@ fixed4 frag (v2f i) : SV_Target
     _35 = exp2(_35);
     _35 = min(_117, _35);
     _35 = min(_35, 1.0);
-    _109.x = (i.Varying_4.y * _151__m15.x) + _151__m15.y;
+    _109.x = (i.Varying_WorldPosXYZ.y * _151__m15.x) + _151__m15.y;
     _109.x = clamp(_109.x, 0.0, 1.0);
     _76.x = (-_109.x) + 2.0;
     _76.x = _109.x * _76.x;

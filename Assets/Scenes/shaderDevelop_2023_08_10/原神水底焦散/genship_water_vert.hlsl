@@ -60,8 +60,8 @@ v2f vert (appdata v)
     
     float3 _relativeToRolePos = _RolePos - _worldPos2;
     
-    o.Varying_4.xyz = _worldPos;
-    o.Varying_4.w = 0.0;
+    o.Varying_WorldPosXYZ.xyz = _worldPos;
+    o.Varying_WorldPosXYZ.w = 0.0;
 
     // float4 _clipPos = mul(transpose(UNITY_MATRIX_VP_T), float4(_worldPos, 1));
     float4 _clipPos = mul(UNITY_MATRIX_VP, float4(_worldPos, 1));
