@@ -102,7 +102,7 @@ static const float4 _151__m55[] = {float4(0.00, 0.00, 0.00, 0.00),
 #define _151__m80 float4(1.00, 1.00, 1.00, 0.00) // _151._m80
 #define _151__m81 float4(1.00, 1.00, 1.00, 0.00) // _151._m81
 #define _151__m82 1.00 // _151._m82
-const float _WorldPosXY_Scale = 0.05; // _151._m83
+float _WorldPosXY_Scale = 0.05; // _151._m83
 #define _151__m84 0.87 // _151._m84
 #define _151__m85 2.49 // _151._m85
 #define _151__m86 1.00 // _151._m86
