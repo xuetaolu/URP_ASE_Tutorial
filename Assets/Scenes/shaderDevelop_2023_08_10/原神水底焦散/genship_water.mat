@@ -124,9 +124,19 @@ Material:
         m_Texture: {fileID: 11700000, guid: 5887cb32a7d3fc5499949f41f0f1b981, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ScreenMaskMap:
+        m_Texture: {fileID: 2800000, guid: dafd4aee0f0eebd42b8030697dc1def7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ScreenReflectTexture:
+        m_Texture: {fileID: 2800000, guid: f3d467bec4e203b498f67c54eeb2eeb1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
     m_Colors:
+    - _151__m8: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
     - _38__m2: {r: 0, g: 0.12654, b: 0, a: 0.20238}
     - _38__m5: {r: -0.04413, g: -0.03476, b: -0.0106, a: 1}
+    - _CausticColor: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
   m_BuildTextureStacks: []
