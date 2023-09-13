@@ -196,8 +196,6 @@ fixed4 frag (v2f i) : SV_Target
     float2 _115;
     float _116;
     float _119;
-    float _120;
-    bool2 _121;
     float _122;
     float _123;
     float _124;
@@ -210,8 +208,6 @@ fixed4 frag (v2f i) : SV_Target
     float _133;
     bool _134;
     float _138;
-    float _139;
-    float _140;
     float _141;
     float _142;
     float _143;
@@ -376,7 +372,7 @@ fixed4 frag (v2f i) : SV_Target
     
     // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
     float _lookThroughDir3y_length_SO = clamp(_lookThroughWorldPos3.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
-    _139 = _lookThroughDir3y_length_SO;
+    // _139 = _lookThroughDir3y_length_SO;
     
     // y = 0 / 1 \ 0, x ∈ [0, 2]
     float _lookThroughDir3y_length_SO_curve = _lookThroughDir3y_length_SO * (-_lookThroughDir3y_length_SO + 2.0);
@@ -387,55 +383,59 @@ fixed4 frag (v2f i) : SV_Target
     float3 _color_77_1 = lerp(_color_77_0, _151__m26.xyz, _if_output_A_0);
     
     // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-    _139 = _lookThroughDir3_length + (-_151__m12.w);
     // #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
-    _139 = _139 * _151__m16.w;
-    _139 = clamp(_139, 0.0, 1.0);
+    float _lookThroughDir3_length_OS = clamp((_lookThroughDir3_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
 
-    float3 _color_77_2 = lerp(_color_77_1, _151__m16.xyz, _139);
+    float3 _color_77_2 = lerp(_color_77_1, _151__m16.xyz, _lookThroughDir3_length_OS);
 
+    // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
+    float _lookThroughDir3xz_length_SO = clamp(_lookThroughDir3xz_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
     
-    _100.x = (_lookThroughDir3xz_length * _151__m19.z) + _151__m19.w;
-    _100.x = clamp(_100.x, 0.0, 1.0);
-    _139 = (-_151__m11.y) + _151__m23.w;
-    _140 = (_if_output_A_1 * _139) + _151__m11.y;
-    float2 _914 = _lookThroughDir3.yy * _151__m11.xz;
-    _80 = float3(_914.x, _914.y, _80.z);
-    _121 = ((0.00999999977648258209228515625) < abs(_80.xyxy)).xy;
-    float2 _935 = ((-_151__m11.xz) * _lookThroughDir3.yy) + _151__m20.yw;
-    _81 = float3(_935.x, _935.y, _81.z);
-    float2 _942 = min(_81.xy, (80.0));
-    _81 = float3(_942.x, _942.y, _81.z);
-    float2 _949 = _81.xy * (1.44269502162933349609375);
-    _81 = float3(_949.x, _949.y, _81.z);
-    float2 _954 = exp2(_81.xy);
-    _81 = float3(_954.x, _954.y, _81.z);
-    float2 _963 = (-_81.xy) + _151__m20.xz;
-    _81 = float3(_963.x, _963.y, _81.z);
-    float2 _970 = _81.xy / _80.xy;
-    _80 = float3(_970.x, _970.y, _80.z);
-    _80.x = _121.x ? _80.x : _151__m20.x;
-    _80.y = _121.y ? _80.y : _151__m20.z;
-    _114 = _lookThroughDir3_length * _140;
-    _114 *= (-_80.x);
-    _114 = exp2(_114);
-    _114 = (-_114) + 1.0;
-    _114 = max(_114, 0.0);
-    _140 = (_lookThroughDir3_length * _151__m12.x) + _151__m12.y;
-    _140 = clamp(_140, 0.0, 1.0);
-    _80.x = (_lookThroughDir3_length * _151__m24.x) + _151__m24.y;
-    _80.x = clamp(_80.x, 0.0, 1.0);
-    _127 = (-_140) + _80.x;
-    _127 = (_if_output_A_1 * _127) + _140;
-    _103.x = (-_127) + 2.0;
-    _140 = (-_151__m12.z) + _151__m25.x;
-    _80.x = (_if_output_A_1 * _140) + _151__m12.z;
-    _120 = (_127 * _103.x) + (-1.0);
-    _80.x = (_80.x * _120) + 1.0;
-    _127 = _114 * _80.x;
+    // #define _151__m11 float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
+    // #define _151__m20 float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
+    float2 _exponent_81 = min(((-_151__m11.xz) * _lookThroughDir3.y) + _151__m20.yw, 80.0) * 1.44269502162933349609375;
+
+    float2 _pow_81 = exp2(_exponent_81);
+
+    float2 _div_80 = (_151__m20.xz - _pow_81) / (_lookThroughDir3.y * _151__m11.xz);
+    
+    float2 _switch_80;
+        _switch_80.x = abs(_lookThroughDir3.y * _151__m11.x) > 0.01 ? _div_80.x : _151__m20.x;
+        _switch_80.y = abs(_lookThroughDir3.y * _151__m11.z) > 0.01 ? _div_80.y : _151__m20.z;
+
+    // #define _151__m11 float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
+    // #define _151__m23 float4(1.00, 1.00, 1.00, 0.07213               ) // _151._m23
+    float _lerp_140 = lerp(_151__m11.y, _151__m23.w, _if_output_A_1);
+    
+    float _tmp_114;
+    {
+        _tmp_114 = _lookThroughDir3_length * _lerp_140;
+        _tmp_114 = _tmp_114 * (-_switch_80.x);
+        _tmp_114 = exp2(_tmp_114);
+        _tmp_114 = (-_tmp_114) + 1.0;
+        _tmp_114 = max(_tmp_114, 0.0);
+    }
+
+    // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+    float _lookThroughDir3_length_SO_1 = clamp(_lookThroughDir3_length * _151__m12.x + _151__m12.y, 0, 1);
+    
+    // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
+    float _lookThroughDir3_length_SO_2 = clamp(_lookThroughDir3_length * _151__m24.x + _151__m24.y, 0, 1);
+    
+
+    float _lerp_127_1 = lerp(_lookThroughDir3_length_SO_1, _lookThroughDir3_length_SO_2, _if_output_A_1);
+    
+    // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+    float _lerp_80 = lerp(_151__m12.z, _151__m25.x, _if_output_A_1);
+
+    // y = 1 \ -1 / 1, x ∈ [-1, 1]
+    float _lerp_127_1_curve = (_lerp_127_1 * (2.0-_lerp_127_1)) + (-1.0);
+
+    // _80.x = (_lerp_80 * _lerp_127_1_curve) + 1.0;
+    _127 = _tmp_114 * (_lerp_80 * _lerp_127_1_curve + 1.0);
     _114 = min(_127, _Color_Far.w);
     _80.x = _lookThroughDir3_length * _151__m11.w;
-    _80.x *= (-_80.y);
+    _80.x *= (-_switch_80.y);
     _80.x = exp2(_80.x);
     _80.x = (-_80.x) + 1.0;
     _80.x = max(_80.x, 0.0);
@@ -446,7 +446,7 @@ fixed4 frag (v2f i) : SV_Target
     _127 *= _80.x;
     _138 = min(_127, _151__m21.y);
     _76.x = _switch_value_2 * _114;
-    _76.y = _100.x * _138;
+    _76.y = _lookThroughDir3xz_length_SO * _138;
     _80 = (-_151__m7.xyz) + _151__m23.xyz;
     _81 = ((_if_output_A_1) * _80) + _151__m7.xyz;
     _83 = (_132) * _color_77_2;
@@ -913,7 +913,7 @@ fixed4 frag (v2f i) : SV_Target
     _57 = (_109.xxx * _64.xyz) + _57;
     _95 = (_95 * _151__m19.z) + _151__m19.w;
     _95 = clamp(_95, 0.0, 1.0);
-    _109.x = (_48 * _139) + _151__m11.y;
+    _109.x = (_48 * (-_151__m11.y + _151__m23.w)) + _151__m11.y;
     float2 _3187 = _41.yy * _151__m11.xz;
     _64 = float4(_3187.x, _3187.y, _64.z, _64.w);
     _113 = (0.00999999977648258209228515625 < abs(_64.xyxy)).xy;
@@ -943,7 +943,7 @@ fixed4 frag (v2f i) : SV_Target
     _76.x = (-_128) + _129;
     _76.x = (_48 * _76.x) + _128;
     _119 = (-_76.x) + 2.0;
-    _128 = (_48 * _140) + _151__m12.z;
+    _128 = (_48 * ((-_151__m12.z) + _151__m25.x)) + _151__m12.z;
     _130 = (_76.x * _119) + (-1.0);
     _128 = (_128 * _130) + 1.0;
     _76.x = _128 * _109.x;
