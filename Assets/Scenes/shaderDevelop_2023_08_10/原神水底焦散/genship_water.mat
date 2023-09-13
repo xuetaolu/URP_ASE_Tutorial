@@ -164,4 +164,5 @@ Material:
     - _38__m5: {r: -0.04413, g: -0.03476, b: -0.0106, a: 1}
     - _CausticColor: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
     - _WorldPosXY_Offset: {r: 1934.3658, g: 0, b: -1266.3422, a: 0}
+    - _WorldPosXY_Offset_Negative: {r: -1934.3658, g: 0, b: 1266.3422, a: 0}
   m_BuildTextureStacks: []

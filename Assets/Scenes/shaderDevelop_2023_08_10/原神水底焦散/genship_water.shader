@@ -8,6 +8,7 @@ Shader "Unlit/genship_water"
 //        _MainTex ("Texture", 2D) = "white" {}
         [HDR]_CausticColor ("_CausticColor", Color) = (2.92204, 1.56181, 0.57585, 1.62808)
         _WorldPosXY_Offset ("_WorldPosXY_Offset", Vector) = (1934.36584, 0.00, -1266.34216, 0.00)
+        _WorldPosXY_Offset_Negative ("_WorldPosXY_Offset_Negative", Vector) = (-1934.36584, 0.00, 1266.34216, 0.00)
         _WorldPosXY_Scale ("_WorldPosXY_Scale", Range(0, 1)) = 0.05
         
         _WorldPosXY_Speed1X ("_WorldPosXY_Speed1X", Range(-1, 1))  = -0.02
