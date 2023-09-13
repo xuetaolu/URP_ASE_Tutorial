@@ -18,6 +18,12 @@ Shader "Unlit/genship_water"
         
         _NormalScale1 ("_NormalScale1", Range(0, 1)) = 0.7
         
+        [HDR]_Color_Far ("_Color_Far", Color) = (0.05891, 0.20904, 0.43325, 0.90 )
+        _151__m14 ("_151__m14", Vector) = (0.27672, 0.01464, -0.23447, 0.00)
+        [HDR]_151__m26 ("_151__m26", Color) = (0.00, 0.00, 0.00, 0.00)
+        
+//        _151__m24 ("_151__m24", Vector) = (1.00, -1.00, 10000.00, 0.00)
+        
         [NoScaleOffset]_DepthTexture ("_DepthTexture ", 2D) = "white" {}
         [NoScaleOffset]_ScreenMaskMap   ("_ScreenMaskMap ", 2D) = "white" {}
         [NoScaleOffset]_12_samplerCUBE("_12_samplerCUBE", Cube) = "white" {}
