@@ -272,23 +272,16 @@ fixed4 frag (v2f i) : SV_Target
     
 
     float _rawDepth = tex2D(_DepthTexture, _screenPos).x;
-    // _35 = _rawDepth;
-    // _35 = (_ZBufferParams.z * _rawDepth) + _ZBufferParams.w;
-    // _35 = 1.0 / _35;
-    // 1.0 / (_ZBufferParams.z * _rawDepth + _ZBufferParams.w);
     float _depthTextureEyeDepth = LinearEyeDepth(_rawDepth);
     _35 = _depthTextureEyeDepth;
 
     float _backDotV = i.Varying_ViewDirXYZ_BackDotVW.w;
     float _frontDotV = -_backDotV;
     
-    // _123 = 1.0 / _backDotV;
-    // _123 = (-_35) / _backDotV;
     _57 = _depthTextureEyeDepth / _frontDotV * i.Varying_ViewDirXYZ_BackDotVW.xyz;
 
     float3 _tmp61 = i.Varying_ViewDirXYZ_BackDotVW.xyz * (_depthTextureEyeDepth / _frontDotV) + _WorldSpaceCameraPos.xyz;
-    // _61.yzw = _tmp61;
-    // _61.x = _tmp61.y;
+
 
     float3 _viewDir = _WorldSpaceCameraPos.xyz - i.Varying_WorldPosXYZ.xyz;
     _64.yzw = _viewDir;
@@ -299,84 +292,41 @@ fixed4 frag (v2f i) : SV_Target
 
     _66.yzw = _109.x * _64.yzw;
     _66.x = _109.x * _64.x;
-    
-    // _67 = (-_61) + i.Varying_WorldPosXYZ.yxyz;
-    // -(_WorldSpaceCameraPos - _worldPos) * (_depthTextureEyeDepth / _frontDotV) + (_worldPos - _WorldSpaceCameraPos)
-    // _lookAtDir * ((_depthTextureEyeDepth / _frontDotV) + 1)
-    // float3 _tmp67 = -i.Varying_ViewDirXYZ_BackDotVW.xyz * (_depthTextureEyeDepth / _frontDotV) + (i.Varying_WorldPosXYZ.xyz - _WorldSpaceCameraPos.xyz);
+
     float3 _tmp67 = -i.Varying_ViewDirXYZ_BackDotVW.xyz * (_depthTextureEyeDepth / _frontDotV + 1);
-    // _67.yzw = _tmp67;
-    // _67.x   = _tmp67.y;
-    
-    // _128 = dot(_tmp67, _tmp67);
-    // _128 = sqrt(_128);
     
     _128 = length(_tmp67);
 
     // _clipPos.w 就是 -_viewPos.z
     // 因为 无论 DX 还是 opengl，UNITY_MATRIX_P[3u] = float4(0, 0, -1, 0)
-    
     float _surfEyeDepth = i.Varying_NonStereoScreenPos.w + _EyeDepthBias;
-    // _129 = _surfEyeDepth;
-    // float2 _459 = _surfNormal.xz * (_SurfNormalScale);
-    // _100.xy = _surfNormal.xz * _SurfNormalScale;
+
     float _terrainMoreEyeDepth = clamp(_depthTextureEyeDepth - _surfEyeDepth, 0, 1);
-    // _35 = _terrainMoreEyeDepth;
-    // _35 = clamp(_terrainMoreEyeDepth, 0.0, 1.0);
-    // _35 = _terrainMoreEyeDepth;
-    // float2 _472 = (_35) * _100.xy;
-    // _68.xy = _terrainMoreEyeDepth * _100.xy;
 
     float2 _nonStereoScreenPosOffset = _terrainMoreEyeDepth * _surfNormal.xz * _SurfNormalScale;
-        // _nonStereoScreenPosOffset.xy = _terrainMoreEyeDepth * _surfNormal.xz * _SurfNormalScale;
-        // _nonStereoScreenPosOffset.z  = 0;
-    // _68.xyz = _nonStereoScreenPosOffset;
     
-    
-    // _100 = _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xyw;
-    // float2 _484 = _100.xy / _100.zz;
     float2 _screenPos2 = (_nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
-    // _100.xy = _screenPos2;
-    float _rawDepth2 = tex2D(_DepthTexture, _screenPos2).x;
-    // _35 = _rawDepth2;
-    // _35 = (_ZBufferParams.z * _rawDepth2) + _ZBufferParams.w;
-    // _35 = 1.0 / _35;
-    float _depthTextureEyeDepth2 = LinearEyeDepth(_rawDepth2);
-    // _35 = _depthTextureEyeDepth2;
-    // _35 = _depthTextureEyeDepth2 - _surfEyeDepth;
-    // _35 = clamp(_35, 0.0, 1.0);
-    float _terrainMoreEyeDepth2 = clamp(_depthTextureEyeDepth2 - _surfEyeDepth, 0.0, 1.0);
-    // _35 = _terrainMoreEyeDepth2;
-    // _100 = (_terrainMoreEyeDepth2 * _nonStereoScreenPosOffset) + i.Varying_NonStereoScreenPos.xyw;
-    // _35 = 1.0 / i.Varying_NonStereoScreenPos.w;
-    // float2 _521 = (_35) * _100.xy;
-    float2 _screenPos3 = (_terrainMoreEyeDepth2 * _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
 
-    // _68.xy = (_terrainMoreEyeDepth2 * _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
-    // _69 = tex2D(_GrabTexture, _68.xy).xyz;
+    float _rawDepth2 = tex2D(_DepthTexture, _screenPos2).x;
+    float _depthTextureEyeDepth2 = LinearEyeDepth(_rawDepth2);
+
+    float _terrainMoreEyeDepth2 = clamp(_depthTextureEyeDepth2 - _surfEyeDepth, 0.0, 1.0);
+
+    float2 _screenPos3 = (_terrainMoreEyeDepth2 * _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
+    
     float3 _grabTextureSample = tex2D(_GrabTexture, _screenPos3).xyz;
-    // _69 = _grabTextureSample;
-    // float2 _533 = _100.xy / i.Varying_NonStereoScreenPos.w;
-    // _100.xy = float3(_533.x, _533.y, _100.z);
-    // _100.xy = _screenPos3;
+
     float _rawDepth3 = tex2D(_DepthTexture, _screenPos3).x;
-    // _35 = _rawDepth3;
-    // _35 = (_ZBufferParams.z * _rawDepth3) + _ZBufferParams.w;
-    // _35 = 1.0 / _35;
     float _depthTextureEyeDepth3 = LinearEyeDepth(_rawDepth3);
-    // _35 = _depthTextureEyeDepth3;
-    // _129 = 1.0 / _backDotV;
-    // _129 = (-_35) / _backDotV;
+
     _129 = _depthTextureEyeDepth3 / _frontDotV;
     _100 = (_129) * i.Varying_ViewDirXYZ_BackDotVW.xyz;
     float3 _569 = (i.Varying_ViewDirXYZ_BackDotVW.xyz * (_129)) + _WorldSpaceCameraPos;
     _70 = float4(_569.x, _569.y, _569.z, _70.w);
-    // _73.x = UNITY_MATRIX_V_T[0u].z;
-    // _73.y = UNITY_MATRIX_V_T[1u].z;
-    // _73.z = UNITY_MATRIX_V_T[2u].z;
-    float3 _forward = UNITY_MATRIX_V[2u].xyz;
-    // _73.xyz = _forward;
-    _129 = dot(_100, _forward);
+
+    float3 _back = UNITY_MATRIX_V[2u].xyz;
+    // _73.xyz = _back;
+    _129 = dot(_100, _back);
     _65 = 0.01 < _151__m22.w;
     if (_65)
     {
@@ -896,7 +846,7 @@ fixed4 frag (v2f i) : SV_Target
         Output_0.w = _35;
     }
     _41 = i.Varying_WorldPosXYZ.xyz + (-_WorldSpaceCameraPos);
-    _35 = dot(_41, _forward);
+    _35 = dot(_41, _back);
     if (_65)
     {
         _125 = _151__m27.y < 0.5;
