@@ -472,116 +472,54 @@ fixed4 frag (v2f i) : SV_Target
     float _min_moreEyeDepth4 = clamp(_viewDir_length * 0.2 - 20.0, 0.0, 10.0);
     float _terrainMoreEyeDepth4_amend = max(_terrainMoreEyeDepth4, _min_moreEyeDepth4);
 
-    // _79 = _151__m10.y < 0.0;
-    // _76 = lerp(_151__m10, _151__m9, (_151__m10.y < 0.0));
-    
-    // _79 = _151__m49.x == 0.0;
-    // _77 = lerp(_lightDir1, _76, (_151__m49.x == 0.0));
-    
-    // _76 = _151__m10.y < 0.0 ? _151__m9 : _151__m10;
     
     // #define _151__m9  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
     // #define _151__m10 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
     // #define _151__m49 float4(0.00, 0.00, 0.00, 0.00) // _151._m49
     float3 _lightDirOrUkDir = _151__m49.x == 0.0 ? (_151__m10.y < 0.0 ? _151__m9 : _151__m10) : _lightDir1;
-    // _77 = _lightDirOrUkDir;
-    
-    // _76.xz = _surfNormal.xz;
-    // _76.y = 1.0;
-    
-    // _88 = dot(_76, _76);
-    // _88 = rsqrt(_88);
-    // _82 = (_88) * _76;
-    float3 _surfNormal_moreUp_normalize = normalize(float3( _surfNormal.x, 1.0, _surfNormal.z ));
-    // _82 = _surfNormal_moreUp_normalize;
-    // _98 = (_viewDir * _viewDirLength_rcp) + _77;
-    // _98 = _viewDirNormalize + _lightDirOrUkDir;
-    // _87.x = dot(_98, _98);
-    // _87.x = rsqrt(_87.x);
-    // _98 = _87.xxx * _98;
-    float3 _H = normalize(_viewDirNormalize + _lightDirOrUkDir);
-    // _98 = _H;
-    // _87.x = dot(_surfNormal_moreUp_normalize, _H);
-    float _fixNDotH_clamp01 = clamp(dot(_surfNormal_moreUp_normalize, _H), 0.0, 1.0);
-    // _87.x = _fixNDotH_clamp01;
 
-    // _122 = (_FixNDotH_Power * 1.44270002841949462890625) + 1.44270002841949462890625;
-    // _87.x = (_fixNDotH_clamp01-1) * _122;
-    // _87.x = exp2(_fixNDotH_clamp01 * _122 - _122);
+    float3 _surfNormal_moreUp_normalize = normalize(float3( _surfNormal.x, 1.0, _surfNormal.z ));
+
+    float3 _H = normalize(_viewDirNormalize + _lightDirOrUkDir);
+
+    float _fixNDotH_clamp01 = clamp(dot(_surfNormal_moreUp_normalize, _H), 0.0, 1.0);
     
     // #define _FixNDotH_Power 332.79999 // _151._m63
     float _fixNDotH_pow = SphericalGaussianPow( _fixNDotH_clamp01, _FixNDotH_Power );
-    // _87.x = _fixNDotH_pow;
     
-    // _122 = _GlossPosAdjust * _lightDirOrUkDir.y - 1.0;
     
     // #define _GlossPosAdjust 2.38      // _151._m65
-    // _122 = max(_GlossPosAdjust * _lightDirOrUkDir.y - 1.0, 0.05);
-    // _87.x = max(_GlossPosAdjust * _lightDirOrUkDir.y - 1.0, 0.05) * _fixNDotH_pow;
-    // _122 = _GlossPosAdjust * (-_viewDirNormalize.y) + 1.0;
-    // _122 = max(_GlossPosAdjust * (-_viewDirNormalize.y) + 1.0, 0.05);
     float _gloss_factor1_maybe = max(_GlossPosAdjust * (-_viewDirNormalize.y) + 1.0, 0.05) * max(_GlossPosAdjust * _lightDirOrUkDir.y - 1.0, 0.05) * _fixNDotH_pow;
-    // _87.x = _gloss_factor1_maybe;
-    // _122 = _terrainMoreEyeDepth4_amend * (0.1 - 0) + (-0.1);
 
-    // _122 = lerp(-0.1, 0, _terrainMoreEyeDepth4_amend);
     // #define _WaterColorDarkFactor 0.40      // _151._m64
-    // _122 = lerp(-0.1, 0, _terrainMoreEyeDepth4_amend) * _WaterColorDarkFactor;
-    // _122 = clamp(lerp(-0.1, 0, _terrainMoreEyeDepth4_amend) * _WaterColorDarkFactor, 0.0, 1.0);
     float _gloss_factor2 = clamp(lerp(-0.1, 0, _terrainMoreEyeDepth4_amend) * _WaterColorDarkFactor, 0.0, 1.0) * _gloss_factor1_maybe;
-    // _87.x = _gloss_factor2;
+
     float3 _causticGlossColor = _glossColor1 * _GlossFactor;
-    // _98 = _causticGlossColor;
     
     float _screenSpaceShadow = tex2D(_ScreenMaskMap, _screenPos).x;
-    // _122 = _screenSpaceShadow;
-    // _56 = _EnableShadow == 1.0;
+
     float _shadowAtten = (_EnableShadow == 1.0) ? _screenSpaceShadow : 1.0;
-    // _122 = _shadowAtten;
-    // float2 _1413 = float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y) * (25.0);
-    // _51.xy = float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y) * 25.0;
     
-    // _109.x = _terrainToSurfLength * _CausticNormalDisturbance;
-    // float2 _1426 = _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
-    // _77.xy = _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
-    // _81.z = _Time.y * _CausticSpeed;
-    // float2 _1445 = _lookThroughAtTerrainWorldPos.xz * _CausticScale + _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
-    // _77.xy = _lookThroughAtTerrainWorldPos.xz * _CausticScale + _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
-    // float2 _1455 = (_Time.y * _CausticSpeed * float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y) * 25.0) + _lookThroughAtTerrainWorldPos.xz * _CausticScale + _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
-    // _81 = float3(_1455.x, _1455.y, _Time.y * _CausticSpeed);
     float3 _causticPos3DInput;
         _causticPos3DInput.xy = (_Time.y * _CausticSpeed * float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y) * 25.0) + _lookThroughAtTerrainWorldPos.xz * _CausticScale + _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
         _causticPos3DInput.z  = _Time.y * _CausticSpeed;
-    // _81 = _causticPos3DInput;
-    
-    // _51.z = dot(_causticPos3DInput.xzy, float3(2.0, 2.0, 1.0));
 
     float3 _step1;
     _step1.x = dot(_causticPos3DInput, float3(-2.0, 3.0, 1.0));
     _step1.y = dot(_causticPos3DInput, float3(-1.0, -2.0, 2.0));
     _step1.z = dot(_causticPos3DInput, float3(2.0, 1.0, 2.0));
-    // _51 = _step1;
 
     float3 _step2;
     _step2.x = dot(_step1, float3(-0.8, 1.2, 0.4));
     _step2.y = dot(_step1, float3(-0.4, -0.8, 0.8));
     _step2.z = dot(_step1, float3(0.8, 0.4, 0.8));
-    // _77 = _step2;
 
     float3 _step3;
     _step3.x = dot(_step2, float3(-0.6, 0.9, 0.3));
     _step3.y = dot(_step2, float3(-0.3, -0.6, 0.6));
     _step3.z = dot(_step2, float3(0.6, 0.3, 0.6));
-    // _141 = _step3.x;
-    // _81.xy = _step3.yz;
 
     
-    // _51 = frac(_step1);
-    // _77 = frac(_step2);
-    // _85.x = frac(_step3.x);
-    // float2 _1522 = frac(_step3.yz);
-    // _85 = float3(_85.x, _1522.x, _1522.y);
-    // _85 = frac(_step3);
 
     float3 _hnf1 = 0.5 - frac(_step1);
     float3 _hnf2 = 0.5 - frac(_step2);
@@ -591,41 +529,18 @@ fixed4 frag (v2f i) : SV_Target
 
     float __local_127 = (_min_dot_result * _min_dot_result * 7.0);
     float _causticNoise3DResult = __local_127 * __local_127;
-    // _127 = (_min_dot_result * _min_dot_result * 7.0);
-    // _127 *= _127;
-    // _127 = _causticNoise3DResult;
-    
-    // _51 = _hnf1;
-    // _77 = _hnf2;
-    // _81 = _hnf3;
 
     
-    
-    // _51.x = dot(_hnf1, _hnf1);
-    // _95 = dot(_hnf2, _hnf2);
-    // _51.x = min(dot(_hnf2, _hnf2), dot(_hnf1, _hnf1));
-    // _95 = dot(_hnf3, _hnf3);
-    
-    // _51.x = _min_dot_result;
-    
-    // _95 = _terrainToSurfDir.y * _CausticVisibleHeightFactor;
     float _causticVisibleHeightFactor = clamp(_terrainToSurfDir.y * _CausticVisibleHeightFactor, 0.0, 1.0);
     _95 = _causticVisibleHeightFactor;
-    // _109.x = dot(_lookThroughAtTerrainDir, _lookThroughAtTerrainDir);
-    // _109.x = sqrt(_109.x);
-    // _109.x = length(_lookThroughAtTerrainDir);
-    // _109.x *= _CausticDistanceFade;
-    // _109.x = clamp(_109.x, 0.0, 1.0);
+
 
     float _lookAtTerrain_length_adjust_clamp01 = clamp(length(_lookThroughAtTerrainDir) * _CausticDistanceFade, 0, 1);
     float _causticVisibleDistanceFactor = 1-_lookAtTerrain_length_adjust_clamp01;
-    // _109.x = _lookAtTerrain_length_adjust_clamp01;
+
     float _causticVisibleFactor = _causticVisibleHeightFactor * _causticVisibleDistanceFactor;
-    // _95 = _causticVisibleFactor;
+
     
-    // _127 = _min_dot_result * _min_dot_result;
-    // _127 *= 7.0;
-    // _127 *= _127;
     
     // _76 = _GlossColor.xyz * _CausticColor.xyz;
     // _76 = (_causticNoise3DResult) * _GlossColor.xyz * _CausticColor.xyz;
