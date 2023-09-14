@@ -21,6 +21,11 @@ Shader "Unlit/genship_water"
         [HDR]_Color_Far ("_Color_Far", Color) = (0.05891, 0.20904, 0.43325, 0.90 )
         _151__m14 ("_151__m14", Vector) = (0.27672, 0.01464, -0.23447, 0.00)
         [HDR]_151__m26 ("_151__m26", Color) = (0.00, 0.00, 0.00, 0.00)
+        [HDR]_Color_Far_2 ("_Color_Far_2", Color) = (0.50353, 0.31069, 0.31797, 1.30 )
+        [HDR]_Color_C ("_Color_C", Color) = (1.00, 1.00, 1.00, 0.07213 )
+        [HDR]_Color_D ("_Color_D", Color) = (1.00, 1.00, 1.00, 16.00 )
+        
+        _GrabTextureFade ("_GrabTextureFade", Range(0, 1)) = 0.0
         
 //        _151__m24 ("_151__m24", Vector) = (1.00, -1.00, 10000.00, 0.00)
         

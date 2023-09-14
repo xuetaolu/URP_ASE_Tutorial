@@ -1,6 +1,6 @@
 #include "genship_water_common.hlsl"
 
-// #define _Time float4(10.69632, 213.92641, 427.85281, 641.77924 )//_151._m0
+#define _Time float4(10.69632, 213.92641, 427.85281, 641.77924 )//_151._m0
 // #define _Time _Time//_151._m0
 // #define _WorldSpaceCameraPos float3(-76.56767, 199.90689, 87.00145            )//_151._m1
 // #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017              )//_151._m2
@@ -12,7 +12,7 @@ const float4 _WorldPosXY_Offset = float4(1934.36584, 0.00, -1266.34216, 0.00    
 //                         float4(0.77492, 0.28194, -0.56569, 0.00         ),
 //                         float4(-19.02394, -229.91272, 13.14762, 1.00    )};//_151._m6
 
-#define _151__m7 float4(0.50353, 0.31069, 0.31797, 1.30           ) //_151._m7
+float4 _Color_Far_2 = float4(0.50353, 0.31069, 0.31797, 1.30           ); //_151._m7
 float4 _CausticColor = float4(2.92204, 1.56181, 0.57585, 1.62808        ); //_151._m8
 #define _151__m9  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
 #define _151__m10 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
@@ -25,12 +25,12 @@ float4 _151__m14 = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m1
 #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
 #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
 #define _151__m17 float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
-#define _151__m18 float4(1.00, 1.00, 1.00, 16.00                 ) // _151._m18
+float4 _Color_D = float4(1.00, 1.00, 1.00, 16.00                 ); // _151._m18
 #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
 #define _151__m20 float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
 #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
 const float4 _WorldPosXY_Offset_Negative = float4(-1934.36584, 0.00, 1266.34216, 0.00     ); // _151._m22
-#define _151__m23 float4(1.00, 1.00, 1.00, 0.07213               ) // _151._m23
+float4 _Color_C = float4(1.00, 1.00, 1.00, 0.07213               ); // _151._m23
 static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
 #define _151__m25 float4(1.00, 1.00, 1.00, -16.00                ) // _151._m25
 float4 _151__m26 = float4(0.00, 0.00, 0.00, 0.00                  ); // _151._m26
@@ -80,7 +80,7 @@ static const float4 _151__m55[] = {float4(0.00, 0.00, 0.00, 0.00),
 #define _151__m56 float4(0.00, 0.00, 0.00, 0.00)// _151._m56
 #define _151__m57 float4(0.00, 0.00, 0.00, 0.00)// _151._m57
 #define _151__m58 0.00      // _151._m58
-#define _151__m59 0.00      // _151._m59
+float _GrabTextureFade = 0.00;      // _151._m59
 #define _SurfNormalScale 0.15      // _151._m60
 #define _151__m61 2.5641    // _151._m61
 #define _151__m62 5.00      // _151._m62
@@ -193,7 +193,7 @@ fixed4 frag (v2f i) : SV_Target
     float _110;
     bool2 _113;
     float _114;
-    float2 _115;
+    // float2 _115;
     float _116;
     float _119;
     float _122;
@@ -360,14 +360,15 @@ fixed4 frag (v2f i) : SV_Target
     
     float _switch_value_2 = _isOutOfFarPlane ? _74 : _132;
     
-    // #define _151__m7 float4(0.50353, 0.31069, 0.31797, 1.30           ) //_151._m7
+    // #define _Color_Far_2 float4(0.50353, 0.31069, 0.31797, 1.30           ) //_151._m7
     // #define _151__m26 float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m26
-    _132 = lerp(_151__m7.w, _151__m26.w, _if_output_A_0);
+    _132 = lerp(_Color_Far_2.w, _151__m26.w, _if_output_A_0);
     _132 = pow(_switch_value_1 + 1.0e-4, _132);
 
     // #define _Color_Far float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
     // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
-    _132 = min(min(_132, _Color_Far.w * _151__m21.x), 1.0);
+    float _min_132 = min(min(_132, _Color_Far.w * _151__m21.x), 1.0);
+    // _132 = _min_132;
     
     
     // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
@@ -404,8 +405,8 @@ fixed4 frag (v2f i) : SV_Target
         _switch_80.y = abs(_lookThroughDir3.y * _151__m11.z) > 0.01 ? _div_80.y : _151__m20.z;
 
     // #define _151__m11 float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
-    // #define _151__m23 float4(1.00, 1.00, 1.00, 0.07213               ) // _151._m23
-    float _lerp_140 = lerp(_151__m11.y, _151__m23.w, _if_output_A_1);
+    // #define _Color_C float4(1.00, 1.00, 1.00, 0.07213               ) // _151._m23
+    float _lerp_140 = lerp(_151__m11.y, _Color_C.w, _if_output_A_1);
     
     float _tmp_114;
     {
@@ -430,50 +431,74 @@ fixed4 frag (v2f i) : SV_Target
 
     // y = 1 \ -1 / 1, x ∈ [-1, 1]
     float _lerp_127_1_curve = (_lerp_127_1 * (2.0-_lerp_127_1)) + (-1.0);
+    
+    float _min_114 = min(_Color_Far.w, _tmp_114 * (_lerp_80 * _lerp_127_1_curve + 1.0));
+    
+    // _80.x = _lookThroughDir3_length * _151__m11.w;
+    // _80.x = _lookThroughDir3_length * _151__m11.w * (-_switch_80.y);
+    // _80.x = exp2(_lookThroughDir3_length * _151__m11.w * (-_switch_80.y));
+    float _max_80 = max(0.0, 1.0-exp2(-_lookThroughDir3_length * _151__m11.w * _switch_80.y));
 
-    // _80.x = (_lerp_80 * _lerp_127_1_curve) + 1.0;
-    _127 = _tmp_114 * (_lerp_80 * _lerp_127_1_curve + 1.0);
-    _114 = min(_127, _Color_Far.w);
-    _80.x = _lookThroughDir3_length * _151__m11.w;
-    _80.x *= (-_switch_80.y);
-    _80.x = exp2(_80.x);
-    _80.x = (-_80.x) + 1.0;
-    _80.x = max(_80.x, 0.0);
-    _138 = (_lookThroughDir3_length * _151__m19.x) + _151__m19.y;
-    _138 = clamp(_138, 0.0, 1.0);
-    _127 = (-_138) + 2.0;
-    _127 *= _138;
-    _127 *= _80.x;
-    _138 = min(_127, _151__m21.y);
-    _76.x = _switch_value_2 * _114;
-    _76.y = _lookThroughDir3xz_length_SO * _138;
-    _80 = (-_151__m7.xyz) + _151__m23.xyz;
-    _81 = ((_if_output_A_1) * _80) + _151__m7.xyz;
-    _83 = (_132) * _color_77_2;
-    _84 = ((-_color_77_2) * (_132)) + _81;
-    _83 = (_76.xxx * _84) + _83;
-    _100.x = (-_132) + 1.0;
-    _115 = (-_76.xy) + (1.0);
-    _100.x = _115.x * _100.x;
-    _76 = (_151__m18.xyz * _76.yyy) + _83;
-    _100.x = _115.y * _100.x;
-    _78 = _grabTextureSample + (-_76);
-    _100.x = max(_100.x, 9.9999997473787516355514526367188e-05);
-    _100.x = 1.0 / _100.x;
-    _100 = _100.xxx * _78;
-    _100 = max(_100, (0.0));
-    _100 = (-_grabTextureSample) + _100;
-    _100 = (float3(_151__m59, _151__m59, _151__m59) * _100) + _grabTextureSample;
-    _35 = _depthTextureEyeDepth3 - i.Varying_NonStereoScreenPos.w;
+    // _138 = (_lookThroughDir3_length * _151__m19.x) + _151__m19.y;
+    
+    // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
+    float _lookThroughDir3_length_SO = clamp(_lookThroughDir3_length * _151__m19.x + _151__m19.y, 0.0, 1.0);
+
+    // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
+    float _min_138 = min((2.0-_lookThroughDir3_length_SO) * _lookThroughDir3_length_SO * _max_80, _151__m21.y);
+
+    // float2 _vec2_76;
+    float _vec2_76_x = _switch_value_2 * _min_114;
+    float _vec2_76_y = _lookThroughDir3xz_length_SO * _min_138;
+    // _76.x = _vec2_76_x;
+    // _76.y = _vec2_76_y;
+    
+    // _80 = _Color_C.xyz -_Color_Far_2.xyz;
+    // _81 = (_if_output_A_1 * (_Color_C.xyz -_Color_Far_2.xyz)) + _Color_Far_2.xyz;
+    float3 _color_81 = lerp(_Color_Far_2.xyz, _Color_C.xyz, _if_output_A_1);
+    // _81 = _color_81;
+    // _83 = (_min_132) * _color_77_2;
+    // _84 = ((-_color_77_2) * (_min_132)) + _color_81;
+    // _83 = _vec2_76_x * (-_color_77_2 * _min_132 + _color_81) + _min_132 * _color_77_2;
+    // _83 = _vec2_76_x * _color_81 - _vec2_76_x * (_min_132 * _color_77_2) + _min_132 * _color_77_2;
+    // _83 = _vec2_76_x * _color_81  + (1 - _vec2_76_x) * (_min_132 * _color_77_2);
+    
+    // _100.x = 1 - _min_132;
+    // _115 = 1.0 - _vec2_76;
+    // _100.x = (1-_vec2_76_x) * (1 - _min_132);
+    float3 _color_76 = _Color_D.xyz * _vec2_76_y + _vec2_76_x * _color_81  + (1 - _vec2_76_x) * (_min_132 * _color_77_2);
+    // _76 = _color_76;
+    // _100.x = (1-_vec2_76_y) * (1-_vec2_76_x) * (1-_min_132);
+    // _78 = _grabTextureSample + (-_color_76);
+    // _100.x = max(_100.x, 1e-4);
+    // _100.x = 1.0 / _100.x;
+    // _100 = _78/max((1-_vec2_76_y) * (1-_vec2_76_x) * (1-_min_132), 1e-4);
+    float3 _grabTextureSample_Mod = max((_grabTextureSample + -_color_76)/max((1-_vec2_76_y) * (1-_vec2_76_x) * (1-_min_132), 1e-4), (0.0));
+    // _100 = _grabTextureSample_Mod;
+    // _100 = (-_grabTextureSample) + _100;
+    // #define _GrabTextureFade 0.00      // _151._m59
+    // _100 = (_GrabTextureFade * (_100 - _grabTextureSample)) + _grabTextureSample;
+    _100 = lerp(_grabTextureSample, _grabTextureSample_Mod, _GrabTextureFade);
+
+    
+    float _terrainMoreEyeDepth4 = _depthTextureEyeDepth3 - i.Varying_NonStereoScreenPos.w;
+    // _35 = _terrainMoreEyeDepth4;
     // _123 = sqrt(dot(_viewDir, _viewDir));
-    _123 = length(_viewDir);
-    _138 = _123 * 0.00999999977648258209228515625;
-    _77.x = (_123 * 0.20000000298023223876953125) + (-20.0);
-    _77.x = max(_77.x, 0.0);
-    _77.x = min(_77.x, 10.0);
-    _35 = max(_35, _77.x);
+    float _viewDir_length = length(_viewDir);
+    // _123 = _viewDir_length;
+    _138 = _viewDir_length * 0.01;
+    // _77.x = (_viewDir_length * 0.2) + (-20.0);
+    // _77.x = max(_77.x, 0.0);
+    // _77.x = min(_77.x, 10.0);
+
+    // > 100 后，100~150 最小值从 0变成10
+    float _min_moreEyeDepth4 = clamp(_viewDir_length * 0.2 - 20.0, 0.0, 10.0);
+    // _77.x = _min_moreEyeDepth4;
+    float _terrainMoreEyeDepth4_amend = max(_terrainMoreEyeDepth4, _min_moreEyeDepth4);
+    // _35 = _terrainMoreEyeDepth4_amend;
+    
     _79 = _151__m10.y < 0.0;
-    _76 = lerp(_151__m10, float3(_151__m9.x, _151__m9.y, _151__m9.z), (_79));
+    _76 = lerp(_151__m10, _151__m9, (_79));
     _79 = _151__m49.x == 0.0;
     _77 = lerp(_lightDir1, _76, (_79));
     _76 = float3(_surfNormal.x, _76.y, _surfNormal.z);
@@ -492,16 +517,17 @@ fixed4 frag (v2f i) : SV_Target
     _87.x = (_87.x * _122) + (-_122);
     _87.x = exp2(_87.x);
     _122 = (_151__m65 * _77.y) + (-1.0);
-    _122 = max(_122, 0.0500000007450580596923828125);
+    _122 = max(_122, 0.05);
     _87.x = _122 * _87.x;
     _122 = (_151__m65 * (-_viewDirNormalize.y)) + 1.0;
-    _122 = max(_122, 0.0500000007450580596923828125);
+    _122 = max(_122, 0.05);
     _87.x = _122 * _87.x;
-    _122 = (_35 * 0.100000001490116119384765625) + (-0.100000001490116119384765625);
+    // _122 = _terrainMoreEyeDepth4_amend * (0.1 - 0) + (-0.1);
+    _122 = lerp(-0.1, 0, _terrainMoreEyeDepth4_amend);
     _122 *= _151__m64;
     _122 = clamp(_122, 0.0, 1.0);
     _87.x = _122 * _87.x;
-    _98 = _causticColor1 * float3(_151__m62, _151__m62, _151__m62);
+    _98 = _causticColor1 * _151__m62;
     _122 = tex2D(_ScreenMaskMap, _screenPos).x;
     _56 = _151__m86 == 1.0;
     _122 = _56 ? _122 : 1.0;
@@ -559,14 +585,14 @@ fixed4 frag (v2f i) : SV_Target
     _128 = exp2(_128);
     _51 = (_51 * (-(_128))) + _51;
     _51 = (_100 * _51) + _100;
-    _128 = _35 * _151__m64;
+    _128 = _terrainMoreEyeDepth4_amend * _151__m64;
     _128 = clamp(_128, 0.0, 1.0);
     _128 += 9.9999997473787516355514526367188e-05;
     _128 = log2(_128);
     _128 *= _151__m68;
     _128 = exp2(_128);
     _128 = min(_128, 1.0);
-    _57.x = _35 * _151__m70;
+    _57.x = _terrainMoreEyeDepth4_amend * _151__m70;
     _57.x = clamp(_57.x, 0.0, 1.0);
     _57.x += 9.9999997473787516355514526367188e-05;
     _57.x = log2(_57.x);
@@ -676,7 +702,7 @@ fixed4 frag (v2f i) : SV_Target
     _76.x = exp2(_76.x);
     _76.x *= _151__m71.x;
     _103 = _46.xyz * _76.xxx;
-    _96 = _35 * _151__m74;
+    _96 = _terrainMoreEyeDepth4_amend * _151__m74;
     _96 = clamp(_96, 0.0, 1.0);
     _96 *= _151__m73;
     // float2 _2184 = (_57.xz * (_96)) + _screenPos;
@@ -693,7 +719,7 @@ fixed4 frag (v2f i) : SV_Target
     _92 = (_151__m78 * (-_viewDirNormalize.y)) + 1.0;
     _92 = max(_92, 0.0500000007450580596923828125);
     _47.x = _92 * _47.x;
-    _92 = _35 * _151__m79;
+    _92 = _terrainMoreEyeDepth4_amend * _151__m79;
     _92 = clamp(_92, 0.0, 1.0);
     _47.x = _92 * _47.x;
     _47.x = clamp(_47.x, 0.0, 1.0);
@@ -705,7 +731,7 @@ fixed4 frag (v2f i) : SV_Target
     _41 = ((_104) * _causticColor1) + i.Varying_1.xyz;
     _104 = min(_138, 1.0);
     _104 = (i.Varying_ColorXYW.y * (-_104)) + i.Varying_ColorXYW.y;
-    _76.x = _123 + (-_151__m42);
+    _76.x = _viewDir_length + (-_151__m42);
     _76.x /= _151__m43;
     _103.x = i.Varying_ColorXYW.x * _151__m37;
     _122 = max(_terrainToSurfDir_approximate.y, 0.0);
@@ -733,7 +759,7 @@ fixed4 frag (v2f i) : SV_Target
     _92 = float(_94);
     _47.x = _92 * _49;
     _103.x = _151__m38 + 9.9999997473787516355514526367188e-05;
-    _103.x = _123 / _103.x;
+    _103.x = _viewDir_length / _103.x;
     _103.x = clamp(_103.x, 0.0, 1.0);
     _124 = (-_103.x) + 1.0;
     _103.x = _104 * _151__m36.w;
@@ -745,7 +771,7 @@ fixed4 frag (v2f i) : SV_Target
     _103 = (_151__m36.xyz * _41) + (-_51);
     _76 = (_76.xxx * _103) + _51;
     _87 = (_98 * _87.xxx) + _76;
-    _35 *= _151__m61;
+    _35 = _terrainMoreEyeDepth4_amend * _151__m61;
     _35 = clamp(_35, 0.0, 1.0);
     _35 *= i.Varying_ColorXYW.w;
     _43 = _151__m58 == 1.0;
@@ -890,7 +916,7 @@ fixed4 frag (v2f i) : SV_Target
     _128 = _76.x * _151__m14.w;
     _76.x = (-_35) >= (_ProjectionParams.z * 0.9999) ? _128 : _76.x;
     _103.x = (-_35) >= (_ProjectionParams.z * 0.9999) ? _74 : _109.x;
-    _35 = (_124 * (_151__m26.w - _151__m7.w)) + _151__m7.w;
+    _35 = (_124 * (_151__m26.w - _Color_Far_2.w)) + _Color_Far_2.w;
     _110 = _76.x + 9.9999997473787516355514526367188e-05;
     _110 = log2(_110);
     _35 *= _110;
@@ -913,7 +939,7 @@ fixed4 frag (v2f i) : SV_Target
     _57 = (_109.xxx * _64.xyz) + _57;
     _95 = (_95 * _151__m19.z) + _151__m19.w;
     _95 = clamp(_95, 0.0, 1.0);
-    _109.x = (_48 * (-_151__m11.y + _151__m23.w)) + _151__m11.y;
+    _109.x = (_48 * (-_151__m11.y + _Color_C.w)) + _151__m11.y;
     float2 _3187 = _41.yy * _151__m11.xz;
     _64 = float4(_3187.x, _3187.y, _64.z, _64.w);
     _113 = (0.00999999977648258209228515625 < abs(_64.xyxy)).xy;
@@ -961,14 +987,15 @@ fixed4 frag (v2f i) : SV_Target
     _51.x = min(_76.x, _151__m21.y);
     _76.x = _103.x * _109.x;
     _76.y = _95 * _51.x;
-    _51 = ((_48) * _80) + _151__m7.xyz;
+    // _51 = ((_48) * (_Color_C.xyz -_Color_Far_2.xyz)) + _Color_Far_2.xyz;
+    _51 = lerp(_Color_Far_2.xyz, _Color_C.xyz, _48);
     _83 = (_35) * _57;
     _84 = ((-_57) * (_35)) + _51;
     _83 = (_76.xxx * _84) + _83;
     _35 = (-_35) + 1.0;
     _54 = (-_76.xy) + (1.0);
     _35 *= _54.x;
-    _76 = (_151__m18.xyz * _76.yyy) + _83;
+    _76 = (_Color_D.xyz * _76.yyy) + _83;
     _35 = _54.y * _35;
     float3 _3459 = ((_35) * _87) + _76;
     Output_0 = float4(_3459.x, _3459.y, _3459.z, Output_0.w);

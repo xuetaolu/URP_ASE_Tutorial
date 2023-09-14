@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: genship_water
-  m_Shader: {fileID: 4800000, guid: 6c5faaa104d30e24c92d26130a5c25e6, type: 3}
+  m_Name: genship_water_org
+  m_Shader: {fileID: 4800000, guid: c084faa1292496c40b62c587af7996f2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -147,9 +147,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _151__m44: -0.02
-    - _151__m59: 0
     - _151__m83: 0.05
-    - _GrabTextureFade: 0
     - _NormalScale1: 0.7
     - _WorldPosXY_Scale: 0.05
     - _WorldPosXY_Speed: -0.02
