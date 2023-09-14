@@ -6,7 +6,8 @@ Shader "Unlit/genship_water"
 //        _38__m2 ("_38__m2", Vector) = (0.00, 0.12654, 0.00, 0.20238     )
         
 //        _MainTex ("Texture", 2D) = "white" {}
-        [HDR]_CausticColor ("_CausticColor", Color) = (2.92204, 1.56181, 0.57585, 1.62808)
+        [HDR]_GlossColor ("_GlossColor", Color) = (2.92204, 1.56181, 0.57585, 1.62808)
+        [HDR]_CausticColor ("_CausticColor", Color) = (0.60632, 0.5298, 0.44146, 1.00)
         _WorldPosXY_Offset ("_WorldPosXY_Offset", Vector) = (1934.36584, 0.00, -1266.34216, 0.00)
         _WorldPosXY_Offset_Negative ("_WorldPosXY_Offset_Negative", Vector) = (-1934.36584, 0.00, 1266.34216, 0.00)
         _WorldPosXY_Scale ("_WorldPosXY_Scale", Range(0, 1)) = 0.05
@@ -26,6 +27,16 @@ Shader "Unlit/genship_water"
         [HDR]_Color_D ("_Color_D", Color) = (1.00, 1.00, 1.00, 16.00 )
         
         _GrabTextureFade ("_GrabTextureFade", Range(0, 1)) = 0.0
+        _FixNDotH_Power ("_FixNDotH_Power", Range(0, 1000)) = 332.79999
+        _GlossPosAdjust ("_GlossPosAdjust", Range(0, 10)) = 2.38
+        _WaterColorDarkFactor ("_WaterColorDarkFactor", Range(0, 10)) = 0.4
+        
+        _GlossFactor ("_GlossFactor", Range(0, 10)) = 5
+        _CausticSpeed ("_CausticSpeed", Range(0, 1)) = 0.131
+        _CausticScale ("_CausticScale", Range(0, 1)) = 0.25
+        _CausticNormalDisturbance ("_CausticNormalDisturbance", Range(0, 1)) = 0.096
+        _CausticVisibleHeightFactor ("_CausticVisibleHeightFactor", Range(0, 10)) = 3.33333
+        _CausticDistanceFade ("_CausticDistanceFade", Range(0, 1)) = 0.01667
         
 //        _151__m24 ("_151__m24", Vector) = (1.00, -1.00, 10000.00, 0.00)
         

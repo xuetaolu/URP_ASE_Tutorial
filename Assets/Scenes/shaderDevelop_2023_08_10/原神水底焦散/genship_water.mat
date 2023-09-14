@@ -146,11 +146,33 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _151__m28: 0.25
+    - _151__m29: 0.131
+    - _151__m31: 3.33333
+    - _151__m32: 0.01667
+    - _151__m33: 0.096
     - _151__m44: -0.02
     - _151__m59: 0
+    - _151__m62: 5
+    - _151__m64: 2.38
+    - _151__m65: 2.38
     - _151__m83: 0.05
+    - _CausticDistanceFade: 0.01667
+    - _CausticGlossFactor: 5
+    - _CausticNormalDisturbance: 0.096
+    - _CausticScale: 0.25
+    - _CausticSpeed: 0.131
+    - _CausticVisiableFactor: 3.33333
+    - _CausticVisiableHeight: 3.33333
+    - _CausticVisibleFactor: 3.33333
+    - _CausticVisibleHeightFactor: 3.33333
+    - _FixNDotH_Power: 332.8
+    - _GlossCausticFactor: 5
+    - _GlossFactor: 5
+    - _GlossPosAdjust: 2.38
     - _GrabTextureFade: 0
     - _NormalScale1: 0.7
+    - _WaterColorDarkFactor: 0.4
     - _WorldPosXY_Scale: 0.05
     - _WorldPosXY_Speed: -0.02
     - _WorldPosXY_Speed1X: -0.02
@@ -168,13 +190,14 @@ Material:
     - _151__m8: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
     - _38__m2: {r: 0, g: 0.12654, b: 0, a: 0.20238}
     - _38__m5: {r: -0.04413, g: -0.03476, b: -0.0106, a: 1}
-    - _CausticColor: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
+    - _CausticColor: {r: 0.60632, g: 0.5298, b: 0.44146, a: 1.62808}
     - _Color_A: {r: 0.05891, g: 0.20904, b: 0.43325, a: 0.9}
     - _Color_B: {r: 0.50353, g: 0.31069, b: 0.31797, a: 1.3}
     - _Color_C: {r: 1, g: 1, b: 1, a: 0.07213}
     - _Color_D: {r: 1, g: 1, b: 1, a: 16}
     - _Color_Far: {r: 0.05891, g: 0.20904, b: 0.43325, a: 0.9}
     - _Color_Far_2: {r: 0.50353, g: 0.31069, b: 0.31797, a: 1.3}
+    - _GlossColor: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
     - _WorldPosXY_Offset: {r: 1934.3658, g: 0, b: -1266.3422, a: 0}
     - _WorldPosXY_Offset_Negative: {r: -1934.3658, g: 0, b: 1266.3422, a: 0}
   m_BuildTextureStacks: []
