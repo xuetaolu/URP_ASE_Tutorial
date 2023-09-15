@@ -86,25 +86,25 @@ float _GrabTextureFade = 0.00;      // _151._m59
 #define _151__m61 2.5641    // _151._m61
 float _GlossFactor = 5.00;      // _151._m62
 float _FixNDotH_Power = 332.79999; // _151._m63
-float _WaterSurfDarkFactor = 0.40;      // _151._m64
+float _WaterSurfAlpha = 0.40;      // _151._m64
 float _GlossPosAdjust = 2.38;      // _151._m65
 float4 _WaterSurfColor = float4(0.11131, 1.00, 0.9415, 0.00      ); // _151._m66
 float4 _WaterBottomDarkColor = float4(0.01694, 0.1433, 0.26481, 0.00   ); // _151._m67
-float _WaterSurfVisiblePower = 1.50;     // _151._m68
+float _WaterSurfAlphaPower = 1.50;     // _151._m68
 float _WaterBottomDarkPower = 1.00;     // _151._m69
 float _WaterBottomDarkFactor = 0.06667;  // _151._m70
 // #define unity_SpecCube0_HDR float4(1.00, 1.00, 0.00, 0.00         ) // _151._m71
 float4 _SurfNormalScale2 = float4(0.10238, 0.09815, 0.59876, 0.00); // _151._m72
-#define _151__m73 0.60    // _151._m73
-#define _151__m74 1.51515 // _151._m74
-#define _151__m75 0.80    // _151._m75
-#define _151__m76 1.00    // _151._m76
-#define _151__m77 0.50    // _151._m77
-#define _151__m78 0.93    // _151._m78
-#define _151__m79 0.38462 // _151._m79
+float _SSRNormalDisturbance1 = 0.60;    // _151._m73
+float _SSRNormalDisturbance2 = 1.51515; // _151._m74
+float _SSRAlpha = 0.80;    // _151._m75
+#define _SSREnable 1.00    // _151._m76
+float _ReflectFactor = 0.50;    // _151._m77
+float _ReflectWaterViewYDisappearFactor = 0.93;    // _151._m78
+float _ReflectWaterDepthFactor = 0.38462; // _151._m79
 float4 _WaterSurfColorBlend = float4(1.00, 1.00, 1.00, 0.00); // _151._m80
 float4 _WaterBottomDarkColorBlend = float4(1.00, 1.00, 1.00, 0.00); // _151._m81
-#define _151__m82 1.00 // _151._m82
+#define _ReflectEnable 1.00 // _151._m82
 float _WorldPosXY_Scale = 0.05; // _151._m83
 float _CausticColorDisappearOfWaterDepth = 0.87; // _151._m84
 float _CausticColorDisappearPower = 2.49; // _151._m85
@@ -140,6 +140,34 @@ float SphericalGaussianPow(float x, float n)
     return exp2(x*n2-n2);
 }
 
+float GenshipCaustic(float3 in_pos) {
+    float3 _step1;
+    _step1.x = dot(in_pos, float3(-2.0, 3.0, 1.0));
+    _step1.y = dot(in_pos, float3(-1.0, -2.0, 2.0));
+    _step1.z = dot(in_pos, float3(2.0, 1.0, 2.0));
+
+    float3 _step2;
+    _step2.x = dot(_step1, float3(-0.8, 1.2, 0.4));
+    _step2.y = dot(_step1, float3(-0.4, -0.8, 0.8));
+    _step2.z = dot(_step1, float3(0.8, 0.4, 0.8));
+
+    float3 _step3;
+    _step3.x = dot(_step2, float3(-0.6, 0.9, 0.3));
+    _step3.y = dot(_step2, float3(-0.3, -0.6, 0.6));
+    _step3.z = dot(_step2, float3(0.6, 0.3, 0.6));
+
+    float3 _hnf1 = 0.5 - frac(_step1);
+    float3 _hnf2 = 0.5 - frac(_step2);
+    float3 _hnf3 = 0.5 - frac(_step3);
+    
+    float _min_dot_result = min(dot(_hnf3, _hnf3), min(dot(_hnf2, _hnf2), dot(_hnf1, _hnf1)));
+
+    float _local_127 = (_min_dot_result * _min_dot_result * 7.0);
+    float _causticNoise3DResult = _local_127 * _local_127;
+    
+    return _causticNoise3DResult;
+}
+
 fixed4 frag (v2f i) : SV_Target
 {
     float4 Output_0;
@@ -148,7 +176,7 @@ fixed4 frag (v2f i) : SV_Target
     float3 _41;
     float _42;
     bool _43;
-    float4 _46;
+    // float4 _46;
     float3 _47;
     float _48;
     float _49;
@@ -157,9 +185,9 @@ fixed4 frag (v2f i) : SV_Target
     float2 _54;
     // bool _56;
     float3 _57;
-    float3 _58;
+    // float3 _58;
     // bool _60;
-    float4 _63;
+    // float4 _63;
     float4 _64;
     float4 _66;
     float _74;
@@ -168,7 +196,7 @@ fixed4 frag (v2f i) : SV_Target
     float3 _77;
     // bool _79;
     float3 _81;
-    float3 _82;
+    // float3 _82;
     float3 _83;
     float3 _84;
     float3 _85;
@@ -182,7 +210,7 @@ fixed4 frag (v2f i) : SV_Target
     float _93;
     bool _94;
     float _95;
-    float _96;
+    // float _96;
     // bool _97;
     // float3 _98;
     // float3 _99;
@@ -492,8 +520,8 @@ fixed4 frag (v2f i) : SV_Target
     // #define _GlossPosAdjust 2.38      // _151._m65
     float _gloss_factor1_maybe = max(_GlossPosAdjust * (-_viewDirNormalize.y) + 1.0, 0.05) * max(_GlossPosAdjust * _lightDirOrUkDir.y - 1.0, 0.05) * _fixNDotH_pow;
 
-    // #define _WaterSurfDarkFactor 0.40      // _151._m64
-    float _gloss_factor2 = clamp(lerp(-0.1, 0, _terrainMoreEyeDepth4_amend) * _WaterSurfDarkFactor, 0.0, 1.0) * _gloss_factor1_maybe;
+    // #define _WaterSurfAlpha 0.40      // _151._m64
+    float _gloss_factor2 = clamp(lerp(-0.1, 0, _terrainMoreEyeDepth4_amend) * _WaterSurfAlpha, 0.0, 1.0) * _gloss_factor1_maybe;
 
     float3 _causticGlossColor = _glossColor1 * _GlossFactor;
     
@@ -504,36 +532,12 @@ fixed4 frag (v2f i) : SV_Target
     float3 _causticPos3DInput;
         _causticPos3DInput.xy = (_Time.y * _CausticSpeed * float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y) * 25.0) + _lookThroughAtTerrainWorldPos.xz * _CausticScale + _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
         _causticPos3DInput.z  = _Time.y * _CausticSpeed;
-
-    float3 _step1;
-    _step1.x = dot(_causticPos3DInput, float3(-2.0, 3.0, 1.0));
-    _step1.y = dot(_causticPos3DInput, float3(-1.0, -2.0, 2.0));
-    _step1.z = dot(_causticPos3DInput, float3(2.0, 1.0, 2.0));
-
-    float3 _step2;
-    _step2.x = dot(_step1, float3(-0.8, 1.2, 0.4));
-    _step2.y = dot(_step1, float3(-0.4, -0.8, 0.8));
-    _step2.z = dot(_step1, float3(0.8, 0.4, 0.8));
-
-    float3 _step3;
-    _step3.x = dot(_step2, float3(-0.6, 0.9, 0.3));
-    _step3.y = dot(_step2, float3(-0.3, -0.6, 0.6));
-    _step3.z = dot(_step2, float3(0.6, 0.3, 0.6));
-
     
-
-    float3 _hnf1 = 0.5 - frac(_step1);
-    float3 _hnf2 = 0.5 - frac(_step2);
-    float3 _hnf3 = 0.5 - frac(_step3);
-    
-    float _min_dot_result = min(dot(_hnf3, _hnf3), min(dot(_hnf2, _hnf2), dot(_hnf1, _hnf1)));
-
-    float __local_127 = (_min_dot_result * _min_dot_result * 7.0);
-    float _causticNoise3DResult = __local_127 * __local_127;
+    float _causticNoise3DResult = GenshipCaustic(_causticPos3DInput);
 
     
     float _causticVisibleHeightFactor = clamp(_terrainToSurfDir.y * _CausticVisibleHeightFactor, 0.0, 1.0);
-    _95 = _causticVisibleHeightFactor;
+    // _95 = _causticVisibleHeightFactor;
 
 
     float _lookAtTerrain_length_adjust_clamp01 = clamp(length(_lookThroughAtTerrainDir) * _CausticDistanceFade, 0, 1);
@@ -543,75 +547,33 @@ fixed4 frag (v2f i) : SV_Target
 
     
     
-    // _76 = _GlossColor.xyz * _CausticColor.xyz;
-    // _76 = (_causticNoise3DResult) * _GlossColor.xyz * _CausticColor.xyz;
-    // _76 = _causticVisibleFactor * _causticNoise3DResult * _GlossColor.xyz * _CausticColor.xyz;
     float3 _causticColor = _causticNoise3DResult * _GlossColor.xyz * _CausticColor.xyz * _causticVisibleFactor * _shadowAtten;
-    // _51 = _causticColor;
-    // _128 = _terrainToSurfLength * _CausticColorDisappearOfWaterDepth;
-    // _128 = clamp(_terrainToSurfLength * _CausticColorDisappearOfWaterDepth, 0.0, 1.0);
-    // _128 = clamp(_terrainToSurfLength * _CausticColorDisappearOfWaterDepth, 0.0, 1.0) + 1e-4;
-    // _128 = log2(_128);
-    // _128 = log2(_128) * _CausticColorDisappearPower;
-    // _128 = exp2(log2(_128) * _CausticColorDisappearPower);
+
     float _causticColorDisappear = pow(clamp(_terrainToSurfLength * _CausticColorDisappearOfWaterDepth, 0.0, 1.0) + 1e-4,  _CausticColorDisappearPower);
-    // _128 = _causticColorDisappear;
     
     float3 _transmissionCausticColor = _causticColor * (1-_causticColorDisappear);
-    // _51 = _transmissionCausticColor;
-    float3 _transmissionColor = _grabTextureColor * (1+_transmissionCausticColor);
-    // _51 = _transmissionColor;
 
-    
-    // _128 = _terrainMoreEyeDepth4_amend * _WaterSurfDarkFactor;
-    // _128 += 9.9999997473787516355514526367188e-05;
-    // _128 = clamp(_terrainMoreEyeDepth4_amend * _WaterSurfDarkFactor, 0.0, 1.0) + 1e-4;
-    // _128 = log2(_128);
-    // _128 = log2(_128) * _WaterSurfVisiblePower;
-    // _128 = exp2(log2(_128) * _WaterSurfVisiblePower);
-    // _128 = pow(clamp(_terrainMoreEyeDepth4_amend * _WaterSurfDarkFactor, 0.0, 1.0) + 1e-4, _WaterSurfVisiblePower);
-    float3 _waterSurfDarkFactor = min(pow(clamp(_terrainMoreEyeDepth4_amend * _WaterSurfDarkFactor, 0.0, 1.0) + 1e-4, _WaterSurfVisiblePower), 1.0);
-    // _128 = _waterSurfDarkFactor;
-    // _57.x = _terrainMoreEyeDepth4_amend * _WaterBottomDarkFactor;
-    // _57.x += 9.9999997473787516355514526367188e-05;
-    // _57.x = clamp(_terrainMoreEyeDepth4_amend * _WaterBottomDarkFactor, 0.0, 1.0) + 1e-4;
-    // _57.x = log2(_57.x);
-    // _57.x = log2(_57.x) * _WaterBottomDarkPower;
-    // _57.x = exp2(log2(_57.x) * _WaterBottomDarkPower);
-    // _57.x = pow(clamp(_terrainMoreEyeDepth4_amend * _WaterBottomDarkFactor, 0.0, 1.0) + 1e-4, _WaterBottomDarkPower);
+    float3 _transmissionColor = _grabTextureColor * (1+_transmissionCausticColor);
+
+    float3 _waterSurfAlpha = min(pow(clamp(_terrainMoreEyeDepth4_amend * _WaterSurfAlpha, 0.0, 1.0) + 1e-4, _WaterSurfAlphaPower), 1.0);
+
     float _waterBottomDarkFactor = min(pow(clamp(_terrainMoreEyeDepth4_amend * _WaterBottomDarkFactor, 0.0, 1.0) + 1e-4, _WaterBottomDarkPower), 1.0);
-    // _57.x = _waterBottomDarkFactor;
-    
-    // _100 = (-_WaterSurfColor.xyz) + _WaterSurfColorBlend.xyz;
-    // _100 = _WaterSurfColorBlend.w * (_WaterSurfColorBlend.xyz - _WaterSurfColor.xyz) + _WaterSurfColor.xyz;
+
     float3 _waterSurfColor0 = lerp(_WaterSurfColor.xyz, _WaterSurfColorBlend.xyz, _WaterSurfColorBlend.w);
-    // _100 = _waterSurfColor0;
-    // _100 = _waterSurfColor0 - 1.0;
-    // _100 = (_waterSurfDarkFactor * (_waterSurfColor0 - 1.0)) + (1.0);
-    float3 _waterSurfColor = lerp(1.0, _waterSurfColor0, _waterSurfDarkFactor);
-    // _100 = _waterSurfColor;
+
+    float3 _waterSurfColor = lerp(1.0, _waterSurfColor0, _waterSurfAlpha);
+
     float3 _transmissionSurfColor = _transmissionColor * _waterSurfColor;
-    // _77 = _transmissionSurfColor;
-    // _81 = _WaterBottomDarkColorBlend.xyz - _WaterBottomDarkColor.xyz;
-    // _81 = (_WaterBottomDarkColorBlend.www * (_WaterBottomDarkColorBlend.xyz - _WaterBottomDarkColor.xyz)) + _WaterBottomDarkColor.xyz;
+
     float3 _waterBottomDarkColor0 = lerp(_WaterBottomDarkColor.xyz, _WaterBottomDarkColorBlend.xyz, _WaterBottomDarkColorBlend.w);
-    // _81 = _waterBottomDarkColor0;
-    // _51 = (-_transmissionSurfColor) + _waterBottomDarkColor0;
-    // _51 = (_waterBottomDarkFactor * (_waterBottomDarkColor0 - _transmissionSurfColor)) + _transmissionSurfColor;
+
     float3 _waterColor0 = lerp(_transmissionSurfColor, _waterBottomDarkColor0, _waterBottomDarkFactor);
 
     float3 _if_waterColor = _waterColor0;
-    // _51 = _waterColor0;
-
-    // _60 = any(0.0 != _151__m58);
-    // _97 = any(0.0 != _151__m50.x);
 
     
     // #define _151__m58 0.00      // _151._m58
     // #define _151__m50 float4(0.00, 0.00, 0.00, 0.00) // _151._m50
-    // _60 = 0.0 != _151__m58;
-    // _97 = 0.0 != _151__m50.x;
-    // _60 = (0.0 != _151__m50.x) && (0.0 != _151__m58);
     bool __tmp = 0.0 != _151__m50.x && 0.0 != _151__m58;
     if (__tmp)
     {
@@ -692,30 +654,9 @@ fixed4 frag (v2f i) : SV_Target
     // _51 = _if_waterColor;
 
     float3 _surfNormal2 = normalize(_surfNormal.xyz * _SurfNormalScale2.xzy);
-    // _100.x = dot(_57, _57);
-    // _100.x = rsqrt(_100.x);
-    // _57 = _57 * _100.xxx;
-    // _57 = _surfNormal2;
-    
-    
-    // _100.x = dot(-_viewDirNormalize, _surfNormal2);
-    // _100.x = 2.0 * dot(-_viewDirNormalize, _surfNormal2);
-    // _99 = (-_viewDirNormalize) - (_surfNormal2 * 2.0 * dot(-_viewDirNormalize, _surfNormal2));
+
     float3 _reflectDir = normalize(reflect(-_viewDirNormalize, _surfNormal2));
-    // _99 = _reflectDir;
-    // _96 = dot(_reflectDir, _reflectDir);
-    // _96 = rsqrt(_96);
-    // _99 = _reflectDir;
-    
-    // float4 data = texCUBElod(unity_SpecCube0_, float4(_reflectDir, 0.0));
-    // _46 = data;
-    // _76.x = data.w + (-1.0);
-    // _76.x = alpha;
-    // _76.x = log2(alpha);
-    // _76.x = log2(alpha) * unity_SpecCube0_HDR.y;
-    // _76.x = exp2(log2(alpha) * unity_SpecCube0_HDR.y);
-    // _76.x = pow(alpha, unity_SpecCube0_HDR.y);
-    // _76.x = unity_SpecCube0_HDR.x * pow(alpha, unity_SpecCube0_HDR.y);
+
     
     float4 _unity_SpecCube0Sample = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, _reflectDir, 0.0);
     // float4 data = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, _reflectDir, 0.0);
@@ -723,32 +664,37 @@ fixed4 frag (v2f i) : SV_Target
     // float3 _decodeHdr = unity_SpecCube0_HDR.x * pow(alpha, unity_SpecCube0_HDR.y) * data.xyz;
     float3 _decodeHdr = DecodeHDR(_unity_SpecCube0Sample, unity_SpecCube0_HDR);
     
-    // _103 = _decodeHdr;
-    _96 = _terrainMoreEyeDepth4_amend * _151__m74;
-    _96 = clamp(_96, 0.0, 1.0);
-    _96 *= _151__m73;
-    // float2 _2184 = (_surfNormal2.xz * (_96)) + _screenPos;
-    float2 _screenReflectUV = (_surfNormal2.xz * (_96)) + _screenPos;
-    // _47.xy = _screenReflectUV;
+
+    // _96 = _terrainMoreEyeDepth4_amend * _SSRNormalDisturbance2;
+    // _96 = clamp(_terrainMoreEyeDepth4_amend * _SSRNormalDisturbance2, 0.0, 1.0);
+    // _96 = clamp(_terrainMoreEyeDepth4_amend * _SSRNormalDisturbance2, 0.0, 1.0) * _SSRNormalDisturbance1;
+
+    float2 _screenReflectUV = (_surfNormal2.xz * clamp(_terrainMoreEyeDepth4_amend * _SSRNormalDisturbance2, 0.0, 1.0) * _SSRNormalDisturbance1) + _screenPos;
+
     
-    _63 = tex2D(_ScreenReflectTexture, _screenReflectUV);
-    _47.x = _63.w * _151__m76;
-    _47.x *= _151__m75;
-    _47.x = clamp(_47.x, 0.0, 1.0);
-    // _58 = -(_decodeHdr) + _63.xyz;
-    // _57 = (_47.xxx * (-(_decodeHdr) + _63.xyz)) + _decodeHdr;
-    _57 = lerp(_decodeHdr, _63.xyz, _47.x);
-    _47.x = _151__m77 * _151__m82;
-    _92 = (_151__m78 * (-_viewDirNormalize.y)) + 1.0;
-    _92 = max(_92, 0.0500000007450580596923828125);
-    _47.x = _92 * _47.x;
-    _92 = _terrainMoreEyeDepth4_amend * _151__m79;
-    _92 = clamp(_92, 0.0, 1.0);
-    _47.x = _92 * _47.x;
-    _47.x = clamp(_47.x, 0.0, 1.0);
-    _57 = (-_if_waterColor) + _57;
-    _57 = _47.xxx * _57;
-    _51 = ((_waterSurfDarkFactor) * _57) + _if_waterColor;
+    float4 _ssrSample = tex2D(_ScreenReflectTexture, _screenReflectUV);
+    // _63 = _ssrSample;
+
+    // _47.x = _ssrSample.w * _SSREnable * _SSRAlpha;
+    float _ssrAlpha = clamp(_ssrSample.w * _SSREnable * _SSRAlpha, 0.0, 1.0);
+    // _47.x = _ssrAlpha;
+
+    float3 _reflectColor = lerp(_decodeHdr, _ssrSample.xyz, _ssrAlpha);
+    // _57 = _reflectColor;
+    // _47.x = _ReflectFactor * _ReflectEnable;
+    // _92 = 1.0 - _ReflectWaterViewYDisappearFactor * _viewDirNormalize.y;
+    // _92 = max(1.0 - _ReflectWaterViewYDisappearFactor * _viewDirNormalize.y, 0.05);
+    // _47.x = max(1.0 - _ReflectWaterViewYDisappearFactor * _viewDirNormalize.y, 0.05) * _ReflectFactor * _ReflectEnable;
+    // _92 = _terrainMoreEyeDepth4_amend * _ReflectWaterDepthFactor;
+    // _92 = clamp(_terrainMoreEyeDepth4_amend * _ReflectWaterDepthFactor, 0.0, 1.0);
+    // _47.x = clamp(_terrainMoreEyeDepth4_amend * _ReflectWaterDepthFactor, 0.0, 1.0) * max(1.0 - _ReflectWaterViewYDisappearFactor * _viewDirNormalize.y, 0.05) * _ReflectFactor * _ReflectEnable;
+    float _reflectFactor01 = clamp(clamp(_terrainMoreEyeDepth4_amend * _ReflectWaterDepthFactor, 0.0, 1.0) * max(1.0 - _ReflectWaterViewYDisappearFactor * _viewDirNormalize.y, 0.05) * _ReflectFactor * _ReflectEnable, 0.0, 1.0);
+    // _47.x = _reflectFactor01;
+    // _57 = (-_if_waterColor) + _reflectColor;
+    // _57 = _reflectFactor01 * (_reflectColor-_if_waterColor);
+    // _51 = (_waterSurfAlpha * _reflectFactor01 * (_reflectColor-_if_waterColor)) + _if_waterColor;
+    float3 _waterColor_2 = lerp(_if_waterColor, _reflectColor, _waterSurfAlpha * _reflectFactor01);
+    // _51 = _waterColor_2;
     _104 = max(_lightDir1.y, 0.0);
     _104 = _104 * _shadowAtten;
     _41 = ((_104) * _glossColor1) + i.Varying_1.xyz;
@@ -791,8 +737,8 @@ fixed4 frag (v2f i) : SV_Target
     _76.x = _122 * _76.x;
     _76.x = _124 * _76.x;
     _76.x = clamp(_76.x, 0.0, 1.0);
-    _103 = (_151__m36.xyz * _41) + (-_51);
-    _76 = (_76.xxx * _103) + _51;
+    _103 = (_151__m36.xyz * _41) + (-_waterColor_2);
+    _76 = (_76.xxx * _103) + _waterColor_2;
     _87 = (_causticGlossColor * _gloss_factor2) + _76;
     _35 = _terrainMoreEyeDepth4_amend * _151__m61;
     _35 = clamp(_35, 0.0, 1.0);

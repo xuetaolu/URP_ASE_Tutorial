@@ -163,6 +163,9 @@ Material:
     - _151__m68: 1.5
     - _151__m69: 1
     - _151__m70: 0.06667
+    - _151__m73: 0.6
+    - _151__m74: 1.51515
+    - _151__m79: 0.5
     - _151__m83: 0.05
     - _151__m84: 0.87
     - _151__m85: 2.49
@@ -183,12 +186,20 @@ Material:
     - _GlossPosAdjust: 2.38
     - _GrabTextureFade: 0
     - _NormalScale1: 0.7
+    - _ReflectFactor: 0.5
+    - _ReflectWaterDepthFactor: 0.38462
+    - _ReflectWaterViewYDisappearFactor: 0.93
+    - _SSRAlpha: 0.8
+    - _SSRNormalDisturbance1: 0.6
+    - _SSRNormalDisturbance2: 1.51515
     - _WaterBottomDarkFactor: 0.06667
     - _WaterBottomDarkPower: 1
     - _WaterColorDarkFactor: 0.4
     - _WaterDarkDepthFactor: 0.06667
     - _WaterDarkDepthPower: 1
     - _WaterDepthVisiblePower: 1.5
+    - _WaterSurfAlpha: 0.4
+    - _WaterSurfAlphaPower: 1.5
     - _WaterSurfDarkFactor: 0.4
     - _WaterSurfDepthVisiblePower: 1.5
     - _WaterSurfVisiblePower: 1.5

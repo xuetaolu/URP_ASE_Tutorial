@@ -29,7 +29,7 @@ Shader "Unlit/genship_water"
         _GrabTextureFade ("_GrabTextureFade", Range(0, 1)) = 0.0
         _FixNDotH_Power ("_FixNDotH_Power", Range(0, 1000)) = 332.79999
         _GlossPosAdjust ("_GlossPosAdjust", Range(0, 10)) = 2.38
-        _WaterSurfDarkFactor ("_WaterSurfDarkFactor", Range(0, 10)) = 0.4
+        _WaterSurfAlpha ("_WaterSurfAlpha", Range(0, 1)) = 0.4
         
         _GlossFactor ("_GlossFactor", Range(0, 10)) = 5
         _CausticSpeed ("_CausticSpeed", Range(0, 1)) = 0.131
@@ -41,7 +41,7 @@ Shader "Unlit/genship_water"
         _CausticColorDisappearOfWaterDepth ("_CausticColorDisappearOfWaterDepth", Range(0, 10)) = 0.87
         _CausticColorDisappearPower ("_CausticColorDisappearPower", Range(0, 10)) = 2.49
         
-        _WaterSurfVisiblePower ("_WaterSurfVisiblePower", Range(0, 10)) = 1.50
+        _WaterSurfAlphaPower ("_WaterSurfAlphaPower", Range(0, 10)) = 1.50
         
         _WaterBottomDarkPower ("_WaterBottomDarkPower", Range(0, 10)) = 1.00
         _WaterBottomDarkFactor ("_WaterBottomDarkFactor", Range(0, 10)) = 0.06667
@@ -55,6 +55,15 @@ Shader "Unlit/genship_water"
         
         
         _SurfNormalScale2 ("_SurfNormalScale2", Vector) = (0.10238, 0.09815, 0.59876, 0.00)
+        
+        _SSRNormalDisturbance1 ("_SSRNormalDisturbance1", Range(0, 10)) = 0.60
+        _SSRNormalDisturbance2 ("_SSRNormalDisturbance2", Range(0, 10)) = 1.51515
+        _SSRAlpha ("_SSRAlpha", Range(0, 1)) = 0.80
+        
+        _ReflectFactor ("_ReflectFactor", Range(0, 1)) = 0.50
+        _ReflectWaterDepthFactor ("_ReflectWaterDepthFactor", Range(0, 1)) = 0.38462
+        _ReflectWaterViewYDisappearFactor ("_ReflectWaterViewYDisappearFactor", Range(0, 1)) = 0.93
+        
         
         
         
