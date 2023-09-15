@@ -29,7 +29,7 @@ Shader "Unlit/genship_water"
         _GrabTextureFade ("_GrabTextureFade", Range(0, 1)) = 0.0
         _FixNDotH_Power ("_FixNDotH_Power", Range(0, 1000)) = 332.79999
         _GlossPosAdjust ("_GlossPosAdjust", Range(0, 10)) = 2.38
-        _WaterColorDarkFactor ("_WaterColorDarkFactor", Range(0, 10)) = 0.4
+        _WaterSurfDarkFactor ("_WaterSurfDarkFactor", Range(0, 10)) = 0.4
         
         _GlossFactor ("_GlossFactor", Range(0, 10)) = 5
         _CausticSpeed ("_CausticSpeed", Range(0, 1)) = 0.131
@@ -38,11 +38,33 @@ Shader "Unlit/genship_water"
         _CausticVisibleHeightFactor ("_CausticVisibleHeightFactor", Range(0, 10)) = 3.33333
         _CausticDistanceFade ("_CausticDistanceFade", Range(0, 1)) = 0.01667
         
+        _CausticColorDisappearOfWaterDepth ("_CausticColorDisappearOfWaterDepth", Range(0, 10)) = 0.87
+        _CausticColorDisappearPower ("_CausticColorDisappearPower", Range(0, 10)) = 2.49
+        
+        _WaterSurfVisiblePower ("_WaterSurfVisiblePower", Range(0, 10)) = 1.50
+        
+        _WaterBottomDarkPower ("_WaterBottomDarkPower", Range(0, 10)) = 1.00
+        _WaterBottomDarkFactor ("_WaterBottomDarkFactor", Range(0, 10)) = 0.06667
+        
+        _WaterSurfColor ("_WaterSurfColor", Color) = (0.11131, 1.00, 0.9415, 0.00)
+        _WaterSurfColorBlend ("_WaterSurfColorBlend", Color) = (1.00, 1.00, 1.00, 0.00)
+        
+                
+        _WaterBottomDarkColor ("_WaterBottomDarkColor", Color) = (0.01694, 0.1433, 0.26481, 0.00)
+        _WaterBottomDarkColorBlend ("_WaterBottomDarkColorBlend", Color) = (1.00, 1.00, 1.00, 0.00)
+        
+        
+        _SurfNormalScale2 ("_SurfNormalScale2", Vector) = (0.10238, 0.09815, 0.59876, 0.00)
+        
+        
+        
+        
+        
 //        _151__m24 ("_151__m24", Vector) = (1.00, -1.00, 10000.00, 0.00)
         
         [NoScaleOffset]_DepthTexture ("_DepthTexture ", 2D) = "white" {}
         [NoScaleOffset]_ScreenMaskMap   ("_ScreenMaskMap ", 2D) = "white" {}
-        [NoScaleOffset]_12_samplerCUBE("_12_samplerCUBE", Cube) = "white" {}
+//        [NoScaleOffset]unity_SpecCube0_("unity_SpecCube0_", Cube) = "white" {}
         [NoScaleOffset]_13_sampler2D  ("_13_sampler2D", 2D) = "white" {}
         [NoScaleOffset]_NormalMap1  ("_NormalMap1", 2D) = "white" {}
         [NoScaleOffset]_NormalMap2  ("_NormalMap2", 2D) = "white" {}
