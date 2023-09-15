@@ -124,6 +124,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Noise2D_R:
+        m_Texture: {fileID: 2800000, guid: a4ef9d2cee50f0b458c5bb8be3a07803, type: 3}
+        m_Scale: {x: 0.2, y: 0.15}
+        m_Offset: {x: 0.01, y: 0.01}
     - _Noise3DMap:
         m_Texture: {fileID: 11700000, guid: 5887cb32a7d3fc5499949f41f0f1b981, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -181,7 +185,11 @@ Material:
     - _CausticVisibleFactor: 3.33333
     - _CausticVisibleHeightFactor: 3.33333
     - _FixNDotH_Power: 332.8
+    - _FoamColorAdd: 0.32892
+    - _FoamColorGray: 0.32892
     - _GlossCausticFactor: 5
+    - _GlossColorAdd: 0.32892
+    - _GlossColorAddScalar: 0.32892
     - _GlossFactor: 5
     - _GlossPosAdjust: 2.38
     - _GrabTextureFade: 0
@@ -232,7 +240,11 @@ Material:
     - _Color_D: {r: 1, g: 1, b: 1, a: 16}
     - _Color_Far: {r: 0.05891, g: 0.20904, b: 0.43325, a: 0.9}
     - _Color_Far_2: {r: 0.50353, g: 0.31069, b: 0.31797, a: 1.3}
+    - _FoamColor: {r: 0.04413, g: 0.03476, b: 0.0106, a: 1}
     - _GlossColor: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
+    - _GlossColorAdd: {r: 0.04413, g: 0.03476, b: 0.0106, a: 1}
+    - _GlossColorVertex: {r: 0.04413, g: 0.03476, b: 0.0106, a: 1}
+    - _Noise2D_R_ScaleSpeed: {r: 0.2, g: 0.15, b: 0.01, a: 0.01}
     - _SurfNormalScale2: {r: 0.10238, g: 0.09815, b: 0.59876, a: 0}
     - _WaterBottomDarkColor: {r: 0.01694, g: 0.1433, b: 0.26481, a: 0}
     - _WaterBottomDarkColorBlend: {r: 1, g: 1, b: 1, a: 0}

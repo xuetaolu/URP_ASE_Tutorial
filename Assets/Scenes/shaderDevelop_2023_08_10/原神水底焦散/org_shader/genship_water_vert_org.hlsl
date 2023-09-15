@@ -73,8 +73,8 @@ v2f vert (appdata v)
     
     o.Varying_ColorXYW = Vertex_Color;
 
-    o.Varying_1.xyz = max(dot(_FoamParamsYW.yw, 1.0) - _FoamColorNegate.xyz, 0.0);
-    o.Varying_1.w = 0.0;
+    o.Varying_GlossColorAdd.xyz = max(dot(_FoamParamsYW.yw, 1.0) - _FoamColorNegate.xyz, 0.0);
+    o.Varying_GlossColorAdd.w = 0.0;
 
 
     o.Varying_NonStereoScreenPos.xy = (_clipPos.w * 0.5) + float2( _clipPos.x * 0.5, _clipPos.y * _ProjectionParams.x * 0.5 );

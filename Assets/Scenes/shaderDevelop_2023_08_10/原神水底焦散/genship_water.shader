@@ -65,6 +65,8 @@ Shader "Unlit/genship_water"
         _ReflectWaterViewYDisappearFactor ("_ReflectWaterViewYDisappearFactor", Range(0, 1)) = 0.93
         
         
+        _GlossColorAdd ("_GlossColorAdd", Color) = (0.04413, 0.03476, 0.0106, 1.00)
+        _GlossColorAddScalar ("_GlossColorAddScalar", Range(0, 1)) = 0.32892
         
         
         
@@ -74,7 +76,8 @@ Shader "Unlit/genship_water"
         [NoScaleOffset]_DepthTexture ("_DepthTexture ", 2D) = "white" {}
         [NoScaleOffset]_ScreenMaskMap   ("_ScreenMaskMap ", 2D) = "white" {}
 //        [NoScaleOffset]unity_SpecCube0_("unity_SpecCube0_", Cube) = "white" {}
-        [NoScaleOffset]_13_sampler2D  ("_13_sampler2D", 2D) = "white" {}
+        [NoScaleOffset]_Noise2D_R  ("_Noise2D_R", 2D) = "white" {}
+        _Noise2D_R_ScaleSpeed  ("_Noise2D_R_ScaleSpeed", Vector) = (0.20, 0.15, 0.01, 0.01)
         [NoScaleOffset]_NormalMap1  ("_NormalMap1", 2D) = "white" {}
         [NoScaleOffset]_NormalMap2  ("_NormalMap2", 2D) = "white" {}
         [NoScaleOffset]_Noise3DMap  ("_Noise3DMap", 3D) = "white" {}

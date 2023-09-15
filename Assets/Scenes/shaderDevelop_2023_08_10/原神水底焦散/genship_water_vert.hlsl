@@ -16,10 +16,12 @@
 
 // #define _WorldSpaceCameraPos float3(-76.56767, 199.90689, 87.00145   ) //_38._m0
 // #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017     ) //_38._m1
- static float4 _FoamParamsYW = float4(0.00, 0.12654, 0.00, 0.20238     ); //_38._m2
+ // static float4 _FoamParamsYW = float4(0.00, 0.12654, 0.00, 0.20238     ); //_38._m2
+ float _GlossColorAddScalar = 0.32892; //_38._m2
 // #define _38__m3 float4(0.00, 0.15191, 0.00, 0.28788     ) //_38._m3
 // #define _38__m4 float4(0.00, 0.19486, 0.00, 0.45829     ) //_38._m4
- static float4 _FoamColorNegate  = float4(-0.04413, -0.03476, -0.0106, 1.00); //_38._m5
+ // static float4 _FoamColorNegate  = float4(-0.04413, -0.03476, -0.0106, 1.00); //_38._m5
+ float4 _GlossColorAdd  = float4(0.04413, 0.03476, 0.0106, 1.00); //_38._m5
 // static const matrix UNITY_MATRIX_V_T = 
 // {
 //     float4(0.63206, -0.34567, 0.69355, 0.00     ),
@@ -74,8 +76,9 @@ v2f vert (appdata v)
     
     o.Varying_ColorXYW = Vertex_Color;
 
-    o.Varying_1.xyz = max(dot(_FoamParamsYW.yw, 1.0) - _FoamColorNegate.xyz, 0.0);
-    o.Varying_1.w = 0.0;
+    // o.Varying_1.xyz = max(dot(_FoamParamsYW.yw, 1.0) - _FoamColorNegate.xyz, 0.0);
+    o.Varying_GlossColorAdd.xyz = max(_GlossColorAddScalar + _GlossColorAdd.xyz, 0.0);
+    o.Varying_GlossColorAdd.w = 0.0;
 
 
     o.Varying_NonStereoScreenPos.xy = (_clipPos.w * 0.5) + float2( _clipPos.x * 0.5, _clipPos.y * _ProjectionParams.x * 0.5 );

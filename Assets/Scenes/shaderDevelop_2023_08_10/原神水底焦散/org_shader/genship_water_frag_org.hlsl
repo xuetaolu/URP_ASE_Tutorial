@@ -698,7 +698,7 @@ fixed4 frag (v2f i) : SV_Target
     _51 = ((_128) * _57) + _51;
     _104 = max(_87.y, 0.0);
     _104 *= _122;
-    _41 = ((_104) * _41) + i.Varying_1.xyz;
+    _41 = ((_104) * _41) + i.Varying_GlossColorAdd.xyz;
     _104 = min(_138, 1.0);
     _104 = (i.Varying_ColorXYW.y * (-_104)) + i.Varying_ColorXYW.y;
     _76.x = _123 + (-_151__m42);

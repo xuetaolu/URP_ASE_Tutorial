@@ -6,7 +6,7 @@
 struct v2f
 {
     float4 Varying_ColorXYW : TEXCOORD0;
-    float4 Varying_1 : TEXCOORD1;
+    float4 Varying_GlossColorAdd : TEXCOORD1;
     float4 Varying_NonStereoScreenPos : TEXCOORD2;
     float4 Varying_ViewDirXYZ_BackDotVW : TEXCOORD3;
     float4 Varying_WorldPosXYZ : TEXCOORD4;
