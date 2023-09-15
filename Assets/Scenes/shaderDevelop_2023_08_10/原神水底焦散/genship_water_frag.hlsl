@@ -44,13 +44,13 @@ float _CausticDistanceFade = 0.01667; // _151._m32
 float _CausticNormalDisturbance = 0.096;   // _151._m33
 float4 _Noise2D_R_ScaleSpeed = float4(0.20, 0.15, 0.01, 0.01);
 // #define _Noise2D_R_ScaleSpeed float4(0.20, 0.15, 0.01, 0.01) // _151._m34
-#define _151__m35 -1.28                  // _151._m35
+float _FoamLineSpeed = -1.28;                  // _151._m35
 #define _151__m36 float4(1.00, 1.00, 1.00, 1.00) // _151._m36
-#define _151__m37 0.30   // _151._m37
+float _FoamLineAreaSize = 0.30;   // _151._m37
 #define _151__m38 205.00 // _151._m38
-#define _151__m39 19.00  // _151._m39
-#define _151__m40 0.30   // _151._m40
-#define _151__m41 0.00   // _151._m41
+float _FoamLineSinFrequency = 19.00;  // _151._m39
+#define _FoamLineAreaBaseMulti 0.30   // _151._m40
+#define _FoamLinePosSpeed 0.00   // _151._m41
 #define _151__m42 10.00  // _151._m42
 #define _151__m43 20.00  // _151._m43
 float _WorldPosXY_Speed1X = -0.02;  // _151._m44
@@ -200,24 +200,24 @@ fixed4 frag (v2f i) : SV_Target
     float _90;
     bool _91;
     float _92;
-    float _93;
-    bool _94;
+    // float _93;
+    // bool _94;
     float _95;
     float3 _100;
     float _101;
     float3 _103;
-    float _104;
+    // float _104;
     float2 _105;
     float _106;
     bool _107;
-    float2 _108;
+    // float2 _108;
     float2 _109;
     float _110;
     bool2 _113;
     float _114;
     float _116;
     float _119;
-    float _122;
+    // float _122;
     float _123;
     float _124;
     bool _125;
@@ -665,55 +665,47 @@ fixed4 frag (v2f i) : SV_Target
     float _reflectFactor01 = clamp(clamp(_terrainMoreEyeDepth4_amend * _ReflectWaterDepthFactor, 0.0, 1.0) * max(1.0 - _ReflectWaterViewYDisappearFactor * _viewDirNormalize.y, 0.05) * _ReflectFactor * _ReflectEnable, 0.0, 1.0);
 
     float3 _waterColor_2 = lerp(_if_waterColor, _reflectColor, _waterSurfAlpha * _reflectFactor01);
-    // _51 = _waterColor_2;
-    // _104 = max(_lightDir1.y, 0.0);
+
     float _brightness = max(_lightDir1.y, 0.0) * _shadowAtten;
-    // _104 = _brightness;
-    // float3 _glossColorVertex = i.Varying_GlossColorVertex.xyz;
+
     float3 _glossColor_2 = _brightness * _glossColor1 + i.Varying_GlossColorAdd.xyz;
-    // _41 = _glossColor_2;
-    // _104 = min(_viewDir_length * 0.01, 1.0);
-    // _104 = (i.Varying_ColorXYW.y * (-min(_viewDir_length * 0.01, 1.0))) + i.Varying_ColorXYW.y;
-    // _104 = i.Varying_ColorXYW.y * (1-min(_viewDir_length * 0.01, 1.0));
-    // _76.x = _viewDir_length + (-_151__m42);
-    // _103.x = i.Varying_ColorXYW.x * _151__m37;
-    // _122 = max(_terrainToSurfDir.y, 0.0);
-    // _122 = min(i.Varying_ColorXYW.x * _151__m37, max(_terrainToSurfDir.y, 0.0));
-    // _103.x = (_151__m37 * i.Varying_ColorXYW.x) + 1e-4;
-    // _122 = min(i.Varying_ColorXYW.x * _151__m37, max(_terrainToSurfDir.y, 0.0)) / (_151__m37 * i.Varying_ColorXYW.x + 1e-4);
-    _122 = 1 - min(i.Varying_ColorXYW.x * _151__m37, max(_terrainToSurfDir.y, 0.0)) / (_151__m37 * i.Varying_ColorXYW.x + 1e-4);
-    // float2 _2353 = float2(_Time.y * _Noise2D_R_ScaleSpeed.z, _Time.y * _Noise2D_R_ScaleSpeed.w);
-    // float2 _2353 = _Time.y * _Noise2D_R_ScaleSpeed.zw;
-    // _47 = float3(_2353.x, _2353.y, _47.z);
-    // _47.xy = _Time.y * _Noise2D_R_ScaleSpeed.zw;
-    // float2 _2358 = frac(_Time.y * _Noise2D_R_ScaleSpeed.zw);
-    // _47.xy = frac(_Time.y * _Noise2D_R_ScaleSpeed.zw);
-    // float2 _2368 = (_Noise2D_R_ScaleSpeed.xy * _worldPosXZ1) + frac(_Time.y * _Noise2D_R_ScaleSpeed.zw);
+
+    float _foamLineArea_oneMinus = min(i.Varying_ColorXYW.x * _FoamLineAreaSize, max(_terrainToSurfDir.y, 0.0)) / (_FoamLineAreaSize * i.Varying_ColorXYW.x + 1e-4);
+    float _foamLineArea = 1 - _foamLineArea_oneMinus;
+    // _122 = _foamLineArea;
+
     float2 _noise2D_R_UV = (_Noise2D_R_ScaleSpeed.xy * _worldPosXZ1) + frac(_Time.y * _Noise2D_R_ScaleSpeed.zw);
     // _47.xy = _noise2D_R_UV;
     float _noise2D_R_Sample = tex2D(_Noise2D_R, _noise2D_R_UV).x;
     // _49 = _noise2D_R_Sample;
-    _92 = _worldPosXZ1.y + _worldPosXZ1.x;
-    _92 *= _151__m41;
-    _92 = (_151__m35 * _Time.y) + _92;
-    _108.x = (-_122) + 1.0;
-    _103.x = (_151__m39 * _122) + _92;
-    _103.x = sin(_103.x);
-    _103.x = (_151__m40 * _122) + _103.x;
-    _93 = (_noise2D_R_Sample * 2.0) + (-1.0);
-    _92 = _93 + _103.x;
-    _94 = _92 >= _108.x;
-    _92 = float(_94);
-    _47.x = _92 * _noise2D_R_Sample;
-    _103.x = _151__m38 + 9.9999997473787516355514526367188e-05;
+    // _92 = _worldPosXZ1.y + _worldPosXZ1.x;
+    // _92 *= _FoamLinePosSpeed;
+    // _92 = (_FoamLineSpeed * _Time.y) + (_worldPosXZ1.y + _worldPosXZ1.x) * _FoamLinePosSpeed;
+    // _108.x = (-_122) + 1.0;
+    // _108.x = _foamLineArea_oneMinus;
+    // _103.x = (_FoamLineSinFrequency * _foamLineArea) + (_FoamLineSpeed * _Time.y) + (_worldPosXZ1.y + _worldPosXZ1.x) * _FoamLinePosSpeed;
+    // _103.x = sin(_103.x);
+    float _foamLine0 = sin((_FoamLineSinFrequency * _foamLineArea) + (_FoamLineSpeed * _Time.y) + (_worldPosXZ1.y + _worldPosXZ1.x) * _FoamLinePosSpeed);
+    // _103.x = _foamLine0;
+    float _foamLine_add_noise_n1_1 = (_FoamLineAreaBaseMulti * _foamLineArea) + _foamLine0 + (_noise2D_R_Sample * 2.0) + (-1.0);
+    // _103.x = _foamLine_add_noise_n1_1;
+    // _93 = (_noise2D_R_Sample * 2.0) + (-1.0);
+    // _92 = _foamLine_add_noise_n1_1 + (_noise2D_R_Sample * 2.0) + (-1.0);
+    // _92 = _foamLine_add_noise_n1_1;
+    // _94 = _foamLine_add_noise_n1_1 >= _foamLineArea_oneMinus;
+    // _92 = float(_foamLine_add_noise_n1_1 >= _foamLineArea_oneMinus);
+    float _foamLineNoise = _noise2D_R_Sample * float(_foamLine_add_noise_n1_1 >= _foamLineArea_oneMinus);
+    // _47.x = _foamLineNoise;
+    
+    _103.x = _151__m38 + 1e-4;
     _103.x = _viewDir_length / _103.x;
     _103.x = clamp(_103.x, 0.0, 1.0);
     _124 = (-_103.x) + 1.0;
     _103.x = i.Varying_ColorXYW.y * (1-min(_viewDir_length * 0.01, 1.0)) * _151__m36.w;
     _76.x = (_viewDir_length - _151__m42) / _151__m43;
     _76.x *= _103.x;
-    _76.x = _47.x * _76.x;
-    _76.x = _122 * _76.x;
+    _76.x = _foamLineNoise * _76.x;
+    _76.x = _foamLineArea * _76.x;
     _76.x = _124 * _76.x;
     _76.x = clamp(_76.x, 0.0, 1.0);
     _103 = (_151__m36.xyz * _glossColor_2) + (-_waterColor_2);
@@ -958,5 +950,8 @@ fixed4 frag (v2f i) : SV_Target
     // col = float4(i.Varying_ColorXYW.xyw, 1);
     // col = float4(frac(_noise2D_R_UV), 0, 1);
     // col = float4(_noise2D_R_Sample.xxx, 1);
+    // col = float4(_foamLine0.xxx, 1);
+    // col = float4(_foamLineArea_oneMinus.xxx, 1);
+    // col = float4(_foamLineArea.xxx * _foamLine0, 1);
     return col;
 }

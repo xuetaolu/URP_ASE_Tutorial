@@ -159,6 +159,7 @@ Material:
     - _151__m31: 3.33333
     - _151__m32: 0.01667
     - _151__m33: 0.096
+    - _151__m37: 0.3
     - _151__m44: -0.02
     - _151__m59: 0
     - _151__m62: 5
@@ -187,6 +188,9 @@ Material:
     - _FixNDotH_Power: 332.8
     - _FoamColorAdd: 0.32892
     - _FoamColorGray: 0.32892
+    - _FoamLineAreaSize: 0.3
+    - _FoamLineSinFrequency: 19
+    - _FoamLineSpeed: -1.28
     - _GlossCausticFactor: 5
     - _GlossColorAdd: 0.32892
     - _GlossColorAddScalar: 0.32892

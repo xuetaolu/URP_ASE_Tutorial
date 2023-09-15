@@ -68,6 +68,10 @@ Shader "Unlit/genship_water"
         _GlossColorAdd ("_GlossColorAdd", Color) = (0.04413, 0.03476, 0.0106, 1.00)
         _GlossColorAddScalar ("_GlossColorAddScalar", Range(0, 1)) = 0.32892
         
+        _FoamLineAreaSize ("_FoamLineAreaSize", Range(0, 1)) = 0.30
+        _FoamLineSinFrequency ("_FoamLineSinFrequency", Range(0, 30)) = 19
+        _FoamLineSpeed ("_FoamLineSpeed", Range(-10, 10)) = -1.28
+        
         
         
         
