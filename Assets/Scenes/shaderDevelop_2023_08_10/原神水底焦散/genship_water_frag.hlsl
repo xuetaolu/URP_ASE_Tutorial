@@ -873,29 +873,44 @@ fixed4 frag (v2f i) : SV_Target
     _66.xy = exp(min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, 80.0));
 
     _66.xy = (-_66.xy) + _151__m20.xz;;
-
-    _64.x = abs(_tmp_64.x) > 0.01 ? _66.x / _tmp_64.x : _151__m20.x;
-    _64.y = abs(_tmp_64.y) > 0.01 ? _66.y / _tmp_64.y : _151__m20.z;
     
-    _109.x = _lerp_109 * _lookAtDir_length;
-    _109.x *= (-_64.x);
-    _109.x = exp2(_109.x);
-    _109.x = (-_109.x) + 1.0;
-    _109.x = max(_109.x, 0.0);
-    _128 = (_lookAtDir_length * _151__m12.x) + _151__m12.y;
-    _128 = clamp(_128, 0.0, 1.0);
-    _129 = (_lookAtDir_length * _151__m24.x) + _151__m24.y;
-    _129 = clamp(_129, 0.0, 1.0);
-    _76.x = (-_128) + _129;
-    _76.x = (_if_output_B_1 * _76.x) + _128;
-    _119 = (-_76.x) + 2.0;
-    _128 = (_if_output_B_1 * ((-_151__m12.z) + _151__m25.x)) + _151__m12.z;
-    _130 = (_76.x * _119) + (-1.0);
-    _128 = (_128 * _130) + 1.0;
-    _76.x = _128 * _109.x;
+
+    float _tmp_64_x = abs(_tmp_64.x) > 0.01 ? _66.x / _tmp_64.x : _151__m20.x;
+    float _tmp_64_y = abs(_tmp_64.y) > 0.01 ? _66.y / _tmp_64.y : _151__m20.z;
+
+    // _64.x = _tmp_64_x;
+    // _64.y = _tmp_64_y;
+    
+    // _109.x = _lerp_109 * _lookAtDir_length;
+    // _109.x = _lerp_109 * _lookAtDir_length * (-_tmp_64_x);
+    // _109.x = exp2(_lerp_109 * _lookAtDir_length * (-_tmp_64_x));
+    // _109.x = 1.0 - exp2(_lerp_109 * _lookAtDir_length * (-_tmp_64_x));
+    float _max_109 = max(1.0 - exp2(_lerp_109 * _lookAtDir_length * (-_tmp_64_x)), 0.0);
+    // _109.x = _max_109;
+    
+    // _128 = (_lookAtDir_length * _151__m12.x) + _151__m12.y;
+    float _lookAtDir_length_SO_A_1 = clamp((_lookAtDir_length * _151__m12.x) + _151__m12.y, 0.0, 1.0);
+    // _128 = _lookAtDir_length_SO_A_1;
+    // _129 = (_lookAtDir_length * _151__m24.x) + _151__m24.y;
+    float _lookAtDir_length_SO_A_2 = clamp((_lookAtDir_length * _151__m24.x) + _151__m24.y, 0.0, 1.0);
+    // _129 = _lookAtDir_length_SO_A_2;
+    // _76.x = (-_lookAtDir_length_SO_A_1) + _lookAtDir_length_SO_A_2;
+    // _76.x = (_if_output_B_1 * ((-_lookAtDir_length_SO_A_1) + _lookAtDir_length_SO_A_2)) + _lookAtDir_length_SO_A_1;
+    float _lookAtDir_length_SO_A = lerp(_lookAtDir_length_SO_A_1, _lookAtDir_length_SO_A_2, _if_output_B_1);
+    // _76.x = _lookAtDir_length_SO_A;
+    // _119 = (-_lookAtDir_length_SO_A) + 2.0;
+    // _128 = (_if_output_B_1 * ((-_151__m12.z) + _151__m25.x)) + _151__m12.z;
+    // _128 = lerp(_151__m12.z, _151__m25.x, _if_output_B_1);
+    // _130 = (_lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A)) - 1.0;
+    // _128 = (_128 * ((_lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A)) - 1.0)) + 1.0;
+
+    // y = 0 / 1, x ∈ [0, 1]
+    float _lookAtDir_length_SO_A_curve = _lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A);
+    // _128 = lerp(1.0, _lookAtDir_length_SO_A_curve, lerp(_151__m12.z, _151__m25.x, _if_output_B_1));
+    _76.x = lerp(1.0, _lookAtDir_length_SO_A_curve, lerp(_151__m12.z, _151__m25.x, _if_output_B_1)) * _max_109;
     _109.x = min(_76.x, _Color_Far.w);
     _128 = _lookAtDir_length * _151__m11.w;
-    _128 *= (-_64.y);
+    _128 *= (-_tmp_64_y);
     _128 = exp2(_128);
     _128 = (-_128) + 1.0;
     _128 = max(_128, 0.0);
@@ -938,5 +953,7 @@ fixed4 frag (v2f i) : SV_Target
     // col = float4(_tmp_76_1.xxx, 1);
     // col = float4(_tmp_35.xxx, 1);
     // col = float4(_lookAtDir_length_OS.xxx, 1);
+    // col = float4(_tmp_64_x.xxx, 1);
+    // col = float4(_tmp_64_y.xxx, 1);
     return col;
 }
