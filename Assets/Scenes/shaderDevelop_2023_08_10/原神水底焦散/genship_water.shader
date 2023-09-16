@@ -72,8 +72,16 @@ Shader "Unlit/genship_water"
         _FoamLineSinFrequency ("_FoamLineSinFrequency", Range(0, 30)) = 19
         _FoamLineSpeed ("_FoamLineSpeed", Range(-10, 10)) = -1.28
         
+        _FoamLineFadeDistance ("_FoamLineFadeDistance", Range(0, 1000)) = 205.00
         
+        _FoamColor ("_FoamColor", Color) = (1.00, 1.00, 1.00, 1.00)
+        _FoamLineVisibleDistance ("_FoamLineVisibleDistance", Range(0, 100)) = 10.00
+        _FoamLineFadeDiv ("_FoamLineFadeDiv", Range(0, 100)) = 20.00
         
+        _WaterAlpha ("_WaterAlpha", Range(0, 10)) = 2.5641
+        
+        _151__m11 ("_151__m11", Vector) = (0.045, 0.00214, 0.00, 0.00)
+        _151__m20 ("_151__m20", Vector) = (0.9716, -0.02881, 1.00, 0.00)
         
 //        _151__m24 ("_151__m24", Vector) = (1.00, -1.00, 10000.00, 0.00)
         

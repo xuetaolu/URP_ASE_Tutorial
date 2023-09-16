@@ -16,7 +16,7 @@ float4 _Color_Far_2 = float4(0.50353, 0.31069, 0.31797, 1.30           ); //_151
 float4 _GlossColor = float4(2.92204, 1.56181, 0.57585, 1.62808        ); //_151._m8
 #define _151__m9  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
 #define _151__m10 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
-#define _151__m11 float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
+float4 _151__m11 = float4(0.045, 0.00214, 0.00, 0.00              ); // _151._m11
 #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
 float4 _Color_Far = float4(0.05891, 0.20904, 0.43325, 0.90         ); // _151._m13
 float4 _151__m14 = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m14
@@ -27,7 +27,7 @@ float4 _151__m14 = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m1
 #define _151__m17 float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
 float4 _Color_D = float4(1.00, 1.00, 1.00, 16.00                 ); // _151._m18
 #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
-#define _151__m20 float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
+float4 _151__m20 = float4(0.9716, -0.02881, 1.00, 0.00            ); // _151._m20
 #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
 const float4 _WorldPosXY_Offset_Negative = float4(-1934.36584, 0.00, 1266.34216, 0.00     ); // _151._m22
 float4 _Color_C = float4(1.00, 1.00, 1.00, 0.07213               ); // _151._m23
@@ -45,14 +45,14 @@ float _CausticNormalDisturbance = 0.096;   // _151._m33
 float4 _Noise2D_R_ScaleSpeed = float4(0.20, 0.15, 0.01, 0.01);
 // #define _Noise2D_R_ScaleSpeed float4(0.20, 0.15, 0.01, 0.01) // _151._m34
 float _FoamLineSpeed = -1.28;                  // _151._m35
-#define _151__m36 float4(1.00, 1.00, 1.00, 1.00) // _151._m36
+float4 _FoamColor = float4(1.00, 1.00, 1.00, 1.00); // _151._m36
 float _FoamLineAreaSize = 0.30;   // _151._m37
-#define _151__m38 205.00 // _151._m38
+float _FoamLineFadeDistance = 205.00; // _151._m38
 float _FoamLineSinFrequency = 19.00;  // _151._m39
 #define _FoamLineAreaBaseMulti 0.30   // _151._m40
 #define _FoamLinePosSpeed 0.00   // _151._m41
-#define _151__m42 10.00  // _151._m42
-#define _151__m43 20.00  // _151._m43
+float _FoamLineVisibleDistance = 10.00;  // _151._m42
+float _FoamLineFadeDiv = 20.00;  // _151._m43
 float _WorldPosXY_Speed1X = -0.02;  // _151._m44
 float _WorldPosXY_Speed1Y = -0.01;  // _151._m45
 float _WorldPosXY_Speed2X =  0.05;   // _151._m46
@@ -81,10 +81,10 @@ static const float4 _151__m55[] = {float4(0.00, 0.00, 0.00, 0.00),
                          float4(0.00, 0.00, 0.00, 0.00)};//_151._m55
 #define _151__m56 float4(0.00, 0.00, 0.00, 0.00)// _151._m56
 #define _151__m57 float4(0.00, 0.00, 0.00, 0.00)// _151._m57
-#define _151__m58 0.00      // _151._m58
+#define _DebugValueMaybe 0.00      // _151._m58
 float _GrabTextureFade = 0.00;      // _151._m59
 #define _SurfNormalScale 0.15      // _151._m60
-#define _151__m61 2.5641    // _151._m61
+float _WaterAlpha = 2.5641;    // _151._m61
 float _GlossFactor = 5.00;      // _151._m62
 float _FixNDotH_Power = 332.79999; // _151._m63
 float _WaterSurfAlpha = 0.40;      // _151._m64
@@ -176,9 +176,9 @@ fixed4 frag (v2f i) : SV_Target
     float _35;
     float3 _41;
     float _42;
-    bool _43;
+    // bool _43;
     float3 _47;
-    float _48;
+    // float _48;
     float _49;
     bool _50;
     float3 _51;
@@ -195,31 +195,31 @@ fixed4 frag (v2f i) : SV_Target
     float3 _84;
     float3 _85;
     float2 _86;
-    float3 _87;
+    // float3 _87;
     float3 _89;
     float _90;
     bool _91;
-    float _92;
+    // float _92;
     // float _93;
     // bool _94;
-    float _95;
+    // float _95;
     float3 _100;
     float _101;
-    float3 _103;
+    // float3 _103;
     // float _104;
     float2 _105;
     float _106;
     bool _107;
     // float2 _108;
     float2 _109;
-    float _110;
+    // float _110;
     bool2 _113;
     float _114;
     float _116;
     float _119;
     // float _122;
     float _123;
-    float _124;
+    // float _124;
     bool _125;
     float _128;
     float _129;
@@ -370,7 +370,8 @@ fixed4 frag (v2f i) : SV_Target
     
 
     // _ProjectionParams.z = far plane
-    bool _isOutOfFarPlane = dot(_lookThroughDir3, _front) >= (_ProjectionParams.z * 0.9999);
+    float _far_plane = _ProjectionParams.z * 0.9999;
+    bool _isOutOfFarPlane = dot(_lookThroughDir3, _front) >= _far_plane;
     // #define _151__m14 float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
     float _switch_value_1 = _isOutOfFarPlane ? _lerp_127_curve * _151__m14.w : _lerp_127_curve;
     
@@ -559,9 +560,9 @@ fixed4 frag (v2f i) : SV_Target
     float3 _if_waterColor = _waterColor0;
 
     
-    // #define _151__m58 0.00      // _151._m58
+    // #define _DebugValueMaybe 0.00      // _151._m58
     // #define _151__m50 float4(0.00, 0.00, 0.00, 0.00) // _151._m50
-    bool __tmp = 0.0 != _151__m50.x && 0.0 != _151__m58;
+    bool __tmp = 0.0 != _151__m50.x && 0.0 != _DebugValueMaybe;
     if (__tmp)
     {
         // 这部分是不是调试用的？ 暂时不逆向
@@ -697,25 +698,39 @@ fixed4 frag (v2f i) : SV_Target
     float _foamLineNoise = _noise2D_R_Sample * float(_foamLine_add_noise_n1_1 >= _foamLineArea_oneMinus);
     // _47.x = _foamLineNoise;
     
-    _103.x = _151__m38 + 1e-4;
-    _103.x = _viewDir_length / _103.x;
-    _103.x = clamp(_103.x, 0.0, 1.0);
-    _124 = (-_103.x) + 1.0;
-    _103.x = i.Varying_ColorXYW.y * (1-min(_viewDir_length * 0.01, 1.0)) * _151__m36.w;
-    _76.x = (_viewDir_length - _151__m42) / _151__m43;
-    _76.x *= _103.x;
-    _76.x = _foamLineNoise * _76.x;
-    _76.x = _foamLineArea * _76.x;
-    _76.x = _124 * _76.x;
-    _76.x = clamp(_76.x, 0.0, 1.0);
-    _103 = (_151__m36.xyz * _glossColor_2) + (-_waterColor_2);
-    _76 = (_76.xxx * _103) + _waterColor_2;
-    _87 = (_causticGlossColor * _gloss_factor2) + _76;
-    _35 = _terrainMoreEyeDepth4_amend * _151__m61;
-    _35 = clamp(_35, 0.0, 1.0);
-    _35 *= i.Varying_ColorXYW.w;
-    _43 = _151__m58 == 1.0;
-    if (_43)
+    // _103.x = _FoamLineFadeDistance + 1e-4;
+    // _103.x = _viewDir_length / (_FoamLineFadeDistance + 1e-4);
+    // _103.x = clamp(_viewDir_length / (_FoamLineFadeDistance + 1e-4), 0.0, 1.0);
+    float _tmp_124 = 1.0 - clamp(_viewDir_length / (_FoamLineFadeDistance + 1e-4), 0.0, 1.0);
+    // _124 = _tmp_124;
+    
+    // _103.x = i.Varying_ColorXYW.y * (1-min(_viewDir_length * 0.01, 1.0)) * _FoamColor.w;
+    // _76.x = (_viewDir_length - _FoamLineVisibleDistance) / _FoamLineFadeDiv;
+    float _tmp_76 =  i.Varying_ColorXYW.y * (1-min(_viewDir_length * 0.01, 1.0)) * _FoamColor.w * (_viewDir_length - _FoamLineVisibleDistance) / _FoamLineFadeDiv * _foamLineNoise * _foamLineArea;
+    // _76.x = _tmp_76;
+    
+    // _76.x = _foamLineNoise * _76.x;
+    // _76.x = _foamLineArea * _76.x;
+    
+    // _76.x = _tmp_124 * _tmp_76;
+    float _foamLine_2 = clamp(_tmp_124 * _tmp_76, 0.0, 1.0);
+    // float _tmp_76_1 = _foamLine_2;
+    // _76.x = _tmp_76_1;
+    
+    // _103 = (_FoamColor.xyz * _glossColor_2) + (-_waterColor_2);
+    // _76 = (_tmp_76_1 * ((_FoamColor.xyz * _glossColor_2) + (-_waterColor_2))) + _waterColor_2;
+    float3 _waterColor_3 = lerp(_waterColor_2, _FoamColor.xyz * _glossColor_2, _foamLine_2);
+    // _76 = _waterColor_3;
+    float3 _waterColor_4 = _causticGlossColor * _gloss_factor2 + _waterColor_3;
+    float3 _if_waterColor_5 = _waterColor_4;
+   
+    // _35 = _terrainMoreEyeDepth4_amend * _WaterAlpha;
+    // _35 *= i.Varying_ColorXYW.w;
+    float _output_alpha = clamp(_terrainMoreEyeDepth4_amend * _WaterAlpha, 0.0, 1.0) * i.Varying_ColorXYW.w;
+    // _35 = _output_alpha;
+    // _43 = _DebugValueMaybe == 1.0;
+    bool __tmp2 = _DebugValueMaybe == 1.0;
+    if (__tmp2)
     {
         _41 = i.Varying_WorldPosXYZ.yyy * _Matrix_custom_V_maybe[1u].xyz;
         _41 = (_Matrix_custom_V_maybe[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _41;
@@ -766,8 +781,9 @@ fixed4 frag (v2f i) : SV_Target
         {
             _105.x = _41.x;
         }
-        _47 = (_87 * _151__m88.xyz) + (-_87);
-        _87 = (_105.xxx * _47) + _87;
+        // _47 = (_waterColor_4 * _151__m88.xyz) + (-_waterColor_4);
+        // _if_waterColor_5 = (_105.xxx * ((_waterColor_4 * _151__m88.xyz) + (-_waterColor_4))) + _waterColor_4;
+        _if_waterColor_5 = lerp(_waterColor_4, _waterColor_4 * _151__m88.xyz, _105.x);
         if (_91)
         {
             _91 = _41.x < 0.00196078442968428134918212890625;
@@ -792,15 +808,23 @@ fixed4 frag (v2f i) : SV_Target
                 _41.x = _106 * _89.x;
             }
         }
-        _89.x = (_35 * _151__m89) + (-_35);
-        Output_0.w = (_41.x * _89.x) + _35;
+        // _89.x = (_35 * _151__m89) + (-_35);
+        // Output_0.w = (_41.x * ((_35 * _151__m89) + (-_35))) + _35;
+        Output_0.w = lerp(_output_alpha, _output_alpha * _151__m89, _41.x);
     }
     else
     {
-        Output_0.w = _35;
+        Output_0.w = _output_alpha;
     }
-    _41 = i.Varying_WorldPosXYZ.xyz + (-_WorldSpaceCameraPos);
-    _35 = dot(_41, _back);
+
+    // _87 = _if_waterColor_5;
+    
+    // float3 _lookAtDir = i.Varying_WorldPosXYZ.xyz - _WorldSpaceCameraPos;
+    // _41 = _lookAtDir;
+
+    float _if_output_B_0 = 0;
+    float _if_output_B_1 = 0;
+    
     if (0.01 < _WorldPosXY_Offset_Negative.w)
     {
         _125 = _151__m27.y < 0.5;
@@ -831,114 +855,162 @@ fixed4 frag (v2f i) : SV_Target
         _50 = 0.95 >= _151__m27.x;
         _47.x = float(_50);
         _47.x *= _76.x;
-        _124 = _123;
-        _48 = _47.x;
+        _if_output_B_0 = _123;
+        _if_output_B_1 = _47.x;
     }
-    else
-    {
-        _124 = 0.0;
-        _48 = 0.0;
-    }
-    _51.x = dot(_41, _41);
-    _51.x = sqrt(_51.x);
-    _95 = (_51.x * _151__m15.z) + _151__m15.w;
-    _95 = clamp(_95, 0.0, 1.0);
-    _109.x = (_51.x * _151__m25.z) + _151__m25.w;
-    _109.x = clamp(_109.x, 0.0, 1.0);
-    _76.x = (-_95) + _109.x;
-    _76.x = (_124 * _76.x) + _95;
-    _103.x = (-_76.x) + 2.0;
-    _76.x = _103.x * _76.x;
-    _95 = dot(_41.xz, _41.xz);
-    _95 = sqrt(_95);
-    _109.x = (_95 * _151__m17.x) + _151__m17.y;
-    _109.x = clamp(_109.x, 0.0, 1.0);
-    _128 = _76.x * _151__m14.w;
-    _76.x = (-_35) >= (_ProjectionParams.z * 0.9999) ? _128 : _76.x;
-    _103.x = (-_35) >= (_ProjectionParams.z * 0.9999) ? _74 : _109.x;
-    _35 = (_124 * (_151__m26.w - _Color_Far_2.w)) + _Color_Far_2.w;
-    _110 = _76.x + 9.9999997473787516355514526367188e-05;
-    _110 = log2(_110);
-    _35 *= _110;
-    _35 = exp2(_35);
-    _35 = min(_Color_Far.w * _151__m21.x, _35);
-    _35 = min(_35, 1.0);
-    _109.x = (i.Varying_WorldPosXYZ.y * _151__m15.x) + _151__m15.y;
-    _109.x = clamp(_109.x, 0.0, 1.0);
-    _76.x = (-_109.x) + 2.0;
-    _76.x = _109.x * _76.x;
-    _57 = (_76.xxx * _151__m14.xyz) + _Color_Far.xyz;
-    float3 _3124 = (-_57) + _151__m26.xyz;
-    _64 = float4(_3124.x, _3124.y, _3124.z, _64.w);
-    _57 = (_124.xxx * _64.xyz) + _57;
-    _109.x = _51.x + (-_151__m12.w);
-    _109.x *= _151__m16.w;
-    _109.x = clamp(_109.x, 0.0, 1.0);
-    float3 _3156 = (-_57) + _151__m16.xyz;
-    _64 = float4(_3156.x, _3156.y, _3156.z, _64.w);
-    _57 = (_109.xxx * _64.xyz) + _57;
-    _95 = (_95 * _151__m19.z) + _151__m19.w;
-    _95 = clamp(_95, 0.0, 1.0);
-    _109.x = (_48 * (-_151__m11.y + _Color_C.w)) + _151__m11.y;
-    float2 _3187 = _41.yy * _151__m11.xz;
-    _64 = float4(_3187.x, _3187.y, _64.z, _64.w);
-    _113 = (0.00999999977648258209228515625 < abs(_64.xyxy)).xy;
-    float2 _3205 = ((-_151__m11.xz) * _41.yy) + _151__m20.yw;
-    _66 = float4(_3205.x, _3205.y, _66.z, _66.w);
-    float2 _3210 = min(_66.xy, (80.0));
-    _66 = float4(_3210.x, _3210.y, _66.z, _66.w);
-    float2 _3215 = _66.xy * (1.44269502162933349609375);
-    _66 = float4(_3215.x, _3215.y, _66.z, _66.w);
-    float2 _3220 = exp2(_66.xy);
-    _66 = float4(_3220.x, _3220.y, _66.z, _66.w);
-    float2 _3229 = (-_66.xy) + _151__m20.xz;
-    _66 = float4(_3229.x, _3229.y, _66.z, _66.w);
-    float2 _3236 = _66.xy / _64.xy;
-    _64 = float4(_3236.x, _3236.y, _64.z, _64.w);
-    _64.x = _113.x ? _64.x : _151__m20.x;
-    _64.y = _113.y ? _64.y : _151__m20.z;
-    _109.x *= _51.x;
+
+    // _124 = _if_output_B_0;
+    // _48  = _if_output_B_1;
+
+    
+    // _51.x = dot(_lookAtDir, _lookAtDir);
+    // _51.x = sqrt(_51.x);
+    float _lookAtDir_length = length(_lookAtDir);
+    // _51.x = _lookAtDir_length;
+    // _95 = (_lookAtDir_length * _151__m15.z) + _151__m15.w;
+    float _lookAtDir_length_SO_1 = clamp(_lookAtDir_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
+    // _95 = _lookAtDir_length_SO_1;
+    // _109.x = (_lookAtDir_length * _151__m25.z) + _151__m25.w;
+    float _lookAtDir_length_S0_2 = clamp(_lookAtDir_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
+    // _109.x = _lookAtDir_length_S0_2;
+    // _76.x = (-_lookAtDir_length_SO_1) + _lookAtDir_length_S0_2;
+    // _76.x = (_if_output_B_0 * ((-_lookAtDir_length_SO_1) + _lookAtDir_length_S0_2)) + _lookAtDir_length_SO_1;
+    float _lookAtDir_lenght_SO = lerp(_lookAtDir_length_SO_1, _lookAtDir_length_S0_2, _if_output_B_0);
+    // _76.x = _lookAtDir_lenght_SO;
+    // _103.x = (-_lookAtDir_lenght_SO) + 2.0;
+
+    // y = 0 / 1, x ∈ [0, 1]
+    float _lookAtDir_lenght_SO_curve = ((-_lookAtDir_lenght_SO) + 2.0) * _lookAtDir_lenght_SO;
+    // _76.x = _lookAtDir_lenght_SO_curve;
+    // _95 = dot(_lookAtDir.xz, _lookAtDir.xz);
+    // _95 = sqrt(_95);
+    float _lookAtDirXZ_length = length(_lookAtDir.xz);
+    // _95 = _lookAtDirXZ_length;
+    // _109.x = (_lookAtDirXZ_length * _151__m17.x) + _151__m17.y;
+    float _lookAtDirXZ_length_SO_1 = clamp(_lookAtDirXZ_length * _151__m17.x + _151__m17.y, 0.0, 1.0);
+    // _109.x = _lookAtDirXZ_length_SO_1;
+    // _128 = _lookAtDir_lenght_SO_curve * _151__m14.w;
+    float _surfEyeDepth2 = -dot(_lookAtDir, _back);
+    // -_35 = _surfEyeDepth2;
+    float _switch_value_3 = _surfEyeDepth2 >= _far_plane ? _lookAtDir_lenght_SO_curve * _151__m14.w : _lookAtDir_lenght_SO_curve;
+    float _switch_value_4 = _surfEyeDepth2 >= _far_plane ? _74 : _lookAtDirXZ_length_SO_1;
+    // _76.x = _switch_value_3;
+    // _103.x = _switch_value_4;
+    
+    // _35 = (_if_output_B_0 * (_151__m26.w - _Color_Far_2.w)) + _Color_Far_2.w;
+    float _tmp_35 = lerp(_Color_Far_2.w, _151__m26.w, _if_output_B_0);
+    // _35 = _tmp_35;
+    // _110 = _switch_value_3 + 1e-4;
+    // _110 = log2(_switch_value_3 + 1e-4);
+    // _35 = log2(_switch_value_3 + 1e-4) * _tmp_35;
+    // _35 = exp2(log2(_switch_value_3 + 1e-4) * _tmp_35);
+    float _swtich_value_3_pow = pow(_switch_value_3 + 1e-4, _tmp_35);
+    // _35 = _swtich_value_3_pow;
+
+    // _35 = min(_Color_Far.w * _151__m21.x, _swtich_value_3_pow);
+    
+    // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
+    float _tmp_35_1 = min(1.0, min(_Color_Far.w * _151__m21.x, _swtich_value_3_pow));
+    // _35 = _tmp_35_1;
+    // _109.x = (i.Varying_WorldPosXYZ.y * _151__m15.x) + _151__m15.y;
+    float _worldPosY_SO = clamp(i.Varying_WorldPosXYZ.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
+    // _109.x = _worldPosY_SO;
+    // _76.x = (-_worldPosY_SO) + 2.0;
+    
+    // y = 0 / 1, x ∈ [0, 1]
+    float _worldPosY_SO_curve = (-_worldPosY_SO + 2.0) * _worldPosY_SO;
+    // _76.x = _worldPosY_SO_curve;
+    float3 _color_57 = (_worldPosY_SO_curve * _151__m14.xyz) + _Color_Far.xyz;
+    // _57 = _color_57;
+    // float3 _3124 = (-_color_57) + _151__m26.xyz;
+    // _64.xyz = (-_color_57) + _151__m26.xyz;
+    // _57 = (_if_output_B_0.xxx * ((-_color_57) + _151__m26.xyz)) + _color_57;
+    float3 _color_57_1 = lerp(_color_57, _151__m26.xyz, _if_output_B_0.x);
+    // _57 = _color_57_1;
+    // _109.x = _lookAtDir_length + (-_151__m12.w);
+    // _109.x = (_lookAtDir_length - _151__m12.w) * _151__m16.w;
+    float _lookAtDir_length_OS = clamp((_lookAtDir_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
+    // _109.x = _lookAtDir_length_OS;
+    // float3 _3156 = (-_color_57_1) + _151__m16.xyz;
+    // _64.xyz = _151__m16.xyz - _color_57_1;
+    // _57 = (_lookAtDir_length_OS * (_151__m16.xyz - _color_57_1)) + _color_57_1;
+    float3 _color_57_2 = lerp(_color_57_1, _151__m16.xyz, _lookAtDir_length_OS);
+    // _57 = _color_57_2;
+    // _95 = (_lookAtDirXZ_length * _151__m19.z) + _151__m19.w;
+    float _lookAtDirXZ_length_SO = clamp(_lookAtDirXZ_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
+    // _95 = _lookAtDirXZ_length_SO;
+    // _109.x = (_if_output_B_1 * (-_151__m11.y + _Color_C.w)) + _151__m11.y;
+    float _lerp_109 = lerp(_151__m11.y, _Color_C.w, _if_output_B_1);
+    // _109.x = _lerp_109;
+    // float2 _3187 = _lookAtDir.y * _151__m11.xz;
+    float2 _tmp_64 = _lookAtDir.y * _151__m11.xz;
+    // _64.xy = _tmp_64;
+    // _113 = (0.01 < abs(_64.xyxy)).xy;
+    // _113.x = abs(_tmp_64.x) > 0.01;
+    // _113.y = abs(_tmp_64.y) > 0.01;
+    // float2 _3205 = ((-_151__m11.xz) * _lookAtDir.y) + _151__m20.yw;
+    // _66.xy = (-_151__m11.xz) * _lookAtDir.y + _151__m20.yw;
+    // float2 _3210 = min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, (80.0));
+    // _66.xy = min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, 80.0);
+    // float2 _3215 = _66.xy * 1.4427;
+    // _66.xy = _66.xy * 1.4427;
+    // float2 _3220 = exp2(_66.xy * 1.4427);
+    // _66.xy = exp2(_66.xy * 1.4427);
+
+    // exp(a) = exp2(a/ln(2))
+    // 1 / ln(2) ≈ 1.4427f
+    // _66.xy = exp2(_66.xy * 1/log(2));
+    _66.xy = exp(min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, 80.0));
+    // float2 _3229 = (-_66.xy) + _151__m20.xz;
+    _66.xy = (-_66.xy) + _151__m20.xz;;
+    // float2 _3236 = _66.xy / _tmp_64.xy;
+    // _64.xy = _66.xy / _tmp_64.xy;
+    _64.x = abs(_tmp_64.x) > 0.01 ? _66.x / _tmp_64.x : _151__m20.x;
+    _64.y = abs(_tmp_64.y) > 0.01 ? _66.y / _tmp_64.y : _151__m20.z;
+    
+    _109.x = _lerp_109 * _lookAtDir_length;
     _109.x *= (-_64.x);
     _109.x = exp2(_109.x);
     _109.x = (-_109.x) + 1.0;
     _109.x = max(_109.x, 0.0);
-    _128 = (_51.x * _151__m12.x) + _151__m12.y;
+    _128 = (_lookAtDir_length * _151__m12.x) + _151__m12.y;
     _128 = clamp(_128, 0.0, 1.0);
-    _129 = (_51.x * _151__m24.x) + _151__m24.y;
+    _129 = (_lookAtDir_length * _151__m24.x) + _151__m24.y;
     _129 = clamp(_129, 0.0, 1.0);
     _76.x = (-_128) + _129;
-    _76.x = (_48 * _76.x) + _128;
+    _76.x = (_if_output_B_1 * _76.x) + _128;
     _119 = (-_76.x) + 2.0;
-    _128 = (_48 * ((-_151__m12.z) + _151__m25.x)) + _151__m12.z;
+    _128 = (_if_output_B_1 * ((-_151__m12.z) + _151__m25.x)) + _151__m12.z;
     _130 = (_76.x * _119) + (-1.0);
     _128 = (_128 * _130) + 1.0;
     _76.x = _128 * _109.x;
     _109.x = min(_76.x, _Color_Far.w);
-    _128 = _51.x * _151__m11.w;
+    _128 = _lookAtDir_length * _151__m11.w;
     _128 *= (-_64.y);
     _128 = exp2(_128);
     _128 = (-_128) + 1.0;
     _128 = max(_128, 0.0);
-    _51.x = (_51.x * _151__m19.x) + _151__m19.y;
+    _51.x = (_lookAtDir_length * _151__m19.x) + _151__m19.y;
     _51.x = clamp(_51.x, 0.0, 1.0);
     _76.x = (-_51.x) + 2.0;
     _76.x = _51.x * _76.x;
     _76.x = _128 * _76.x;
     _51.x = min(_76.x, _151__m21.y);
-    _76.x = _103.x * _109.x;
-    _76.y = _95 * _51.x;
-    // _51 = ((_48) * (_Color_C.xyz -_Color_Far_2.xyz)) + _Color_Far_2.xyz;
-    _51 = lerp(_Color_Far_2.xyz, _Color_C.xyz, _48);
-    _83 = (_35) * _57;
-    _84 = ((-_57) * (_35)) + _51;
+    _76.x = _switch_value_4 * _109.x;
+    _76.y = _lookAtDirXZ_length_SO * _51.x;
+    // _51 = ((_if_output_B_1) * (_Color_C.xyz -_Color_Far_2.xyz)) + _Color_Far_2.xyz;
+    _51 = lerp(_Color_Far_2.xyz, _Color_C.xyz, _if_output_B_1);
+    _83 = (_tmp_35_1) * _color_57_2;
+    _84 = ((-_color_57_2) * (_tmp_35_1)) + _51;
     _83 = (_76.xxx * _84) + _83;
-    _35 = (-_35) + 1.0;
+    _35 = (-_tmp_35_1) + 1.0;
     _54 = (-_76.xy) + (1.0);
     _35 *= _54.x;
     _76 = (_Color_D.xyz * _76.yyy) + _83;
     _35 = _54.y * _35;
-    float3 _3459 = ((_35) * _87) + _76;
-    Output_0 = float4(_3459.x, _3459.y, _3459.z, Output_0.w);
+    // float3 _3459 = ((_35) * _if_waterColor_5) + _76;
+    // Output_0 = float4(_3459.x, _3459.y, _3459.z, Output_0.w);
+    Output_0.xyz = ((_35) * _if_waterColor_5) + _76;
     
     fixed4 col = fixed4(0,0,0,1);
     col = Output_0;
@@ -953,5 +1025,9 @@ fixed4 frag (v2f i) : SV_Target
     // col = float4(_foamLine0.xxx, 1);
     // col = float4(_foamLineArea_oneMinus.xxx, 1);
     // col = float4(_foamLineArea.xxx * _foamLine0, 1);
+    // col = float4(_tmp_76.xxx, 1);
+    // col = float4(_tmp_76_1.xxx, 1);
+    // col = float4(_tmp_35.xxx, 1);
+    // col = float4(_lookAtDir_length_OS.xxx, 1);
     return col;
 }
