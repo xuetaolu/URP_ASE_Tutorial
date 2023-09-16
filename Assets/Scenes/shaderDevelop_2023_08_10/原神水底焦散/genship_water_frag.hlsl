@@ -639,8 +639,6 @@ fixed4 frag (v2f i) : SV_Target
         _if_waterColor = (_100.xxx * _77) + _57;
     }
 
-    // _51 = _if_waterColor;
-
     float3 _surfNormal2 = normalize(_surfNormal.xyz * _SurfNormalScale2.xzy);
 
     float3 _reflectDir = normalize(reflect(-_viewDirNormalize, _surfNormal2));
@@ -673,62 +671,31 @@ fixed4 frag (v2f i) : SV_Target
 
     float _foamLineArea_oneMinus = min(i.Varying_ColorXYW.x * _FoamLineAreaSize, max(_terrainToSurfDir.y, 0.0)) / (_FoamLineAreaSize * i.Varying_ColorXYW.x + 1e-4);
     float _foamLineArea = 1 - _foamLineArea_oneMinus;
-    // _122 = _foamLineArea;
 
     float2 _noise2D_R_UV = (_Noise2D_R_ScaleSpeed.xy * _worldPosXZ1) + frac(_Time.y * _Noise2D_R_ScaleSpeed.zw);
-    // _47.xy = _noise2D_R_UV;
+
     float _noise2D_R_Sample = tex2D(_Noise2D_R, _noise2D_R_UV).x;
-    // _49 = _noise2D_R_Sample;
-    // _92 = _worldPosXZ1.y + _worldPosXZ1.x;
-    // _92 *= _FoamLinePosSpeed;
-    // _92 = (_FoamLineSpeed * _Time.y) + (_worldPosXZ1.y + _worldPosXZ1.x) * _FoamLinePosSpeed;
-    // _108.x = (-_122) + 1.0;
-    // _108.x = _foamLineArea_oneMinus;
-    // _103.x = (_FoamLineSinFrequency * _foamLineArea) + (_FoamLineSpeed * _Time.y) + (_worldPosXZ1.y + _worldPosXZ1.x) * _FoamLinePosSpeed;
-    // _103.x = sin(_103.x);
+
     float _foamLine0 = sin((_FoamLineSinFrequency * _foamLineArea) + (_FoamLineSpeed * _Time.y) + (_worldPosXZ1.y + _worldPosXZ1.x) * _FoamLinePosSpeed);
-    // _103.x = _foamLine0;
+
     float _foamLine_add_noise_n1_1 = (_FoamLineAreaBaseMulti * _foamLineArea) + _foamLine0 + (_noise2D_R_Sample * 2.0) + (-1.0);
-    // _103.x = _foamLine_add_noise_n1_1;
-    // _93 = (_noise2D_R_Sample * 2.0) + (-1.0);
-    // _92 = _foamLine_add_noise_n1_1 + (_noise2D_R_Sample * 2.0) + (-1.0);
-    // _92 = _foamLine_add_noise_n1_1;
-    // _94 = _foamLine_add_noise_n1_1 >= _foamLineArea_oneMinus;
-    // _92 = float(_foamLine_add_noise_n1_1 >= _foamLineArea_oneMinus);
+
     float _foamLineNoise = _noise2D_R_Sample * float(_foamLine_add_noise_n1_1 >= _foamLineArea_oneMinus);
-    // _47.x = _foamLineNoise;
-    
-    // _103.x = _FoamLineFadeDistance + 1e-4;
-    // _103.x = _viewDir_length / (_FoamLineFadeDistance + 1e-4);
-    // _103.x = clamp(_viewDir_length / (_FoamLineFadeDistance + 1e-4), 0.0, 1.0);
+
     float _tmp_124 = 1.0 - clamp(_viewDir_length / (_FoamLineFadeDistance + 1e-4), 0.0, 1.0);
-    // _124 = _tmp_124;
-    
-    // _103.x = i.Varying_ColorXYW.y * (1-min(_viewDir_length * 0.01, 1.0)) * _FoamColor.w;
-    // _76.x = (_viewDir_length - _FoamLineVisibleDistance) / _FoamLineFadeDiv;
+
     float _tmp_76 =  i.Varying_ColorXYW.y * (1-min(_viewDir_length * 0.01, 1.0)) * _FoamColor.w * (_viewDir_length - _FoamLineVisibleDistance) / _FoamLineFadeDiv * _foamLineNoise * _foamLineArea;
-    // _76.x = _tmp_76;
-    
-    // _76.x = _foamLineNoise * _76.x;
-    // _76.x = _foamLineArea * _76.x;
-    
-    // _76.x = _tmp_124 * _tmp_76;
+
     float _foamLine_2 = clamp(_tmp_124 * _tmp_76, 0.0, 1.0);
-    // float _tmp_76_1 = _foamLine_2;
-    // _76.x = _tmp_76_1;
-    
-    // _103 = (_FoamColor.xyz * _glossColor_2) + (-_waterColor_2);
-    // _76 = (_tmp_76_1 * ((_FoamColor.xyz * _glossColor_2) + (-_waterColor_2))) + _waterColor_2;
+
     float3 _waterColor_3 = lerp(_waterColor_2, _FoamColor.xyz * _glossColor_2, _foamLine_2);
-    // _76 = _waterColor_3;
+
     float3 _waterColor_4 = _causticGlossColor * _gloss_factor2 + _waterColor_3;
     float3 _if_waterColor_5 = _waterColor_4;
    
-    // _35 = _terrainMoreEyeDepth4_amend * _WaterAlpha;
-    // _35 *= i.Varying_ColorXYW.w;
+
     float _output_alpha = clamp(_terrainMoreEyeDepth4_amend * _WaterAlpha, 0.0, 1.0) * i.Varying_ColorXYW.w;
-    // _35 = _output_alpha;
-    // _43 = _DebugValueMaybe == 1.0;
+
     bool __tmp2 = _DebugValueMaybe == 1.0;
     if (__tmp2)
     {
@@ -781,8 +748,7 @@ fixed4 frag (v2f i) : SV_Target
         {
             _105.x = _41.x;
         }
-        // _47 = (_waterColor_4 * _151__m88.xyz) + (-_waterColor_4);
-        // _if_waterColor_5 = (_105.xxx * ((_waterColor_4 * _151__m88.xyz) + (-_waterColor_4))) + _waterColor_4;
+
         _if_waterColor_5 = lerp(_waterColor_4, _waterColor_4 * _151__m88.xyz, _105.x);
         if (_91)
         {
@@ -808,19 +774,14 @@ fixed4 frag (v2f i) : SV_Target
                 _41.x = _106 * _89.x;
             }
         }
-        // _89.x = (_35 * _151__m89) + (-_35);
-        // Output_0.w = (_41.x * ((_35 * _151__m89) + (-_35))) + _35;
+
         Output_0.w = lerp(_output_alpha, _output_alpha * _151__m89, _41.x);
     }
     else
     {
         Output_0.w = _output_alpha;
     }
-
-    // _87 = _if_waterColor_5;
     
-    // float3 _lookAtDir = i.Varying_WorldPosXYZ.xyz - _WorldSpaceCameraPos;
-    // _41 = _lookAtDir;
 
     float _if_output_B_0 = 0;
     float _if_output_B_1 = 0;
@@ -859,112 +820,60 @@ fixed4 frag (v2f i) : SV_Target
         _if_output_B_1 = _47.x;
     }
 
-    // _124 = _if_output_B_0;
-    // _48  = _if_output_B_1;
 
-    
-    // _51.x = dot(_lookAtDir, _lookAtDir);
-    // _51.x = sqrt(_51.x);
     float _lookAtDir_length = length(_lookAtDir);
-    // _51.x = _lookAtDir_length;
-    // _95 = (_lookAtDir_length * _151__m15.z) + _151__m15.w;
+
     float _lookAtDir_length_SO_1 = clamp(_lookAtDir_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
-    // _95 = _lookAtDir_length_SO_1;
-    // _109.x = (_lookAtDir_length * _151__m25.z) + _151__m25.w;
+
     float _lookAtDir_length_S0_2 = clamp(_lookAtDir_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
-    // _109.x = _lookAtDir_length_S0_2;
-    // _76.x = (-_lookAtDir_length_SO_1) + _lookAtDir_length_S0_2;
-    // _76.x = (_if_output_B_0 * ((-_lookAtDir_length_SO_1) + _lookAtDir_length_S0_2)) + _lookAtDir_length_SO_1;
+
     float _lookAtDir_lenght_SO = lerp(_lookAtDir_length_SO_1, _lookAtDir_length_S0_2, _if_output_B_0);
-    // _76.x = _lookAtDir_lenght_SO;
-    // _103.x = (-_lookAtDir_lenght_SO) + 2.0;
 
     // y = 0 / 1, x ∈ [0, 1]
     float _lookAtDir_lenght_SO_curve = ((-_lookAtDir_lenght_SO) + 2.0) * _lookAtDir_lenght_SO;
-    // _76.x = _lookAtDir_lenght_SO_curve;
-    // _95 = dot(_lookAtDir.xz, _lookAtDir.xz);
-    // _95 = sqrt(_95);
+
     float _lookAtDirXZ_length = length(_lookAtDir.xz);
-    // _95 = _lookAtDirXZ_length;
-    // _109.x = (_lookAtDirXZ_length * _151__m17.x) + _151__m17.y;
+
     float _lookAtDirXZ_length_SO_1 = clamp(_lookAtDirXZ_length * _151__m17.x + _151__m17.y, 0.0, 1.0);
-    // _109.x = _lookAtDirXZ_length_SO_1;
-    // _128 = _lookAtDir_lenght_SO_curve * _151__m14.w;
+
     float _surfEyeDepth2 = -dot(_lookAtDir, _back);
-    // -_35 = _surfEyeDepth2;
+
     float _switch_value_3 = _surfEyeDepth2 >= _far_plane ? _lookAtDir_lenght_SO_curve * _151__m14.w : _lookAtDir_lenght_SO_curve;
     float _switch_value_4 = _surfEyeDepth2 >= _far_plane ? _74 : _lookAtDirXZ_length_SO_1;
-    // _76.x = _switch_value_3;
-    // _103.x = _switch_value_4;
-    
-    // _35 = (_if_output_B_0 * (_151__m26.w - _Color_Far_2.w)) + _Color_Far_2.w;
-    float _tmp_35 = lerp(_Color_Far_2.w, _151__m26.w, _if_output_B_0);
-    // _35 = _tmp_35;
-    // _110 = _switch_value_3 + 1e-4;
-    // _110 = log2(_switch_value_3 + 1e-4);
-    // _35 = log2(_switch_value_3 + 1e-4) * _tmp_35;
-    // _35 = exp2(log2(_switch_value_3 + 1e-4) * _tmp_35);
-    float _swtich_value_3_pow = pow(_switch_value_3 + 1e-4, _tmp_35);
-    // _35 = _swtich_value_3_pow;
 
-    // _35 = min(_Color_Far.w * _151__m21.x, _swtich_value_3_pow);
+    float _tmp_35 = lerp(_Color_Far_2.w, _151__m26.w, _if_output_B_0);
+
+    float _swtich_value_3_pow = pow(_switch_value_3 + 1e-4, _tmp_35);
     
     // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
     float _tmp_35_1 = min(1.0, min(_Color_Far.w * _151__m21.x, _swtich_value_3_pow));
-    // _35 = _tmp_35_1;
-    // _109.x = (i.Varying_WorldPosXYZ.y * _151__m15.x) + _151__m15.y;
+
     float _worldPosY_SO = clamp(i.Varying_WorldPosXYZ.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
-    // _109.x = _worldPosY_SO;
-    // _76.x = (-_worldPosY_SO) + 2.0;
     
     // y = 0 / 1, x ∈ [0, 1]
     float _worldPosY_SO_curve = (-_worldPosY_SO + 2.0) * _worldPosY_SO;
-    // _76.x = _worldPosY_SO_curve;
+
     float3 _color_57 = (_worldPosY_SO_curve * _151__m14.xyz) + _Color_Far.xyz;
-    // _57 = _color_57;
-    // float3 _3124 = (-_color_57) + _151__m26.xyz;
-    // _64.xyz = (-_color_57) + _151__m26.xyz;
-    // _57 = (_if_output_B_0.xxx * ((-_color_57) + _151__m26.xyz)) + _color_57;
+
     float3 _color_57_1 = lerp(_color_57, _151__m26.xyz, _if_output_B_0.x);
-    // _57 = _color_57_1;
-    // _109.x = _lookAtDir_length + (-_151__m12.w);
-    // _109.x = (_lookAtDir_length - _151__m12.w) * _151__m16.w;
+
     float _lookAtDir_length_OS = clamp((_lookAtDir_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
-    // _109.x = _lookAtDir_length_OS;
-    // float3 _3156 = (-_color_57_1) + _151__m16.xyz;
-    // _64.xyz = _151__m16.xyz - _color_57_1;
-    // _57 = (_lookAtDir_length_OS * (_151__m16.xyz - _color_57_1)) + _color_57_1;
+
     float3 _color_57_2 = lerp(_color_57_1, _151__m16.xyz, _lookAtDir_length_OS);
-    // _57 = _color_57_2;
-    // _95 = (_lookAtDirXZ_length * _151__m19.z) + _151__m19.w;
+
     float _lookAtDirXZ_length_SO = clamp(_lookAtDirXZ_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
-    // _95 = _lookAtDirXZ_length_SO;
-    // _109.x = (_if_output_B_1 * (-_151__m11.y + _Color_C.w)) + _151__m11.y;
+
     float _lerp_109 = lerp(_151__m11.y, _Color_C.w, _if_output_B_1);
-    // _109.x = _lerp_109;
-    // float2 _3187 = _lookAtDir.y * _151__m11.xz;
+
     float2 _tmp_64 = _lookAtDir.y * _151__m11.xz;
-    // _64.xy = _tmp_64;
-    // _113 = (0.01 < abs(_64.xyxy)).xy;
-    // _113.x = abs(_tmp_64.x) > 0.01;
-    // _113.y = abs(_tmp_64.y) > 0.01;
-    // float2 _3205 = ((-_151__m11.xz) * _lookAtDir.y) + _151__m20.yw;
-    // _66.xy = (-_151__m11.xz) * _lookAtDir.y + _151__m20.yw;
-    // float2 _3210 = min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, (80.0));
-    // _66.xy = min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, 80.0);
-    // float2 _3215 = _66.xy * 1.4427;
-    // _66.xy = _66.xy * 1.4427;
-    // float2 _3220 = exp2(_66.xy * 1.4427);
-    // _66.xy = exp2(_66.xy * 1.4427);
 
     // exp(a) = exp2(a/ln(2))
     // 1 / ln(2) ≈ 1.4427f
-    // _66.xy = exp2(_66.xy * 1/log(2));
+    // _66.xy = exp2(_66.xy / log(2));
     _66.xy = exp(min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, 80.0));
-    // float2 _3229 = (-_66.xy) + _151__m20.xz;
+
     _66.xy = (-_66.xy) + _151__m20.xz;;
-    // float2 _3236 = _66.xy / _tmp_64.xy;
-    // _64.xy = _66.xy / _tmp_64.xy;
+
     _64.x = abs(_tmp_64.x) > 0.01 ? _66.x / _tmp_64.x : _151__m20.x;
     _64.y = abs(_tmp_64.y) > 0.01 ? _66.y / _tmp_64.y : _151__m20.z;
     
