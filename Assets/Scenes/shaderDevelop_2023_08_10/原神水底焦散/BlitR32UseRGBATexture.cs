@@ -5,16 +5,17 @@
 using System;
 using Common;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scenes.shaderDevelop_2023_08_10.原神水底焦散
 {
     [ExecuteAlways]
-    public class BlitDepthUseRGBATexture: MonoBehaviour
+    public class BlitR32UseRGBATexture: MonoBehaviour
     {
         public Texture m_texture;
-        public RenderTexture m_depthRT;
+        public RenderTexture m_R32RT;
         public bool m_awalyUpdate;
-        public bool m_keeyRawDepth;
+        // public bool m_keeyRawDepth;
 
         private Material _material;
 
@@ -24,7 +25,7 @@ namespace Scenes.shaderDevelop_2023_08_10.原神水底焦散
             {
                 if (_material == null)
                 {
-                    Shader shader = Shader.Find("Hidden/DrawDepthUseRGBATexture");
+                    Shader shader = Shader.Find("Hidden/DrawR32UseRGBATexture");
                     _material = new Material(shader);
                     _material.hideFlags = HideFlags.HideAndDontSave;
                 }
@@ -47,12 +48,10 @@ namespace Scenes.shaderDevelop_2023_08_10.原神水底焦散
 
         private void BlitOnce()
         {
-            if (m_texture == null || m_depthRT == null || material == null)
+            if (m_texture == null || m_R32RT == null || material == null)
                 return;
-            
-            material.EnableKeyword("_KEEP_RAW_DEPTH", m_keeyRawDepth);
-            
-            Graphics.Blit(m_texture, m_depthRT, material);
+
+            Graphics.Blit(m_texture, m_R32RT, material);
         }
 
         private void OnDestroy()

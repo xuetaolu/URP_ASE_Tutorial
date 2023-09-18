@@ -1,4 +1,4 @@
-Shader "Unlit/DrawDepthUseRGBATexture"
+Shader "Hidden/DrawDepthUseRGBATexture"
 {
     Properties
     {

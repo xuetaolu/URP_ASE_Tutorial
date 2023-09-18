@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Genship_Terrain
+  m_Shader: {fileID: 4800000, guid: 50561dbc5dbfeaf4d84c1d519dec9f4c, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _10:
+        m_Texture: {fileID: 2800000, guid: 76c6b84f65fdf2c40bd10611458c60ea, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _11:
+        m_Texture: {fileID: 2800000, guid: c17f56c7cf7cf404dbd740362a57ad0d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _12:
+        m_Texture: {fileID: 2800000, guid: aa491a2bf8b4cc647b74f2e71fa7568d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _13:
+        m_Texture: {fileID: 2800000, guid: 85257af36ce314644adf36d684bbecf6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _14:
+        m_Texture: {fileID: 2800000, guid: 5e71283690ed1e94881221e828e4c3c1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _15:
+        m_Texture: {fileID: 2800000, guid: 4e6ef120f97be244dbf2c5fe77093de0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _16:
+        m_Texture: {fileID: 2800000, guid: e04842cf09a29f241b1bc8b1da13007e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _17:
+        m_Texture: {fileID: 2800000, guid: 577cb1b89dcffb74f87c4d638eecbbb4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _18:
+        m_Texture: {fileID: 2800000, guid: db28df44a4f2cbc4a9b875c2af4e8de6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _7:
+        m_Texture: {fileID: 2800000, guid: 6a1f78d8178dbdf47a6a212c8c49b257, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _8:
+        m_Texture: {fileID: 2800000, guid: cede503a6e8eaad4799996e3bad9621c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _9:
+        m_Texture: {fileID: 2800000, guid: 9c0ebee60b49b0146b7a00572ac136ed, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VS_res13:
+        m_Texture: {fileID: 8400000, guid: 336dc7c8c225d67499c8079c85f9291e, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VS_res14:
+        m_Texture: {fileID: 2800000, guid: dac879351b0da864590cb9eb4574e259, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _debug_value: 180
+    m_Colors:
+    - _9__m0__3__m0: {r: 400, g: 432, b: 1, a: 0}
+    - _LocalTerrainOffset: {r: 400, g: 432, b: 1, a: 0}
+    - _VS_res13_range: {r: 138.78972, g: 410.58755, b: 0, a: 0}
+  m_BuildTextureStacks: []
