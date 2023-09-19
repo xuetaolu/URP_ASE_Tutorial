@@ -99,7 +99,7 @@ Shader "Unlit/genship_water"
         [NoScaleOffset]_21_sampler2D  ("_21_sampler2D", 2D) = "white" {}
         [NoScaleOffset]_22_sampler2D  ("_22_sampler2D", 2D) = "white" {}
 //        [NoScaleOffset]_GrabTexture  ("_GrabTexture", 2D) = "white" {} // _CameraOpaqueTexture
-        [NoScaleOffset]_ScreenReflectTexture  ("_ScreenReflectTexture", 2D) = "white" {}
+//        [NoScaleOffset]_ScreenReflectTexture  ("_ScreenReflectTexture", 2D) = "white" {}
     }
     SubShader
     {

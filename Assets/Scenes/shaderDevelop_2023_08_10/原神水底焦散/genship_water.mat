@@ -146,7 +146,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ScreenReflectTexture:
-        m_Texture: {fileID: 2800000, guid: f3d467bec4e203b498f67c54eeb2eeb1, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_SpecCube0_:
