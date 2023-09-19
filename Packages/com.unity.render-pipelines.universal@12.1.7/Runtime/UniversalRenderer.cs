@@ -110,6 +110,7 @@ namespace UnityEngine.Rendering.Universal
         RenderTargetHandle m_ActiveCameraColorAttachment;
         RenderTargetHandle m_ColorFrontBuffer;
         RenderTargetHandle m_ActiveCameraDepthAttachment;
+        // public RenderTargetHandle activeCameraDepthAttachment => m_ActiveCameraDepthAttachment;
         RenderTargetHandle m_CameraDepthAttachment;
         RenderTargetHandle m_DepthTexture;
         RenderTargetHandle m_NormalsTexture;

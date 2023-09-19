@@ -87,7 +87,7 @@ Shader "genship/role_outline"
             ZTest Less
             Offset [_Slope_ScaledBias], [_DepthBias]
             
-            tags { "LightMode" = "UniversalForwardOnly" }
+            Tags { "LightMode" = "UniversalForwardOnly" }
             
             HLSLPROGRAM
             float3 _OutlineColor;
@@ -415,5 +415,226 @@ Shader "genship/role_outline"
             }
             ENDHLSL
         }
+        
+        Pass
+        {
+//            Name "DepthOnly"
+            Cull [_BaseColorCullMode]
+            ColorMask 0
+            
+            Tags { "LightMode" = "DepthOnly" }
+            
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include "UnityCG.cginc"
+
+            struct appdata
+            {
+                float4 vertex : POSITION;
+            };
+
+            struct v2f
+            {
+                float4 vertex : SV_POSITION;
+            };
+
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+
+            v2f vert (appdata v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                return o;
+            }
+
+            void frag(v2f i)
+            {
+                return;
+            }
+
+            
+            ENDHLSL
+        }
+        
+//        Pass
+//        {
+//            Name "DepthOnlyOutline"
+//            
+//            Cull Front
+//            ZTest Less
+//            Offset [_Slope_ScaledBias], [_DepthBias]
+//            
+//            Tags { "LightMode" = "DepthOnly" }
+//            
+//            HLSLPROGRAM
+//            float3 _OutlineColor;
+//            
+//            float _RenderMode;
+//            float _eyeDepthInNewRangeMulti1;
+//            float _ViewSpaceSnapVertexDirScale;
+//            float _eyeDepthInNewRangeMulti_0_01;
+//            float3 _Property_EyeDepthRemapOldRanges;
+//            float3 _Property_EyeDepthRemapNewRanges;
+//            float _AffectProjectionXYWhenLessThan_0_95;
+//            float _eyeDepthInNewRangeMulti2;
+//            float4 _OutlineScreenOffsetWZ;
+//            
+//            float _normalizeViewNormalXYScale;
+//            
+//            #pragma vertex vert
+//            #pragma fragment frag
+//
+//            #include "UnityCG.cginc"
+//
+//            struct appdata
+//            {
+//                float4 vertex : POSITION;
+//                float3 normal : NORMAL;
+//                float4 tangent : TANGENT;
+//                float2 uv : TEXCOORD0;
+//                float2 uv2 : TEXCOORD1;
+//                
+//            };
+//
+//            struct v2f
+//            {
+//                float2 uv : TEXCOORD0;
+//                float4 vertex : SV_POSITION;
+//                float4 value : TEXCOORD7;
+//            };
+//
+//            sampler2D _MainTex;
+//            float4 _MainTex_ST;
+//
+//            float EyeDepthRemap(float In, float2 InMinMax, float2 OutMinMax)
+//            {
+//                float Out = OutMinMax.x + saturate((In - InMinMax.x) / max(InMinMax.y - InMinMax.x, 0.001)) * (OutMinMax.y - OutMinMax.x);
+//                return Out;
+//            }
+//            
+//            v2f vert (appdata v)
+//            {
+//                float4 Vertex_Position = v.vertex;
+//                
+//                float3 Vertex_Normal = v.normal;
+//                
+//                float4 Vertex_FrontBackOffsetZ_DepthScaleW = float4(0, 0, v.uv2.xy);
+//                
+//                float4 Vertex_TANGENT = v.tangent;
+//                
+//                
+//                v2f o = (v2f)0;
+//
+//                v.uv.y = 1-v.uv.y;
+//                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+//
+//                
+//        /// 真正有用的代码 ，描边挤出 计算 ClipPos ============ 
+//                
+//                float4 _fixVertexPos1;
+//                _fixVertexPos1 = Vertex_Position;
+//     
+//                float4 _worldPosButSnapToCamera = mul(unity_ObjectToWorld, _fixVertexPos1);
+//                _worldPosButSnapToCamera.xyz -= _WorldSpaceCameraPos;
+//
+//                float3 _viewPos = mul((float3x3)unity_MatrixV, _worldPosButSnapToCamera.xyz);
+//        
+//        
+//                // #define _RenderMode  2.0 。
+//                // 1.0 使用 Vertex_Normal 作为法线，否则用 Vertex_TANGENT 作为法线
+//                float3 _vertex_normal = _RenderMode == 1.0 ? Vertex_Normal : Vertex_TANGENT.xyz ;
+//                
+//
+//                float3 _world_normal = mul( (float3x3)unity_ObjectToWorld, _vertex_normal );
+//                
+//
+//                float3 _viewSpace_normal = mul( (float3x3)unity_MatrixV, _world_normal );
+//                o.value.xyz = _world_normal;
+//                o.value.xyz = _viewSpace_normal;
+//         
+//                float3 _fixViewNormal;
+//                    _fixViewNormal.xy = _viewSpace_normal.xy;
+//                    _fixViewNormal.z = 0.01;
+//        
+//        
+//                float2 _normalizeViewNormalXY;
+//                    _normalizeViewNormalXY = normalize(_fixViewNormal).xy;
+//
+//                _normalizeViewNormalXY *= _normalizeViewNormalXYScale;
+//                
+//                float _fov45AdaptScale = 2.414 / (UNITY_MATRIX_P[1u].y*_ProjectionParams.x);
+//        
+//                float _eyeDepth_ofSnapToCamera = -_viewPos.z;
+//        
+//        
+//                // #define _Property_EyeDepthRemapOldRanges float3(0.01, 2.00, 6.00)
+//                // #define _Property_EyeDepthRemapNewRanges float3(0.105, 0.245, 0.60)
+//        
+//                bool _eyeDepth_is_small = _eyeDepth_ofSnapToCamera * _fov45AdaptScale < _Property_EyeDepthRemapOldRanges.y;
+//                float2 _eyeDepthParams_oldRange = _eyeDepth_is_small ? _Property_EyeDepthRemapOldRanges.xy : _Property_EyeDepthRemapOldRanges.yz;
+//                float2 _eyeDepthParams_newRange = _eyeDepth_is_small ? _Property_EyeDepthRemapNewRanges.xy : _Property_EyeDepthRemapNewRanges.yz;
+//
+//                float _eyeDepthInNewRange = EyeDepthRemap(_eyeDepth_ofSnapToCamera * _fov45AdaptScale, _eyeDepthParams_oldRange.xy, _eyeDepthParams_newRange.xy);
+//        
+//        
+//                // #define _eyeDepthInNewRangeMulti1 0.03
+//                // #define _eyeDepthInNewRangeMulti2 1.82   // _eyeDepthInNewRangeMulti1 * _eyeDepthInNewRangeMulti2 == 0.0546
+//        
+//                // #define _eyeDepthInNewRangeMulti_0_01 0.01
+//        
+//                float _eyeDepthInNewRangeScale = _eyeDepthInNewRange;
+//                _eyeDepthInNewRangeScale *= _eyeDepthInNewRangeMulti1 * _eyeDepthInNewRangeMulti2;
+//                _eyeDepthInNewRangeScale *= 100.0 * _eyeDepthInNewRangeMulti_0_01;
+//                _eyeDepthInNewRangeScale *= 0.414250195026397705078125;
+//                _eyeDepthInNewRangeScale *= Vertex_FrontBackOffsetZ_DepthScaleW.w;
+//        
+//        
+//                float3 _viewPos_normalize = normalize(_viewPos);
+//        
+//        
+//                // #define _ViewSpaceSnapVertexDirScale 1.00
+//                float3 _viewSpaceDir_a_little;
+//                _viewSpaceDir_a_little = _viewPos_normalize * _ViewSpaceSnapVertexDirScale;
+//                _viewSpaceDir_a_little *= _eyeDepthInNewRangeMulti_0_01;
+//        
+//        
+//                float3 _viewPos_bias = (_viewSpaceDir_a_little * (Vertex_FrontBackOffsetZ_DepthScaleW.z - 0.5)) + _viewPos;
+//        
+//                float3 _normalBiasViewPos = _viewPos_bias;
+//                
+//                _normalBiasViewPos.xy += _normalizeViewNormalXY * _eyeDepthInNewRangeScale;
+//        
+//                #define UNITY_MATRIX_P_2 UNITY_MATRIX_P
+//
+//                
+//                float4 _clipPos = mul(UNITY_MATRIX_P, float4(_normalBiasViewPos, 1.0));
+//
+//                
+//                // #define _OutlineScreenOffsetWZ float4(0.00015, 0.00069, 0.00044, 0.00012)
+//                float2 _clipPosXYOffset;
+//                _clipPosXYOffset.x = _clipPos.w * _OutlineScreenOffsetWZ.z;
+//                _clipPosXYOffset.y = _clipPos.w * _OutlineScreenOffsetWZ.w * _ProjectionParams.x ;
+//                float2 _clipPosApplyXYOffset = (_clipPosXYOffset.xy * 2.0) + _clipPos.xy;
+//        
+//                // #define _AffectProjectionXYWhenLessThan_0_95 1.00
+//                _clipPos.xy = _AffectProjectionXYWhenLessThan_0_95 < 0.95 ? _clipPosApplyXYOffset : _clipPos.xy;
+//                // gl_Position = _clipPos;
+//
+//        /// 真正有用的代码 ，描边挤出 计算 ClipPos ============ end
+//                o.vertex = _clipPos;
+//                
+//                return o;
+//            }
+//
+//            void frag(v2f i)
+//            {
+//                return;
+//            }
+//            ENDHLSL
+//            
+//        }
     }
 }

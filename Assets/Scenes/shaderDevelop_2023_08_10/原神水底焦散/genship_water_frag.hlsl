@@ -114,7 +114,7 @@ float _CausticColorDisappearPower = 2.49; // _151._m85
 #define _151__m88 float4(1.00, 1.00, 1.00, 1.00) // _151._m88
 #define _151__m89 1.00 // _151._m89
 
-sampler2D _DepthTexture ;
+// sampler2D _DepthTexture ;
 sampler2D _CameraDepthTexture;
 // sampler2D _ScreenMaskMap ;
 // samplerCUBE unity_SpecCube0_;
@@ -126,7 +126,7 @@ sampler3D _20_sampler3D;
 sampler2D _21_sampler2D;
 sampler2D _22_sampler2D;
 sampler2D _CameraOpaqueTexture;
-sampler2D _ScreenReflectTexture;
+sampler2D _GlobalSSRTexture;
 
 float3 UnpackNormalWithScaleNotNormalize(float3 in_packedNormal, float in_scale)
 {
@@ -275,8 +275,8 @@ fixed4 frag (v2f i) : SV_Target
     float3 _surfNormal = normalize(_normal1.xzy + _normal2.xzy);
     
 
-    float _rawDepth = tex2D(_DepthTexture, _screenPos).x;
-    /*float*/ _rawDepth = tex2D(_CameraDepthTexture, _screenPos).x;
+    // float _rawDepth = tex2D(_DepthTexture, _screenPos).x;
+    float _rawDepth = tex2D(_CameraDepthTexture, _screenPos).x;
     float _depthTextureEyeDepth = LinearEyeDepth(_rawDepth);
 
     float _backDotV = i.Varying_ViewDirXYZ_BackDotVW.w;
@@ -670,7 +670,7 @@ fixed4 frag (v2f i) : SV_Target
     float2 _screenReflectUV = (_surfNormal2.xz * clamp(_terrainMoreEyeDepth4_amend * _SSRNormalDisturbance2, 0.0, 1.0) * _SSRNormalDisturbance1) + _screenPos;
 
     
-    float4 _ssrSample = tex2D(_ScreenReflectTexture, _screenReflectUV);
+    float4 _ssrSample = tex2D(_GlobalSSRTexture, _screenReflectUV);
  
     float _ssrAlpha = clamp(_ssrSample.w * _SSREnable * _SSRAlpha, 0.0, 1.0);
 
@@ -986,5 +986,6 @@ fixed4 frag (v2f i) : SV_Target
     // col = float4(_tmp_64_x.xxx, 1);
     // col = float4(_tmp_64_y.xxx, 1);
     // col = float4(_shadowAtten.xxx, 1);
+    // col = float4(_ssrSample.rgb, _ssrSample.a);
     return col;
 }

@@ -209,6 +209,7 @@ Material:
     - _ReflectWaterDepthFactor: 0.38462
     - _ReflectWaterViewYDisappearFactor: 0.93
     - _SSRAlpha: 0.8
+    - _SSREnable: 0
     - _SSRNormalDisturbance1: 0.6
     - _SSRNormalDisturbance2: 1.51515
     - _WaterAlpha: 2.5641
