@@ -116,7 +116,7 @@ float _CausticColorDisappearPower = 2.49; // _151._m85
 
 sampler2D _DepthTexture ;
 sampler2D _CameraDepthTexture;
-sampler2D _ScreenMaskMap ;
+// sampler2D _ScreenMaskMap ;
 // samplerCUBE unity_SpecCube0_;
 sampler2D _Noise2D_R;
 sampler2D _NormalMap1;

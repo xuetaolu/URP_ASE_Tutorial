@@ -88,7 +88,7 @@ Shader "Unlit/genship_water"
 //        _151__m24 ("_151__m24", Vector) = (1.00, -1.00, 10000.00, 0.00)
         
         [NoScaleOffset]_DepthTexture ("_DepthTexture ", 2D) = "white" {}
-        [NoScaleOffset]_ScreenMaskMap   ("_ScreenMaskMap ", 2D) = "white" {}
+//        [NoScaleOffset]_ScreenMaskMap   ("_ScreenMaskMap ", 2D) = "white" {}
 //        [NoScaleOffset]unity_SpecCube0_("unity_SpecCube0_", Cube) = "white" {}
         [NoScaleOffset]_Noise2D_R  ("_Noise2D_R", 2D) = "white" {}
         _Noise2D_R_ScaleSpeed  ("_Noise2D_R_ScaleSpeed", Vector) = (0.20, 0.15, 0.01, 0.01)
