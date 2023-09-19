@@ -1,7 +1,6 @@
 #include "genship_water_common.hlsl"
 
 
-
 // #define _11__m0 _11._m0
 
 // _28 = 8,  _28 / 8 = 0
@@ -49,7 +48,8 @@ float4 GlslToDxClipPos(float4 clipPos) {
 
 v2f vert (appdata v)
 {
-    v2f o;
+    v2f o = (v2f)0;
+    // TRANSFER_SHADOW(o);
     
     float4 Vertex_Position = v.vertex;
     float4 Vertex_Color = v.color;  // xy w
@@ -57,7 +57,7 @@ v2f vert (appdata v)
 
 
     float3 _worldPos = mul( UNITY_MATRIX_M, float4(Vertex_Position.xyz, 1.0) );
-    // Vertex_Position.w ȱʡֵ�� 1
+    // Vertex_Position.w 总是 1
     // float3 _worldPos2 = mul( UNITY_MATRIX_M, Vertex_Position ).xyz;
 
     

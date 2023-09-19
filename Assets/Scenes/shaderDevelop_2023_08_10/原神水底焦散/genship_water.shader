@@ -83,6 +83,8 @@ Shader "Unlit/genship_water"
         _151__m11 ("_151__m11", Vector) = (0.045, 0.00214, 0.00, 0.00)
         _151__m20 ("_151__m20", Vector) = (0.9716, -0.02881, 1.00, 0.00)
         
+        [Toggle]_SSREnable ("_SSREnable", float) = 1.0
+        
 //        _151__m24 ("_151__m24", Vector) = (1.00, -1.00, 10000.00, 0.00)
         
         [NoScaleOffset]_DepthTexture ("_DepthTexture ", 2D) = "white" {}
@@ -110,15 +112,18 @@ Shader "Unlit/genship_water"
 
         Pass
         {
-            CGPROGRAM
-            
+            Name "UniversalForward"
+            Tags { "LightMode"="UniversalForward" }
+            HLSLPROGRAM
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            // #pragma multi_compile_fwdbase_fullshadows
             #pragma vertex vert
             #pragma fragment frag
 
             #include "genship_water_vert.hlsl"
             #include "genship_water_frag.hlsl"
             
-            ENDCG
+            ENDHLSL
         }
     }
 }

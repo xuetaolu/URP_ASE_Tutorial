@@ -99,7 +99,7 @@ float4 _SurfNormalScale2 = float4(0.10238, 0.09815, 0.59876, 0.00); // _151._m72
 float _SSRNormalDisturbance1 = 0.60;    // _151._m73
 float _SSRNormalDisturbance2 = 1.51515; // _151._m74
 float _SSRAlpha = 0.80;    // _151._m75
-#define _SSREnable 1.00    // _151._m76
+float _SSREnable = 1.00;    // _151._m76
 float _ReflectFactor = 0.50;    // _151._m77
 float _ReflectWaterViewYDisappearFactor = 0.93;    // _151._m78
 float _ReflectWaterDepthFactor = 0.38462; // _151._m79
@@ -115,6 +115,7 @@ float _CausticColorDisappearPower = 2.49; // _151._m85
 #define _151__m89 1.00 // _151._m89
 
 sampler2D _DepthTexture ;
+sampler2D _CameraDepthTexture;
 sampler2D _ScreenMaskMap ;
 // samplerCUBE unity_SpecCube0_;
 sampler2D _Noise2D_R;
@@ -124,7 +125,7 @@ sampler3D _Noise3DMap;
 sampler3D _20_sampler3D;
 sampler2D _21_sampler2D;
 sampler2D _22_sampler2D;
-sampler2D _GrabTexture;
+sampler2D _CameraOpaqueTexture;
 sampler2D _ScreenReflectTexture;
 
 float3 UnpackNormalWithScaleNotNormalize(float3 in_packedNormal, float in_scale)
@@ -167,6 +168,11 @@ float GenshipCaustic(float3 in_pos) {
     float _causticNoise3DResult = _local_127 * _local_127;
     
     return _causticNoise3DResult;
+}
+
+float LinearEyeDepth(float _in_rawDepth)
+{
+    return LinearEyeDepth(_in_rawDepth, _ZBufferParams);
 }
 
 fixed4 frag (v2f i) : SV_Target
@@ -229,6 +235,8 @@ fixed4 frag (v2f i) : SV_Target
     bool _134;
     float _142;
     float _143;
+
+    float3 _worldPos = i.Varying_WorldPosXYZ.xyz;
     
     // #define _LightDir float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
     float3 _lightDir = ((-i.Varying_WorldPosXYZ.xyz) * _LightDir.www) + _LightDir.xyz;
@@ -268,6 +276,7 @@ fixed4 frag (v2f i) : SV_Target
     
 
     float _rawDepth = tex2D(_DepthTexture, _screenPos).x;
+    /*float*/ _rawDepth = tex2D(_CameraDepthTexture, _screenPos).x;
     float _depthTextureEyeDepth = LinearEyeDepth(_rawDepth);
 
     float _backDotV = i.Varying_ViewDirXYZ_BackDotVW.w;
@@ -304,16 +313,18 @@ fixed4 frag (v2f i) : SV_Target
     
     float2 _screenPos2 = (_nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
 
-    float _rawDepth2 = tex2D(_DepthTexture, _screenPos2).x;
+    // float _rawDepth2 = tex2D(_DepthTexture, _screenPos2).x;
+    float _rawDepth2 = tex2D(_CameraDepthTexture, _screenPos2).x;
     float _depthTextureEyeDepth2 = LinearEyeDepth(_rawDepth2);
 
     float _terrainMoreEyeDepth2 = clamp(_depthTextureEyeDepth2 - _surfEyeDepth, 0.0, 1.0);
 
     float2 _screenPos3 = (_terrainMoreEyeDepth2 * _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
     
-    float3 _grabTextureSample = tex2D(_GrabTexture, _screenPos3).xyz;
+    float3 _grabTextureSample = tex2D(_CameraOpaqueTexture, _screenPos3).xyz;
 
-    float _rawDepth3 = tex2D(_DepthTexture, _screenPos3).x;
+    // float _rawDepth3 = tex2D(_DepthTexture, _screenPos3).x;
+    float _rawDepth3 = tex2D(_CameraDepthTexture, _screenPos3).x;
     float _depthTextureEyeDepth3 = LinearEyeDepth(_rawDepth3);
     
 
@@ -513,9 +524,13 @@ fixed4 frag (v2f i) : SV_Target
 
     float3 _causticGlossColor = _glossColor1 * _GlossFactor;
     
-    float _screenSpaceShadow = tex2D(_ScreenMaskMap, _screenPos).x;
+    // float _screenSpaceShadow = tex2D(_ScreenMaskMap, _screenPos).x;
 
-    float _shadowAtten = (_EnableShadow == 1.0) ? _screenSpaceShadow : 1.0;
+    // float _shadowAtten = (_EnableShadow == 1.0) ? _screenSpaceShadow : 1.0;
+
+    float4 _shadowCoord = TransformWorldToShadowCoord(_worldPos);
+    
+    float _shadowAtten = MainLightRealtimeShadow(_shadowCoord);
     
     float3 _causticPos3DInput;
         _causticPos3DInput.xy = (_Time.y * _CausticSpeed * float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y) * 25.0) + _lookThroughAtTerrainWorldPos.xz * _CausticScale + _terrainToSurfLength * _CausticNormalDisturbance * _surfNormal.xz;
@@ -648,7 +663,8 @@ fixed4 frag (v2f i) : SV_Target
     // float4 data = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, _reflectDir, 0.0);
     // float alpha = unity_SpecCube0_HDR.w * (data.a - 1.0) + 1.0;
     // float3 _decodeHdr = unity_SpecCube0_HDR.x * pow(alpha, unity_SpecCube0_HDR.y) * data.xyz;
-    float3 _decodeHdr = DecodeHDR(_unity_SpecCube0Sample, unity_SpecCube0_HDR);
+    // float3 _decodeHdr = DecodeHDR(_unity_SpecCube0Sample, unity_SpecCube0_HDR);
+    float3 _decodeHdr = DecodeHDREnvironment(_unity_SpecCube0Sample, _GlossyEnvironmentCubeMap_HDR);
     
 
     float2 _screenReflectUV = (_surfNormal2.xz * clamp(_terrainMoreEyeDepth4_amend * _SSRNormalDisturbance2, 0.0, 1.0) * _SSRNormalDisturbance1) + _screenPos;
@@ -969,5 +985,6 @@ fixed4 frag (v2f i) : SV_Target
     // col = float4(_lookAtDir_length_OS.xxx, 1);
     // col = float4(_tmp_64_x.xxx, 1);
     // col = float4(_tmp_64_y.xxx, 1);
+    // col = float4(_shadowAtten.xxx, 1);
     return col;
 }
