@@ -869,76 +869,35 @@ fixed4 frag (v2f i) : SV_Target
     float _tmp_64_x = abs(_tmp_64.x) > 0.01 ? _66.x / _tmp_64.x : _151__m20.x;
     float _tmp_64_y = abs(_tmp_64.y) > 0.01 ? _66.y / _tmp_64.y : _151__m20.z;
 
-    // _64.x = _tmp_64_x;
-    // _64.y = _tmp_64_y;
-    
-    // _109.x = _lerp_109 * _lookAtDir_length;
-    // _109.x = _lerp_109 * _lookAtDir_length * (-_tmp_64_x);
-    // _109.x = exp2(_lerp_109 * _lookAtDir_length * (-_tmp_64_x));
-    // _109.x = 1.0 - exp2(_lerp_109 * _lookAtDir_length * (-_tmp_64_x));
+
     float _max_109 = max(1.0 - exp2(_lerp_109 * _lookAtDir_length * (-_tmp_64_x)), 0.0);
-    // _109.x = _max_109;
-    
-    // _128 = (_lookAtDir_length * _151__m12.x) + _151__m12.y;
+
     float _lookAtDir_length_SO_A_1 = clamp((_lookAtDir_length * _151__m12.x) + _151__m12.y, 0.0, 1.0);
-    // _128 = _lookAtDir_length_SO_A_1;
-    // _129 = (_lookAtDir_length * _151__m24.x) + _151__m24.y;
+
     float _lookAtDir_length_SO_A_2 = clamp((_lookAtDir_length * _151__m24.x) + _151__m24.y, 0.0, 1.0);
-    // _129 = _lookAtDir_length_SO_A_2;
-    // _76.x = (-_lookAtDir_length_SO_A_1) + _lookAtDir_length_SO_A_2;
-    // _76.x = (_if_output_B_1 * ((-_lookAtDir_length_SO_A_1) + _lookAtDir_length_SO_A_2)) + _lookAtDir_length_SO_A_1;
+
     float _lookAtDir_length_SO_A = lerp(_lookAtDir_length_SO_A_1, _lookAtDir_length_SO_A_2, _if_output_B_1);
-    // _76.x = _lookAtDir_length_SO_A;
-    // _119 = (-_lookAtDir_length_SO_A) + 2.0;
-    // _128 = (_if_output_B_1 * ((-_151__m12.z) + _151__m25.x)) + _151__m12.z;
-    // _128 = lerp(_151__m12.z, _151__m25.x, _if_output_B_1);
-    // _130 = (_lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A)) - 1.0;
-    // _128 = (_128 * ((_lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A)) - 1.0)) + 1.0;
 
     // y = 0 / 1, x ∈ [0, 1]
     float _lookAtDir_length_SO_A_curve = _lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A);
-    // _128 = lerp(1.0, _lookAtDir_length_SO_A_curve, lerp(_151__m12.z, _151__m25.x, _if_output_B_1));
+
     float _lerp_76 = lerp(1.0, _lookAtDir_length_SO_A_curve, lerp(_151__m12.z, _151__m25.x, _if_output_B_1)) * _max_109;
-    // _76.x = _lerp_76;
+
     float _min_109 = min(_lerp_76, _Color_Far.w);
-    // _109.x = _min_109;
-    // _128 = _lookAtDir_length * _151__m11.w * (-_tmp_64_y);
-    // _128 *= ;
-    // _128 = exp2(_lookAtDir_length * _151__m11.w * (-_tmp_64_y));
-    // _128 = 1.0 - exp2(_lookAtDir_length * _151__m11.w * (-_tmp_64_y));
-    // _128 = max(0.0, 1.0 - exp2(_lookAtDir_length * _151__m11.w * (-_tmp_64_y)));
+
     float _lookAtDir_length_SO = clamp((_lookAtDir_length * _151__m19.x) + _151__m19.y, 0, 1);
-    // _51.x = _lookAtDir_length_SO;
-    // _51.x = clamp(_51.x, 0.0, 1.0);
-    // _76.x = (-_lookAtDir_length_SO) + 2.0;
+
     
     // y = 0 / 1, x ∈ [0, 1]
     float _lookAtDir_length_SO_curve = ((-_lookAtDir_length_SO) + 2.0) * _lookAtDir_length_SO;
-    // _76.x = _lookAtDir_length_SO_curve;
+
     float _max_76 = max(0.0, 1.0 - exp2(_lookAtDir_length * _151__m11.w * (-_tmp_64_y))) * _lookAtDir_length_SO_curve;
-    // _76.x = _max_76;
-    // _51.x = min(_max_76, _151__m21.y);
+
     float _76_x = _switch_value_4 * _min_109;
     float _76_y = _lookAtDirXZ_length_SO * min(_max_76, _151__m21.y);
-    // _76.x = _76_x;
-    // _76.y = _76_y;
-    // _51 = ((_if_output_B_1) * (_Color_C.xyz -_Color_Far_2.xyz)) + _Color_Far_2.xyz;
+
     float3 _color_1 = lerp(_Color_Far_2.xyz, _Color_C.xyz, _if_output_B_1);
-    // _51 = _color_1;
-    // _83 = (_tmp_35_1) * _color_57_2;
-    // _84 = ((-_color_57_2) * (_tmp_35_1)) + _color_1;
-    // _83 = (_76.xxx * (-(_tmp_35_1*_color_57_2) + _color_1)) + (_tmp_35_1 * _color_57_2);
-    // _83 = lerp(_tmp_35_1 * _color_57_2, _color_1, _76_x);
-    // _35 = (-_tmp_35_1) + 1.0;
-    // _54 = (-_76.xy) + (1.0);
-    // _35 *= _54.x;
-    // _35 = (1.0 - _tmp_35_1) * (1 - _76_x);
-    // _76 = (_Color_D.xyz * _76_y) + lerp(_tmp_35_1 * _color_57_2, _color_1, _76_x);
-    // _35 = _54.y * _35;
-    _35 = (1- _76_y) * (1.0 - _tmp_35_1) * (1 - _76_x);
-    // float3 _3459 = ((_35) * _if_waterColor_5) + _76;
-    // Output_0 = float4(_3459.x, _3459.y, _3459.z, Output_0.w);
-    // Output_0.xyz = ((_35) * _if_waterColor_5) + _76;
+
     Output_0.xyz = ((1- _76_y) * (1.0 - _tmp_35_1) * (1 - _76_x) * _if_waterColor_5) + (_Color_D.xyz * _76_y) + lerp(_tmp_35_1 * _color_57_2, _color_1, _76_x);
     
     fixed4 col = fixed4(0,0,0,1);
