@@ -212,48 +212,61 @@ fixed4 frag (v2f i) : SV_Target
     float _143;
 
     float3 _worldPos = i.Varying_WorldPosXYZ.xyz;
+
     
     // #define _LightDir float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
     float3 _lightDir = ((-i.Varying_WorldPosXYZ.xyz) * _LightDir.www) + _LightDir.xyz;
+
     
-    float3 _lightDir1 = _LightDir.w < 0.5 ? _LightDir.xyz : normalize(_lightDir);
+    float3 _lightDir1;
+    {
+        _lightDir1 = _LightDir.w < 0.5 ? _LightDir.xyz : normalize(_lightDir);
+    } 
 
-    // #define _151__m49 float4(0.00, 0.00, 0.00, 0.00) // _151._m49
-    _89.x = 1.0 / (dot(_lightDir, _lightDir) * _151__m49.x + 1.0);
-    _89.x = clamp(lerp(-0.04, 1.0, _89.x), 0.0, 1.0);
+    
+    float3 _glossColor1;
+    {
+        // #define _151__m49 float4(0.00, 0.00, 0.00, 0.00) // _151._m49
+        _89.x = 1.0 / (dot(_lightDir, _lightDir) * _151__m49.x + 1.0);
+        _89.x = clamp(lerp(-0.04, 1.0, _89.x), 0.0, 1.0);
+        
+        // #define _GlossColor float4(2.92204, 1.56181, 0.57585, 1.62808        ) //_151._m8
+        float4 _45;
+        _45.xyz = _89.xxx * _GlossColor.xyz;
+        _glossColor1 = _LightDir.w < 0.5 ? _GlossColor.xyz : _45.xyz;
+    }
+    
 
-    // #define _GlossColor float4(2.92204, 1.56181, 0.57585, 1.62808        ) //_151._m8
-    float4 _45;
-    _45.xyz = _89.xxx * _GlossColor.xyz;
-
-    float3 _glossColor1 = _LightDir.w < 0.5 ? _GlossColor.xyz : _45.xyz;
-
-    float2 _screenPos = i.Varying_NonStereoScreenPos.xy / i.Varying_NonStereoScreenPos.w;
     
     float2 _worldPosXZ1 = i.Varying_WorldPosXYZ.xz + _WorldPosXY_Offset.xz;
     
-    float2 _worldPosXYScale = _worldPosXZ1 * float2(_WorldPosXY_Scale, _WorldPosXY_Scale);
     
-    float2 _NormalMap1_UV = (_Time.yy * float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y)) + _worldPosXYScale;
+    float3 _surfNormal;
+    {
+        float2 _worldPosXYScale = _worldPosXZ1 * float2(_WorldPosXY_Scale, _WorldPosXY_Scale);
+        
+        float2 _NormalMap1_UV = (_Time.yy * float2(_WorldPosXY_Speed1X, _WorldPosXY_Speed1Y)) + _worldPosXYScale;
+        float3 _normalSample1 = tex2Dlod(_NormalMap1, float4(_NormalMap1_UV, 0.0, 0.0)).xyz;
+        
+        float2 _NormalMap2_UV = (_Time.yy * float2(_WorldPosXY_Speed2X, _WorldPosXY_Speed2Y)) + _worldPosXYScale;
+        float3 _normalSample2 = tex2Dlod(_NormalMap2, float4(_NormalMap2_UV, 0.0, 0.0)).xyz;
+        
+        float3 _normal1 = UnpackNormalWithScaleNotNormalize(_normalSample1, _NormalScale1);
+        float3 _normal2 = UnpackNormalWithScaleNotNormalize(_normalSample2, _NormalScale1);
+        _surfNormal = normalize(_normal1.xzy + _normal2.xzy);
+    }
     
-    float3 _normalSample1 = tex2Dlod(_NormalMap1, float4(_NormalMap1_UV, 0.0, 0.0)).xyz;
+    float2 _screenPos = i.Varying_NonStereoScreenPos.xy / i.Varying_NonStereoScreenPos.w;
     
-
-    float2 _NormalMap2_UV = (_Time.yy * float2(_WorldPosXY_Speed2X, _WorldPosXY_Speed2Y)) + _worldPosXYScale;
-
-    float3 _normalSample2 = tex2Dlod(_NormalMap2, float4(_NormalMap2_UV, 0.0, 0.0)).xyz;
     
-
-    float3 _normal1 = UnpackNormalWithScaleNotNormalize(_normalSample1, _NormalScale1);
-    float3 _normal2 = UnpackNormalWithScaleNotNormalize(_normalSample2, _NormalScale1);
+    float _depthTextureEyeDepth;
+    {
+        float _rawDepth = tex2D(_CameraDepthTexture, _screenPos).x;
+        _depthTextureEyeDepth = LinearEyeDepth(_rawDepth);
+    }
     
-    float3 _surfNormal = normalize(_normal1.xzy + _normal2.xzy);
-    
-
-    // float _rawDepth = tex2D(_DepthTexture, _screenPos).x;
-    float _rawDepth = tex2D(_CameraDepthTexture, _screenPos).x;
-    float _depthTextureEyeDepth = LinearEyeDepth(_rawDepth);
-
+    // float3 _viewDir = _WorldSpaceCameraPos - _worldPos;
+    // V 是 _WorldSpaceCameraPos - _worldPos
     float _backDotV = i.Varying_ViewDirXYZ_BackDotVW.w;
     float _frontDotV = -_backDotV;
 
@@ -262,50 +275,65 @@ fixed4 frag (v2f i) : SV_Target
     // _lookAtDir * (_depthTextureEyeDepth / dot(_front, _lookAtDir))
     //   注：dot(_front, _lookAtDir) 是 _surfDepth
     float3 _lookThroughAtTerrainDir = _depthTextureEyeDepth / _frontDotV * i.Varying_ViewDirXYZ_BackDotVW.xyz;
-    // _57 = _lookThroughAtTerrainDir;
+
 
     float3 _lookThroughAtTerrainWorldPos = _WorldSpaceCameraPos.xyz + _lookThroughAtTerrainDir;
 
-
-    float3 _viewDir = _WorldSpaceCameraPos.xyz - i.Varying_WorldPosXYZ.xyz;
-
-    float3 _viewDirNormalize = normalize(_viewDir);
+    
+    float3 _viewDirNormalize;
+    float _viewDir_length;
+    {
+        float3 _viewDir = _WorldSpaceCameraPos.xyz - i.Varying_WorldPosXYZ.xyz;
+        _viewDirNormalize = normalize(_viewDir);
+        _viewDir_length = length(_viewDir);
+    }
+    
+    
+    
 
     // float3 _terrainToSurfDir = -i.Varying_ViewDirXYZ_BackDotVW.xyz * (_depthTextureEyeDepth / _frontDotV) + (i.Varying_WorldPosXYZ.xyz - _WorldSpaceCameraPos.xyz);
     // float3 _terrainToSurfDir = -_lookThroughAtTerrainDir + _lookAtDir;
     float3 _lookAtDir = i.Varying_WorldPosXYZ.xyz - _WorldSpaceCameraPos.xyz;
+    
     float3 _terrainToSurfDir = _lookAtDir - _lookThroughAtTerrainDir;
     
     float _terrainToSurfLength = length(_terrainToSurfDir);
 
-    // _clipPos.w 就是 -_viewPos.z
-    // 因为 无论 DX 还是 opengl，UNITY_MATRIX_P[3u] = float4(0, 0, -1, 0)
-    float _surfEyeDepth = i.Varying_NonStereoScreenPos.w + _EyeDepthBias;
+    // 折射
+    float3 _grabTextureSample;
+    float3 _lookThroughDir3;
+    float _terrainMoreEyeDepth4;
+    {
+        // _clipPos.w 就是 -_viewPos.z, -_viewPos.z 就是摄像机正前方向
+        // 因为 无论 DX 还是 opengl，UNITY_MATRIX_P[3u] = float4(0, 0, -1, 0)
+        float _surfEyeDepth = i.Varying_NonStereoScreenPos.w + _EyeDepthBias;
 
-    float _terrainMoreEyeDepth = clamp(_depthTextureEyeDepth - _surfEyeDepth, 0, 1);
+        float _terrainMoreEyeDepth = clamp(_depthTextureEyeDepth - _surfEyeDepth, 0, 1);
 
-    float2 _nonStereoScreenPosOffset = _terrainMoreEyeDepth * _surfNormal.xz * _SurfNormalScale;
-    
-    float2 _screenPos2 = (_nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
+        float2 _nonStereoScreenPosOffset = _terrainMoreEyeDepth * _surfNormal.xz * _SurfNormalScale;
+        
+        float2 _screenPos2 = ( /* _terrainMoreEyeDepth* */ _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
 
-    // float _rawDepth2 = tex2D(_DepthTexture, _screenPos2).x;
-    float _rawDepth2 = tex2D(_CameraDepthTexture, _screenPos2).x;
-    float _depthTextureEyeDepth2 = LinearEyeDepth(_rawDepth2);
+        // float _rawDepth2 = tex2D(_DepthTexture, _screenPos2).x;
+        float _rawDepth2 = tex2D(_CameraDepthTexture, _screenPos2).x;
+        float _depthTextureEyeDepth2 = LinearEyeDepth(_rawDepth2);
 
-    float _terrainMoreEyeDepth2 = clamp(_depthTextureEyeDepth2 - _surfEyeDepth, 0.0, 1.0);
+        float _terrainMoreEyeDepth2 = clamp(_depthTextureEyeDepth2 - _surfEyeDepth, 0.0, 1.0);
 
-    float2 _screenPos3 = (_terrainMoreEyeDepth2 * _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
-    
-    float3 _grabTextureSample = tex2D(_CameraOpaqueTexture, _screenPos3).xyz;
+        float2 _screenPos3 = (_terrainMoreEyeDepth2 * _nonStereoScreenPosOffset + i.Varying_NonStereoScreenPos.xy) / i.Varying_NonStereoScreenPos.w;
+        
+        _grabTextureSample = tex2D(_CameraOpaqueTexture, _screenPos3).xyz;
+        
+        float _rawDepth3 = tex2D(_CameraDepthTexture, _screenPos3).x;
+        float _depthTextureEyeDepth3 = LinearEyeDepth(_rawDepth3);
 
-    // float _rawDepth3 = tex2D(_DepthTexture, _screenPos3).x;
-    float _rawDepth3 = tex2D(_CameraDepthTexture, _screenPos3).x;
-    float _depthTextureEyeDepth3 = LinearEyeDepth(_rawDepth3);
-    
+        _terrainMoreEyeDepth4 = _depthTextureEyeDepth3 - i.Varying_NonStereoScreenPos.w;
 
-    // _lookAtDir * eyeDepth / dot( _lookAtDir, _front)
-    float3 _lookThroughDir3 = i.Varying_ViewDirXYZ_BackDotVW.xyz * _depthTextureEyeDepth3 / _frontDotV;
-    
+        // _lookAtDir * eyeDepth / dot( _lookAtDir, _front)
+        _lookThroughDir3 = i.Varying_ViewDirXYZ_BackDotVW.xyz * _depthTextureEyeDepth3 / _frontDotV;
+    }
+
+
     float3 _lookThroughWorldPos3 = _WorldSpaceCameraPos + _lookThroughDir3;
 
     float3 _back = UNITY_MATRIX_V[2u].xyz;
@@ -444,9 +472,9 @@ fixed4 frag (v2f i) : SV_Target
     // _100 = _grabTextureColor;
 
     
-    float _terrainMoreEyeDepth4 = _depthTextureEyeDepth3 - i.Varying_NonStereoScreenPos.w;
+    
 
-    float _viewDir_length = length(_viewDir);
+    
 
     // > 100 后，100~150 最小值从 0变成10
     float _min_moreEyeDepth4 = clamp(_viewDir_length * 0.2 - 20.0, 0.0, 10.0);
@@ -680,27 +708,7 @@ fixed4 frag (v2f i) : SV_Target
     fixed4 col = fixed4(0,0,0,1);
     col = Output_0;
 
-
-
+    // col = float4(_grabTextureSample.rgb, 1.0);
     
-    // 直接显示 _causticNoise3DResult 结果
-    // col = float4(_causticNoise3DResult, _causticNoise3DResult, _causticNoise3DResult, 1);
-    // col = float4(_causticColor, 1);
-    // col = float4(_glossColorVertex, 1);
-    // col = float4(_glossColor_2, 1);
-    // col = float4(i.Varying_ColorXYW.xyw, 1);
-    // col = float4(frac(_noise2D_R_UV), 0, 1);
-    // col = float4(_noise2D_R_Sample.xxx, 1);
-    // col = float4(_foamLine0.xxx, 1);
-    // col = float4(_foamLineArea_oneMinus.xxx, 1);
-    // col = float4(_foamLineArea.xxx * _foamLine0, 1);
-    // col = float4(_tmp_76.xxx, 1);
-    // col = float4(_tmp_76_1.xxx, 1);
-    // col = float4(_tmp_35.xxx, 1);
-    // col = float4(_lookAtDir_length_OS.xxx, 1);
-    // col = float4(_tmp_64_x.xxx, 1);
-    // col = float4(_tmp_64_y.xxx, 1);
-    // col = float4(_shadowAtten.xxx, 1);
-    // col = float4(_ssrSample.rgb, _ssrSample.a);
     return col;
 }
