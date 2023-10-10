@@ -16,10 +16,10 @@ float4 _Color_Far_2 = float4(0.50353, 0.31069, 0.31797, 1.30           ); //_151
 float4 _GlossColor = float4(2.92204, 1.56181, 0.57585, 1.62808        ); //_151._m8
 #define _151__m9  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
 #define _151__m10 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
-float4 _151__m11 = float4(0.045, 0.00214, 0.00, 0.00              ); // _151._m11
+float4 _DivRefScale = float4(0.045, 0.00214, 0.00, 0.00              ); // _151._m11
 #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-float4 _Color_Far = float4(0.05891, 0.20904, 0.43325, 0.90         ); // _151._m13
-float4 _151__m14 = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m14
+float4 _Color_Base = float4(0.05891, 0.20904, 0.43325, 0.90         ); // _151._m13
+float4 _Color_Height_Add = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m14
 
 
 #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
@@ -27,13 +27,13 @@ float4 _151__m14 = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m1
 #define _151__m17 float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
 float4 _Color_D = float4(1.00, 1.00, 1.00, 16.00                 ); // _151._m18
 #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
-float4 _151__m20 = float4(0.9716, -0.02881, 1.00, 0.00            ); // _151._m20
+float4 _DivRefMax = float4(0.9716, -0.02881, 1.00, 0.00            ); // _151._m20
 #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
 const float4 _WorldPosXY_Offset_Negative = float4(-1934.36584, 0.00, 1266.34216, 0.00     ); // _151._m22
 float4 _Color_C = float4(1.00, 1.00, 1.00, 0.07213               ); // _151._m23
 static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
 #define _151__m25 float4(1.00, 1.00, 1.00, -16.00                ) // _151._m25
-float4 _151__m26 = float4(0.00, 0.00, 0.00, 0.00                  ); // _151._m26
+float4 _ConstTestBaseColor = float4(0.00, 0.00, 0.00, 0.00                  ); // _151._m26
 #define _151__m27 float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m27
 float _CausticScale = 0.25;  // _151._m28
 float _CausticSpeed = 0.131; // _151._m29
@@ -333,121 +333,161 @@ fixed4 frag (v2f i) : SV_Target
         _lookThroughDir3 = i.Varying_ViewDirXYZ_BackDotVW.xyz * _depthTextureEyeDepth3 / _frontDotV;
     }
 
-
+    float _lookThroughDir3_length = length(_lookThroughDir3);
+    float _lookThroughDir3xz_length = length(_lookThroughDir3.xz);
     float3 _lookThroughWorldPos3 = _WorldSpaceCameraPos + _lookThroughDir3;
 
     float3 _back = UNITY_MATRIX_V[2u].xyz;
     float3 _front = -_back;
 
-    float _if_output_A_0 = 0.0;
-    float _if_output_A_1 = 0.0;
-
-    
-    float _lookThroughDir3_length = length(_lookThroughDir3);
-    
-    // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
-    float _lookThroughDir3_length_SO1 = clamp(_lookThroughDir3_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
-    // #define _151__m25 float4(1.00, 1.00, 1.00, -16.00                ) // _151._m25
-    float _lookThroughDir3_length_SO2 = clamp(_lookThroughDir3_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
-    
-
-    float _lerp_127 = lerp(_lookThroughDir3_length_SO1, _lookThroughDir3_length_SO2, _if_output_A_0);
-
-    
-    // y = 0 / 1 \ 0, x ∈ [0, 2]
-    float _lerp_127_curve = _lerp_127 * (-_lerp_127 + 2.0);
-    
-    float _lookThroughDir3xz_length = length(_lookThroughDir3.xz);
-    
-
     // _ProjectionParams.z = far plane
     float _far_plane = _ProjectionParams.z * 0.9999;
     bool _isOutOfFarPlane = dot(_lookThroughDir3, _front) >= _far_plane;
-    // #define _151__m14 float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
-    float _switch_value_1 = _isOutOfFarPlane ? _lerp_127_curve * _151__m14.w : _lerp_127_curve;
-    
-    // #define _151__m17 float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
-    _132 = clamp(_lookThroughDir3xz_length * _151__m17.x + _151__m17.y, 0.0, 1.0);
-    _74 = clamp(_WorldSpaceCameraPos.y * _151__m17.z + _151__m17.w, 0.0, 1.0);
-    
-    float _switch_value_2 = _isOutOfFarPlane ? _74 : _132;
-    
-    // #define _Color_Far_2 float4(0.50353, 0.31069, 0.31797, 1.30           ) //_151._m7
-    // #define _151__m26 float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m26
-    _132 = lerp(_Color_Far_2.w, _151__m26.w, _if_output_A_0);
-    _132 = pow(_switch_value_1 + 1.0e-4, _132);
 
-    // #define _Color_Far float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
-    // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
-    float _min_132 = min(min(_132, _Color_Far.w * _151__m21.x), 1.0);
-    // _132 = _min_132;
     
     
-    // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
-    float _lookThroughDir3y_length_SO = clamp(_lookThroughWorldPos3.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
-    // _139 = _lookThroughDir3y_length_SO;
+    // float _if_output_A_0 = 0.0;
+    // float _if_output_A_1 = 0.0;
+
+
+    float _very_far01;
+    {
+        // y = 0 / 1, x ∈ [0, 1]
+        float _curve_smooth_01;
+        {
+            // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
+            //                                                                    0.00042      -0.00671
+            float _lookThroughDir3_length_SO1 = clamp(_lookThroughDir3_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
+            // #define _151__m25 float4(1.00, 1.00, 1.00, -16.00                ) // _151._m25
+            // float _lookThroughDir3_length_SO2 = clamp(_lookThroughDir3_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
+            
+
+            // float _lerp_127 = lerp(_lookThroughDir3_length_SO1, _lookThroughDir3_length_SO2, _if_output_A_0);
+            float _lerp_127 = _lookThroughDir3_length_SO1;
+            
+            float _lerp_127_curve = _lerp_127 * (-_lerp_127 + 2.0);
+            // #define _Color_Height_Add float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
+            _curve_smooth_01 = _isOutOfFarPlane ? _lerp_127_curve * _Color_Height_Add.w : _lerp_127_curve;
+        }
+
+        // #define _Color_Far_2 float4(0.50353, 0.31069, 0.31797, 1.30           ) //_151._m7
+        // #define _ConstTestBaseColor float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m26
+        // _132 = lerp(_Color_Far_2.w, _ConstTestBaseColor.w, _if_output_A_0);
+
+        // #define _Color_Base float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
+        // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
+        
+        _very_far01 = min(min(
+            pow(_curve_smooth_01 + 1.0e-4, _Color_Far_2.w /* lerp(_Color_Far_2.w, _ConstTestBaseColor.w, _if_output_A_0) */),
+            _Color_Base.w * _151__m21.x),
+            1.0);
+    }
     
-    // y = 0 / 1 \ 0, x ∈ [0, 2]
-    float _lookThroughDir3y_length_SO_curve = _lookThroughDir3y_length_SO * (-_lookThroughDir3y_length_SO + 2.0);
+    float3 _baseColor_77;
+    {
+        // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
+        //                                                                  0.00335      -0.66724
+        float _lookThroughWorldPos3y_SO = clamp(_lookThroughWorldPos3.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
+        
+        // y = 0 / 1, x ∈ [0, 1]
+        float _lookThroughWorldPos3y_SO_curve01 = _lookThroughWorldPos3y_SO * (-_lookThroughWorldPos3y_SO + 2.0);
 
-    // #define _151__m14 float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
-    // #define _Color_Far float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
-    float3 _color_77_0 = _lookThroughDir3y_length_SO_curve * _151__m14.xyz + _Color_Far.xyz;
-    float3 _color_77_1 = lerp(_color_77_0, _151__m26.xyz, _if_output_A_0);
+        // #define _Color_Height_Add float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
+        // #define _Color_Base float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
+        float3 _color_77_0 = _lookThroughWorldPos3y_SO_curve01 * _Color_Height_Add.xyz + _Color_Base.xyz;
+        // float3 _baseColor_77 = lerp(_color_77_0, _ConstTestBaseColor.xyz, _if_output_A_0);
+        float3 _color_77_1 = _color_77_0;
+
+        // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+        // #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
+        //                                                                   1.00           0.00017
+        float _lookThroughDir3_length_OS = clamp((_lookThroughDir3_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
+
+        // 注：这里实际 _151__m16.xyz 影响非常小，因为需要 _lookThroughDir3_length 非常大 接近 > 1000 才有效果
+        _baseColor_77 = lerp(_color_77_1, _151__m16.xyz, _lookThroughDir3_length_OS);
+    }
     
-    // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-    // #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
-    float _lookThroughDir3_length_OS = clamp((_lookThroughDir3_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
-
-    float3 _color_77_2 = lerp(_color_77_1, _151__m16.xyz, _lookThroughDir3_length_OS);
-
-    // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
-    float _lookThroughDir3xz_length_SO = clamp(_lookThroughDir3xz_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
     
-    // #define _151__m11 float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
-    // #define _151__m20 float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
-    float2 _exponent_81 = min(((-_151__m11.xz) * _lookThroughDir3.y) + _151__m20.yw, 80.0) * 1.44269502162933349609375;
-
-    float2 _pow_81 = exp2(_exponent_81);
-
-    float2 _div_80 = (_151__m20.xz - _pow_81) / (_lookThroughDir3.y * _151__m11.xz);
     
-    float2 _switch_80;
-        _switch_80.x = abs(_lookThroughDir3.y * _151__m11.x) > 0.01 ? _div_80.x : _151__m20.x;
-        _switch_80.y = abs(_lookThroughDir3.y * _151__m11.z) > 0.01 ? _div_80.y : _151__m20.z;
 
-    // #define _151__m11 float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
+    
+
+    // #define _DivRefScale float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
+    // #define _DivRefMax float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
+    //                         (0.045, 0.00)                           (-0.02881, 0.00)
+    // float2 _exponent_81 = min(((-_DivRefScale.xz) * _lookThroughDir3.y) + _DivRefMax.yw, 80.0);
+    
+    
+    
+    // exp(a) = exp2(a/ln(2))
+    // 1 / ln(2) ≈ 1.4427f
+    // float2 _e_pow_81 = exp2(_exponent_81 * 1.44269502162933349609375);
+    // float2 _e_pow_81 = exp(_exponent_81);
+    //                (0.9716, 1.00) 
+    // float2 _div_80 = (_DivRefMax.xz - _e_pow_81) / (_lookThroughDir3.y * _DivRefScale.xz);
+
+    // 当 x = 0 时
+    //   0.9716 - pow(E, -0.02881-x) = 0 
+    //   1 - pow(E, 0 - x) = 0
+
+    // 因为 x >= 0，故以边界值 x=0 时为出发，例如设置其最大值为 0.9716
+    // 则伴随的值 -0.02881 通过 -ln(0.9716) 解得
+    // 同理      0.00     通过 -ln(1)      解得
+    // 为了保证 lim(x->0+) 时 d(0.9716 - pow(E, -0.02881 - x))/dx = 1
+    
+    // #define _DivRefMax float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
+    // #define _DivRefScale float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
+    //                         -0.02881                              0.045
+    float _exponent_81_x = min(-log(_DivRefMax.x) /*_DivRefMax.y*/ - (_lookThroughDir3.y * _DivRefScale.x), 80.0);
+    //                                             0.045                     0.9716                                                      0.045             0.9716
+    float _exp_damping_80_x = abs(_lookThroughDir3.y * _DivRefScale.x) > 0.01 ? (_DivRefMax.x - exp(_exponent_81_x)) / (_lookThroughDir3.y * _DivRefScale.x) : _DivRefMax.x;
+    
+    //                          1.0                                  0.0
+    float _exponent_81_y = min(-log(_DivRefMax.z) /*_DivRefMax.w*/ - (_lookThroughDir3.y * _DivRefScale.z), 80.0);
+    //                                             0.0                                                                                   0.0               1.0
+    float _exp_damping_80_y = abs(_lookThroughDir3.y * _DivRefScale.z) > 0.01 ? (_DivRefMax.z - exp(_exponent_81_y)) / (_lookThroughDir3.y * _DivRefScale.z) : _DivRefMax.z;
+    
+
+    // #define _DivRefScale float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
     // #define _Color_C float4(1.00, 1.00, 1.00, 0.07213               ) // _151._m23
-    float _lerp_140 = lerp(_151__m11.y, _Color_C.w, _if_output_A_1);
+    // float _lerp_140 = lerp(_DivRefScale.y, _Color_C.w, _if_output_A_1);
+    float _lerp_140 = _DivRefScale.y;
     
     float _tmp_114;
     {
         _tmp_114 = _lookThroughDir3_length * _lerp_140;
-        _tmp_114 = _tmp_114 * (-_switch_80.x);
+        _tmp_114 = _tmp_114 * (-_exp_damping_80_x);
         _tmp_114 = exp2(_tmp_114);
         _tmp_114 = (-_tmp_114) + 1.0;
         _tmp_114 = max(_tmp_114, 0.0);
     }
 
+    float _lerp_127_1_curve;
+    {
+        // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+        //                                                                    0.00391       -0.0625
+        float _lookThroughDir3_length_SO_1 = clamp(_lookThroughDir3_length * _151__m12.x + _151__m12.y, 0, 1);
+        
+        // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
+        float _lookThroughDir3_length_SO_2 = clamp(_lookThroughDir3_length * _151__m24.x + _151__m24.y, 0, 1);
+        
+
+        // float _lerp_127_1 = lerp(_lookThroughDir3_length_SO_1, _lookThroughDir3_length_SO_2, _if_output_A_1);
+        float _lerp_127_1 = _lookThroughDir3_length_SO_1;
+
+        // y = -1 / 0, x ∈ [0, 1]
+        _lerp_127_1_curve = (_lerp_127_1 * (2.0-_lerp_127_1)) + (-1.0);
+    }
+
+
     // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-    float _lookThroughDir3_length_SO_1 = clamp(_lookThroughDir3_length * _151__m12.x + _151__m12.y, 0, 1);
+    // float _lerp_80 = lerp(_151__m12.z, _151__m25.x, _if_output_A_1);
+    float _lerp_80 = _151__m12.z; // 1.00
     
-    // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
-    float _lookThroughDir3_length_SO_2 = clamp(_lookThroughDir3_length * _151__m24.x + _151__m24.y, 0, 1);
-    
-
-    float _lerp_127_1 = lerp(_lookThroughDir3_length_SO_1, _lookThroughDir3_length_SO_2, _if_output_A_1);
-    
-    // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-    float _lerp_80 = lerp(_151__m12.z, _151__m25.x, _if_output_A_1);
-
-    // y = 1 \ -1 / 1, x ∈ [-1, 1]
-    float _lerp_127_1_curve = (_lerp_127_1 * (2.0-_lerp_127_1)) + (-1.0);
-    
-    float _min_114 = min(_Color_Far.w, _tmp_114 * (_lerp_80 * _lerp_127_1_curve + 1.0));
+    float _min_114 = min(_Color_Base.w, _tmp_114 * (_lerp_80 * _lerp_127_1_curve + 1.0));
     
 
-    float _max_80 = max(0.0, 1.0-exp2(-_lookThroughDir3_length * _151__m11.w * _switch_80.y));
+    float _max_80 = max(0.0, 1.0-exp2(-_lookThroughDir3_length * _DivRefScale.w * _exp_damping_80_y));
     
     
     // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
@@ -456,15 +496,25 @@ fixed4 frag (v2f i) : SV_Target
     // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
     float _min_138 = min((2.0-_lookThroughDir3_length_SO) * _lookThroughDir3_length_SO * _max_80, _151__m21.y);
 
-
-    float _vec2_76_x = _switch_value_2 * _min_114;
+    // #define _151__m17 float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
+    float _lookThroughDir3xz_length_SO_0 = clamp(_lookThroughDir3xz_length * _151__m17.x + _151__m17.y, 0.0, 1.0);
+    float _WorldSpaceCameraPosY_SO = clamp(_WorldSpaceCameraPos.y * _151__m17.z + _151__m17.w, 0.0, 1.0);
+    
+    float _curve_10 = _isOutOfFarPlane ? _WorldSpaceCameraPosY_SO : _lookThroughDir3xz_length_SO_0;
+    
+    float _vec2_76_x = _curve_10 * _min_114;
+    
+    // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
+    //                                                                       -0.01         2.50 
+    float _lookThroughDir3xz_length_SO = clamp(_lookThroughDir3xz_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
     float _vec2_76_y = _lookThroughDir3xz_length_SO * _min_138;
 
-    float3 _color_81 = lerp(_Color_Far_2.xyz, _Color_C.xyz, _if_output_A_1);
+    // float3 _color_81 = lerp(_Color_Far_2.xyz, _Color_C.xyz, _if_output_A_1);
+    float3 _color_81 = _Color_Far_2.xyz;
 
-    float3 _color_76 = _Color_D.xyz * _vec2_76_y + _vec2_76_x * _color_81  + (1 - _vec2_76_x) * (_min_132 * _color_77_2);
+    float3 _color_76 = _Color_D.xyz * _vec2_76_y + _vec2_76_x * _color_81  + (1 - _vec2_76_x) * (_very_far01 * _baseColor_77);
 
-    float3 _grabTextureSample_Mod = max((_grabTextureSample + -_color_76)/max((1-_vec2_76_y) * (1-_vec2_76_x) * (1-_min_132), 1e-4), (0.0));
+    float3 _grabTextureSample_Mod = max((_grabTextureSample + -_color_76)/max((1-_vec2_76_y) * (1-_vec2_76_x) * (1-_very_far01), 1e-4), (0.0));
 
     
     // #define _GrabTextureFade 0.00      // _151._m59
@@ -634,24 +684,24 @@ fixed4 frag (v2f i) : SV_Target
 
     float _surfEyeDepth2 = -dot(_lookAtDir, _back);
 
-    float _switch_value_3 = _surfEyeDepth2 >= _far_plane ? _lookAtDir_lenght_SO_curve * _151__m14.w : _lookAtDir_lenght_SO_curve;
-    float _switch_value_4 = _surfEyeDepth2 >= _far_plane ? _74 : _lookAtDirXZ_length_SO_1;
+    float _switch_value_3 = _surfEyeDepth2 >= _far_plane ? _lookAtDir_lenght_SO_curve * _Color_Height_Add.w : _lookAtDir_lenght_SO_curve;
+    float _switch_value_4 = _surfEyeDepth2 >= _far_plane ? _WorldSpaceCameraPosY_SO : _lookAtDirXZ_length_SO_1;
 
-    float _tmp_35 = lerp(_Color_Far_2.w, _151__m26.w, _if_output_B_0);
+    float _tmp_35 = lerp(_Color_Far_2.w, _ConstTestBaseColor.w, _if_output_B_0);
 
     float _swtich_value_3_pow = pow(_switch_value_3 + 1e-4, _tmp_35);
     
     // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
-    float _tmp_35_1 = min(1.0, min(_Color_Far.w * _151__m21.x, _swtich_value_3_pow));
+    float _tmp_35_1 = min(1.0, min(_Color_Base.w * _151__m21.x, _swtich_value_3_pow));
 
     float _worldPosY_SO = clamp(i.Varying_WorldPosXYZ.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
     
     // y = 0 / 1, x ∈ [0, 1]
     float _worldPosY_SO_curve = (-_worldPosY_SO + 2.0) * _worldPosY_SO;
 
-    float3 _color_57 = (_worldPosY_SO_curve * _151__m14.xyz) + _Color_Far.xyz;
+    float3 _color_57 = (_worldPosY_SO_curve * _Color_Height_Add.xyz) + _Color_Base.xyz;
 
-    float3 _color_57_1 = lerp(_color_57, _151__m26.xyz, _if_output_B_0.x);
+    float3 _color_57_1 = lerp(_color_57, _ConstTestBaseColor.xyz, _if_output_B_0.x);
 
     float _lookAtDir_length_OS = clamp((_lookAtDir_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
 
@@ -659,20 +709,20 @@ fixed4 frag (v2f i) : SV_Target
 
     float _lookAtDirXZ_length_SO = clamp(_lookAtDirXZ_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
 
-    float _lerp_109 = lerp(_151__m11.y, _Color_C.w, _if_output_B_1);
+    float _lerp_109 = lerp(_DivRefScale.y, _Color_C.w, _if_output_B_1);
 
-    float2 _tmp_64 = _lookAtDir.y * _151__m11.xz;
+    float2 _tmp_64 = _lookAtDir.y * _DivRefScale.xz;
 
     // exp(a) = exp2(a/ln(2))
     // 1 / ln(2) ≈ 1.4427f
     // _66.xy = exp2(_66.xy / log(2));
-    _66.xy = exp(min((-_151__m11.xz) * _lookAtDir.y + _151__m20.yw, 80.0));
+    _66.xy = exp(min((-_DivRefScale.xz) * _lookAtDir.y + _DivRefMax.yw, 80.0));
 
-    _66.xy = (-_66.xy) + _151__m20.xz;;
+    _66.xy = (-_66.xy) + _DivRefMax.xz;;
     
 
-    float _tmp_64_x = abs(_tmp_64.x) > 0.01 ? _66.x / _tmp_64.x : _151__m20.x;
-    float _tmp_64_y = abs(_tmp_64.y) > 0.01 ? _66.y / _tmp_64.y : _151__m20.z;
+    float _tmp_64_x = abs(_tmp_64.x) > 0.01 ? _66.x / _tmp_64.x : _DivRefMax.x;
+    float _tmp_64_y = abs(_tmp_64.y) > 0.01 ? _66.y / _tmp_64.y : _DivRefMax.z;
 
 
     float _max_109 = max(1.0 - exp2(_lerp_109 * _lookAtDir_length * (-_tmp_64_x)), 0.0);
@@ -688,7 +738,7 @@ fixed4 frag (v2f i) : SV_Target
 
     float _lerp_76 = lerp(1.0, _lookAtDir_length_SO_A_curve, lerp(_151__m12.z, _151__m25.x, _if_output_B_1)) * _max_109;
 
-    float _min_109 = min(_lerp_76, _Color_Far.w);
+    float _min_109 = min(_lerp_76, _Color_Base.w);
 
     float _lookAtDir_length_SO = clamp((_lookAtDir_length * _151__m19.x) + _151__m19.y, 0, 1);
 
@@ -696,7 +746,7 @@ fixed4 frag (v2f i) : SV_Target
     // y = 0 / 1, x ∈ [0, 1]
     float _lookAtDir_length_SO_curve = ((-_lookAtDir_length_SO) + 2.0) * _lookAtDir_length_SO;
 
-    float _max_76 = max(0.0, 1.0 - exp2(_lookAtDir_length * _151__m11.w * (-_tmp_64_y))) * _lookAtDir_length_SO_curve;
+    float _max_76 = max(0.0, 1.0 - exp2(_lookAtDir_length * _DivRefScale.w * (-_tmp_64_y))) * _lookAtDir_length_SO_curve;
 
     float _76_x = _switch_value_4 * _min_109;
     float _76_y = _lookAtDirXZ_length_SO * min(_max_76, _151__m21.y);
@@ -709,6 +759,11 @@ fixed4 frag (v2f i) : SV_Target
     col = Output_0;
 
     // col = float4(_grabTextureSample.rgb, 1.0);
+    // col = float4(_very_far01.xxx, 1.0);
+    // col = float4(_lookThroughWorldPos3y_SO_curve01.xxx, 1.0);
+    // col = float4(_baseColor_77.rgb, 1.0);
+    // col = float4(_switch_80.xxx, 1.0);
+    // col = float4(_switch_80.yyy, 1.0);
     
     return col;
 }
