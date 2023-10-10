@@ -313,6 +313,29 @@ fixed4 frag (v2f i) : SV_Target
 
     float _if_output_A_0 = 0.0;
     float _if_output_A_1 = 0.0;
+    // const float4 _WorldPosXY_Offset_Negative = float4(-1934.36584, 0.00, 1266.34216, 0.00     ); // _151._m22
+    // if (0.01 < _WorldPosXY_Offset_Negative.w)
+    // {
+    //     float _local_127;
+    //     // #define _151__m27 float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m27
+    //     if (_151__m27.y < 0.5)
+    //     {
+    //         // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
+    //         float3 _tmpVec3 = _lookThroughWorldPos3.xyz + (-_WorldPosXY_Offset_Negative.xyz);
+    //         float _local_135 = 1.0 - clamp(length(_tmpVec3) * _151__m24.z + _151__m24.w, 0.0, 1.0);
+    //         _local_127 = _local_135 * _local_135;
+    //     }
+    //     else
+    //     {
+    //         float _tmpFloat = _lookThroughWorldPos3.y + (-_WorldPosXY_Offset_Negative.y);
+    //         _local_127 = smoothstep(0, 1, _tmpFloat / _WorldPosXY_Offset_Negative.w);
+    //     }
+    //
+    //     // #define _151__m27 float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m27
+    //     _if_output_A_0 = _local_127 * float(0.05 <= _151__m27.x);
+    //     _if_output_A_1 = _local_127 * float(_151__m27.x <= 0.95);
+    // }
+    //
 
     
     float _lookThroughDir3_length = length(_lookThroughDir3);
@@ -525,7 +548,87 @@ fixed4 frag (v2f i) : SV_Target
     float3 _waterColor0 = lerp(_transmissionSurfColor, _waterBottomDarkColor0, _waterBottomDarkFactor);
 
     float3 _if_waterColor = _waterColor0;
+
     
+    // #define _DebugValueMaybe 0.00      // _151._m58
+    // #define _151__m50 float4(0.00, 0.00, 0.00, 0.00) // _151._m50
+    // bool __tmp = 0.0 != _151__m50.x && 0.0 != _DebugValueMaybe;
+    // if (__tmp)
+    // {
+    //     // 这部分是不是调试用的？ 暂时不逆向
+    //     
+    //     _57 = max(_waterColor0, (9.9999997473787516355514526367188e-05));
+    //     // _100 = i.Varying_WorldPosXYZ.yyy * _Matrix_custom_V_maybe[1u].xyz;
+    //     // _100 = (_Matrix_custom_V_maybe[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _100;
+    //     // _100 = (_Matrix_custom_V_maybe[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _100;
+    //     // _100 += _Matrix_custom_V_maybe[3u].xyz;
+    //
+    //     float3 _customViewPos = mul(_Matrix_custom_V_maybe, float4(i.Varying_WorldPosXYZ.xyz, 1.0)).xyz;
+    //     _100 = _customViewPos;
+    //
+    //     
+    //     _77.xy = (i.Varying_WorldPosXYZ.xz * _151__m56.xy) + _151__m56.zw;
+    //
+    //     
+    //     _101 = tex3D(_Noise3DMap, _customViewPos).x;
+    //
+    //     
+    //     _116 = tex2D(_21_sampler2D, _77.xy).x;
+    //     _100.x = (_101 * _151__m52[1u].z) + _151__m52[1u].w;
+    //     _100.x = clamp(_100.x, 0.0, 1.0);
+    //     _77 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[0u].xyz;
+    //     _132 = dot(_77, _77);
+    //     _132 = sqrt(_132);
+    //     _132 = (_132 * _151__m52[1u].x) + _151__m52[1u].y;
+    //     _132 = clamp(_132, 0.0, 1.0);
+    //     _100.x = _132 * _100.x;
+    //     _100.x = _116 * _100.x;
+    //     _114 = dot(_57, float3(0.21267290413379669189453125, 0.715152204036712646484375, 0.072175003588199615478515625));
+    //     _77 = _57 + (-(_114));
+    //     _81 = (_151__m53[0u].xyz * _77) + (_114);
+    //     _81 = max(_81, (0.0));
+    //     _81 = log2(_81);
+    //     _85.x = _81.x * _151__m53[0u].w;
+    //     _85.y = _81.y * _151__m53[1u].w;
+    //     _85.z = _81.z * _151__m53[2u].w;
+    //     _81 = exp2(_85);
+    //     _81 = (_81 * _151__m53[1u].xyz) + _151__m53[2u].xyz;
+    //     _134 = 1 < _151__m51;
+    //     if (_134)
+    //     {
+    //         _134 = _100.x < 0.00196078442968428134918212890625;
+    //         if (_134)
+    //         {
+    //             _85 = i.Varying_WorldPosXYZ.yyy * _151__m55[1u].xyz;
+    //             _85 = (_151__m55[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _85;
+    //             _85 = (_151__m55[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _85;
+    //             _85 += _151__m55[3u].xyz;
+    //             _86 = (i.Varying_WorldPosXYZ.xz * _151__m57.xy) + _151__m57.zw;
+    //             _133 = tex3D(_20_sampler3D, _85).x;
+    //             _142 = tex2D(_22_sampler2D, _86).x;
+    //             _132 = (_133 * _151__m52[3u].z) + _151__m52[3u].w;
+    //             _132 = clamp(_132, 0.0, 1.0);
+    //             _85 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[2u].xyz;
+    //             _143 = dot(_85, _85);
+    //             _143 = sqrt(_143);
+    //             _143 = (_143 * _151__m52[3u].x) + _151__m52[3u].y;
+    //             _143 = clamp(_143, 0.0, 1.0);
+    //             _132 *= _143;
+    //             _100.x = _142 * _132;
+    //             _77 = (_151__m53[3u].xyz * _77) + (_114);
+    //             _77 = max(_77, (0.0));
+    //             _77 = log2(_77);
+    //             _85.x = _77.x * _151__m53[3u].w;
+    //             _85.y = _77.y * _151__m53[4u].w;
+    //             _85.z = _77.z * _151__m53[5u].w;
+    //             _77 = exp2(_85);
+    //             _81 = (_77 * _151__m53[4u].xyz) + _151__m53[5u].xyz;
+    //         }
+    //     }
+    //     _77 = (-_57) + _81;
+    //     _if_waterColor = (_100.xxx * _77) + _57;
+    // }
+
     float3 _surfNormal2 = normalize(_surfNormal.xyz * _SurfNormalScale2.xzy);
 
     float3 _reflectDir = normalize(reflect(-_viewDirNormalize, _surfNormal2));
@@ -583,12 +686,132 @@ fixed4 frag (v2f i) : SV_Target
    
 
     float _output_alpha = clamp(_terrainMoreEyeDepth4_amend * _WaterAlpha, 0.0, 1.0) * i.Varying_ColorXYW.w;
+
+    // bool __tmp2 = _DebugValueMaybe == 1.0;
+    // if (__tmp2)
+    // {
+    //     _41 = i.Varying_WorldPosXYZ.yyy * _Matrix_custom_V_maybe[1u].xyz;
+    //     _41 = (_Matrix_custom_V_maybe[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _41;
+    //     _41 = (_Matrix_custom_V_maybe[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _41;
+    //     _41 += _Matrix_custom_V_maybe[3u].xyz;
+    //     float2 _2560 = (i.Varying_WorldPosXYZ.xz * _151__m56.xy) + _151__m56.zw;
+    //     _47 = float3(_2560.x, _2560.y, _47.z);
+    //     _42 = tex3D(_Noise3DMap, _41).x;
+    //     _90 = tex2D(_21_sampler2D, _47.xy).x;
+    //     _41.x = (_42 * _151__m52[1u].z) + _151__m52[1u].w;
+    //     _41.x = clamp(_41.x, 0.0, 1.0);
+    //     _47 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[0u].xyz;
+    //     _105.x = dot(_47, _47);
+    //     _105.x = sqrt(_105.x);
+    //     _105.x = (_105.x * _151__m52[1u].x) + _151__m52[1u].y;
+    //     _105.x = clamp(_105.x, 0.0, 1.0);
+    //     _41.x = _105.x * _41.x;
+    //     _41.x = _90 * _41.x;
+    //     _91 = 1 < _151__m51;
+    //     if (_91)
+    //     {
+    //         _107 = _41.x < 0.00196078442968428134918212890625;
+    //         if (_107)
+    //         {
+    //             _47 = i.Varying_WorldPosXYZ.yyy * _151__m55[1u].xyz;
+    //             _47 = (_151__m55[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _47;
+    //             _47 = (_151__m55[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _47;
+    //             _47 += _151__m55[3u].xyz;
+    //             _105 = (i.Varying_WorldPosXYZ.xz * _151__m57.xy) + _151__m57.zw;
+    //             _49 = tex3D(_20_sampler3D, _47).x;
+    //             _106 = tex2D(_22_sampler2D, _105).x;
+    //             _123 = (_49 * _151__m52[3u].z) + _151__m52[3u].w;
+    //             _123 = clamp(_123, 0.0, 1.0);
+    //             _47 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[2u].xyz;
+    //             _47.x = dot(_47, _47);
+    //             _47.x = sqrt(_47.x);
+    //             _47.x = (_47.x * _151__m52[3u].x) + _151__m52[3u].y;
+    //             _47.x = clamp(_47.x, 0.0, 1.0);
+    //             _123 *= _47.x;
+    //             _105.x = _106 * _123;
+    //         }
+    //         else
+    //         {
+    //             _105.x = _41.x;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         _105.x = _41.x;
+    //     }
+    //
+    //     _if_waterColor_5 = lerp(_waterColor_4, _waterColor_4 * _151__m88.xyz, _105.x);
+    //     if (_91)
+    //     {
+    //         _91 = _41.x < 0.00196078442968428134918212890625;
+    //         if (_91)
+    //         {
+    //             _89 = i.Varying_WorldPosXYZ.yyy * _151__m55[1u].xyz;
+    //             _89 = (_151__m55[0u].xyz * i.Varying_WorldPosXYZ.xxx) + _89;
+    //             _89 = (_151__m55[2u].xyz * i.Varying_WorldPosXYZ.zzz) + _89;
+    //             _89 += _151__m55[3u].xyz;
+    //             float2 _2793 = (i.Varying_WorldPosXYZ.xz * _151__m57.xy) + _151__m57.zw;
+    //             _47 = float3(_2793.x, _2793.y, _47.z);
+    //             _90 = tex3D(_20_sampler3D, _89).x;
+    //             _106 = tex2D(_22_sampler2D, _47.xy).x;
+    //             _89.x = (_90 * _151__m52[3u].z) + _151__m52[3u].w;
+    //             _89.x = clamp(_89.x, 0.0, 1.0);
+    //             _47 = (-i.Varying_WorldPosXYZ.xyz) + _151__m52[2u].xyz;
+    //             _123 = dot(_47, _47);
+    //             _123 = sqrt(_123);
+    //             _123 = (_123 * _151__m52[3u].x) + _151__m52[3u].y;
+    //             _123 = clamp(_123, 0.0, 1.0);
+    //             _89.x = _123 * _89.x;
+    //             _41.x = _106 * _89.x;
+    //         }
+    //     }
+    //
+    //     Output_0.w = lerp(_output_alpha, _output_alpha * _151__m89, _41.x);
+    // }
+    // else
+    // {
+        Output_0.w = _output_alpha;
+    // }
     
-    Output_0.w = _output_alpha;
-    
+
     float _if_output_B_0 = 0;
     float _if_output_B_1 = 0;
     
+    // if (0.01 < _WorldPosXY_Offset_Negative.w)
+    // {
+    //     _125 = _151__m27.y < 0.5;
+    //     if (_125)
+    //     {
+    //         _47 = i.Varying_WorldPosXYZ.xyz + (-_WorldPosXY_Offset_Negative.xyz);
+    //         _123 = dot(_47, _47);
+    //         _123 = sqrt(_123);
+    //         _123 = (_123 * _151__m24.z) + _151__m24.w;
+    //         _123 = clamp(_123, 0.0, 1.0);
+    //         _123 = (-_123) + 1.0;
+    //         _76.x = _123 * _123;
+    //     }
+    //     else
+    //     {
+    //         _123 = i.Varying_WorldPosXYZ.y + (-_WorldPosXY_Offset_Negative.y);
+    //         _47.x = 1.0 / _WorldPosXY_Offset_Negative.w;
+    //         _123 *= _47.x;
+    //         _123 = clamp(_123, 0.0, 1.0);
+    //         _47.x = (_123 * (-2.0)) + 3.0;
+    //         _123 *= _123;
+    //         _75 = _123 * _47.x;
+    //         _76.x = _75;
+    //     }
+    //     _125 = _151__m27.x >= 0.05;
+    //     _123 = float(_125);
+    //     _123 *= _76.x;
+    //     _50 = 0.95 >= _151__m27.x;
+    //     _47.x = float(_50);
+    //     _47.x *= _76.x;
+    //     _if_output_B_0 = _123;
+    //     _if_output_B_1 = _47.x;
+    // }
+
+
     float _lookAtDir_length = length(_lookAtDir);
 
     float _lookAtDir_length_SO_1 = clamp(_lookAtDir_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
@@ -679,10 +902,6 @@ fixed4 frag (v2f i) : SV_Target
     
     fixed4 col = fixed4(0,0,0,1);
     col = Output_0;
-
-
-
-    
     // 直接显示 _causticNoise3DResult 结果
     // col = float4(_causticNoise3DResult, _causticNoise3DResult, _causticNoise3DResult, 1);
     // col = float4(_causticColor, 1);
