@@ -272,6 +272,10 @@ Material:
     - _Color_Height_Add: {r: 0.27672, g: 0.01464, b: -0.23447, a: 0}
     - _DivRefMax: {r: 0.9716, g: -0.02881, b: 1, a: 0}
     - _DivRefScale: {r: 0.045, g: 0.00214, b: 0, a: 0}
+    - _ExpDampingScaleXZ: {r: 0.045, g: 0.00214, b: 0, a: 0}
+    - _ExpDampingStartXZ: {r: 0.9716, g: -0.02881, b: 1, a: 0}
+    - _ExpYDampingScaleXZ: {r: 0.9716, g: -0.02881, b: 1, a: 0}
+    - _ExpYDampingStartXZ: {r: 0.9716, g: -0.02881, b: 1, a: 0}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 2.92204, g: 1.56181, b: 0.57585, a: 1.62808}
     - _GlossColorAdd: {r: 0.04413, g: 0.03476, b: 0.0106, a: 1}

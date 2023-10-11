@@ -200,37 +200,6 @@ fixed4 frag (v2f i) : SV_Target
 {
     float4 Output_0;
     
-    float3 _41;
-    float _42;
-    float3 _47;
-    float _49;
-    bool _50;
-    float3 _57;
-    float4 _66;
-    float _74;
-    float _75;
-    float3 _76;
-    float3 _77;
-    float3 _81;
-    float3 _85;
-    float2 _86;
-    float3 _89;
-    float _90;
-    bool _91;
-    float3 _100;
-    float _101;
-    float2 _105;
-    float _106;
-    bool _107;
-    float _114;
-    float _116;
-    float _123;
-    bool _125;
-    float _132;
-    float _133;
-    bool _134;
-    float _142;
-    float _143;
 
     float3 _worldPos = i.Varying_WorldPosXYZ.xyz;
 
@@ -247,6 +216,7 @@ fixed4 frag (v2f i) : SV_Target
     
     float3 _glossColor1;
     {
+        float3 _89;
         // #define _151__m49 float4(0.00, 0.00, 0.00, 0.00) // _151._m49
         _89.x = 1.0 / (dot(_lightDir, _lightDir) * _151__m49.x + 1.0);
         _89.x = clamp(lerp(-0.04, 1.0, _89.x), 0.0, 1.0);
@@ -354,125 +324,89 @@ fixed4 frag (v2f i) : SV_Target
         _lookThroughDir3 = i.Varying_ViewDirXYZ_BackDotVW.xyz * _depthTextureEyeDepth3 / _frontDotV;
     }
 
-    float _lookThroughDir3_length = length(_lookThroughDir3);
-    float _lookThroughDir3xz_length = length(_lookThroughDir3.xz);
-    float3 _lookThroughWorldPos3 = _WorldSpaceCameraPos + _lookThroughDir3;
+
 
     float3 _back = UNITY_MATRIX_V[2u].xyz;
     float3 _front = -_back;
 
     // _ProjectionParams.z = far plane
     float _far_plane = _ProjectionParams.z * 0.9999;
-    bool _isOutOfFarPlane = dot(_lookThroughDir3, _front) >= _far_plane;
-
-    
-    
-    // float _if_output_A_0 = 0.0;
-    // float _if_output_A_1 = 0.0;
-
-
-    float _very_far01;
-    {
-        // y = 0 / 1, x ∈ [0, 1]
-        float _curve_smooth_01;
-        {
-            // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
-            //                                                                    0.00042      -0.00671
-            float _lookThroughDir3_length_SO1 = clamp(_lookThroughDir3_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
-            // #define _151__m25 float4(1.00, 1.00, 1.00, -16.00                ) // _151._m25
-            // float _lookThroughDir3_length_SO2 = clamp(_lookThroughDir3_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
-            
-
-            // float _lerp_127 = lerp(_lookThroughDir3_length_SO1, _lookThroughDir3_length_SO2, _if_output_A_0);
-            float _lerp_127 = _lookThroughDir3_length_SO1;
-            
-            float _lerp_127_curve = _lerp_127 * (-_lerp_127 + 2.0);
-            // #define _Color_Height_Add float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
-            _curve_smooth_01 = _isOutOfFarPlane ? _lerp_127_curve * _Color_Height_Add.w : _lerp_127_curve;
-        }
-
-        // #define _Color_Far_1 float4(0.50353, 0.31069, 0.31797, 1.30           ) //_151._m7
-        // #define _ConstTestBaseColor float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m26
-        // _132 = lerp(_Color_Far_1.w, _ConstTestBaseColor.w, _if_output_A_0);
-
-        // #define _Color_Base float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
-        // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
-        
-        _very_far01 = min(min(
-            pow(_curve_smooth_01 + 1.0e-4, _Color_Far_1.w /* lerp(_Color_Far_1.w, _ConstTestBaseColor.w, _if_output_A_0) */),
-            _Color_Base.w * _151__m21.x),
-            1.0);
-    }
-    
-    float3 _baseColor_77;
-    {
-        // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
-        //                                                                  0.00335      -0.66724
-        float _lookThroughWorldPos3y_SO = clamp(_lookThroughWorldPos3.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
-        
-        // y = 0 / 1, x ∈ [0, 1]
-        float _lookThroughWorldPos3y_SO_curve01 = _lookThroughWorldPos3y_SO * (-_lookThroughWorldPos3y_SO + 2.0);
-
-        // #define _Color_Height_Add float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
-        // #define _Color_Base float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
-        float3 _color_77_0 = _lookThroughWorldPos3y_SO_curve01 * _Color_Height_Add.xyz + _Color_Base.xyz;
-        // float3 _baseColor_77 = lerp(_color_77_0, _ConstTestBaseColor.xyz, _if_output_A_0);
-        float3 _color_77_1 = _color_77_0;
-
-        // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-        // #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
-        //                                                                   1.00           0.00017
-        float _lookThroughDir3_length_OS = clamp((_lookThroughDir3_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
-
-        // 注：这里实际 _151__m16.xyz 影响非常小，因为需要 _lookThroughDir3_length 非常大 接近 > 1000 才有效果
-        _baseColor_77 = lerp(_color_77_1, _151__m16.xyz, _lookThroughDir3_length_OS);
-    }
     
 
-    // #define _ExpDampingStartXZ float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
-    // #define _ExpDampingScaleXZ float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
-
-    // 自变量变化速度 0.045 倍，从 0.9716 开始衰减
-    //                                                             0.045                     0.9716
-    float _exp_damping_80_1 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
-    // 自变量变化速度     0 倍，从      1 开始衰减
-    //                                                             0.00                      1.00
-    float _exp_damping_80_2 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
-    
-    
-    // float _lerp_140 = lerp(_ExpDampingScaleXZ.y, _Color_C.w, _if_output_A_1);
-    float _lerp_140 = _ExpDampingScaleXZ.y;
-    
-    float _exp_damping_tmp_114;
-    {
-        //                                    0.00214
-        _exp_damping_tmp_114 = _lookThroughDir3_length * _lerp_140;
-        _exp_damping_tmp_114 = _exp_damping_tmp_114 * (-_exp_damping_80_1);
-        _exp_damping_tmp_114 = 1.0 - exp2(_exp_damping_tmp_114);
-        _exp_damping_tmp_114 = max(_exp_damping_tmp_114, 0.0);
-    }
-
-    float _lookThroughDir3_length_SO_curve_01;
-    {
-        // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-        //                                                                    0.00391       -0.0625
-        float _lookThroughDir3_length_SO_1 = clamp(_lookThroughDir3_length * _151__m12.x + _151__m12.y, 0, 1);
-        
-        // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
-        // float _lookThroughDir3_length_SO_2 = clamp(_lookThroughDir3_length * _151__m24.x + _151__m24.y, 0, 1);
-        
-        // float _lerp_127_1 = lerp(_lookThroughDir3_length_SO_1, _lookThroughDir3_length_SO_2, _if_output_A_1);
-        float _lerp_127_1 = _lookThroughDir3_length_SO_1;
-
-        // y = -1 / 0, x ∈ [0, 1]
-        _lookThroughDir3_length_SO_curve_01 = _lerp_127_1 * (2.0-_lerp_127_1);
-    }
 
     //                                                               -0.001        1.19927
     float _WorldSpaceCameraPosY_SO = clamp(_WorldSpaceCameraPos.y * _151__m17.z + _151__m17.w, 0.0, 1.0);
 
     float3 _grabTextureColor;
     {
+        float _lookThroughDir3_length = length(_lookThroughDir3);
+        float _lookThroughDir3xz_length = length(_lookThroughDir3.xz);
+        float3 _lookThroughWorldPos3 = _WorldSpaceCameraPos + _lookThroughDir3;
+        
+        bool _isOutOfFarPlane = dot(_lookThroughDir3, _front) >= _far_plane;
+        
+        float3 _baseColor_77;
+        {
+            // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
+            //                                                                  0.00335      -0.66724
+            float _lookThroughWorldPos3y_SO = clamp(_lookThroughWorldPos3.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
+            
+            // y = 0 / 1, x ∈ [0, 1]
+            float _lookThroughWorldPos3y_SO_curve01 = _lookThroughWorldPos3y_SO * (-_lookThroughWorldPos3y_SO + 2.0);
+
+            // #define _Color_Height_Add float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
+            // #define _Color_Base float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
+            float3 _color_77_0 = _lookThroughWorldPos3y_SO_curve01 * _Color_Height_Add.xyz + _Color_Base.xyz;
+            // float3 _baseColor_77 = lerp(_color_77_0, _ConstTestBaseColor.xyz, _if_output_A_0);
+            float3 _color_77_1 = _color_77_0;
+
+            // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+            // #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
+            //                                                                   1.00           0.00017
+            float _lookThroughDir3_length_OS = clamp((_lookThroughDir3_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
+
+            // 注：这里实际 _151__m16.xyz 影响非常小，因为需要 _lookThroughDir3_length 非常大 接近 > 1000 才有效果
+            _baseColor_77 = lerp(_color_77_1, _151__m16.xyz, _lookThroughDir3_length_OS);
+        }
+        
+        // #define _ExpDampingStartXZ float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
+        // #define _ExpDampingScaleXZ float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
+
+        // 自变量变化速度 0.045 倍，从 0.9716 开始衰减
+        //                                                             0.045                     0.9716
+        float _exp_damping_80_1 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
+        // 自变量变化速度     0 倍，从      1 开始衰减
+        //                                                             0.00                      1.00
+        float _exp_damping_80_2 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
+        
+        // float _lerp_140 = lerp(_ExpDampingScaleXZ.y, _Color_C.w, _if_output_A_1);
+        float _lerp_140 = _ExpDampingScaleXZ.y;
+        
+        float _lookThroughDir3_length_SO_curve_01;
+        {
+            // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+            //                                                                    0.00391       -0.0625
+            float _lookThroughDir3_length_SO_1 = clamp(_lookThroughDir3_length * _151__m12.x + _151__m12.y, 0, 1);
+            
+            // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
+            // float _lookThroughDir3_length_SO_2 = clamp(_lookThroughDir3_length * _151__m24.x + _151__m24.y, 0, 1);
+            
+            // float _lerp_127_1 = lerp(_lookThroughDir3_length_SO_1, _lookThroughDir3_length_SO_2, _if_output_A_1);
+            float _lerp_127_1 = _lookThroughDir3_length_SO_1;
+
+            // y = -1 / 0, x ∈ [0, 1]
+            _lookThroughDir3_length_SO_curve_01 = _lerp_127_1 * (2.0-_lerp_127_1);
+        }
+
+        float _exp_damping_tmp_114;
+        {
+            //                                    0.00214
+            _exp_damping_tmp_114 = _lookThroughDir3_length * _lerp_140;
+            _exp_damping_tmp_114 = _exp_damping_tmp_114 * (-_exp_damping_80_1);
+            _exp_damping_tmp_114 = 1.0 - exp2(_exp_damping_tmp_114);
+            _exp_damping_tmp_114 = max(_exp_damping_tmp_114, 0.0);
+        }
+        
         // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
         
         // float _base_color_w = min(
@@ -514,6 +448,39 @@ fixed4 frag (v2f i) : SV_Target
         // 实际不生效
         // float3 _color_far_1 = _Color_Far_1.xyz;
 
+
+        float _very_far01;
+        {
+            // y = 0 / 1, x ∈ [0, 1]
+            float _curve_smooth_01;
+            {
+                // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
+                //                                                                    0.00042      -0.00671
+                float _lookThroughDir3_length_SO1 = clamp(_lookThroughDir3_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
+                // #define _151__m25 float4(1.00, 1.00, 1.00, -16.00                ) // _151._m25
+                // float _lookThroughDir3_length_SO2 = clamp(_lookThroughDir3_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
+                
+
+                // float _lerp_127 = lerp(_lookThroughDir3_length_SO1, _lookThroughDir3_length_SO2, _if_output_A_0);
+                float _lerp_127 = _lookThroughDir3_length_SO1;
+                
+                float _lerp_127_curve = _lerp_127 * (-_lerp_127 + 2.0);
+                // #define _Color_Height_Add float4(0.27672, 0.01464, -0.23447, 0.00        ) // _151._m14
+                _curve_smooth_01 = _isOutOfFarPlane ? _lerp_127_curve * _Color_Height_Add.w : _lerp_127_curve;
+            }
+
+            // #define _Color_Far_1 float4(0.50353, 0.31069, 0.31797, 1.30           ) //_151._m7
+            // #define _ConstTestBaseColor float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m26
+            // _132 = lerp(_Color_Far_1.w, _ConstTestBaseColor.w, _if_output_A_0);
+
+            // #define _Color_Base float4(0.05891, 0.20904, 0.43325, 0.90         ) // _151._m13
+            // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
+            
+            _very_far01 = min(min(
+                pow(_curve_smooth_01 + 1.0e-4, _Color_Far_1.w /* lerp(_Color_Far_1.w, _ConstTestBaseColor.w, _if_output_A_0) */),
+                _Color_Base.w * _151__m21.x),
+                1.0);
+        }
         
         // 实际 _very_far01 * _baseColor_77 无意义，因为 _far_factor_1 为 0 其为 0
         float3 _color_far = lerp( _very_far01 * _baseColor_77, _Color_Far_1.xyz, _far_factor_1);
@@ -619,7 +586,7 @@ fixed4 frag (v2f i) : SV_Target
     // float3 _if_waterColor = _waterTransmissionColor;
 
     float3 _reflectColor;
-    {
+    // {
         float3 _surfNormal2 = normalize(_surfNormal.xyz * _SurfNormalReflectScale.xzy);
 
         float3 _reflectDir = normalize(reflect(-_viewDirNormalize, _surfNormal2));
@@ -642,7 +609,7 @@ fixed4 frag (v2f i) : SV_Target
 
 
         _reflectColor = lerp(_decodeHdr, _ssrSample.xyz, _ssrAlpha);
-    }
+    // }
 
     float _reflectFactor01;
     {
@@ -730,199 +697,158 @@ fixed4 frag (v2f i) : SV_Target
     Output_0.w = _output_alpha;
     
     
-    // float _if_output_B_0 = 0;
-    // float _if_output_B_1 = 0;
-    float _lookAtDir_length = length(_lookAtDir);
-    float _lookAtDirXZ_length = length(_lookAtDir.xz);
-    
-    float _surfEyeDepth2 = -dot(_lookAtDir, _back);
-    bool _isOutOfFarPlane_B = _surfEyeDepth2 >= _far_plane;
-    
-    float _very_far01_B;
+    // 可以不用混合表面雾
+    float3 _color_mix_far_fog;
     {
+        float _lookAtDir_length = length(_lookAtDir);
+        float _lookAtDirXZ_length = length(_lookAtDir.xz);
+        // _worldPos 直接用 _worldPos
         
-        // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
-        //                                                        0.00042       -0.00671
-        float _lookAtDir_length_SO_1 = clamp(_lookAtDir_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
+        float _surfEyeDepth2 = -dot(_lookAtDir, _back);
+        bool _isOutOfFarPlane_B = _surfEyeDepth2 >= _far_plane;
+        
+        float3 _baseColor_B_57;
+        {
+            // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
+            //                                                     0.00335      -0.66724
+            float _worldPosY_SO = clamp(_worldPos.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
+            
+            // y = 0 / 1, x ∈ [0, 1]
+            float _worldPosY_SO_curve = (-_worldPosY_SO + 2.0) * _worldPosY_SO;
 
-        // float _lookAtDir_length_S0_2 = clamp(_lookAtDir_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
+            float3 _color_57_0 = (_worldPosY_SO_curve * _Color_Height_Add.xyz) + _Color_Base.xyz;
 
-        // float _lookAtDir_length_SO = lerp(_lookAtDir_length_SO_1, _lookAtDir_length_S0_2, _if_output_B_0);
-        float _lookAtDir_length_SO = _lookAtDir_length_SO_1;
+            // float3 _color_57_1 = lerp(_color_57_0, _ConstTestBaseColor.xyz, _if_output_B_0.x);
+            float3 _color_57_1 = _color_57_0;
 
-        // y = 0 / 1, x ∈ [0, 1]
-        float _lookAtDir_lenght_SO_curve = ((-_lookAtDir_length_SO) + 2.0) * _lookAtDir_length_SO;
+            // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+            // #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
+            //                                                       1.00           0.00017
+            float _lookAtDir_length_OS = clamp((_lookAtDir_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
 
-        float _curve_smooth_01_B = _isOutOfFarPlane_B ? _lookAtDir_lenght_SO_curve * _Color_Height_Add.w : _lookAtDir_lenght_SO_curve;
+            _baseColor_B_57 = lerp(_color_57_1, _151__m16.xyz, _lookAtDir_length_OS);
+        }
+        
+        // #define _ExpDampingStartXZ float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
+        // #define _ExpDampingScaleXZ float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
 
+        // 自变量变化速度 0.045 倍，从 0.9716 开始衰减
+        //                                                       0.045                     0.9716
+        float _exp_damping_66_1 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
+        // 自变量变化速度     0 倍，从      1 开始衰减
+        //                                                       0.00                      1.00
+        float _exp_damping_66_2 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
+
+        
+        // float _lerp_109 = lerp(_ExpDampingScaleXZ.y, _Color_C.w, _if_output_B_1);
+        float _lerp_109 = _ExpDampingScaleXZ.y;
+        
+        float _lookAtDir_length_SO_curve_01;
+        {
+            // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+            //                                                           0.00391        -0.0625
+            float _lookAtDir_length_SO_A_1 = clamp((_lookAtDir_length * _151__m12.x) + _151__m12.y, 0.0, 1.0);
+
+            // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
+            // float _lookAtDir_length_SO_A_2 = clamp((_lookAtDir_length * _151__m24.x) + _151__m24.y, 0.0, 1.0);
+
+            // float _lookAtDir_length_SO_A = lerp(_lookAtDir_length_SO_A_1, _lookAtDir_length_SO_A_2, _if_output_B_1);
+            float _lookAtDir_length_SO_A = _lookAtDir_length_SO_A_1;
+
+            // y = 0 / 1, x ∈ [0, 1]
+            _lookAtDir_length_SO_curve_01 = _lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A);
+        }
+
+        float _exp_damping_tmp_109;
+        {
+            //                              0.00214
+            _exp_damping_tmp_109 = _lookAtDir_length * _lerp_109;
+            _exp_damping_tmp_109 = _exp_damping_tmp_109 * (-_exp_damping_66_1);
+            _exp_damping_tmp_109 = 1.0 - exp2(_exp_damping_tmp_109);
+            _exp_damping_tmp_109 = max(_exp_damping_tmp_109, 0.0);
+        }
+
+        
+        // float _base_color_w_B = min(
+        //         _Color_Base.w,
+        //         _exp_damping_tmp_109 * lerp(1.0, _lookAtDir_length_SO_curve_01, lerp(_151__m12.z, _151__m25.x, _if_output_B_1)));
+        
+        float _base_color_w_B = min(
+            _Color_Base.w,
+            _exp_damping_tmp_109 * lerp(1.0, _lookAtDir_length_SO_curve_01, _151__m12.z));
+
+
+        float _exp01_B = max(0.0, 1.0 - exp2(-_lookAtDir_length * _ExpDampingScaleXZ.w * _exp_damping_66_2));
+        
+        // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
+        //                                                         1.0           0.0
+        float _lookAtDir_length_SO_2 = clamp((_lookAtDir_length * _151__m19.x) + _151__m19.y, 0, 1);
+        float _lookAtDir_length_SO_curve01 = ((-_lookAtDir_length_SO_2) + 2.0) * _lookAtDir_length_SO_2;
+        
         // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
-        _very_far01_B = min(min(
-            pow(_curve_smooth_01_B + 1e-4, _Color_Far_1.w /* lerp(_Color_Far_1.w, _ConstTestBaseColor.w, _if_output_B_0) */),
-            _Color_Base.w * _151__m21.x),
-            1.0);
-    }
+        //                                                                                               0.9
+        float _lookAtDir_length_SO_curve01_exp = min(_exp01_B * _lookAtDir_length_SO_curve01, _151__m21.y);
 
-    float3 _baseColor_B_57;
-    {
-        // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
-        //                                                     0.00335      -0.66724
-        float _worldPosY_SO = clamp(i.Varying_WorldPosXYZ.y * _151__m15.x + _151__m15.y, 0.0, 1.0);
+        // #define _151__m17 float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
+        //                                                            -0.001        9.00
+        float _lookAtDirXZ_length_SO_1 = clamp(_lookAtDirXZ_length * _151__m17.x + _151__m17.y, 0.0, 1.0);
         
-        // y = 0 / 1, x ∈ [0, 1]
-        float _worldPosY_SO_curve = (-_worldPosY_SO + 2.0) * _worldPosY_SO;
-
-        float3 _color_57_0 = (_worldPosY_SO_curve * _Color_Height_Add.xyz) + _Color_Base.xyz;
-
-        // float3 _color_57_1 = lerp(_color_57_0, _ConstTestBaseColor.xyz, _if_output_B_0.x);
-        float3 _color_57_1 = _color_57_0;
-
-        // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-        // #define _151__m16 float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
-        //                                                       1.00           0.00017
-        float _lookAtDir_length_OS = clamp((_lookAtDir_length - _151__m12.w) * _151__m16.w, 0.0, 1.0);
-
-        _baseColor_B_57 = lerp(_color_57_1, _151__m16.xyz, _lookAtDir_length_OS);
-    }
-    
-    
-    // #define _ExpDampingStartXZ float4(0.9716, -0.02881, 1.00, 0.00            ) // _151._m20
-    // #define _ExpDampingScaleXZ float4(0.045, 0.00214, 0.00, 0.00              ) // _151._m11
-
-    // 自变量变化速度 0.045 倍，从 0.9716 开始衰减
-    //                                                       0.045                     0.9716
-    float _exp_damping_66_1 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
-    // 自变量变化速度     0 倍，从      1 开始衰减
-    //                                                       0.00                      1.00
-    float _exp_damping_66_2 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
-
-    
-    // float _lerp_109 = lerp(_ExpDampingScaleXZ.y, _Color_C.w, _if_output_B_1);
-    float _lerp_109 = _ExpDampingScaleXZ.y;
-    
-    float _exp_damping_tmp_109;
-    {
-        //                              0.00214
-        _exp_damping_tmp_109 = _lookAtDir_length * _lerp_109;
-        _exp_damping_tmp_109 = _exp_damping_tmp_109 * (-_exp_damping_66_1);
-        _exp_damping_tmp_109 = 1.0 - exp2(_exp_damping_tmp_109);
-        _exp_damping_tmp_109 = max(_exp_damping_tmp_109, 0.0);
-    }
-
-    
-    float _lookAtDir_length_SO_curve_01;
-    {
-        // #define _151__m12 float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-        //                                                           0.00391        -0.0625
-        float _lookAtDir_length_SO_A_1 = clamp((_lookAtDir_length * _151__m12.x) + _151__m12.y, 0.0, 1.0);
-
-        // static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
-        // float _lookAtDir_length_SO_A_2 = clamp((_lookAtDir_length * _151__m24.x) + _151__m24.y, 0.0, 1.0);
-
-        // float _lookAtDir_length_SO_A = lerp(_lookAtDir_length_SO_A_1, _lookAtDir_length_SO_A_2, _if_output_B_1);
-        float _lookAtDir_length_SO_A = _lookAtDir_length_SO_A_1;
-
-        // y = 0 / 1, x ∈ [0, 1]
-        _lookAtDir_length_SO_curve_01 = _lookAtDir_length_SO_A * (2.0-_lookAtDir_length_SO_A);
-    }
-
-    
-    // float _base_color_w_B = min(
-    //         _Color_Base.w,
-    //         _exp_damping_tmp_109 * lerp(1.0, _lookAtDir_length_SO_curve_01, lerp(_151__m12.z, _151__m25.x, _if_output_B_1)));
-    
-    float _base_color_w_B = min(
-        _Color_Base.w,
-        _exp_damping_tmp_109 * lerp(1.0, _lookAtDir_length_SO_curve_01, _151__m12.z));
-
-
-    float _exp01_B = max(0.0, 1.0 - exp2(-_lookAtDir_length * _ExpDampingScaleXZ.w * _exp_damping_66_2));
-    
-    // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
-    //                                                         1.0           0.0
-    float _lookAtDir_length_SO_2 = clamp((_lookAtDir_length * _151__m19.x) + _151__m19.y, 0, 1);
-    float _lookAtDir_length_SO_curve01 = ((-_lookAtDir_length_SO_2) + 2.0) * _lookAtDir_length_SO_2;
-    
-    // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
-    //                                                                                               0.9
-    float _lookAtDir_length_SO_curve01_exp = min(_exp01_B * _lookAtDir_length_SO_curve01, _151__m21.y);
-
-    // #define _151__m17 float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
-    //                                                            -0.001        9.00
-    float _lookAtDirXZ_length_SO_1 = clamp(_lookAtDirXZ_length * _151__m17.x + _151__m17.y, 0.0, 1.0);
-    
-    float _SO_10_B = _isOutOfFarPlane_B ? _WorldSpaceCameraPosY_SO : _lookAtDirXZ_length_SO_1;
-    
-    float _far_factor_1_B = _SO_10_B * _base_color_w_B;
-    
-    // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
-    //                                                          1.0           0.0
-    float _lookAtDirXZ_length_SO = clamp(_lookAtDirXZ_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
-    // 但实际是 0 
-    float _far_exp_factor_2_B = _lookAtDirXZ_length_SO * _lookAtDir_length_SO_curve01_exp;
-
-    
-    // float3 _color_1 = lerp(_Color_Far_1.xyz, _Color_C.xyz, _if_output_B_1);
-    // float3 _color_1 = _Color_Far_1.xyz;
-
-    // float3 _if_waterColor_5 = _waterColor_Final;
-    // Output_0.xyz = ((1- _far_exp_factor_2_B) * (1.0 - _very_far01_B) * (1 - _far_factor_1_B) * _if_waterColor_5) + (_Color_Far_Exp.xyz * _far_exp_factor_2_B) + lerp(_very_far01_B * _baseColor_B_57, _color_1, _far_factor_1_B);
-
-    // 实际 _very_far01_B * _baseColor_B_57 无意义，因为 _far_factor_1_B 为 0 其为 0
-    float3 _color_far_B = lerp(_very_far01_B * _baseColor_B_57, _Color_Far_1.xyz, _far_factor_1_B);
-        _color_far_B += _Color_Far_Exp.xyz * _far_exp_factor_2_B;
-
-        _color_far_B += ((1- _far_exp_factor_2_B) * (1.0 - _very_far01_B) * (1 - _far_factor_1_B) * _waterColor_Final);
+        float _SO_10_B = _isOutOfFarPlane_B ? _WorldSpaceCameraPosY_SO : _lookAtDirXZ_length_SO_1;
         
-    // Output_0.xyz = ((1- _far_exp_factor_2_B) * (1.0 - _very_far01_B) * (1 - _far_factor_1_B) * _waterColor_Final) + (_Color_Far_Exp.xyz * _far_exp_factor_2_B) + lerp(_very_far01_B * _baseColor_B_57, _Color_Far_1.xyz, _far_factor_1_B);
+        float _far_factor_1_B = _SO_10_B * _base_color_w_B;
+        
+        // #define _151__m19 float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
+        //                                                          1.0           0.0
+        float _lookAtDirXZ_length_SO = clamp(_lookAtDirXZ_length * _151__m19.z + _151__m19.w, 0.0, 1.0);
+        // 但实际是 0 
+        float _far_exp_factor_2_B = _lookAtDirXZ_length_SO * _lookAtDir_length_SO_curve01_exp;
 
-    Output_0.xyz = _color_far_B;
-    // Output_0.xyz = _waterColor_Final;
+
+        float _very_far01_B;
+        {
+            
+            // #define _151__m15 float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
+            //                                                        0.00042       -0.00671
+            float _lookAtDir_length_SO_1 = clamp(_lookAtDir_length * _151__m15.z + _151__m15.w, 0.0, 1.0);
+
+            // float _lookAtDir_length_S0_2 = clamp(_lookAtDir_length * _151__m25.z + _151__m25.w, 0.0, 1.0);
+
+            // float _lookAtDir_length_SO = lerp(_lookAtDir_length_SO_1, _lookAtDir_length_S0_2, _if_output_B_0);
+            float _lookAtDir_length_SO = _lookAtDir_length_SO_1;
+
+            // y = 0 / 1, x ∈ [0, 1]
+            float _lookAtDir_lenght_SO_curve = ((-_lookAtDir_length_SO) + 2.0) * _lookAtDir_length_SO;
+
+            float _curve_smooth_01_B = _isOutOfFarPlane_B ? _lookAtDir_lenght_SO_curve * _Color_Height_Add.w : _lookAtDir_lenght_SO_curve;
+
+            // #define _151__m21 float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
+            _very_far01_B = min(min(
+                pow(_curve_smooth_01_B + 1e-4, _Color_Far_1.w /* lerp(_Color_Far_1.w, _ConstTestBaseColor.w, _if_output_B_0) */),
+                _Color_Base.w * _151__m21.x),
+                1.0);
+        }
+        
+        // 实际 _very_far01_B * _baseColor_B_57 无意义，因为 _far_factor_1_B 为 0 其为 0
+        float3 _color_far_B = lerp(_very_far01_B * _baseColor_B_57, _Color_Far_1.xyz, _far_factor_1_B);
+            _color_far_B += _Color_Far_Exp.xyz * _far_exp_factor_2_B;
+
+            _color_far_B += (1- _far_exp_factor_2_B) * (1.0 - _very_far01_B) * (1 - _far_factor_1_B) * _waterColor_Final;
+
+        _color_mix_far_fog = _color_far_B;
+    }
+
+    
+    // Output_0.xyz = _color_mix_far_fog;
+    Output_0.xyz = _waterColor_Final;
     
     fixed4 col = fixed4(0,0,0,1);
     col = Output_0;
 
-    // col = float4(_grabTextureSample.rgb, 1.0);
-    // col = float4(_very_far01.xxx, 1.0);
-    // col = float4(_lookThroughWorldPos3y_SO_curve01.xxx, 1.0);
-    // col = float4(_baseColor_77.rgb, 1.0);
-    // col = float4(_switch_80.xxx, 1.0);
-    // col = float4(_switch_80.yyy, 1.0);
-    // col = float4(_exp_damping_tmp_114.xxx, 1.0);
-    // col = float4(_base_color_w.xxx, 1.0);
-    // col = float4(_far_exp_factor_2.xxx, 1.0);
-    // col = float4(_lookThroughDir3xz_length_SO.xxx, 1.0);
-    // col = float4(_lookThroughDir3_length_SO_curve01_exp.xxx, 1.0);
-    // col = float4(_lookThroughDir3_length_SO_curve01.xxx, 1.0);
-    // col = float4(_exp01.xxx, 1.0);
-    // col = float4(_far_factor_1.xxx, 1.0);
-    // col = float4(_very_far01.xxx, 1.0);
-    // col = float4(_far_factor_1.xxx, 1.0);
-    // col = float4(_color_far.rgb, 1.0);
-    // col = float4(_grabTextureColor.rgb, 1.0);
-    // col = float4(_terrainMoreEyeDepth4_amend.xxx, 1.0);
-    // col = float4(_waterReflectFactor.xxx, 1.0);
-    // col = float4(_waterTransmissionColor.rgb, 1.0);
-    // col = float4(_transmissionColor.rgb, 1.0);
-    // col = float4(_surfTransmissionFactor.rgb, 1.0);
-    // col = float4(_transmissionSurfColor.rgb, 1.0);
-    // col = float4(_waterBottomDarkFactor.xxx, 1.0);
-    // col = float4(_waterBottomDarkColor0.rgb, 1.0);
-    // col = float4(_waterTransmissionColor.rgb, 1.0);
-    // col = float4(_reflectFactorOfWaterDepth.xxx, 1.0);
-    // col = float4(_lightingColor.rgb*10, 1.0);
-    // col = float4(_glossColor1.rgb, 1.0);
-    // col = float4(_foamLineMixFactor.xxx, 1.0);
-    // col = float4(_glossColor_2.rgb, 1.0);
-    // col = float4(_waterColorTransmissionOrReflection.rgb, 1.0);
+    // col = float4(_reflectFactor01.xxx, 1.0);
     // col = float4(_waterColor_Final.rgb, 1.0);
-    // col = float4(clamp(_terrainMoreEyeDepth4_amend * _WaterAlpha, 0.0, 1.0).xxx, 1.0);
-    // col = float4(-_lightingColor.rgb, 1.0);
-    // col = float4(_glossColor_2.rgb, 1.0);
-    // col = float4(_gloss_factor2.xxx, 1.0);
-    // col = float4(_gloss_factor1_maybe.xxx, 1.0);
-    // col = float4(_fixNDotH_pow.xxx, 1.0);
-    // col = float4(_very_far01_B.xxx, 1.0);
-    // col = float4(_far_exp_factor_2_B.xxx, 1.0);
+    // col = float4(_waterColorTransmissionAndRefelctionMixFoamLine.rgb, 1.0);
+    // col = float4(_reflectColor.rgb, 1.0);
+    // col = float4(_ssrSample.aaa, 1.0);
     
     
     
