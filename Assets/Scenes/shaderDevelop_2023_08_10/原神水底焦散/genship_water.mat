@@ -187,8 +187,12 @@ Material:
     - _CausticSpeed: 0.131
     - _CausticVisiableFactor: 3.33333
     - _CausticVisiableHeight: 3.33333
+    - _CausticVisibleDistance: 0.01667
     - _CausticVisibleFactor: 3.33333
+    - _CausticVisibleHeight: 3.33333
     - _CausticVisibleHeightFactor: 3.33333
+    - _CausticVisiblePower: 2.49
+    - _CausticVisibleWaterDepth: 0.87
     - _FixNDotH_Power: 332.8
     - _FoamColorAdd: 0.32892
     - _FoamColorGray: 0.32892
@@ -220,6 +224,9 @@ Material:
     - _WaterDarkDepthFactor: 0.06667
     - _WaterDarkDepthPower: 1
     - _WaterDepthVisiblePower: 1.5
+    - _WaterReflectPower: 1.5
+    - _WaterSmoothness: 0.4
+    - _WaterSmoothnessPower: 1.5
     - _WaterSurfAlpha: 0.4
     - _WaterSurfAlphaPower: 1.5
     - _WaterSurfDarkFactor: 0.4
@@ -257,9 +264,11 @@ Material:
     - _Color_C: {r: 1, g: 1, b: 1, a: 0.07213}
     - _Color_D: {r: 1, g: 1, b: 1, a: 16}
     - _Color_Far: {r: 0.05891, g: 0.20904, b: 0.43325, a: 0.9}
+    - _Color_Far_1: {r: 0.50353, g: 0.31069, b: 0.31797, a: 1.3}
     - _Color_Far_2: {r: 0.50353, g: 0.31069, b: 0.31797, a: 1.3}
     - _Color_Far_Add: {r: 0.27672, g: 0.01464, b: -0.23447, a: 0}
     - _Color_Far_Base: {r: 0.05891, g: 0.20904, b: 0.43325, a: 0.9}
+    - _Color_Far_Exp: {r: 1, g: 1, b: 1, a: 16}
     - _Color_Height_Add: {r: 0.27672, g: 0.01464, b: -0.23447, a: 0}
     - _DivRefMax: {r: 0.9716, g: -0.02881, b: 1, a: 0}
     - _DivRefScale: {r: 0.045, g: 0.00214, b: 0, a: 0}
@@ -268,6 +277,7 @@ Material:
     - _GlossColorAdd: {r: 0.04413, g: 0.03476, b: 0.0106, a: 1}
     - _GlossColorVertex: {r: 0.04413, g: 0.03476, b: 0.0106, a: 1}
     - _Noise2D_R_ScaleSpeed: {r: 0.2, g: 0.15, b: 0.01, a: 0.01}
+    - _SurfNormalReflectScale: {r: 0.10238, g: 0.09815, b: 0.59876, a: 0}
     - _SurfNormalScale2: {r: 0.10238, g: 0.09815, b: 0.59876, a: 0}
     - _WaterBottomDarkColor: {r: 0.01694, g: 0.1433, b: 0.26481, a: 0}
     - _WaterBottomDarkColorBlend: {r: 1, g: 1, b: 1, a: 0}

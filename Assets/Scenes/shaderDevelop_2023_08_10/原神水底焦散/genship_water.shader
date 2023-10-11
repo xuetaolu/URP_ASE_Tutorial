@@ -21,27 +21,28 @@ Shader "Unlit/genship_water"
         
         _Color_Base ("_Color_Base", Color) = (0.05891, 0.20904, 0.43325, 0.90 )
         _Color_Height_Add ("_Color_Height_Add", Vector) = (0.27672, 0.01464, -0.23447, 0.00)
-        [HDR]_151__m26 ("_151__m26", Color) = (0.00, 0.00, 0.00, 0.00)
-        [HDR]_Color_Far_2 ("_Color_Far_2", Color) = (0.50353, 0.31069, 0.31797, 1.30 )
+//        [HDR]_151__m26 ("_151__m26", Color) = (0.00, 0.00, 0.00, 0.00)
+        [HDR]_Color_Far_1 ("_Color_Far_1", Color) = (0.50353, 0.31069, 0.31797, 1.30 )
         [HDR]_Color_C ("_Color_C", Color) = (1.00, 1.00, 1.00, 0.07213 )
-        [HDR]_Color_D ("_Color_D", Color) = (1.00, 1.00, 1.00, 16.00 )
+        [HDR]_Color_Far_Exp ("_Color_Far_Exp", Color) = (1.00, 1.00, 1.00, 16.00 )
         
         _GrabTextureFade ("_GrabTextureFade", Range(0, 1)) = 0.0
         _FixNDotH_Power ("_FixNDotH_Power", Range(0, 1000)) = 332.79999
         _GlossPosAdjust ("_GlossPosAdjust", Range(0, 10)) = 2.38
-        _WaterSurfAlpha ("_WaterSurfAlpha", Range(0, 1)) = 0.4
+        _WaterSmoothness ("_WaterSmoothness", Range(0, 1)) = 0.4
         
         _GlossFactor ("_GlossFactor", Range(0, 10)) = 5
         _CausticSpeed ("_CausticSpeed", Range(0, 1)) = 0.131
         _CausticScale ("_CausticScale", Range(0, 1)) = 0.25
         _CausticNormalDisturbance ("_CausticNormalDisturbance", Range(0, 1)) = 0.096
-        _CausticVisibleHeightFactor ("_CausticVisibleHeightFactor", Range(0, 10)) = 3.33333
-        _CausticDistanceFade ("_CausticDistanceFade", Range(0, 1)) = 0.01667
         
-        _CausticColorDisappearOfWaterDepth ("_CausticColorDisappearOfWaterDepth", Range(0, 10)) = 0.87
-        _CausticColorDisappearPower ("_CausticColorDisappearPower", Range(0, 10)) = 2.49
-        
-        _WaterSurfAlphaPower ("_WaterSurfAlphaPower", Range(0, 10)) = 1.50
+        [Header(__CausticVisibleParams__)]
+        _CausticVisibleHeight ("_CausticVisibleHeight", Range(0, 10)) = 3.33333
+        _CausticVisibleDistance ("_CausticVisibleDistance", Range(0, 1)) = 0.01667
+        _CausticVisibleWaterDepth ("_CausticVisibleWaterDepth", Range(0, 10)) = 0.87
+        _CausticVisiblePower ("_CausticVisiblePower", Range(0, 10)) = 2.49
+        [Header(_)]
+        _WaterReflectPower ("_WaterReflectPower", Range(0, 10)) = 1.50
         
         _WaterBottomDarkPower ("_WaterBottomDarkPower", Range(0, 10)) = 1.00
         _WaterBottomDarkFactor ("_WaterBottomDarkFactor", Range(0, 10)) = 0.06667
@@ -54,7 +55,7 @@ Shader "Unlit/genship_water"
         _WaterBottomDarkColorBlend ("_WaterBottomDarkColorBlend", Color) = (1.00, 1.00, 1.00, 0.00)
         
         
-        _SurfNormalScale2 ("_SurfNormalScale2", Vector) = (0.10238, 0.09815, 0.59876, 0.00)
+        _SurfNormalReflectScale ("_SurfNormalReflectScale", Vector) = (0.10238, 0.09815, 0.59876, 0.00)
         
         _SSRNormalDisturbance1 ("_SSRNormalDisturbance1", Range(0, 10)) = 0.60
         _SSRNormalDisturbance2 ("_SSRNormalDisturbance2", Range(0, 10)) = 1.51515
@@ -80,8 +81,8 @@ Shader "Unlit/genship_water"
         
         _WaterAlpha ("_WaterAlpha", Range(0, 10)) = 2.5641
         
-        _DivRefScale ("_DivRefScale", Vector) = (0.045, 0.00214, 0.00, 0.00)
-        _DivRefMax ("_DivRefMax", Vector) = (0.9716, -0.02881, 1.00, 0.00)
+        _ExpDampingScaleXZ ("_ExpDampingScaleXZ", Vector) = (0.045, 0.00214, 0.00, 0.00)
+        _ExpDampingStartXZ ("_ExpDampingStartXZ", Vector) = (0.9716, -0.02881, 1.00, 0.00)
         
         [Toggle]_SSREnable ("_SSREnable", float) = 1.0
         
