@@ -83,6 +83,8 @@ Shader "Unlit/genship_water"
         
         _ExpDampingScaleXZ ("_ExpDampingScaleXZ", Vector) = (0.045, 0.00214, 0.00, 0.00)
         _ExpDampingStartXZ ("_ExpDampingStartXZ", Vector) = (0.9716, -0.02881, 1.00, 0.00)
+//        
+        _ColorVeryFar ("_ColorVeryFar", Color) = (0.39681, 0.34829, 0.44667, 0.00017      )
         
         [Toggle]_SSREnable ("_SSREnable", float) = 1.0
         
