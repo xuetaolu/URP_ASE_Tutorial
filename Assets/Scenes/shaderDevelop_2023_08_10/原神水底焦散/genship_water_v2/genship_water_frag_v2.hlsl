@@ -113,7 +113,8 @@ float4 _ExpDampingStartXZ = float4(0.9716, -0.02881, 1.00, 0.00            ); //
 
 
 //// -- misc
-float _GrabTextureFade = 0.00;      // _151._m59
+// 避免太远也看见透射？
+float _GrabTextureFarFade = 0.00;      // _151._m59
 
 float _SSREnable = 1.00;    // _151._m76
 #define _EyeDepthBias 0.00 // _151._m87
@@ -126,10 +127,6 @@ sampler2D _CameraDepthTexture;
 sampler2D _Noise2D_R;
 sampler2D _NormalMap1;
 sampler2D _NormalMap2;
-sampler3D _Noise3DMap;
-sampler3D _20_sampler3D;
-sampler2D _21_sampler2D;
-sampler2D _22_sampler2D;
 sampler2D _CameraOpaqueTexture;
 sampler2D _GlobalSSRTexture;
 // samplerCUBE unity_SpecCube0;
@@ -440,8 +437,8 @@ fixed4 frag (v2f i) : SV_Target
         float3 _grabTextureSample_Mod = max((_grabTextureSample - _color_far)/max((1-_far_exp_factor_2) * (1-_far_factor_1) * (1-_very_far01), 1e-4), (0.0));
 
         
-        // #define _GrabTextureFade 0.00      // _151._m59
-        _grabTextureColor = lerp(_grabTextureSample, _grabTextureSample_Mod, _GrabTextureFade);
+        // #define _GrabTextureFarFade 0.00      // _151._m59
+        _grabTextureColor = lerp(_grabTextureSample, _grabTextureSample_Mod, _GrabTextureFarFade);
     }
 
     
@@ -610,7 +607,7 @@ fixed4 frag (v2f i) : SV_Target
     {
         float _brightness = max(_lightDirNormalize.y, 0.0) * _shadowAtten;
 
-        float3 _foamLightColor = _brightness * _lightColorFix + i.Varying_GlossColorAdd.xyz;
+        float3 _foamLightColor = _brightness * _lightColorFix + i.Varying_FoamLightAdd.xyz;
 
         float _foamLineArea_oneMinus = min(i.Varying_ColorXYW.x * _FoamLineAreaSize, max(_terrainToSurfDir.y, 0.0)) / (_FoamLineAreaSize * i.Varying_ColorXYW.x + 1e-4);
         float _foamLineArea = 1 - _foamLineArea_oneMinus;

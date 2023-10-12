@@ -658,7 +658,7 @@ fixed4 frag (v2f i) : SV_Target
 
     float _brightness = max(_lightDir1.y, 0.0) * _shadowAtten;
 
-    float3 _glossColor_2 = _brightness * _glossColor1 + i.Varying_GlossColorAdd.xyz;
+    float3 _glossColor_2 = _brightness * _glossColor1 + i.Varying_FoamLightAdd.xyz;
 
     float _foamLineArea_oneMinus = min(i.Varying_ColorXYW.x * _FoamLineAreaSize, max(_terrainToSurfDir.y, 0.0)) / (_FoamLineAreaSize * i.Varying_ColorXYW.x + 1e-4);
     float _foamLineArea = 1 - _foamLineArea_oneMinus;
