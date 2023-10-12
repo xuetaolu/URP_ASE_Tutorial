@@ -1,49 +1,73 @@
 #include "genship_water_common_v2.hlsl"
 
-// #define _Time float4(10.69632, 213.92641, 427.85281, 641.77924 )//_151._m0
-// #define _Time _Time//_151._m0
-// #define _WorldSpaceCameraPos float3(-76.56767, 199.90689, 87.00145            )//_151._m1
-// #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017              )//_151._m2
-// #define _ZBufferParams float4(-23999.00, 24000.00, -3.99983, 4.00       )//_151._m3
-const float4 _WorldPosXY_Offset = float4(1934.36584, 0.00, -1266.34216, 0.00       ); //_151._m4
-#define _LightDir float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
-// static const float4 UNITY_MATRIX_V_T[] = {float4(0.63206, -0.34567, 0.69355, 0.00         ),
-//                         float4(0.00, 0.895, 0.44607, 0.00               ),
-//                         float4(0.77492, 0.28194, -0.56569, 0.00         ),
-//                         float4(-19.02394, -229.91272, 13.14762, 1.00    )};//_151._m6
+//---- 光源方向，光源颜色
+// 主灯光位置/朝向，即阴影计算的灯光方向
+// #define _LightDir float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
+#define _LightDir _MainLightPosition // float4(_MainLightPosition.xyz, 0)
+// 这两个估计是照明计算的太阳 or 月亮方向
+// 现直接用 _MainLightPosition 代替
+// #define _PointLightDir1  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
+// #define _PointLightDir2 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
+#define _PointLightDir1 (_MainLightPosition.xyz)
+#define _PointLightDir2 float3(_MainLightPosition.x, -_MainLightPosition.y, _MainLightPosition.z)
 
-float4 _Color_Far_1 = float4(0.50353, 0.31069, 0.31797, 1.30           ); //_151._m7
-float4 _GlossColor = float4(2.92204, 1.56181, 0.57585, 1.62808        ); //_151._m8
-#define _151__m9  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
-#define _151__m10 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
-float4 _ExpDampingScaleXZ = float4(0.045, 0.00214, 0.00, 0.00              ); // _151._m11
-#define _STArgs_BaseColorXY_And__ float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
-float4 _Color_Base = float4(0.05891, 0.20904, 0.43325, 0.90         ); // _151._m13
-float4 _Color_Height_Add = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m14
+// float4 _LightColor = float4(2.92204, 1.56181, 0.57585, 1.62808        ); //_151._m8
+#define _LightColor _MainLightColor
+
+float _LightIntensity = 5.00;      // _151._m62
+float _NDotHPower = 332.79999; // _151._m63
+float _GlossFactorLookAtHorizontallyAndLightHight = 2.38;      // _151._m65
+
+#define _UseMainLightPosAsSunPoint float4(0.00, 0.00, 0.00, 0.00) // _151._m49
+//------------
 
 
-#define _STArgs_BaseColorXY_VeryFarZW float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
-float4 _ColorVeryFar = float4(0.39681, 0.34829, 0.44667, 0.00017      ); // _151._m16
-#define _STArgs_CameraY_ZW_DistanceXY float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
-float4 _Color_Far_Exp = float4(1.00, 1.00, 1.00, 16.00                 ); // _151._m18
-#define _STArgs_ExpXY_ZW float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
-float4 _ExpDampingStartXZ = float4(0.9716, -0.02881, 1.00, 0.00            ); // _151._m20
-#define _FarExpMaxX_VeryFarExpMaxY float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
-const float4 _WorldPosXY_Offset_Negative = float4(-1934.36584, 0.00, 1266.34216, 0.00     ); // _151._m22
-float4 _Color_C = float4(1.00, 1.00, 1.00, 0.07213               ); // _151._m23
-static const float4 _151__m24 = float4(1.00, -1.00, 10000.00, 0.00             ); // _151._m24
-#define _151__m25 float4(1.00, 1.00, 1.00, -16.00                ) // _151._m25
-float4 _ConstTestBaseColor = float4(0.00, 0.00, 0.00, 0.00                  ); // _151._m26
-#define _151__m27 float4(0.00, 0.00, 0.00, 0.00                  ) // _151._m27
+//---- 水属性
+float _WaterAlpha = 2.5641;    // _151._m61
+float _WaterSmoothness = 0.40;      // _151._m64
+
+// 水 Color 颜色
+float4 _ColorBase = float4(0.05891, 0.20904, 0.43325, 0.90         ); // _151._m13
+float4 _ColorHeightAdd = float4(0.27672, 0.01464, -0.23447, 0.00        ); // _151._m14
+float4 _WaterSurfColor = float4(0.11131, 1.00, 0.9415, 0.00      ); // _151._m66
+float4 _WaterSurfColorBlend = float4(1.00, 1.00, 1.00, 0.00); // _151._m80
+float4 _WaterBottomDarkColor = float4(0.01694, 0.1433, 0.26481, 0.00   ); // _151._m67
+float4 _WaterBottomDarkColorBlend = float4(1.00, 1.00, 1.00, 0.00); // _151._m81
+float _WaterBottomDarkPower = 1.00;     // _151._m69
+float _WaterBottomDarkFactor = 0.06667;  // _151._m70
+//--------------
+
+
+//---- 双层法线扰动
+float4 _WorldPosXY_Offset = float4(1934.36584, 0.00, -1266.34216, 0.00       ); //_151._m4
+float _WorldPosXY_Scale = 0.05; // _151._m83
+
+float _WorldPosXY_Speed1X = -0.02;  // _151._m44
+float _WorldPosXY_Speed1Y = -0.01;  // _151._m45
+float _WorldPosXY_Speed2X =  0.05;   // _151._m46
+float _WorldPosXY_Speed2Y = -0.04;  // _151._m47
+
+float _NormalMapScale = 0.70;   // _151._m48
+float _SurfNormalScale = 0.15;      // _151._m60
+//-------------
+
+
+//---- Caustic 水底焦散
 float _CausticScale = 0.25;  // _151._m28
 float _CausticSpeed = 0.131; // _151._m29
-
 float4 _CausticColor = float4(0.60632, 0.5298, 0.44146, 1.00); // _151._m30
+float _CausticNormalDisturbance = 0.096;   // _151._m33
+
+// 焦散可见参数
 float _CausticVisibleHeight = 3.33333; // _151._m31
 float _CausticVisibleDistance = 0.01667; // _151._m32
-float _CausticNormalDisturbance = 0.096;   // _151._m33
-float4 _Noise2D_R_ScaleSpeed = float4(0.20, 0.15, 0.01, 0.01);
-// #define _Noise2D_R_ScaleSpeed float4(0.20, 0.15, 0.01, 0.01) // _151._m34
+float _CausticVisibleWaterDepth = 0.87; // _151._m84
+float _CausticVisiblePower = 2.49; // _151._m85
+//--------------------
+
+
+//---- FoamLine 岸边浮沫线
+float4 _Noise2D_R_ScaleSpeed = float4(0.20, 0.15, 0.01, 0.01); // _151._m34
 float _FoamLineSpeed = -1.28;                  // _151._m35
 float4 _FoamColor = float4(1.00, 1.00, 1.00, 1.00); // _151._m36
 float _FoamLineAreaSize = 0.30;   // _151._m37
@@ -53,71 +77,52 @@ float _FoamLineSinFrequency = 19.00;  // _151._m39
 #define _FoamLinePosSpeed 0.00   // _151._m41
 float _FoamLineVisibleDistance = 10.00;  // _151._m42
 float _FoamLineFadeDiv = 20.00;  // _151._m43
-float _WorldPosXY_Speed1X = -0.02;  // _151._m44
-float _WorldPosXY_Speed1Y = -0.01;  // _151._m45
-float _WorldPosXY_Speed2X =  0.05;   // _151._m46
-float _WorldPosXY_Speed2Y = -0.04;  // _151._m47
-float _NormalScale1 = 0.70;   // _151._m48
-#define _151__m49 float4(0.00, 0.00, 0.00, 0.00) // _151._m49
-#define _151__m50 float4(0.00, 0.00, 0.00, 0.00) // _151._m50
-#define _151__m51 0 // _151._m51
-static const float4 _151__m52[] = {float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00)};//_151._m52
-static const float4 _151__m53[] = {float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00)};//_151._m53
-static const matrix _Matrix_custom_V_maybe = {float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00)};//_151._m54
-static const float4 _151__m55[] = {float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00),
-                         float4(0.00, 0.00, 0.00, 0.00)};//_151._m55
-#define _151__m56 float4(0.00, 0.00, 0.00, 0.00)// _151._m56
-#define _151__m57 float4(0.00, 0.00, 0.00, 0.00)// _151._m57
-#define _DebugValueMaybe 0.00      // _151._m58
-float _GrabTextureFade = 0.00;      // _151._m59
-#define _SurfNormalScale 0.15      // _151._m60
-float _WaterAlpha = 2.5641;    // _151._m61
-float _GlossFactor = 5.00;      // _151._m62
-float _FixNDotH_Power = 332.79999; // _151._m63
-float _WaterSmoothness = 0.40;      // _151._m64
-float _GlossPosAdjust = 2.38;      // _151._m65
-float4 _WaterSurfColor = float4(0.11131, 1.00, 0.9415, 0.00      ); // _151._m66
-float4 _WaterBottomDarkColor = float4(0.01694, 0.1433, 0.26481, 0.00   ); // _151._m67
-float _WaterReflectPower = 1.50;     // _151._m68
-float _WaterBottomDarkPower = 1.00;     // _151._m69
-float _WaterBottomDarkFactor = 0.06667;  // _151._m70
-// #define unity_SpecCube0_HDR float4(1.00, 1.00, 0.00, 0.00         ) // _151._m71
-float4 _SurfNormalReflectScale = float4(0.10238, 0.09815, 0.59876, 0.00); // _151._m72
-float _SSRNormalDisturbance1 = 0.60;    // _151._m73
-float _SSRNormalDisturbance2 = 1.51515; // _151._m74
-float _SSRAlpha = 0.80;    // _151._m75
-float _SSREnable = 1.00;    // _151._m76
+//-----------------------
+
+
+//---- 反射，和 SSR
 float _ReflectFactor = 0.50;    // _151._m77
+float _WaterReflectPower = 1.50;     // _151._m68
+float4 _SurfNormalReflectScale = float4(0.10238, 0.09815, 0.59876, 0.00); // _151._m72
+float _SSRNormalDisturbance = 0.60;    // _151._m73
+float _SSRNormalDisturbanceWaterDepthRelevant = 1.51515; // _151._m74
+float _SSRAlpha = 0.80;    // _151._m75
 float _ReflectWaterViewYDisappearFactor = 0.93;    // _151._m78
 float _ReflectWaterDepthFactor = 0.38462; // _151._m79
-float4 _WaterSurfColorBlend = float4(1.00, 1.00, 1.00, 0.00); // _151._m80
-float4 _WaterBottomDarkColorBlend = float4(1.00, 1.00, 1.00, 0.00); // _151._m81
-#define _ReflectEnable 1.00 // _151._m82
-float _WorldPosXY_Scale = 0.05; // _151._m83
-float _CausticVisibleWaterDepth = 0.87; // _151._m84
-float _CausticVisiblePower = 2.49; // _151._m85
-#define _EnableShadow 1.00 // _151._m86
-#define _EyeDepthBias 0.00 // _151._m87 
-#define _151__m88 float4(1.00, 1.00, 1.00, 1.00) // _151._m88
-#define _151__m89 1.00 // _151._m89
+//---------------
 
-// sampler2D _DepthTexture ;
+
+//---- 远处雾化，w 越大则越远才会雾化
+// float4 _COLOR_FAR_FOG = float4(0.50353, 0.31069, 0.31797, 1.30           ); //_151._m7
+float3 _ColorFarFog; float _ColorFarFogW;
+#define _COLOR_FAR_FOG float4(_ColorFarFog.xyz, _ColorFarFogW)
+float4 _ColorVeryFar = float4(0.39681, 0.34829, 0.44667, 0.00017      ); // _151._m16
+float4 _ColorFarExp = float4(1.00, 1.00, 1.00, 16.00                 ); // _151._m18
+
+// Exp 衰减，雾效
+float4 _ExpDampingScaleXYZ = float4(0.045, 0.00214, 0.00, 0.00              ); // _151._m11
+float4 _ExpDampingStartXZ = float4(0.9716, -0.02881, 1.00, 0.00            ); // _151._m20
+
+// 一些依据距离做 ST 的参数
+#define _STArgs_BaseColorXY_And__ float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
+#define _STArgs_BaseColorXY_VeryFarZW float4(0.00335, -0.66724, 0.00042, -0.00671    ) // _151._m15
+#define _STArgs_CameraY_ZW_DistanceXY float4(-0.001, 9.00, -0.001, 1.19927           ) // _151._m17
+#define _STArgs_ExpXY_ZW float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
+#define _FarExpMaxX_VeryFarExpMaxY float4(1.00, 0.90, 0.00, 0.00                  ) // _151._m21
+//------------
+
+
+//// -- misc
+float _GrabTextureFade = 0.00;      // _151._m59
+
+float _SSREnable = 1.00;    // _151._m76
+#define _EyeDepthBias 0.00 // _151._m87
+#define _ReflectEnable 1.00 // _151._m82
+#define _EnableShadow 1.00 // _151._m86
+//// ---------
+
+
 sampler2D _CameraDepthTexture;
-// sampler2D _ScreenMaskMap ;
-// samplerCUBE unity_SpecCube0_;
 sampler2D _Noise2D_R;
 sampler2D _NormalMap1;
 sampler2D _NormalMap2;
@@ -127,6 +132,8 @@ sampler2D _21_sampler2D;
 sampler2D _22_sampler2D;
 sampler2D _CameraOpaqueTexture;
 sampler2D _GlobalSSRTexture;
+// samplerCUBE unity_SpecCube0;
+// #define unity_SpecCube0_HDR float4(1.00, 1.00, 0.00, 0.00         ) // _151._m71
 
 float3 UnpackNormalWithScaleNotNormalize(float3 in_packedNormal, float in_scale)
 {
@@ -208,26 +215,26 @@ fixed4 frag (v2f i) : SV_Target
 
     
     // #define _LightDir float4(0.12266, 0.55406, 0.82339, 0.00           )//_151._m5
-    float3 _lightDir = ((-i.Varying_WorldPosXYZ.xyz) * _LightDir.www) + _LightDir.xyz;
+    float3 _lightDirNotNormalize = ((-i.Varying_WorldPosXYZ.xyz) * _LightDir.www) + _LightDir.xyz;
 
     
-    float3 _lightDir1;
+    float3 _lightDirNormalize;
     {
-        _lightDir1 = _LightDir.w < 0.5 ? _LightDir.xyz : normalize(_lightDir);
+        _lightDirNormalize = _LightDir.w < 0.5 ? _LightDir.xyz : normalize(_lightDirNotNormalize);
     } 
 
-    
-    float3 _glossColor1;
+    // 这里应该是点光源特殊处理颜色，暂不分析
+    float3 _lightColorFix;
     {
         float3 _89;
-        // #define _151__m49 float4(0.00, 0.00, 0.00, 0.00) // _151._m49
-        _89.x = 1.0 / (dot(_lightDir, _lightDir) * _151__m49.x + 1.0);
+        // #define _UseMainLightPosAsSunPoint float4(0.00, 0.00, 0.00, 0.00) // _151._m49
+        _89.x = 1.0 / (dot(_lightDirNotNormalize, _lightDirNotNormalize) * _UseMainLightPosAsSunPoint.x + 1.0);
         _89.x = clamp(lerp(-0.04, 1.0, _89.x), 0.0, 1.0);
         
-        // #define _GlossColor float4(2.92204, 1.56181, 0.57585, 1.62808        ) //_151._m8
+        // #define _LightColor float4(2.92204, 1.56181, 0.57585, 1.62808        ) //_151._m8
         float4 _45;
-        _45.xyz = _89.xxx * _GlossColor.xyz;
-        _glossColor1 = _LightDir.w < 0.5 ? _GlossColor.xyz : _45.xyz;
+        _45.xyz = _89.xxx * _LightColor.xyz;
+        _lightColorFix = _LightDir.w < 0.5 ? _LightColor.xyz : _45.xyz;
     }
     
 
@@ -245,8 +252,8 @@ fixed4 frag (v2f i) : SV_Target
         float2 _NormalMap2_UV = (_Time.yy * float2(_WorldPosXY_Speed2X, _WorldPosXY_Speed2Y)) + _worldPosXYScale;
         float3 _normalSample2 = tex2Dlod(_NormalMap2, float4(_NormalMap2_UV, 0.0, 0.0)).xyz;
         
-        float3 _normal1 = UnpackNormalWithScaleNotNormalize(_normalSample1, _NormalScale1);
-        float3 _normal2 = UnpackNormalWithScaleNotNormalize(_normalSample2, _NormalScale1);
+        float3 _normal1 = UnpackNormalWithScaleNotNormalize(_normalSample1, _NormalMapScale);
+        float3 _normal2 = UnpackNormalWithScaleNotNormalize(_normalSample2, _NormalMapScale);
         _surfNormal = normalize(_normal1.xzy + _normal2.xzy);
     }
     
@@ -352,7 +359,7 @@ fixed4 frag (v2f i) : SV_Target
         {
             float _curveOf_color_77 = Curve01(_lookThroughWorldPos3.y, _STArgs_BaseColorXY_VeryFarZW.xy); // 0.00335, -0.66724
             
-            float3 _color_77_0 = _curveOf_color_77 * _Color_Height_Add.xyz + _Color_Base.xyz;
+            float3 _color_77_0 = _curveOf_color_77 * _ColorHeightAdd.xyz + _ColorBase.xyz;
 
             // #define _STArgs_BaseColorXY_And__ float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
             // #define _ColorVeryFar float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
@@ -366,17 +373,17 @@ fixed4 frag (v2f i) : SV_Target
 
         // 自变量变化速度 0.045 倍，从 0.9716 开始衰减
         //                                                             0.045                     0.9716
-        float _exp_damping_80_1 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
+        float _exp_damping_80_1 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXYZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
         // 自变量变化速度     0 倍，从      1 开始衰减
         //                                                             0.00                      1.00
-        float _exp_damping_80_2 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
+        float _exp_damping_80_2 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXYZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
         
         float _curveOf_base_color_w = Curve01(_lookThroughDir3_length, _STArgs_BaseColorXY_And__.xy); // 0.00391, -0.0625
         
         float _exp_damping_tmp_114;
         {
             //                                                0.00214
-            _exp_damping_tmp_114 = _lookThroughDir3_length * _ExpDampingScaleXZ.y;
+            _exp_damping_tmp_114 = _lookThroughDir3_length * _ExpDampingScaleXYZ.y;
             _exp_damping_tmp_114 = _exp_damping_tmp_114 * (-_exp_damping_80_1);
             _exp_damping_tmp_114 = 1.0 - exp2(_exp_damping_tmp_114);
             _exp_damping_tmp_114 = max(_exp_damping_tmp_114, 0.0);
@@ -384,11 +391,11 @@ fixed4 frag (v2f i) : SV_Target
         
         // #define _STArgs_BaseColorXY_And__ float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
         float _base_color_w = min(
-            _Color_Base.w,
+            _ColorBase.w,
             _exp_damping_tmp_114 * lerp(1.0, _curveOf_base_color_w, _STArgs_BaseColorXY_And__.z)); // _STArgs_BaseColorXY_And__.z = 1
         
 
-        float _exp01 = max(0.0, 1.0-exp2(-_lookThroughDir3_length * _ExpDampingScaleXZ.w * _exp_damping_80_2));
+        float _exp01 = max(0.0, 1.0-exp2(-_lookThroughDir3_length * _ExpDampingScaleXYZ.w * _exp_damping_80_2));
         
         
         // // #define _STArgs_ExpXY_ZW float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
@@ -417,18 +424,18 @@ fixed4 frag (v2f i) : SV_Target
             float _curveOf_very_far01 = Curve01(_lookThroughDir3_length, _STArgs_BaseColorXY_VeryFarZW.zw); // 0.00042, -0.00671
 
             float _curveOf_very_far01_fix = _isOutOfFarPlane
-                ? _curveOf_very_far01 * _Color_Height_Add.w // _Color_Height_Add.w = 0
+                ? _curveOf_very_far01 * _ColorHeightAdd.w // _ColorHeightAdd.w = 0
                 : _curveOf_very_far01;
             
             _very_far01 = min(min(
-                pow(_curveOf_very_far01_fix + 1.0e-4, _Color_Far_1.w), // _Color_Far_1.w = 1.3
-                _Color_Base.w * _FarExpMaxX_VeryFarExpMaxY.x),                          // _Color_Base.w = 0.9, _FarExpMaxX_VeryFarExpMaxY.x == 1.0
+                pow(_curveOf_very_far01_fix + 1.0e-4, _COLOR_FAR_FOG.w), // _COLOR_FAR_FOG.w = 1.3
+                _ColorBase.w * _FarExpMaxX_VeryFarExpMaxY.x),                          // _ColorBase.w = 0.9, _FarExpMaxX_VeryFarExpMaxY.x == 1.0
                 1.0);
         }
         
         // 实际 _very_far01 * _baseColor_77 无意义，因为 _far_factor_1 为 0 其为 0
-        float3 _color_far = lerp( _very_far01 * _baseColor_77, _Color_Far_1.xyz, _far_factor_1);
-            _color_far += _Color_Far_Exp.xyz * _far_exp_factor_2; // _Color_Far_Exp 实际无效果
+        float3 _color_far = lerp( _very_far01 * _baseColor_77, _COLOR_FAR_FOG.xyz, _far_factor_1);
+            _color_far += _ColorFarExp.xyz * _far_exp_factor_2; // _ColorFarExp 实际无效果
         
         float3 _grabTextureSample_Mod = max((_grabTextureSample - _color_far)/max((1-_far_exp_factor_2) * (1-_far_factor_1) * (1-_very_far01), 1e-4), (0.0));
 
@@ -493,7 +500,7 @@ fixed4 frag (v2f i) : SV_Target
             }
             
             
-            float3 _causticColor = _causticNoise3DResult * _GlossColor.xyz * _CausticColor.xyz * _causticVisibleFactor * _shadowAtten;
+            float3 _causticColor = _causticNoise3DResult * _LightColor.xyz * _CausticColor.xyz * _causticVisibleFactor * _shadowAtten;
             
             // 水底焦散 水深、指数 可见系数
             // _CausticVisibleWaterDepth
@@ -538,7 +545,7 @@ fixed4 frag (v2f i) : SV_Target
         float3 _decodeHdr = DecodeHDREnvironment(_unity_SpecCube0Sample, _GlossyEnvironmentCubeMap_HDR);
         
 
-        float2 _screenReflectUV = (_surfNormal2.xz * clamp(_terrainMoreEyeDepth4_amend * _SSRNormalDisturbance2, 0.0, 1.0) * _SSRNormalDisturbance1) + _screenPos;
+        float2 _screenReflectUV = (_surfNormal2.xz * clamp(_terrainMoreEyeDepth4_amend * _SSRNormalDisturbanceWaterDepthRelevant, 0.0, 1.0) * _SSRNormalDisturbance) + _screenPos;
 
         
         float4 _ssrSample = tex2D(_GlobalSSRTexture, _screenReflectUV);
@@ -568,39 +575,42 @@ fixed4 frag (v2f i) : SV_Target
     // 测试发现 _lightingColor 没有值，几乎均为 0
     float3 _lightingColor;
     {
-        // #define _151__m9  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
-        // #define _151__m10 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
-        // #define _151__m49 float4(0.00, 0.00, 0.00, 0.00) // _151._m49
-        float3 _lightDirOrUkDir = _151__m49.x == 0.0 ? (_151__m10.y < 0.0 ? _151__m9 : _151__m10) : _lightDir1;
+        // #define _PointLightDir1  float3(0.13963, 0.31927, 0.93732              ) //_151._m9
+        // #define _PointLightDir2 float3(0.05565, -0.29114, -0.95506            ) //_151._m10
+        // #define _UseMainLightPosAsSunPoint float4(0.00, 0.00, 0.00, 0.00) // _151._m49
+        float3 _sunLightOrMoonLight = _UseMainLightPosAsSunPoint.x == 0.0 ? (_PointLightDir2.y < 0.0 ? _PointLightDir1 : _PointLightDir2) : _lightDirNormalize;
 
         float3 _surfNormal_moreUp_normalize = normalize(float3( _surfNormal.x, 1.0, _surfNormal.z ));
 
-        float3 _H = normalize(_viewDirNormalize + _lightDirOrUkDir);
+        float3 _H = normalize(_viewDirNormalize + _sunLightOrMoonLight);
 
         float _fixNDotH_clamp01 = clamp(dot(_surfNormal_moreUp_normalize, _H), 0.0, 1.0);
         
-        // #define _FixNDotH_Power 332.79999 // _151._m63
-        float _fixNDotH_pow = SphericalGaussianPow( _fixNDotH_clamp01, _FixNDotH_Power );
+        // #define _NDotHPower 332.79999 // _151._m63
+        float _fixNDotH_pow = SphericalGaussianPow( _fixNDotH_clamp01, _NDotHPower );
         
         
-        // #define _GlossPosAdjust 2.38      // _151._m65
-        float _gloss_factor1_maybe = max(_GlossPosAdjust * (-_viewDirNormalize.y) + 1.0, 0.05) * max(_GlossPosAdjust * _lightDirOrUkDir.y - 1.0, 0.05) * _fixNDotH_pow;
+        // #define _GlossFactorLookAtHorizontallyAndLightHight 2.38      // _151._m65
+        // _viewDirNormalize.y 相关，_sunLightOrMoonLight.y 相关
+        // 平视时 _viewDirNormalize.y 最终结果大
+        // 灯源高时，_sunLightOrMoonLight.y 最终结果大
+        float _glossFactor_viewDirYLightYRelevant = max(1.0 - _GlossFactorLookAtHorizontallyAndLightHight * _viewDirNormalize.y, 0.05) * max(_GlossFactorLookAtHorizontallyAndLightHight * _sunLightOrMoonLight.y - 1.0, 0.05);
 
         // #define _WaterSmoothness 0.40      // _151._m64
-        float _gloss_factor2 = clamp(lerp(-0.1, 0, _terrainMoreEyeDepth4_amend) * _WaterSmoothness, 0.0, 1.0) * _gloss_factor1_maybe;
+        float _glossFactor_waterDepth = clamp(lerp(-0.1, 0, _terrainMoreEyeDepth4_amend) * _WaterSmoothness, 0.0, 1.0);;
 
-        float3 _glossColor_2 = _glossColor1 * _GlossFactor;
+        // float3 _foamLightColor = _lightColorFix * _LightIntensity;
 
-        _lightingColor = _glossColor_2 * _gloss_factor2;
+        _lightingColor = _lightColorFix * _LightIntensity * _glossFactor_waterDepth * _glossFactor_viewDirYLightYRelevant * _fixNDotH_pow;
     }
 
     
     float _foamLineMixFactor;
     float3 _foamLineColor;
     {
-        float _brightness = max(_lightDir1.y, 0.0) * _shadowAtten;
+        float _brightness = max(_lightDirNormalize.y, 0.0) * _shadowAtten;
 
-        float3 _glossColor_2 = _brightness * _glossColor1 + i.Varying_GlossColorAdd.xyz;
+        float3 _foamLightColor = _brightness * _lightColorFix + i.Varying_GlossColorAdd.xyz;
 
         float _foamLineArea_oneMinus = min(i.Varying_ColorXYW.x * _FoamLineAreaSize, max(_terrainToSurfDir.y, 0.0)) / (_FoamLineAreaSize * i.Varying_ColorXYW.x + 1e-4);
         float _foamLineArea = 1 - _foamLineArea_oneMinus;
@@ -621,12 +631,13 @@ fixed4 frag (v2f i) : SV_Target
 
         _foamLineMixFactor = clamp(_tmp_124 * _tmp_76, 0.0, 1.0);
 
-        _foamLineColor = _FoamColor.xyz * _glossColor_2;
+        _foamLineColor = _FoamColor.xyz * _foamLightColor;
     }
     
     float3 _waterColorTransmissionAndRefelctionMixFoamLine = lerp(_waterColorTransmissionOrReflection, _foamLineColor, _foamLineMixFactor);
 
     float3 _waterColor_Final = 0 /*_lightingColor*/ + _waterColorTransmissionAndRefelctionMixFoamLine;
+        _waterColor_Final += _lightingColor;
     
    
     // 岸边 alpha 为 0
@@ -648,7 +659,7 @@ fixed4 frag (v2f i) : SV_Target
         {
             float _curveOf_baseColor_57 = Curve01(_worldPos.y, _STArgs_BaseColorXY_VeryFarZW.xy); // 0.00335, -0.66724
             
-            float3 _color_57_0 = (_curveOf_baseColor_57 * _Color_Height_Add.xyz) + _Color_Base.xyz;
+            float3 _color_57_0 = (_curveOf_baseColor_57 * _ColorHeightAdd.xyz) + _ColorBase.xyz;
 
             // #define _STArgs_BaseColorXY_And__ float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
             // #define _ColorVeryFar float4(0.39681, 0.34829, 0.44667, 0.00017      ) // _151._m16
@@ -662,10 +673,10 @@ fixed4 frag (v2f i) : SV_Target
 
         // 自变量变化速度 0.045 倍，从 0.9716 开始衰减
         //                                                       0.045                     0.9716
-        float _exp_damping_66_1 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
+        float _exp_damping_66_1 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXYZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
         // 自变量变化速度     0 倍，从      1 开始衰减
         //                                                       0.00                      1.00
-        float _exp_damping_66_2 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
+        float _exp_damping_66_2 = ExpDamping(_lookAtDir.y * _ExpDampingScaleXYZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
         
         
         float _curveOf_base_color_w_B = Curve01(_lookAtDir_length, _STArgs_BaseColorXY_And__.xy); // 0.00391, -0.0625
@@ -673,7 +684,7 @@ fixed4 frag (v2f i) : SV_Target
         float _exp_damping_tmp_109;
         {
             //                                          0.00214
-            _exp_damping_tmp_109 = _lookAtDir_length * _ExpDampingScaleXZ.y;
+            _exp_damping_tmp_109 = _lookAtDir_length * _ExpDampingScaleXYZ.y;
             _exp_damping_tmp_109 = _exp_damping_tmp_109 * (-_exp_damping_66_1);
             _exp_damping_tmp_109 = 1.0 - exp2(_exp_damping_tmp_109);
             _exp_damping_tmp_109 = max(_exp_damping_tmp_109, 0.0);
@@ -681,11 +692,11 @@ fixed4 frag (v2f i) : SV_Target
         
         // #define _STArgs_BaseColorXY_And__ float4(0.00391, -0.0625, 1.00, 1.00            ) // _151._m12
         float _base_color_w_B = min(
-            _Color_Base.w,
+            _ColorBase.w,
             _exp_damping_tmp_109 * lerp(1.0, _curveOf_base_color_w_B, _STArgs_BaseColorXY_And__.z)); // _STArgs_BaseColorXY_And__.z = 1.0
 
 
-        float _exp01_B = max(0.0, 1.0 - exp2(-_lookAtDir_length * _ExpDampingScaleXZ.w * _exp_damping_66_2));
+        float _exp01_B = max(0.0, 1.0 - exp2(-_lookAtDir_length * _ExpDampingScaleXYZ.w * _exp_damping_66_2));
         
         // // #define _STArgs_ExpXY_ZW float4(1.00, 0.00, -0.01, 2.50                 ) // _151._m19
         float _curveOf_exp_B = Curve01(_lookAtDir_length, _STArgs_ExpXY_ZW.xy); // 1.0, 0.0
@@ -713,18 +724,18 @@ fixed4 frag (v2f i) : SV_Target
             float _curveOf_very_far01_B = Curve01(_lookAtDir_length, _STArgs_BaseColorXY_VeryFarZW.zw);
 
             float _curveOf_very_far01_B_fix = _isOutOfFarPlane_B
-                ? _curveOf_very_far01_B * _Color_Height_Add.w // _Color_Height_Add.w = 0
+                ? _curveOf_very_far01_B * _ColorHeightAdd.w // _ColorHeightAdd.w = 0
                 : _curveOf_very_far01_B;
             
             _very_far01_B = min(min(
-                pow(_curveOf_very_far01_B_fix + 1e-4, _Color_Far_1.w), // _Color_Far_1.w = 1.3
-                _Color_Base.w * _FarExpMaxX_VeryFarExpMaxY.x),                          // _Color_Base.w = 0.9, _FarExpMaxX_VeryFarExpMaxY.x == 1.0
+                pow(_curveOf_very_far01_B_fix + 1e-4, _COLOR_FAR_FOG.w), // _COLOR_FAR_FOG.w = 1.3
+                _ColorBase.w * _FarExpMaxX_VeryFarExpMaxY.x),                          // _ColorBase.w = 0.9, _FarExpMaxX_VeryFarExpMaxY.x == 1.0
                 1.0);
         }
         
         // 实际 _very_far01_B * _baseColor_57 无意义，因为 _far_factor_1_B 为 0 其为 0
-        float3 _color_far_B = lerp(_very_far01_B * _baseColor_57, _Color_Far_1.xyz, _far_factor_1_B);
-            _color_far_B += _Color_Far_Exp.xyz * _far_exp_factor_2_B;
+        float3 _color_far_B = lerp(_very_far01_B * _baseColor_57, _COLOR_FAR_FOG.xyz, _far_factor_1_B);
+            _color_far_B += _ColorFarExp.xyz * _far_exp_factor_2_B;
 
             _color_far_B += (1- _far_exp_factor_2_B) * (1.0 - _very_far01_B) * (1 - _far_factor_1_B) * _waterColor_Final;
 
@@ -734,7 +745,7 @@ fixed4 frag (v2f i) : SV_Target
     
     // 可以不用 mix fog 的版本
     Output_0.xyz = _waterColor_Final;
-    // Output_0.xyz = _color_mix_far_fog;
+    Output_0.xyz = _color_mix_far_fog;
     
     fixed4 col = fixed4(0,0,0,1);
     col = Output_0;
@@ -744,6 +755,12 @@ fixed4 frag (v2f i) : SV_Target
     // col = float4(_waterColorTransmissionAndRefelctionMixFoamLine.rgb, 1.0);
     // col = float4(_reflectColor.rgb, 1.0);
     // col = float4(_ssrSample.aaa, 1.0);
+    // col = float4(_lightingColor.rgb, 1.0);
+    // col = float4(_fixNDotH_pow.xxx, 1.0);
+    // col = float4(_glossFactor_viewDirYLightYRelevant.xxx, 1.0);
+    // col = float4(_viewDirNormalize.y.xxx, 1.0);
+    // col = float4(_glossFactor_waterDepth.xxx, 1.0);
+    // col = float4(_lightingColor.rgb, 1.0);
     
     
     

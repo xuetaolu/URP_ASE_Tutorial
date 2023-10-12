@@ -1,17 +1,6 @@
 #include "genship_water_common_v2.hlsl"
 
 
-// #define _11__m0 _11._m0
-
-// _28 = 8,  _28 / 8 = 0
-// #define UNITY_MATRIX_M _11__m0[_28 / 8]._m0
-// static const matrix UNITY_MATRIX_M = 
-// {
-//     float4(1.00, 0.00, 0.00, 0.00           ),
-//     float4(0.00, 1.00, 0.00, 0.00           ),
-//     float4(0.00, 0.00, 1.00, 0.00           ),
-//     float4(-63.74597, 196.06, 34.72217, 1.00)
-// };//_11__m0[_28 / 8]._m0
 
 // #define _WorldSpaceCameraPos float3(-76.56767, 199.90689, 87.00145   ) //_38._m0
 // #define _ProjectionParams float4(1.00, 0.25, 6000.00, 0.00017     ) //_38._m1
