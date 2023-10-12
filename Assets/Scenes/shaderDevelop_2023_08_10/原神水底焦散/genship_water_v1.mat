@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: genship_water
+  m_Name: genship_water_v1
   m_Shader: {fileID: 4800000, guid: 6c5faaa104d30e24c92d26130a5c25e6, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
