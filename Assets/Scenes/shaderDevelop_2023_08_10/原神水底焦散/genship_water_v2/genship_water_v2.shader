@@ -82,9 +82,7 @@ Shader "Unlit/genship_water_v2"
         [Header(__misc__)]
         _GrabTextureFarFade ("_GrabTextureFarFade", Range(0, 1)) = 0.0
         [Toggle]_SSREnable ("_SSREnable", float) = 1.0
-
         
-        [NoScaleOffset]_DepthTexture ("_DepthTexture ", 2D) = "white" {}
         [NoScaleOffset]_Noise2D_R  ("_Noise2D_R", 2D) = "white" {}
         
         [NoScaleOffset]_NormalMap1  ("_NormalMap1", 2D) = "white" {}

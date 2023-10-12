@@ -155,6 +155,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - GrabTextureFarFade: 0
     - _151__m28: 0.25
     - _151__m29: 0.131
     - _151__m31: 3.33333
@@ -212,6 +213,7 @@ Material:
     - _GlossFactorLookAtHorizontallyAndLightHight: 2.38
     - _GlossPosAdjust: 2.38
     - _GrabTextureFade: 0
+    - _GrabTextureFarFade: 0
     - _LightIntensity: 5
     - _NDotHPower: 20
     - _NormalMapScale: 0.7
