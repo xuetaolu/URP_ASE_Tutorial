@@ -184,6 +184,7 @@ float LinearEyeDepth(float _in_rawDepth)
 // in_pre_compute_a = -log(in_start_max)
 // 当 x = 0 时，返回 in_start_max
 // 当 x > 0 时，返回从 in_start_max 指数衰减
+// https://graphtoy.com/?f1(x,t)=0.9716-pow(E,%20-0.02881%20-x)&v1=true&f2(x,t)=x&v2=true&f3(x,t)=(0.9716-pow(E,%20-0.02881%20-x))/x&v3=true&f4(x,t)=&v4=false&f5(x,t)=&v5=false&f6(x,t)=&v6=false&grid=1&coords=0.007173222870844816,0.027355005643491415,1.810513572381306
 float ExpDamping(float in_x, float in_start_max, float in_pre_compute_a)
 {
     const float local_exponent = min(/*-log(in_start_max)*/ in_pre_compute_a - in_x, 80.0);
