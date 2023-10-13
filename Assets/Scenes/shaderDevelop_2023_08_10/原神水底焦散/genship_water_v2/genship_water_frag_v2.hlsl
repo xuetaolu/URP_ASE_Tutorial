@@ -188,7 +188,7 @@ float ExpDamping(float in_x, float in_start_max, float in_pre_compute_a)
 {
     const float local_exponent = min(/*-log(in_start_max)*/ in_pre_compute_a - in_x, 80.0);
     
-    return abs(in_x) > 0.01 ? (_ExpDampingStartXZ.z - exp(local_exponent)) / in_x : in_start_max;
+    return abs(in_x) > 0.01 ? (in_start_max - exp(local_exponent)) / in_x : in_start_max;
 }
 
 float ExpDamping(float in_x, float in_start_max)
