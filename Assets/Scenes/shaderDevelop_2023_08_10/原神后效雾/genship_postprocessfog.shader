@@ -93,9 +93,9 @@ Shader "genship/postprocessfog"
             }
 
 
-            #define _64__m0  float3(4.72038, 196.40625, -8.97445)          // _64._m0
-            #define _64__m1  float4(1.00, 0.25, 6000.00, 0.00017         ) //_64._m1
-            #define _64__m2  float4(-23999.00, 24000.00, -3.99983, 4.00  ) //_64._m2
+            // #define _WorldSpaceCameraPos  float3(4.72038, 196.40625, -8.97445)          // _64._m0
+            // #define _ProjectionParams  float4(1.00, 0.25, 6000.00, 0.00017         ) //_64._m1
+            // #define _64__m2  _ZBufferParams// float4(-23999.00, 24000.00, -3.99983, 4.00  ) //_64._m2
             #define _64__m3  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
             #define _64__m4  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4
             #define _64__m5  float4(0.00391, -0.0625, 1.00, 1.00         ) //_64._m5
@@ -104,7 +104,7 @@ Shader "genship/postprocessfog"
             #define _64__m8  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
             #define _64__m9  float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9
             #define _64__m10 float4(-0.001, 9.00, -0.001, 1.20191        ) //_64._m10
-            #define _64__m11 float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
+            #define _FogVisableDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
             #define _64__m12 float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
             #define _64__m13 float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13
             #define _64__m14 float4(1.00, 0.90, 0.00, 0.00               ) //_64._m14
@@ -159,7 +159,7 @@ Shader "genship/postprocessfog"
                 float _55;
                 float _56;
                 bool _57;
-                float _58;
+                // float _58;
                 float _59;
                 float _60;
                 float _61;
@@ -168,18 +168,31 @@ Shader "genship/postprocessfog"
                 // float3 _949 = (255.0);
                 // uint _988;
                 // float3 _990 = (255.0);
-                
-                _19 = tex2D(_7, i.Varying_ScreenPos).x;
-                _19 = (_64__m2.x * _19) + _64__m2.y;
-                _19 = 1.0 / _19;
-                _43 = (_19) * i.Varying_FarPlaneConner;
-                _24 = (i.Varying_FarPlaneConner * (_19)) + _64__m0;
-                _19 *= _64__m1.z;
-                _58 = dot(_43, _43);
-                _58 = sqrt(_58);
-                _27.x = _58 + (-_64__m11.w);
-                _29 = _27.x < 0.0;
-                if ((int(_29) * (-1)) != 0)
+                // _19 = tex2D(_7, i.Varying_ScreenPos).x;
+                float _rawDepth = tex2D(_7, i.Varying_ScreenPos).x;
+                // _19 = (_64__m2.x * _rawDepth) + _64__m2.y;
+                // _19 = 1.0 / _19;
+                float _terrainLinear01Depth = Linear01Depth(_rawDepth);
+                // 注：opengl 下
+                //   _rawDepth 0 .. 1 ， 对应 _terrainLinear01Depth near/far .. 1，不会为 0
+                // _19 = _terrainLinear01Depth;
+                float3 _terrainWorldPos = (_terrainLinear01Depth * i.Varying_FarPlaneConner) + _WorldSpaceCameraPos;
+                float3 _terrainWorldPos_relativeToCamera = (_terrainLinear01Depth) * i.Varying_FarPlaneConner;
+                // _43 = _terrainWorldPos_relativeToCamera;
+                // _24 = _terrainWorldPos;
+                float _terrainEyeDepth = _terrainLinear01Depth * _ProjectionParams.z; // far plane
+                // 注：opengl 下
+                //   _terrainLinear01Depth near/far .. 1，对应 _terrainEyeDepth near .. far，不会为 0
+                // _19 = _terrainEyeDepth; // far plane
+                // _58 = dot(_terrainWorldPos_relativeToCamera, _terrainWorldPos_relativeToCamera);
+                // _58 = sqrt(_58);
+                float _terrainToCamera_length = length(_terrainWorldPos_relativeToCamera);
+                // _58 = _terrainToCamera_length;
+
+                // #define _FogVisableDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
+                // _27.x = _terrainToCamera_length + (-_FogVisableDistanceW_.w);
+                // _29 = _27.x < 0.0;
+                if (_terrainToCamera_length < _FogVisableDistanceW_.w)
                 {
                     discard;
                 }
@@ -189,7 +202,7 @@ Shader "genship/postprocessfog"
                     _29 = _64__m20.y < 0.5;
                     if (_29)
                     {
-                        _27 = _24 + (-_64__m15.xyz);
+                        _27 = _terrainWorldPos + (-_64__m15.xyz);
                         _24.x = dot(_27, _27);
                         _24.x = sqrt(_24.x);
                         _24.x = (_24.x * _64__m17.z) + _64__m17.w;
@@ -199,7 +212,7 @@ Shader "genship/postprocessfog"
                     }
                     else
                     {
-                        _24.x = _24.y + (-_64__m15.y);
+                        _24.x = _terrainWorldPos.y + (-_64__m15.y);
                         _50 = 1.0 / _64__m15.w;
                         _24.x = _50 * _24.x;
                         _24.x = clamp(_24.x, 0.0, 1.0);
@@ -222,22 +235,22 @@ Shader "genship/postprocessfog"
                     _25 = 0.0;
                     _28 = 0.0;
                 }
-                _33.x = (_58 * _64__m8.z) + _64__m8.w;
+                _33.x = (_terrainToCamera_length * _64__m8.z) + _64__m8.w;
                 _33.x = clamp(_33.x, 0.0, 1.0);
-                _47 = (_58 * _64__m18.z) + _64__m18.w;
+                _47 = (_terrainToCamera_length * _64__m18.z) + _64__m18.w;
                 _47 = clamp(_47, 0.0, 1.0);
                 _31.x = (-_33.x) + _47;
                 _31.x = (_25 * _31.x) + _33.x;
                 _46 = (-_31.x) + 2.0;
                 _31.x = _46 * _31.x;
-                _43.x = dot(_43.xz, _43.xz);
+                _43.x = dot(_terrainWorldPos_relativeToCamera.xz, _terrainWorldPos_relativeToCamera.xz);
                 _43.x = sqrt(_43.x);
                 _55 = (_43.x * _64__m10.x) + _64__m10.y;
                 _55 = clamp(_55, 0.0, 1.0);
-                _33.x = (_64__m0.y * _64__m10.z) + _64__m10.w;
+                _33.x = (_WorldSpaceCameraPos.y * _64__m10.z) + _64__m10.w;
                 _33.x = clamp(_33.x, 0.0, 1.0);
-                _47 = _64__m1.z * 0.99989998340606689453125;
-                _22 = _19 >= _47;
+                _47 = _ProjectionParams.z * 0.99989998340606689453125;
+                _22 = _terrainEyeDepth >= _47;
                 _47 = _31.x * _64__m7.w;
                 _31.x = _22 ? _47 : _31.x;
                 _46 = _22 ? _33.x : _55;
@@ -250,7 +263,7 @@ Shader "genship/postprocessfog"
                 _55 = _64__m6.w * _64__m14.x;
                 _19 = min(_55, _19);
                 _19 = min(_19, 1.0);
-                _55 = (_24.y * _64__m8.x) + _64__m8.y;
+                _55 = (_terrainWorldPos.y * _64__m8.x) + _64__m8.y;
                 _55 = clamp(_55, 0.0, 1.0);
                 _31.x = (-_55) + 2.0;
                 _31.x = _55 * _31.x;
@@ -259,7 +272,7 @@ Shader "genship/postprocessfog"
                 _38 = (-_33.xyz) + _64__m19.xyz;
                 float3 _448 = ((_25) * _38) + _33.xyz;
                 _33 = float4(_448.x, _448.y, _448.z, _33.w);
-                _55 = _58 + (-_64__m5.w);
+                _55 = _terrainToCamera_length + (-_64__m5.w);
                 _55 *= _64__m9.w;
                 _55 = clamp(_55, 0.0, 1.0);
                 _38 = (-_33.xyz) + _64__m9.xyz;
@@ -269,10 +282,10 @@ Shader "genship/postprocessfog"
                 _43.x = clamp(_43.x, 0.0, 1.0);
                 _55 = (-_64__m4.y) + _64__m16.w;
                 _55 = (_28 * _55) + _64__m4.y;
-                float2 _513 = _43.yy * _64__m4.xz;
+                float2 _513 = _terrainWorldPos_relativeToCamera.yy * _64__m4.xz;
                 _38 = float3(_513.x, _513.y, _38.z);
                 _54 = ((0.00999999977648258209228515625) < abs(_38.xyxy)).xy;
-                _40 = ((-_64__m4.xz) * _43.yy) + _64__m13.yw;
+                _40 = ((-_64__m4.xz) * _terrainWorldPos_relativeToCamera.yy) + _64__m13.yw;
                 _40 = min(_40, (80.0));
                 _40 *= (1.44269502162933349609375);
                 _40 = exp2(_40);
@@ -281,14 +294,14 @@ Shader "genship/postprocessfog"
                 _38 = float3(_554.x, _554.y, _38.z);
                 _38.x = _54.x ? _38.x : _64__m13.x;
                 _38.y = _54.y ? _38.y : _64__m13.z;
-                _48 = _55 * _58;
+                _48 = _55 * _terrainToCamera_length;
                 _48 *= (-_38.x);
                 _48 = exp2(_48);
                 _48 = (-_48) + 1.0;
                 _48 = max(_48, 0.0);
-                _55 = (_58 * _64__m5.x) + _64__m5.y;
+                _55 = (_terrainToCamera_length * _64__m5.x) + _64__m5.y;
                 _55 = clamp(_55, 0.0, 1.0);
-                _60 = (_58 * _64__m17.x) + _64__m17.y;
+                _60 = (_terrainToCamera_length * _64__m17.x) + _64__m17.y;
                 _60 = clamp(_60, 0.0, 1.0);
                 _31.x = (-_55) + _60;
                 _31.x = (_28 * _31.x) + _55;
@@ -299,12 +312,12 @@ Shader "genship/postprocessfog"
                 _55 = (_55 * _61) + 1.0;
                 _31.x = _55 * _48;
                 _48 = min(_31.x, _64__m6.w);
-                _55 = _58 * _64__m4.w;
+                _55 = _terrainToCamera_length * _64__m4.w;
                 _55 *= (-_38.y);
                 _55 = exp2(_55);
                 _55 = (-_55) + 1.0;
                 _55 = max(_55, 0.0);
-                _60 = (_58 * _64__m12.x) + _64__m12.y;
+                _60 = (_terrainToCamera_length * _64__m12.x) + _64__m12.y;
                 _60 = clamp(_60, 0.0, 1.0);
                 _31.x = (-_60) + 2.0;
                 _31.x *= _60;
@@ -320,12 +333,12 @@ Shader "genship/postprocessfog"
                 _19 = (-_19) + 1.0;
                 _44 = (-_31.xy) + (1.0);
                 _19 = _44.x * _19;
-                _31 = (_64__m11.xyz * _31.yyy) + _41;
+                _31 = (_FogVisableDistanceW_.xyz * _31.yyy) + _41;
                 _19 = _44.y * _19;
                 _45 = any(((0.0) != (_64__m21)));
                 if (_45)
                 {
-                    _43.x = dot(-_64__m0, -_64__m0);
+                    _43.x = dot(-_WorldSpaceCameraPos, -_WorldSpaceCameraPos);
                     _43.x = sqrt(_43.x);
                     _49 = 10000.0 >= _43.x;
                     _37 = ((_64__m25) == float4(0.0, 2.0, 1.0, 0.0)).xyz;
