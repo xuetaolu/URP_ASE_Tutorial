@@ -187,14 +187,15 @@ float LinearEyeDepth(float _in_rawDepth)
 // https://graphtoy.com/?f1(x,t)=0.9716-pow(E,%20-0.02881%20-x)&v1=true&f2(x,t)=x&v2=true&f3(x,t)=(0.9716-pow(E,%20-0.02881%20-x))/x&v3=true&f4(x,t)=&v4=false&f5(x,t)=&v5=false&f6(x,t)=&v6=false&grid=1&coords=0.007173222870844816,0.027355005643491415,1.810513572381306
 float ExpDamping(float in_x, float in_start_max, float in_pre_compute_a)
 {
-    const float local_exponent = min(/*-log(in_start_max)*/ in_pre_compute_a - in_x, 80.0);
+    const float local_exponent = min(/*log(in_start_max)*/ in_pre_compute_a - in_x, 80.0);
     
     return abs(in_x) > 0.01 ? (in_start_max - exp(local_exponent)) / in_x : in_start_max;
 }
 
 float ExpDamping(float in_x, float in_start_max)
 {
-    return ExpDamping(in_x, in_start_max, -log(in_start_max));
+    // 2023-12-25 结合后效雾的逻辑，in_pre_compute_a 应该是 log(in_start_max)，而不是 -log(in_start_max)
+    return ExpDamping(in_x, in_start_max, log(in_start_max));
 }
 
 float Curve01(float in_x, float2 in_ST)
@@ -369,12 +370,13 @@ fixed4 frag (v2f i) : SV_Target
         }
         
 
+        // float4 _ExpDampingStartXZ = float4(0.9716, -0.02881, 1.00, 0.00            ); // _151._m20
         // 自变量变化速度 0.045 倍，从 0.9716 开始衰减
         //                                                             0.045                     0.9716
-        float _exp_damping_80_1 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXYZ.x, _ExpDampingStartXZ.x, -log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
+        float _exp_damping_80_1 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXYZ.x, _ExpDampingStartXZ.x, log(_ExpDampingStartXZ.x) /*_ExpDampingStartXZ.y*/);
         // 自变量变化速度     0 倍，从      1 开始衰减
         //                                                             0.00                      1.00
-        float _exp_damping_80_2 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXYZ.z, _ExpDampingStartXZ.z, -log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
+        float _exp_damping_80_2 = ExpDamping(_lookThroughDir3.y * _ExpDampingScaleXYZ.z, _ExpDampingStartXZ.z, log(_ExpDampingStartXZ.z) /*_ExpDampingStartXZ.w*/);
         
         float _curveOf_base_color_w = Curve01(_lookThroughDir3_length, _STArgs_BaseColorXY_And__.xy); // 0.00391, -0.0625
         

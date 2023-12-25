@@ -96,23 +96,23 @@ Shader "genship/postprocessfog"
             // #define _WorldSpaceCameraPos  float3(4.72038, 196.40625, -8.97445)          // _64._m0
             // #define _ProjectionParams  float4(1.00, 0.25, 6000.00, 0.00017         ) //_64._m1
             // #define _64__m2  _ZBufferParams// float4(-23999.00, 24000.00, -3.99983, 4.00  ) //_64._m2
-            #define _64__m3  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
-            #define _64__m4  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4
-            #define _64__m5  float4(0.00391, -0.0625, 1.00, 1.00         ) //_64._m5
-            #define _64__m6  float4(0.00721, 0.1452, 0.38323, 0.90       ) //_64._m6
-            #define _64__m7  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7
-            #define _64__m8  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
-            #define _64__m9  float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9
+            #define _ColorA1  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
+            #define _ExpDampingScaleXZ_AffectYW  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4
+            #define _FogGradientFactorZ_  float4(0.00391, -0.0625, 1.00, 1.00         ) //_64._m5
+            #define _FogDistanceColor  float4(0.00721, 0.1452, 0.38323, 0.90       ) //_64._m6
+            #define _SkyFogDistanceScaleW_  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7
+            #define _TerrainYSO_XY_TerrainDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
+            #define _FogColorC  float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9
             #define _64__m10 float4(-0.001, 9.00, -0.001, 1.20191        ) //_64._m10
-            #define _FogVisableDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
-            #define _64__m12 float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
-            #define _64__m13 float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13
-            #define _64__m14 float4(1.00, 0.90, 0.00, 0.00               ) //_64._m14
-            #define _64__m15 float4(-1638.7793, 0.00, 2659.17578, 0.00   ) //_64._m15
-            #define _64__m16 float4(1.00, 1.00, 1.00, 0.07213            ) //_64._m16
+            #define _FogColorXYZ_FogVisableDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
+            #define _TerrainDistanceXYSO_ZW_DistanceSO_XY_ float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
+            #define _ExpDampingStartXZ_ float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13
+            #define _FogDistanceLimitX_Y_ float4(1.00, 0.90, 0.00, 0.00               ) //_64._m14
+            #define _MoonPos_maybe float4(-1638.7793, 0.00, 2659.17578, 0.00   ) //_64._m15
+            #define _ColorA2 float4(1.00, 1.00, 1.00, 0.07213            ) //_64._m16
             #define _64__m17 float4(1.00, -1.00, 10000.00, 0.00          ) //_64._m17
             #define _64__m18 float4(1.00, 1.00, 1.00, -16.00             ) //_64._m18
-            #define _64__m19 float4(0.00, 0.00, 0.00, 0.00               ) //_64._m19
+            #define _FogColorB float4(0.00, 0.00, 0.00, 0.00               ) //_64._m19
             #define _64__m20 float4(0.00, 0.00, 0.00, 0.00               ) //_64._m20
             #define _64__m21 0.00                                          // _64._m21
             #define _64__m22 float3(0.00, 0.00, 0.00)                      //_64._m22
@@ -130,13 +130,13 @@ Shader "genship/postprocessfog"
                 float4 Output_1;
 
                 float _19;
-                bool _22;
+                // bool _22;
                 float3 _24;
-                float _25;
+                // float _25;
                 bool _26;
                 float3 _27;
-                float _28;
-                bool _29;
+                // float _28;
+                // bool _29;
                 float _30;
                 float3 _31;
                 float4 _33;
@@ -149,15 +149,15 @@ Shader "genship/postprocessfog"
                 float3 _43;
                 float2 _44;
                 bool _45;
-                float _46;
-                float _47;
+                // float _46;
+                // float _47;
                 float _48;
                 bool _49;
                 float _50;
                 float _51;
                 bool2 _54;
                 float _55;
-                float _56;
+                // float _56;
                 bool _57;
                 // float _58;
                 float _59;
@@ -189,20 +189,24 @@ Shader "genship/postprocessfog"
                 float _terrainToCamera_length = length(_terrainWorldPos_relativeToCamera);
                 // _58 = _terrainToCamera_length;
 
-                // #define _FogVisableDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
-                // _27.x = _terrainToCamera_length + (-_FogVisableDistanceW_.w);
+                // #define _FogColorXYZ_FogVisableDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
+                // _27.x = _terrainToCamera_length + (-_FogColorXYZ_FogVisableDistanceW_.w);
                 // _29 = _27.x < 0.0;
-                if (_terrainToCamera_length < _FogVisableDistanceW_.w)
+                if (_terrainToCamera_length < _FogColorXYZ_FogVisableDistanceW_.w)
                 {
                     discard;
                 }
-                _29 = 0.00999999977648258209228515625 < _64__m15.w;
-                if (_29)
+                // _29 = 0.01 < _MoonPos_maybe.w;
+                // #define _MoonPos_maybe float4(-1638.7793, 0.00, 2659.17578, 0.00   ) //_64._m15
+                float _if_output1;
+                float _if_output2;
+                if (0.01 < _MoonPos_maybe.w)
                 {
-                    _29 = _64__m20.y < 0.5;
-                    if (_29)
+                    // _29 = _64__m20.y < 0.5;
+                    // #define _64__m20 float4(0.00, 0.00, 0.00, 0.00               ) //_64._m20
+                    if (_64__m20.y < 0.5)
                     {
-                        _27 = _terrainWorldPos + (-_64__m15.xyz);
+                        _27 = _terrainWorldPos + (-_MoonPos_maybe.xyz);
                         _24.x = dot(_27, _27);
                         _24.x = sqrt(_24.x);
                         _24.x = (_24.x * _64__m17.z) + _64__m17.w;
@@ -212,8 +216,8 @@ Shader "genship/postprocessfog"
                     }
                     else
                     {
-                        _24.x = _terrainWorldPos.y + (-_64__m15.y);
-                        _50 = 1.0 / _64__m15.w;
+                        _24.x = _terrainWorldPos.y + (-_MoonPos_maybe.y);
+                        _50 = 1.0 / _MoonPos_maybe.w;
                         _24.x = _50 * _24.x;
                         _24.x = clamp(_24.x, 0.0, 1.0);
                         _50 = (_24.x * (-2.0)) + 3.0;
@@ -221,122 +225,237 @@ Shader "genship/postprocessfog"
                         _30 = _24.x * _50;
                         _31.x = _30;
                     }
-                    _26 = _64__m20.x >= 0.0500000007450580596923828125;
+                    // #define _64__m20 float4(0.00, 0.00, 0.00, 0.00               ) //_64._m20
+                    _26 = _64__m20.x >= 0.05;
                     _24.x = float(_26);
                     _24.x *= _31.x;
-                    _29 = 0.949999988079071044921875 >= _64__m20.x;
-                    _27.x = float(_29);
+                    // _29 = 0.95 >= _64__m20.x;
+                    _27.x = float(0.95 >= _64__m20.x);
                     _27.x *= _31.x;
-                    _25 = _24.x;
-                    _28 = _27.x;
+                    _if_output1 = _24.x;
+                    _if_output2 = _27.x;
                 }
                 else
                 {
-                    _25 = 0.0;
-                    _28 = 0.0;
+                    _if_output1 = 0.0;
+                    _if_output2 = 0.0;
                 }
-                _33.x = (_terrainToCamera_length * _64__m8.z) + _64__m8.w;
-                _33.x = clamp(_33.x, 0.0, 1.0);
-                _47 = (_terrainToCamera_length * _64__m18.z) + _64__m18.w;
-                _47 = clamp(_47, 0.0, 1.0);
-                _31.x = (-_33.x) + _47;
-                _31.x = (_25 * _31.x) + _33.x;
-                _46 = (-_31.x) + 2.0;
-                _31.x = _46 * _31.x;
-                _43.x = dot(_terrainWorldPos_relativeToCamera.xz, _terrainWorldPos_relativeToCamera.xz);
-                _43.x = sqrt(_43.x);
-                _55 = (_43.x * _64__m10.x) + _64__m10.y;
-                _55 = clamp(_55, 0.0, 1.0);
-                _33.x = (_WorldSpaceCameraPos.y * _64__m10.z) + _64__m10.w;
-                _33.x = clamp(_33.x, 0.0, 1.0);
-                _47 = _ProjectionParams.z * 0.99989998340606689453125;
-                _22 = _terrainEyeDepth >= _47;
-                _47 = _31.x * _64__m7.w;
-                _31.x = _22 ? _47 : _31.x;
-                _46 = _22 ? _33.x : _55;
-                _19 = (-_64__m3.w) + _64__m19.w;
-                _19 = (_25 * _19) + _64__m3.w;
-                _56 = _31.x + 9.9999997473787516355514526367188e-05;
-                _56 = log2(_56);
-                _19 = _56 * _19;
-                _19 = exp2(_19);
-                _55 = _64__m6.w * _64__m14.x;
-                _19 = min(_55, _19);
-                _19 = min(_19, 1.0);
-                _55 = (_terrainWorldPos.y * _64__m8.x) + _64__m8.y;
-                _55 = clamp(_55, 0.0, 1.0);
-                _31.x = (-_55) + 2.0;
-                _31.x = _55 * _31.x;
-                float3 _432 = (_31.xxx * _64__m7.xyz) + _64__m6.xyz;
-                _33 = float4(_432.x, _432.y, _432.z, _33.w);
-                _38 = (-_33.xyz) + _64__m19.xyz;
-                float3 _448 = ((_25) * _38) + _33.xyz;
-                _33 = float4(_448.x, _448.y, _448.z, _33.w);
-                _55 = _terrainToCamera_length + (-_64__m5.w);
-                _55 *= _64__m9.w;
-                _55 = clamp(_55, 0.0, 1.0);
-                _38 = (-_33.xyz) + _64__m9.xyz;
-                float3 _477 = ((_55) * _38) + _33.xyz;
-                _33 = float4(_477.x, _477.y, _477.z, _33.w);
-                _43.x = (_43.x * _64__m12.z) + _64__m12.w;
-                _43.x = clamp(_43.x, 0.0, 1.0);
-                _55 = (-_64__m4.y) + _64__m16.w;
-                _55 = (_28 * _55) + _64__m4.y;
-                float2 _513 = _terrainWorldPos_relativeToCamera.yy * _64__m4.xz;
-                _38 = float3(_513.x, _513.y, _38.z);
-                _54 = ((0.00999999977648258209228515625) < abs(_38.xyxy)).xy;
-                _40 = ((-_64__m4.xz) * _terrainWorldPos_relativeToCamera.yy) + _64__m13.yw;
-                _40 = min(_40, (80.0));
-                _40 *= (1.44269502162933349609375);
-                _40 = exp2(_40);
-                _40 = (-_40) + _64__m13.xz;
-                float2 _554 = _40 / _38.xy;
-                _38 = float3(_554.x, _554.y, _38.z);
-                _38.x = _54.x ? _38.x : _64__m13.x;
-                _38.y = _54.y ? _38.y : _64__m13.z;
-                _48 = _55 * _terrainToCamera_length;
-                _48 *= (-_38.x);
-                _48 = exp2(_48);
-                _48 = (-_48) + 1.0;
-                _48 = max(_48, 0.0);
-                _55 = (_terrainToCamera_length * _64__m5.x) + _64__m5.y;
-                _55 = clamp(_55, 0.0, 1.0);
-                _60 = (_terrainToCamera_length * _64__m17.x) + _64__m17.y;
-                _60 = clamp(_60, 0.0, 1.0);
-                _31.x = (-_55) + _60;
-                _31.x = (_28 * _31.x) + _55;
-                _51 = (-_31.x) + 2.0;
-                _55 = (-_64__m5.z) + _64__m18.x;
-                _55 = (_28 * _55) + _64__m5.z;
-                _61 = (_31.x * _51) + (-1.0);
-                _55 = (_55 * _61) + 1.0;
-                _31.x = _55 * _48;
-                _48 = min(_31.x, _64__m6.w);
-                _55 = _terrainToCamera_length * _64__m4.w;
-                _55 *= (-_38.y);
-                _55 = exp2(_55);
-                _55 = (-_55) + 1.0;
-                _55 = max(_55, 0.0);
-                _60 = (_terrainToCamera_length * _64__m12.x) + _64__m12.y;
-                _60 = clamp(_60, 0.0, 1.0);
-                _31.x = (-_60) + 2.0;
-                _31.x *= _60;
-                _31.x = _55 * _31.x;
-                _55 = min(_31.x, _64__m14.y);
-                _31.x = _46 * _48;
-                _31.y = _43.x * _55;
-                _43 = (-_64__m3.xyz) + _64__m16.xyz;
-                _43 = ((_28) * _43) + _64__m3.xyz;
-                _41 = (_19) * _33.xyz;
-                _42 = ((-_33.xyz) * (_19)) + _43;
-                _41 = (_31.xxx * _42) + _41;
-                _19 = (-_19) + 1.0;
-                _44 = (-_31.xy) + (1.0);
-                _19 = _44.x * _19;
-                _31 = (_FogVisableDistanceW_.xyz * _31.yyy) + _41;
-                _19 = _44.y * _19;
-                _45 = any(((0.0) != (_64__m21)));
-                if (_45)
+                // _25 = _if_output1;
+                // _28 = _if_output2;
+                
+                // _33.x = (_terrainToCamera_length * _TerrainYSO_XY_TerrainDistanceSO_ZW_.z) + _TerrainYSO_XY_TerrainDistanceSO_ZW_.w;
+                // _33.x = clamp(_33.x, 0.0, 1.0);
+                // #define _TerrainYSO_XY_TerrainDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
+                float _terrainToCamera_length_SO1 = saturate(_terrainToCamera_length * _TerrainYSO_XY_TerrainDistanceSO_ZW_.z + _TerrainYSO_XY_TerrainDistanceSO_ZW_.w);
+                // _33.x = _terrainToCamera_length_SO1;
+                // _47 = _terrainToCamera_length * _64__m18.z + _64__m18.w;
+                // _47 = clamp(_47, 0.0, 1.0);
+                float _terrainToCamera_length_SO2 = saturate(_terrainToCamera_length * _64__m18.z + _64__m18.w);
+                // _47 = _terrainToCamera_length_SO2;
+                // _31.x = _terrainToCamera_length_SO2 - _terrainToCamera_length_SO1;
+                // _31.x = (_if_output1 * (_terrainToCamera_length_SO2 - _terrainToCamera_length_SO1)) + _terrainToCamera_length_SO1;
+                float _terrainToCamera_length_SO = lerp( _terrainToCamera_length_SO1, _terrainToCamera_length_SO2, _if_output1 );
+                // _31.x = _terrainToCamera_length_SO;
+                // _46 = (-_terrainToCamera_length_SO) + 2.0;
+                _31.x = (2.0-_terrainToCamera_length_SO) * _terrainToCamera_length_SO;
+                // smooth 形式 0~1 快速上升后平缓到1
+                float _terrainToCamera_length_SO_smooth01 = (2.0-_terrainToCamera_length_SO) * _terrainToCamera_length_SO;
+                // _31.x = _terrainToCamera_length_SO_smooth01;
+                // _43.x = dot(_terrainWorldPos_relativeToCamera.xz, _terrainWorldPos_relativeToCamera.xz);
+                // _43.x = sqrt(_43.x);
+                float _terrainToCameraXZ_length = length(_terrainWorldPos_relativeToCamera.xz);
+                // _43.x = _terrainToCameraXZ_length;
+                float _terrainToCameraXZ_length_SO1 = saturate(_terrainToCameraXZ_length * _64__m10.x + _64__m10.y);
+                // _55 = clamp(_55, 0.0, 1.0);
+                // _55 = _terrainToCameraXZ_length_SO1;
+                // _33.x = (_WorldSpaceCameraPos.y * _64__m10.z) + _64__m10.w;
+                // _33.x = clamp(_33.x, 0.0, 1.0);
+                float _WorldSpaceCameraPosY_SO = saturate(_WorldSpaceCameraPos.y * _64__m10.z + _64__m10.w);
+                // _33.x = _WorldSpaceCameraPosY_SO;
+                // _47 = _ProjectionParams.z * 0.9999;
+                bool _isSky = _terrainEyeDepth >= _ProjectionParams.z * 0.9999; // 没有深度了，太远了，是天空
+                // _22 = _isSky;
+                // _47 = _terrainToCamera_length_SO_smooth01 * _SkyFogDistanceScaleW_.w;
+                // #define _SkyFogDistanceScaleW_  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7
+                float _fogXZDistance = _isSky ? _terrainToCamera_length_SO_smooth01 * _SkyFogDistanceScaleW_.w : _terrainToCamera_length_SO_smooth01;
+                // _31.x = _fogXZDistance;
+                float _fogFactor = _isSky ? _WorldSpaceCameraPosY_SO : _terrainToCameraXZ_length_SO1;
+                // _46 = _fogFactor;
+                // #define _ColorA1  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
+                // #define _FogColorB float4(0.00, 0.00, 0.00, 0.00               ) //_64._m19
+                // _19 = (-_ColorA1.w) + _FogColorB.w;
+                // _19 = (_if_output1 * (_FogColorB.w - _ColorA1.w)) + _ColorA1.w;
+                float _colorw = lerp( _ColorA1.w, _FogColorB.w, _if_output1 );
+                // _19 = _colorw;
+                // _56 = _fogXZDistance + 1e-04;
+                // _56 = log2(_fogXZDistance + 1e-04);
+                // _19 = log2(_fogXZDistance + 1e-04) * _colorw;
+                // _19 = exp2(log2(_fogXZDistance + 1e-04) * _colorw);
+                float _fogXZDistance_pow = pow(_fogXZDistance + 1e-04, _colorw);
+                // _19 = _fogXZDistance_pow;
+                // _55 = _FogDistanceColor.w * _FogDistanceLimitX_Y_.x;
+                // _19 = min(_FogDistanceColor.w * _FogDistanceLimitX_Y_.x, _fogXZDistance_pow);
+                float _fogXZDistance_pow_limit1 = min(_fogXZDistance_pow, min(_FogDistanceColor.w * _FogDistanceLimitX_Y_.x, 1.0));
+                // _19 = _fogXZDistance_pow_limit1;
+                // _55 = (_terrainWorldPos.y * _TerrainYSO_XY_TerrainDistanceSO_ZW_.x) + _TerrainYSO_XY_TerrainDistanceSO_ZW_.y;
+                // _55 = clamp(_55, 0.0, 1.0);
+                float _terrainWorldPosY_SO = saturate(_terrainWorldPos.y * _TerrainYSO_XY_TerrainDistanceSO_ZW_.x + _TerrainYSO_XY_TerrainDistanceSO_ZW_.y);
+                float _terrainWorldPosY_SO_smooth01 = _terrainWorldPosY_SO * (2.0 - _terrainWorldPosY_SO);
+                // _55 = _terrainWorldPosY_SO;
+                // _31.x = (-_terrainWorldPosY_SO) + 2.0;
+                // _31.x = _terrainWorldPosY_SO * (2.0 - _terrainWorldPosY_SO);
+                // _31.x = _terrainWorldPosY_SO_smooth01;
+                // float3 _432 = (_terrainWorldPosY_SO_smooth01 * _SkyFogDistanceScaleW_.xyz) + _FogDistanceColor.xyz;
+                float3 _fogColor = (_terrainWorldPosY_SO_smooth01 * _SkyFogDistanceScaleW_.xyz) + _FogDistanceColor.xyz;
+                
+                // _33 = float4(_432.x, _432.y, _432.z, _33.w);
+                // _33.xyz = _fogColor;
+                // _38 = _FogColorB.xyz - _fogColor;
+                // float3 _448 = ((_if_output1) * _38) + _fogColor;
+                // _33 = float4(_448.x, _448.y, _448.z, _33.w);
+                // _33.xyz = _if_output1 * (_FogColorB.xyz - _fogColor) + _fogColor;
+                float3 _fogColor_2 = lerp(_fogColor, _FogColorB.xyz, _if_output1);
+                // _33.xyz = _fogColor_2;
+                // _55 = _terrainToCamera_length + (-_FogGradientFactorZ_.w);
+                // _55 *= _FogColorC.w;
+                float _terrainToCamera_length_OS = clamp((_terrainToCamera_length - _FogGradientFactorZ_.w) * _FogColorC.w, 0.0, 1.0);
+                // _55 = _terrainToCamera_length_OS;
+                // _38 = (-_fogColor_2) + _FogColorC.xyz;
+                // float3 _477 = (_terrainToCamera_length_OS * ((-_fogColor_2) + _FogColorC.xyz)) + _fogColor_2;
+                // float3 _477 = lerp(_fogColor_2, _FogColorC.xyz, _terrainToCamera_length_OS);
+                // _33 = float4(_477.x, _477.y, _477.z, _33.w);
+                float3 _fogColor_3 = lerp(_fogColor_2, _FogColorC.xyz, _terrainToCamera_length_OS);
+                // _33.xyz = _fogColor_3;
+                // _43.x = (_terrainToCameraXZ_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.z) + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.w;
+                // _43.x = clamp(_43.x, 0.0, 1.0);
+                float _terrainToCameraXZ_length_SO = saturate(_terrainToCameraXZ_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.z + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.w);
+                // _43.x = _terrainToCameraXZ_length_SO;
+                // _55 = (-_ExpDampingScaleXZ_AffectYW.y) + _ColorA2.w;
+                // _55 = (_if_output2 * ((-_ExpDampingScaleXZ_AffectYW.y) + _ColorA2.w)) + _ExpDampingScaleXZ_AffectYW.y;
+                float _lerp_55 = lerp(_ExpDampingScaleXZ_AffectYW.y, _ColorA2.w, _if_output2);
+                // _55 = _lerp_55;
+                // float2 _513 = _terrainWorldPos_relativeToCamera.yy * _ExpDampingScaleXZ_AffectYW.xz;
+                // _38 = float3(_513.x, _513.y, _38.z);
+                // _38.xy = _terrainWorldPos_relativeToCamera.yy * _ExpDampingScaleXZ_AffectYW.xz;
+                // float _in_x_1 = _terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.x;
+                // float _in_x_2 = _terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.z;
+                // _38.xy = float2(_in_x_1, _in_x_2);
+                // _54 = (0.01 < abs(_38.xy)).xy;
+                // _54.x = 0.01 < abs(_38.x);
+                // _54.y = 0.01 < abs(_38.y);
+                // _40 = ((-_ExpDampingScaleXZ_AffectYW.xz) * _terrainWorldPos_relativeToCamera.yy) + _ExpDampingStartXZ_.yw;
+    
+                
+                // _40 = min((-_ExpDampingScaleXZ_AffectYW.xz * _terrainWorldPos_relativeToCamera.yy) + _ExpDampingStartXZ_.yw, 80.0);
+                // float _exponent_1 = min( _ExpDampingStartXZ_.y - _in_x_1, 80.0 );
+                // float _exponent_2 = min( _ExpDampingStartXZ_.w - _in_x_2, 80.0 );
+                // _40.xy = float2(_exponent_1, _exponent_2);
+                // _40 = _40 * (1.44269502162933349609375);
+                // _40 = exp2(_40 * 1.44269502162933349609375);
+                // _40 = exp(_40);
+                // _40.x = _ExpDampingStartXZ_.x - exp(_exponent_1);
+                // _40.y = _ExpDampingStartXZ_.z - exp(_exponent_2);
+                // float2 _554 = _40 / _38.xy;
+                // _38 = float3(_554.x, _554.y, _38.z);
+                // _38.x = _40.x / _in_x_1;
+                // _38.y = _40.y / _in_x_2;
+                
+                // _38.x = 0.01 < abs(_in_x_1) ? _40.x / _in_x_1 : _ExpDampingStartXZ_.x;
+                // _38.y = 0.01 < abs(_in_x_2) ? _40.y / _in_x_2 : _ExpDampingStartXZ_.z;
+
+                // _ExpDampingStartXZ_.y = log(_ExpDampingStartXZ_.x)
+                // in_pre_compute_a 是 log(_ExpDampingStartXZ_.x)
+                //             也可以是 _ExpDampingStartXZ_.y
+                // #define _ExpDampingScaleXZ_AffectYW  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4
+                // #define _ExpDampingStartXZ_ float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13
+                float _terrainHeightDiff_expDamping1 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.x, _ExpDampingStartXZ_.x);
+                float _terrainHeightDiff_expDamping2 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.z, _ExpDampingStartXZ_.z);
+                // _38.x = _terrainHeightDiff_expDamping1; 
+                // _38.y = _terrainHeightDiff_expDamping2; 
+
+                float _terrainDistanceAffectByDamping1;
+                {
+                    float _tmp_48;
+                    // float _lerp_55 = lerp(_ExpDampingScaleXZ_AffectYW.y, _ColorA2.w, _if_output2)
+                    _tmp_48 = _terrainToCamera_length * _lerp_55;
+                    _tmp_48 = _tmp_48 * (-_terrainHeightDiff_expDamping1);
+                    _tmp_48 = 1.0 - exp2(_tmp_48);
+                    _tmp_48 = max(_tmp_48, 0.0);
+                    _terrainDistanceAffectByDamping1 = _tmp_48;
+                }
+                // _48 = _terrainDistanceAffectByDamping1;
+
+                
+                // _55 = (_terrainToCamera_length * _FogGradientFactorZ_.x) + _FogGradientFactorZ_.y;
+                // _55 = clamp(_55, 0.0, 1.0);
+                float _terrainToCamera_length_SOB_1 = saturate(_terrainToCamera_length * _FogGradientFactorZ_.x + _FogGradientFactorZ_.y);
+                // _55 = _terrainToCamera_length_SOB_1;
+                // _60 = (_terrainToCamera_length * _64__m17.x) + _64__m17.y;
+                // _60 = clamp(_60, 0.0, 1.0);
+                float _terrainToCamera_length_SOB_2 = saturate(_terrainToCamera_length * _64__m17.x + _64__m17.y);
+                // _60 = _terrainToCamera_length_SOB_2;
+                // _31.x = (-_terrainToCamera_length_SOB_1) + _terrainToCamera_length_SOB_2;
+                // _31.x = (_if_output2 * ((-_terrainToCamera_length_SOB_1) + _terrainToCamera_length_SOB_2)) + _terrainToCamera_length_SOB_1;
+                float _terrainToCamera_length_SOB = lerp(_terrainToCamera_length_SOB_1, _terrainToCamera_length_SOB_2, _if_output2);
+                // _31.x = _terrainToCamera_length_SOB;
+                // _55 = (-_FogGradientFactorZ_.z) + _64__m18.x;
+                // _55 = (_if_output2 * _55) + _FogGradientFactorZ_.z;
+                float _fogGradientFactor = lerp(_FogGradientFactorZ_.z, _64__m18.x, _if_output2);
+                // _55 = _fogGradientFactor;
+                // _51 = (-_terrainToCamera_length_SOB) + 2.0;
+                // _61 = (_terrainToCamera_length_SOB * (-_terrainToCamera_length_SOB + 2.0)) + (-1.0);
+                float _terrainToCamera_length_SOB_smooth = _terrainToCamera_length_SOB * (-_terrainToCamera_length_SOB + 2.0);
+                // _61 = _terrainToCamera_length_SOB_smooth;
+                // _55 = _fogGradientFactor * (_terrainToCamera_length_SOB_smooth - 1.0) + 1.0;
+                float _fogFactorB = lerp(1.0, _terrainToCamera_length_SOB_smooth, _fogGradientFactor);
+                // _55 = _fogFactorB;
+                float _fogFactorB_2 = _fogFactorB * _terrainDistanceAffectByDamping1;
+                float _fogFactorB_3 = min(_fogFactorB_2, _FogDistanceColor.w);
+                float _terrainDistanceAffectByDamping2;
+                {
+                    float _tmp_55;
+                    _tmp_55 = _terrainToCamera_length * _ExpDampingScaleXZ_AffectYW.w;
+                    _tmp_55 = _tmp_55 * (-_terrainHeightDiff_expDamping2);
+                    _tmp_55 = 1.0 - exp2(_tmp_55);
+                    _tmp_55 = max(_tmp_55, 0.0);
+                    _terrainDistanceAffectByDamping2 = _tmp_55;
+                }
+                // _55 = _terrainDistanceAffectByDamping2;
+                
+                // _60 = (_terrainToCamera_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.x) + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.y;
+                // _60 = clamp(_60, 0.0, 1.0);
+                float _terrainToCamera_length_SOC = saturate(_terrainToCamera_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.x + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.y);
+                // _60 = _terrainToCamera_length_SOC;
+                // _31.x = (-_60) + 2.0;
+                // _31.x *= _60;
+                float _terrainToCamera_length_SOC_smooth = _terrainToCamera_length_SOC * (2.0 - _terrainToCamera_length_SOC);
+                
+                float _fogDistanceFactor = _terrainDistanceAffectByDamping2 * _terrainToCamera_length_SOC_smooth;
+                // _31.x = _fogDistanceFactor;
+                float _fogDistanceFactor_2 = min(_fogDistanceFactor, _FogDistanceLimitX_Y_.y);
+                // _55 = _fogDistanceFactor_2;
+                float _fogFactorC = _fogFactor * _fogFactorB_3;
+                // _31.x = _fogFactorC;
+                float _fogFactorD = _terrainToCameraXZ_length_SO * _fogDistanceFactor_2;
+                // _31.y = _fogFactorD;
+                // _43 = (-_ColorA1.xyz) + _ColorA2.xyz;
+                // _43 = ((_if_output2) * _43) + _ColorA1.xyz;
+                float3 _colorA = lerp(_ColorA1.xyz, _ColorA2.xyz, _if_output2);
+                // _43 = _colorA;
+                // _41 = (_fogXZDistance_pow_limit1) * _fogColor_3;
+                float3 _outputColor1 = _fogXZDistance_pow_limit1 * _fogColor_3;
+                // _41 = _outputColor1;
+                float3 _outputColor2 = (-_fogColor_3 * _fogXZDistance_pow_limit1) + _colorA;
+                // _42 = _outputColor2;
+                float3 _outputColor3 = (_fogFactorC * _outputColor2) + _outputColor1;
+                // _41 = _outputColor3;
+                // _44 = (-_31.xy) + (1.0);
+                _31 = (_FogColorXYZ_FogVisableDistanceW_.xyz * _fogFactorD) + _outputColor3;
+                // _19 = (1.0 - _fogXZDistance_pow_limit1);
+                // _19 = (1.0 - _fogFactorC) * _19;
+                float _outputAlpha = (1.0 - _fogXZDistance_pow_limit1) * (1.0 - _fogFactorD) * (1.0 - _fogFactorC);
+                // _45 = any(0.0 != _64__m21);
+                if (_64__m21)
                 {
                     _43.x = dot(-_WorldSpaceCameraPos, -_WorldSpaceCameraPos);
                     _43.x = sqrt(_43.x);
@@ -361,9 +480,9 @@ Shader "genship/postprocessfog"
                     _31 = lerp(_31, _41, (_49));
                 }
                 Output_0 = float4(_31.x, _31.y, _31.z, Output_0.w);
-                Output_0.w = _19;
+                Output_0.w = _outputAlpha;
                 Output_1 = float4(_31.x, _31.y, _31.z, Output_1.w);
-                Output_1.w = _19;
+                Output_1.w = _outputAlpha;
 
                 col = Output_0;
                 // col = Output_1;
