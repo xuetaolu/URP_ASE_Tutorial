@@ -1,6 +1,6 @@
 #ifndef SHADER_LIB_COMMON_INCLUDED
 #define SHADER_LIB_COMMON_INCLUDED
-
+#include "UnityCG.cginc"
 float4 GlslToDxClipPos(float4 clipPos) {
     clipPos.y = -clipPos.y;
     clipPos.z = -0.5*clipPos.z + 0.5*clipPos.w;
@@ -34,6 +34,34 @@ float ExpDamping(float in_x, float in_start_max)
 {
     // 2023-12-25 结合后效雾的逻辑，in_pre_compute_a 应该是 log(in_start_max)，而不是 -log(in_start_max)
     return ExpDamping(in_x, in_start_max, log(in_start_max));
+}
+
+// 参考 ASE 的 ReconstructWorldPositionFromDepth ASE function
+float4 ReconstructWorldPositionFromDepth(float2 _screenPos01, float _rawDepth)
+{
+
+    // 拼凑 _clipPos，前方是 +Z
+    float4 _clipPos;
+    {
+	    #ifdef UNITY_REVERSED_Z
+	    float _frontDepth = ( 1.0 - _rawDepth );
+	    #else
+	    float _frontDepth = _rawDepth;
+	    #endif
+
+        _clipPos = float4(_screenPos01.xy * 2 - 1, _frontDepth*2 - 1, 1.0);
+    }
+
+
+    float4 _viewPos = mul(unity_CameraInvProjection, _clipPos);
+    _viewPos.xyz /= _viewPos.w;
+
+    // InvertDepthDir， unity 的camera space正前方是 -Z，和拼凑的 _clipPos 前方相反
+    _viewPos.z *= -1;
+
+    float4 _worldPos = mul(unity_CameraToWorld, float4(_viewPos.xyz, 1.0));
+    
+    return _worldPos;
 }
 
 

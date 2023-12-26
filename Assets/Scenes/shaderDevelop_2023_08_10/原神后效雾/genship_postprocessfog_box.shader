@@ -1,4 +1,4 @@
-Shader "genship/postprocessfog"
+Shader "genship/postprocessfog_box"
 {
     Properties
     {
@@ -30,11 +30,15 @@ Shader "genship/postprocessfog"
     {
         Tags { "RenderType"="Transparent" }
         LOD 100
-        
-        Blend One SrcAlpha
 
         Pass
         {
+            Blend One SrcAlpha
+            Cull Front
+//            Cull Off
+            ZWrite Off
+            ZTest Always
+            
             CGPROGRAM
             float3 _FogMainColor;
             float _FogDistancePow;
@@ -76,7 +80,7 @@ Shader "genship/postprocessfog"
             {
                 float4 vertex : SV_POSITION;
                 float3 Varying_FarPlaneConner : TEXCOORD0;
-                float2 Varying_ScreenPos : TEXCOORD1;
+                float4 Varying_ScreenPos : TEXCOORD1;
             };
             
             static matrix _23__m2 = {
@@ -93,25 +97,27 @@ Shader "genship/postprocessfog"
                 float4 Vertex_Position = v.vertex;
                 float3 Vertex_FarPlaneConner = float3(v.uv.xy, v.uv2.x);
                 
-                float4 _clipPos;
-                    _clipPos = Vertex_Position.yyyy * _23__m2[1u];
-                    _clipPos = (_23__m2[0u] * Vertex_Position.xxxx) + _clipPos;
-                    _clipPos = (_23__m2[2u] * Vertex_Position.zzzz) + _clipPos;
-                    _clipPos = (_23__m2[3u] * Vertex_Position.wwww) + _clipPos;
+                // float4 _clipPos;
+                //     _clipPos = Vertex_Position.yyyy * _23__m2[1u];
+                //     _clipPos = (_23__m2[0u] * Vertex_Position.xxxx) + _clipPos;
+                //     _clipPos = (_23__m2[2u] * Vertex_Position.zzzz) + _clipPos;
+                //     _clipPos = (_23__m2[3u] * Vertex_Position.wwww) + _clipPos;
 
-                o.vertex = GlslToDxClipPos(_clipPos);
+                // o.vertex = GlslToDxClipPos(_clipPos);
+                float4 _clipPos = UnityObjectToClipPos(v.vertex);
                 
                 float4 _screenPos = ComputeNonStereoScreenPos(_clipPos);
-                _screenPos.y = 1 - _screenPos.y;
-                o.Varying_ScreenPos = _screenPos.xy;
+
+                o.Varying_ScreenPos = _screenPos.xyzw;
                 o.Varying_FarPlaneConner = Vertex_FarPlaneConner;
+                o.vertex = _clipPos;
                 
                 return o;
             }
 
 
             // #define _WorldSpaceCameraPos  float3(4.72038, 196.40625, -8.97445)          // _64._m0
-            // #define _ProjectionParams  float4(1.00, 0.25, 6000.00, 0.00017         ) //_64._m1
+            // #define _ProjectionParams  float4(-1.00, 0.25, 6000.00, 0.00017         ) //_64._m1
             // #define _64__m2  _ZBufferParams// float4(-23999.00, 24000.00, -3.99983, 4.00  ) //_64._m2
             // #define _FogMainColorA  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
             #define _FogMainColorA float4(_FogMainColor.xyz, _FogDistancePow.x) // _64._m3 // 变xyzw
@@ -163,18 +169,22 @@ Shader "genship/postprocessfog"
                 bool _57;
 
                 float _59;
+                
+                float2 _screenPos01 = i.Varying_ScreenPos.xy / i.Varying_ScreenPos.w;
 
-                float _rawDepth = tex2D(_CameraDepthTexture, i.Varying_ScreenPos).x;
+                float _rawDepth = tex2D(_CameraDepthTexture, _screenPos01).x;
 
                 float _terrainLinear01Depth = Linear01Depth(_rawDepth);
                 // 注：opengl 下
                 //   _rawDepth 0 .. 1 ， 对应 _terrainLinear01Depth near/far .. 1，不会为 0
 
-                float3 _terrainWorldPos = (_terrainLinear01Depth * i.Varying_FarPlaneConner) + _WorldSpaceCameraPos;
-                float3 _terrainWorldPos_relativeToCamera = (_terrainLinear01Depth) * i.Varying_FarPlaneConner;
+                // float3 _terrainWorldPos = (_terrainLinear01Depth * i.Varying_FarPlaneConner) + _WorldSpaceCameraPos;
+                // float3 _terrainWorldPos_relativeToCamera = (_terrainLinear01Depth) * i.Varying_FarPlaneConner;
+                float4 _terrainWorldPos = ReconstructWorldPositionFromDepth( _screenPos01, _rawDepth );
+                float3 _terrainWorldPos_relativeToCamera = _terrainWorldPos - _WorldSpaceCameraPos;
 
                 float _terrainEyeDepth = _terrainLinear01Depth * _ProjectionParams.z; // far plane
-                
+
                 // 注：opengl 下
                 //   _terrainLinear01Depth near/far .. 1，对应 _terrainEyeDepth near .. far，不会为 0
                 float _terrainToCamera_length = length(_terrainWorldPos_relativeToCamera);
@@ -182,7 +192,7 @@ Shader "genship/postprocessfog"
                 // #define _FogColorXYZ_FogVisibleDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
                 if (_terrainToCamera_length < _FogColorXYZ_FogVisibleDistanceW_.w)
                 {
-                    discard;
+                    // discard;
                 }
                 // _29 = 0.01 < _MoonPos_maybe.w;
                 // #define _MoonPos_maybe float4(-1638.7793, 0.00, 2659.17578, 0.00   ) //_64._m15
@@ -374,7 +384,13 @@ Shader "genship/postprocessfog"
                 Output_1 = float4(_31.x, _31.y, _31.z, Output_1.w);
                 Output_1.w = _outputAlpha;
 
+                col = Output_0;
 
+                // return float4(_screenPos01.xy, 0, 1);
+                // return float4(_rawDepth, _rawDepth, _rawDepth, 1);
+                float __Z = frac(_terrainWorldPos.x*1);
+                // return float4(__Z, __Z, __Z, 1);
+                
                 float3 worldPos = _terrainWorldPos*0.01;
                 // The following part creates the checkerboard effect.
                 // Scale is the inverse size of the squares.
@@ -382,12 +398,13 @@ Shader "genship/postprocessfog"
                 // Scale, mirror and snap the coordinates.
                 uint3 worldIntPos = uint3(abs(worldPos.xyz * scale));
                 // Divide the surface into squares. Calculate the color ID value.
-                bool white = ((worldIntPos.x) & 1) ^ (worldIntPos.y & 1) ^ (worldIntPos.z & 1);
+                bool white = (worldIntPos.x & 1) ^ (worldIntPos.z & 1) /*^ (worldIntPos.y & 1)*/;
                 // Color the square based on the ID value (black or white).
                 half4 color = white ? half4(1,1,1,1) : half4(0,0,0,1);
+                // return 
                 // return color;
                 
-                col = Output_0;
+                // col = float4(1.0f, 0, 0, 0.5);
                 // col = Output_1;
                 return col;
             }
