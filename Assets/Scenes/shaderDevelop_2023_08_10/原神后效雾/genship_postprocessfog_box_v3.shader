@@ -2,20 +2,38 @@ Shader "genship/postprocessfog_box_v3"
 {
     Properties
     {
-        /*_m3 变xyz */ _FogMainColor ("_FogMainColor", Color) = (0.09966, 0.37807, 0.79386, 1.0) 
-        /*_m3 变w   */ _FogDistancePow ("_FogDistancePow", Range(0, 2)) = 1.1879
-        /*_m4 变y   */ _ExpDampingScaleXZ_AffectYW ("_ExpDampingScaleXZ_AffectYW", Vector) = (0.045, 0.00376, 0.00, 0.00) 
-        _FogGradientFactorZ_ ("_FogGradientFactorZ_", Vector) = (0.00391, -0.0625, 1.00, 1.00)
-        /*_m6 变xyz */ _FogDistanceColor ("_FogDistanceColor", Color) = (0.00721, 0.1452, 0.38323, 0.90)
-        /*_m7 变xyz */ _SkyFogDistanceScaleW_ ("_SkyFogDistanceScaleW_", Vector) = (0.02258, 0.01951, -0.08341, 0.00)
-        /*_m8 变xy  */ _TerrainYSO_XY_TerrainDistanceSO_ZW_ ("_TerrainYSO_XY_TerrainDistanceSO_ZW_", Vector) = (0.00393, -0.79396, 0.00042, -0.00671)
-        /*_m9 变xyz */ _FogColorC ("_FogColorC", Color) = (0.00208, 0.23016, 0.33588, 0.00017)
-        /*_m10变w   */ _64__m10 ("_64__m10", Vector) = (-0.001, 9.00, -0.001, 1.20191)
-        _FogColorXYZ ("_FogColorXYZ", Color) = (1.00, 1.00, 1.00, 1.00)
-        _FogVisibleDistanceW ("_FogVisibleDistanceW", Range(0, 32)) = 16
-        _TerrainDistanceXYSO_ZW_DistanceSO_XY_ ("_TerrainDistanceXYSO_ZW_DistanceSO_XY_", Vector) = (1.00, 0.00, -0.01, 2.50)
-        /*_m13变xy  */ _ExpDampingStartXZ_ ("_ExpDampingStartXZ_", Vector) = (1.28117, 0.24777, 1.00, 0.00)
-        _FogDistanceLimitX_Y_ ("_FogDistanceLimitX_Y_", Vector) = (1.00, 0.90, 0.00, 0.00)
+        [Header(Basic)]
+            _FogDistanceColor ("_FogDistanceColor", Color) = (0.00721, 0.1452, 0.38323, 0.90)
+            _FogDistanceColorBlend ("_FogDistanceColorBlend", Color) = (0.00208, 0.23016, 0.33588, 0.00017)
+            _SkyHeightSubColor ("_SkyHeightSubColor", Vector) = (0.02258, 0.01951, -0.08341, 0.00)
+            
+            _FogDistancePow ("_FogDistancePow", Range(0, 2)) = 1.1879
+            
+            _BasicPowDistanceSO ("_FogPowDistanceSO", Vector) = (0.00042, -0.0067, 0, 0)
+            _BasicHeightSO ("_BasicHeightSO", Vector) = (0.00393, -0.79396, 0, 0)
+        
+        [Header(MainColor)]
+            _FogMainColor ("_FogMainColor", Color) = (0.09966, 0.37807, 0.79386, 1.0) 
+            _MainDistanceSO ("_MainDistanceSO", Vector) = (-0.001, 9.00, 0, 0)
+            _MainHeightSO ("_MainHeightSO", Vector) = (-0.001, 1.20191, 0, 0)
+        
+            _FogHeightFactorA ("_FogHeightFactorA", Range(0.01, 3)) = 1.28117
+            _FogHeightDampingScaleA ("_FogHeightDampingScaleA", Range(0, 0.1)) = 0.045 
+            _FogDistanceDampingScaleA ("_FogDistanceDampingScaleA", Range(0, 0.01)) = 0.00376
+        
+        [Header(AdditionColor)]
+            _FogColorAddition ("_FogColorAddition", Color) = (1.00, 1.00, 1.00, 1.00)
+            _AdditionFogDistanceSO_1_2 ("_AdditionFogDistanceSO_1_2", Vector) = (1.00, 0.00, -0.01, 2.50)
+            _FogHeightFactorB ("_FogHeightFactorB", Range(0.01, 3)) = 1
+            _FogHeightDampingScaleB ("_FogHeightDampingScaleB", Range(0, 0.1)) = 0.00 
+            _FogDistanceDampingScaleB ("_FogDistanceDampingScaleB", Range(0, 0.01)) = 0.00
+        
+        [Header(Misc)]
+            _FogDiscardDistance ("_FogDiscardDistance", Range(0, 100)) = 16
+        
+//        /*_m13变xy  */ _ExpDampingStartXZ_ ("_ExpDampingStartXZ_", Vector) = (1.28117, 0.24777, 1.00, 0.00)
+        
+        
     }
     SubShader
     {
@@ -31,45 +49,55 @@ Shader "genship/postprocessfog_box_v3"
             ZTest Always
             
             CGPROGRAM
+
+            // /* basic 基础的高度 距离偏移控制着色
+            float4 _FogDistanceColor; // float4(0.00721, 0.1452, 0.38323, 0.90       ) //_64._m6 // 变xyz
+            float4 _FogDistanceColorBlend; // float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9 // 变xyz
+            float4 _SkyHeightSubColor; // float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7 // 变xyz
             
-            float3 _FogMainColor;
-            float _FogDistancePow;
-            #define _FogMainColorA float4(_FogMainColor.xyz, _FogDistancePow.x) // _64._m3 // 变xyzw
+            float _FogDistancePow; // _64._m3.w // 变
             
-            // #define _ExpDampingScaleXZ_AffectYW  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4 // 变y
-            float4 _ExpDampingScaleXZ_AffectYW;
+            float2 _BasicPowDistanceSO; // float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8.zw
+            float2 _BasicHeightSO;  //_64._m8.xy // 变xy
+            // -------------------------- */
+
+
             
+            // /* main 主要的，会变的，指数衰减的雾效
+            float3 _FogMainColor; // float4(_FogMainColor.xyz, _FogDistancePow.x) // _64._m3 // 变xyzw
+            float2 _MainDistanceSO; // _64._m10.xy // float4(-0.001, 9.00, -0.001, 1.20191        )
+            float2 _MainHeightSO;   // _64._m10.zw // 变w
+            
+            float _FogHeightFactorA; //_64._m13.x // float4(1.28117, 0.24777, 1.00, 0.00         ) // 变xy
+            float _FogHeightDampingScaleA;  //_64._m4.x // float4(0.045, 0.00376, 0.00, 0.00           )
+            float _FogDistanceDampingScaleA;//_64._m4.y // 变y
+            // -------------------------- */
+
+            
+
+            // /* addition 次要的，原神抓帧没生效的
+            float3 _FogColorAddition; //_64._m11.xyz // float4(1.00, 1.00, 1.00, 16.00              )
+            float4 _AdditionFogDistanceSO_1_2; // float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
+            float _FogHeightFactorB; //_64._m13.z
+            float _FogHeightDampingScaleB;  //_64._m4.z
+            float _FogDistanceDampingScaleB;//_64._m4.w
+            // -------------------------- */
+            
+
+
+            // /* misc 其他
+            float _FogDiscardDistance; //_64._m11.w // 16.00
+
             // #define _FogGradientFactorZ_  float4(0.00391, -0.0625, 1.00, 1.00         ) //_64._m5
-            float4 _FogGradientFactorZ_;
-            
-            // #define _FogDistanceColor  float4(0.00721, 0.1452, 0.38323, 0.90       ) //_64._m6 // 变xyz
-            float4 _FogDistanceColor;
-            
-            // #define _SkyFogDistanceScaleW_  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7 // 变xyz
-            float4 _SkyFogDistanceScaleW_;
-            
-            // #define _TerrainYSO_XY_TerrainDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8 // 变xy
-            float4 _TerrainYSO_XY_TerrainDistanceSO_ZW_;
-            
-            // #define _FogColorC  float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9 // 变xyz
-            float4 _FogColorC;
-            
-            // #define _64__m10 float4(-0.001, 9.00, -0.001, 1.20191        ) //_64._m10 // 变w
-            float4 _64__m10;
-            
-            // #define _FogColorXYZ_FogVisibleDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
-            float3 _FogColorXYZ;
-            float _FogVisibleDistanceW;
-            #define _FogColorXYZ_FogVisibleDistanceW_ float4(_FogColorXYZ.xyz, _FogVisibleDistanceW.x              ) //_64._m11
-            
-            // #define _TerrainDistanceXYSO_ZW_DistanceSO_XY_ float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
-            float4 _TerrainDistanceXYSO_ZW_DistanceSO_XY_;
-            
-            // #define _ExpDampingStartXZ_ float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13 变xy
-            float4 _ExpDampingStartXZ_;
+            #define _ComplexCalcFogDistanceSO float2(0.00391, -0.0625) // x y
+            #define _ComplexCalcFog (1.0) // z
+            #define _FogGradientFactorZ_W (1.0) // w
             
             // #define _FogDistanceLimitX_Y_ float4(1.00, 0.90, 0.00, 0.00               ) //_64._m14
-            float4 _FogDistanceLimitX_Y_;
+            #define _FogDistanceLimitX_ 1.0
+            #define _FogDistanceLimitY_ 0.9
+            // -------------------------- */
+
 
             #pragma vertex vert
             #pragma fragment frag
@@ -147,116 +175,122 @@ Shader "genship/postprocessfog_box_v3"
 
                 float _terrainEyeDepth = _terrainLinear01Depth * _ProjectionParams.z; // far plane
 
+                bool _isSky = _terrainEyeDepth >= _ProjectionParams.z * 0.9999; // 没有深度了，太远了，是天空
+                
                 // 注：_terrainLinear01Depth near/far .. 1，对应 _terrainEyeDepth near .. far，不会为 0
                 float _terrainToCamera_length = length(_terrainWorldPos_relativeToCamera);
-
+                float _terrainToCameraXZ_length = length(_terrainWorldPos_relativeToCamera.xz);
+                
                 // #define _FogColorXYZ_FogVisibleDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
-                if (_terrainToCamera_length < _FogColorXYZ_FogVisibleDistanceW_.w)
+                if (_terrainToCamera_length < _FogDiscardDistance)
                 {
                     discard;
                 }
 
-                // #define _TerrainYSO_XY_TerrainDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
-                float _terrainToCamera_length_SO = saturate(_terrainToCamera_length * _TerrainYSO_XY_TerrainDistanceSO_ZW_.z + _TerrainYSO_XY_TerrainDistanceSO_ZW_.w);
-                
-                // smooth 形式 0~1 快速上升后平缓到1
-                float _terrainToCamera_length_SO_smooth01 = (2.0-_terrainToCamera_length_SO) * _terrainToCamera_length_SO;
-
-                float _terrainToCameraXZ_length = length(_terrainWorldPos_relativeToCamera.xz);
-
-                float _terrainToCameraXZ_length_SO1 = saturate(_terrainToCameraXZ_length * _64__m10.x + _64__m10.y);
-
-                float _WorldSpaceCameraPosY_SO = saturate(_WorldSpaceCameraPos.y * _64__m10.z + _64__m10.w);
-
-                bool _isSky = _terrainEyeDepth >= _ProjectionParams.z * 0.9999; // 没有深度了，太远了，是天空
-
-                // #define _SkyFogDistanceScaleW_  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7
-                float _fogXZDistance = _isSky ? _terrainToCamera_length_SO_smooth01 * _SkyFogDistanceScaleW_.w : _terrainToCamera_length_SO_smooth01;
-
-                float _fogFactor = _isSky ? _WorldSpaceCameraPosY_SO : _terrainToCameraXZ_length_SO1;
-
-                // #define _FogMainColorA  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
-                float _colorw = _FogMainColorA.w;
-
-                float _fogXZDistance_pow = pow(_fogXZDistance + 1e-04, _colorw);
-
-                float _fogXZDistance_pow_limit1 = min(_fogXZDistance_pow, min(_FogDistanceColor.w * _FogDistanceLimitX_Y_.x, 1.0));
-
-                float _terrainWorldPosY_SO = saturate(_terrainWorldPos.y * _TerrainYSO_XY_TerrainDistanceSO_ZW_.x + _TerrainYSO_XY_TerrainDistanceSO_ZW_.y);
-                float _terrainWorldPosY_SO_smooth01 = _terrainWorldPosY_SO * (2.0 - _terrainWorldPosY_SO);
-
-                float3 _fogColor = (_terrainWorldPosY_SO_smooth01 * _SkyFogDistanceScaleW_.xyz) + _FogDistanceColor.xyz;
-
-                float3 _fogColor_2 = _fogColor;
-
-                float _terrainToCamera_length_OS = clamp((_terrainToCamera_length - _FogGradientFactorZ_.w) * _FogColorC.w, 0.0, 1.0);
-
-                float3 _fogColor_3 = lerp(_fogColor_2, _FogColorC.xyz, _terrainToCamera_length_OS);
-
-                float _terrainToCameraXZ_length_SO = saturate(_terrainToCameraXZ_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.z + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.w);
-
-
-                // _ExpDampingStartXZ_.y = log(_ExpDampingStartXZ_.x)
-                // in_pre_compute_a 是 log(_ExpDampingStartXZ_.x)
-                //             也可以是 _ExpDampingStartXZ_.y
-                // #define _ExpDampingScaleXZ_AffectYW  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4
-                // #define _ExpDampingStartXZ_ float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13
-                float _terrainHeightDiff_expDamping1 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.x, _ExpDampingStartXZ_.x);
-                float _terrainHeightDiff_expDamping2 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.z, _ExpDampingStartXZ_.z);
-
-                float _terrainDistanceAffectByDamping1;
+                // distance 从近到远 从小到大
+                float _fogXZDistance_pow_limit1;
                 {
-                    float _tmp_48;
-                    _tmp_48 = _terrainToCamera_length * _ExpDampingScaleXZ_AffectYW.y;
-                    _tmp_48 = _tmp_48 * (-_terrainHeightDiff_expDamping1);
-                    _tmp_48 = 1.0 - exp2(_tmp_48);
-                    _tmp_48 = max(_tmp_48, 0.0);
-                    _terrainDistanceAffectByDamping1 = _tmp_48;
-                }
-                
-                float _terrainToCamera_length_SOB = saturate(_terrainToCamera_length * _FogGradientFactorZ_.x + _FogGradientFactorZ_.y);
+                    // #define _TerrainYSO_XY_FogPowDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
+                    float _terrainToCamera_length_SO = saturate(_terrainToCamera_length * _BasicPowDistanceSO.x + _BasicPowDistanceSO.y);
+                    // smooth 形式 0~1 快速上升后平缓到1
+                    float _terrainToCamera_length_SO_smooth01 = (2.0-_terrainToCamera_length_SO) * _terrainToCamera_length_SO;
+                    // #define _SkyHeightSubColor  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7
+                    float _fogXZDistance = _isSky ? _terrainToCamera_length_SO_smooth01 * _SkyHeightSubColor.w : _terrainToCamera_length_SO_smooth01;
+                    // #define _FogMainColorA  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
 
-                float _fogGradientFactor = _FogGradientFactorZ_.z;
-
-                float _terrainToCamera_length_SOB_smooth = _terrainToCamera_length_SOB * (-_terrainToCamera_length_SOB + 2.0);
-
-                float _fogFactorB = lerp(1.0, _terrainToCamera_length_SOB_smooth, _fogGradientFactor);
-
-                float _fogFactorB_2 = _fogFactorB * _terrainDistanceAffectByDamping1;
-                float _fogFactorB_3 = min(_fogFactorB_2, _FogDistanceColor.w);
-                float _terrainDistanceAffectByDamping2;
-                {
-                    float _tmp_55;
-                    _tmp_55 = _terrainToCamera_length * _ExpDampingScaleXZ_AffectYW.w;
-                    _tmp_55 = _tmp_55 * (-_terrainHeightDiff_expDamping2);
-                    _tmp_55 = 1.0 - exp2(_tmp_55);
-                    _tmp_55 = max(_tmp_55, 0.0);
-                    _terrainDistanceAffectByDamping2 = _tmp_55;
+                    float _fogXZDistance_pow = pow(_fogXZDistance + 1e-04, _FogDistancePow);
+                    _fogXZDistance_pow_limit1 = min(_fogXZDistance_pow, min(_FogDistanceColor.w * _FogDistanceLimitX_, 1.0));
                 }
 
-                float _terrainToCamera_length_SOC = saturate(_terrainToCamera_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.x + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.y);
+                float3 _distanceColor_3;
+                {
+                    float _terrainWorldPosY_SO = saturate(_terrainWorldPos.y * _BasicHeightSO.x + _BasicHeightSO.y);
+                    float _terrainWorldPosY_SO_smooth01 = _terrainWorldPosY_SO * (2.0 - _terrainWorldPosY_SO);
 
-                float _terrainToCamera_length_SOC_smooth = _terrainToCamera_length_SOC * (2.0 - _terrainToCamera_length_SOC);
+                    float3 _skyHeightColor = (_terrainWorldPosY_SO_smooth01 * _SkyHeightSubColor.xyz) + _FogDistanceColor.xyz;
+
+                    float _terrainToCamera_length_OS = clamp((_terrainToCamera_length - _FogGradientFactorZ_W) * _FogDistanceColorBlend.w, 0.0, 1.0);
+
+                    float3 _distanceColor_2 = lerp(_skyHeightColor, _FogDistanceColorBlend.xyz, _terrainToCamera_length_OS);
+                    
+                    _distanceColor_3 = _fogXZDistance_pow_limit1 * _distanceColor_2;
+                }
+
+                float _fogFactorMain;
+                {
+                    // 简易高度缩放和距离缩放
+                    float _fogFactorSimple;
+                    {
+                        float _terrainToCameraXZ_length_SO1 = saturate(_terrainToCameraXZ_length * _MainDistanceSO.x + _MainDistanceSO.y);
+
+                        float _WorldSpaceCameraPosY_SO = saturate(_WorldSpaceCameraPos.y * _MainHeightSO.x + _MainHeightSO.y);
+                        
+                        _fogFactorSimple = _isSky ? _WorldSpaceCameraPosY_SO : _terrainToCameraXZ_length_SO1;
+                    }
+                    
+                    // 输出：_terrainDistanceAffectByDamping1
+                    //   距离控制的雾强度，近 0，远接近 1，先快速上升后平缓到 1
+                    // 变量：
+                    //   1. _terrainHeightDiff_expDamping1:
+                    //      因高度引起的最终 1 下调，高度越高，最终越不能接近于 1 (变成 0)
+                    // 详见：
+                    //   show_distance_affectbydamping.hip
+                    float _terrainDistanceAffectByDamping1;
+                    {
+                        float _terrainHeightDiff_expDamping1 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _FogHeightDampingScaleA/*_ExpDampingScaleXZ_AffectYW.x*/, _FogHeightFactorA/*_ExpDampingStartXZ_.x*/);
+                        float _tmp_48;
+                        _tmp_48 = _terrainToCamera_length * _FogDistanceDampingScaleA/*_ExpDampingScaleXZ_AffectYW.y*/;
+                        _tmp_48 = _tmp_48 * (-_terrainHeightDiff_expDamping1);
+                        _tmp_48 = 1.0 - exp2(_tmp_48);
+                        _tmp_48 = max(_tmp_48, 0.0);
+                        _terrainDistanceAffectByDamping1 = _tmp_48;
+                    }
+                    
+                    float _terrainToCamera_length_SOB = saturate(_terrainToCamera_length * _ComplexCalcFogDistanceSO.x + _ComplexCalcFogDistanceSO.y);
+                    float _terrainToCamera_length_SOB_smooth = _terrainToCamera_length_SOB * (-_terrainToCamera_length_SOB + 2.0);
+
+                    // 固定是 _terrainToCamera_length_SOB_smooth
+                    float _terrainDistanceAffectByDamping1Factor = lerp(1.0, _terrainToCamera_length_SOB_smooth, _ComplexCalcFog);
+
+                    float _terrainDistanceAffectByDamping1Fix = _terrainDistanceAffectByDamping1Factor * _terrainDistanceAffectByDamping1;
+                    float _fogFactorComplex = min(_terrainDistanceAffectByDamping1Fix, _FogDistanceColor.w);
+                    
+                    _fogFactorMain = _fogFactorSimple * _fogFactorComplex;
+                }
                 
-                float _fogDistanceFactor = _terrainDistanceAffectByDamping2 * _terrainToCamera_length_SOC_smooth;
+                float _fogFactorAddition;
+                {
+                    float _terrainDistanceAffectByDamping2;
+                    {
+                        float _terrainHeightDiff_expDamping2 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _FogHeightDampingScaleB/*_ExpDampingScaleXZ_AffectYW.z*/, _FogHeightFactorB/*_ExpDampingStartXZ_.z*/);
+                        float _tmp_55;
+                        _tmp_55 = _terrainToCamera_length * _FogDistanceDampingScaleB/*_ExpDampingScaleXZ_AffectYW.w*/;
+                        _tmp_55 = _tmp_55 * (-_terrainHeightDiff_expDamping2);
+                        _tmp_55 = 1.0 - exp2(_tmp_55);
+                        _tmp_55 = max(_tmp_55, 0.0);
+                        _terrainDistanceAffectByDamping2 = _tmp_55;
+                    }
 
-                float _fogDistanceFactor_2 = min(_fogDistanceFactor, _FogDistanceLimitX_Y_.y);
+                    float _terrainToCamera_length_SOC = saturate(_terrainToCamera_length * _AdditionFogDistanceSO_1_2.x + _AdditionFogDistanceSO_1_2.y);
 
-                float _fogFactorC = _fogFactor * _fogFactorB_3;
+                    float _terrainToCamera_length_SOC_smooth = _terrainToCamera_length_SOC * (2.0 - _terrainToCamera_length_SOC);
+                    
+                    float _fogDistanceFactor = _terrainDistanceAffectByDamping2 * _terrainToCamera_length_SOC_smooth;
 
-                float _fogFactorD = _terrainToCameraXZ_length_SO * _fogDistanceFactor_2;
+                    float _fogDistanceFactor_2 = min(_fogDistanceFactor, _FogDistanceLimitY_);
 
-                float3 _colorA = _FogMainColorA.xyz;
+                    float _terrainToCameraXZ_length_SO = saturate(_terrainToCameraXZ_length * _AdditionFogDistanceSO_1_2.z + _AdditionFogDistanceSO_1_2.w);
+                    
+                    _fogFactorAddition = _terrainToCameraXZ_length_SO * _fogDistanceFactor_2;
+                }
 
-                float3 _outputColor1 = _fogXZDistance_pow_limit1 * _fogColor_3;
+                float3 _mainColor = lerp(_distanceColor_3, _FogMainColor, _fogFactorMain);
 
-                float3 _outputColor2 = (-_fogColor_3 * _fogXZDistance_pow_limit1) + _colorA;
+                float3 _additionColor = _FogColorAddition * _fogFactorAddition;
+                
+                float3 _outputColor = _mainColor + _additionColor;
 
-                float3 _outputColor3 = (_fogFactorC * _outputColor2) + _outputColor1;
-
-                float3 _outputColor = (_FogColorXYZ_FogVisibleDistanceW_.xyz * _fogFactorD) + _outputColor3;
-
-                float _outputAlpha = (1.0 - _fogXZDistance_pow_limit1) * (1.0 - _fogFactorD) * (1.0 - _fogFactorC);
+                float _outputAlpha = (1.0 - _fogXZDistance_pow_limit1) * (1.0 - _fogFactorAddition) * (1.0 - _fogFactorMain);
 
                 Output_0.xyz = _outputColor;
                 Output_0.w = _outputAlpha;
@@ -277,7 +311,8 @@ Shader "genship/postprocessfog_box_v3"
                 //     half4 color = white ? half4(1,1,1,1) : half4(0,0,0,1);
                 //     return color;
                 // }
-                
+
+                // return value;
                 return col;
             }
             ENDCG

@@ -631,6 +631,7 @@ GameObject:
   - component: {fileID: 611716880}
   - component: {fileID: 611716879}
   - component: {fileID: 611716878}
+  - component: {fileID: 611716883}
   m_Layer: 0
   m_Name: postprocessfog_cube_v3
   m_TagString: Untagged
@@ -735,13 +736,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611716877}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -500, y: 30.27, z: -1278}
+  m_LocalPosition: {x: -500, y: 30.27, z: -522.23}
   m_LocalScale: {x: 999.99994, y: 1000, z: 999.99994}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 499399232}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &611716883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611716877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e121a8d60544d5a80945ba9666dad80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moon: {fileID: 855604503}
 --- !u!1 &621130592
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,6 +1146,68 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 804131590}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &855604502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 855604503}
+  m_Layer: 0
+  m_Name: moon
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &855604503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855604502}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -469, y: 414, z: -1486}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &902199563
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 902199564}
+  m_Layer: 0
+  m_Name: moon_hook
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &902199564
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902199563}
+  m_LocalRotation: {x: -0, y: 4.237341e-10, z: 0.0000000018138058, w: 1}
+  m_LocalPosition: {x: -0.00013265689, y: 0.00012207031, z: -3122.9998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1313154511}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &928443404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1485,14 +1561,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1257071816}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0.9975641, z: -0.06975647, w: 0}
   m_LocalPosition: {x: 0, y: 30.27, z: 20.908867}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 8, y: 180, z: 0}
 --- !u!114 &1257071820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1656,6 +1732,38 @@ Transform:
   m_Father: {fileID: 1394369221}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 21.594, z: 0}
+--- !u!1 &1313154510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1313154511}
+  m_Layer: 0
+  m_Name: moon_rotate_X
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1313154511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313154510}
+  m_LocalRotation: {x: 0.22749066, y: -0, z: -0.000000007450579, w: 0.9737803}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 902199564}
+  m_Father: {fileID: 1647237705}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 26.299, y: 0, z: 0}
 --- !u!1 &1368948980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1902,6 +2010,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585287842}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1647237704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1647237705}
+  m_Layer: 0
+  m_Name: moon_rotate_Y
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1647237705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647237704}
+  m_LocalRotation: {x: -0.072056, y: 0.25909963, z: 0.009036404, w: 0.9631167}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1313154511}
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: -8.249, y: 30.198, z: -1.154}
 --- !u!1 &1690909633
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,8 +2182,8 @@ MonoBehaviour:
   _LDotV_damping_factor_cloud: 0.2860512
   _CloudMoreBright: 0.481812
   _DisturbanceNoiseOffset: 55.26278
-  _sun_dir: {x: 0, y: -0.9975028, z: -0.07062716}
-  _moon_dir: {x: 0, y: 0.3090171, z: -0.9510565}
+  _sun_dir: {x: 0.036781173, y: 0.8438525, z: -0.5353131}
+  _moon_dir: {x: -0.8389946, y: -0.40339267, z: -0.36518818}
   _sunTransform: {fileID: 1010256899}
   _moonTransform: {fileID: 125463795}
   _skyRenderers:

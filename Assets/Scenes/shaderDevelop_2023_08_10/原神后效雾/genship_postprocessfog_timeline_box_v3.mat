@@ -19,33 +19,27 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - _7:
-        m_Texture: {fileID: 8400000, guid: 82f5edc548a7bf743b34547f06ebdd84, type: 2}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+    m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _64__m21: 0
-    - _FogDistancePow: 1.91
-    - _FogVisibleDistanceW: 16
-    - _MoonPos_maybe_W: 1
+    - _FogDiscardDistance: 16
+    - _FogDistanceDampingScaleA: 0.00376
+    - _FogDistanceDampingScaleB: 0
+    - _FogDistancePow: 1.1879
+    - _FogHeightDampingScaleA: 0.045
+    - _FogHeightDampingScaleB: 0
+    - _FogHeightFactorA: 1.28117
+    - _FogHeightFactorB: 1
     m_Colors:
-    - _64__m10: {r: -0.001, g: 9, b: -0.001, a: 1.20191}
-    - _64__m17: {r: 1, g: -1, b: 0.001, a: 0}
-    - _64__m20: {r: 0.66, g: 0.35, b: 0, a: 0}
-    - _ColorA2: {r: 0, g: 0, b: 0, a: 0.14901961}
-    - _ExpDampingScaleXZ_AffectYW: {r: 0.045, g: 0.00376, b: 0, a: 0}
-    - _ExpDampingStartXZ_: {r: 1.55, g: 0.24777, b: 1, a: 0}
-    - _FogColorB: {r: 0, g: 0, b: 0, a: 1}
-    - _FogColorC: {r: 0.00208, g: 0.23016, b: 0.33588, a: 0.00017}
-    - _FogColorXYZ: {r: 1, g: 1, b: 1, a: 1}
+    - _AdditionFogDistanceSO_1_2: {r: 1, g: 0, b: -0.01, a: 2.5}
+    - _BasicHeightSO: {r: 0.00393, g: -0.79396, b: 0, a: 0}
+    - _BasicPowDistanceSO: {r: 0.00042, g: -0.0067, b: 0, a: 0}
+    - _FogColorAddition: {r: 1, g: 1, b: 1, a: 1}
     - _FogDistanceColor: {r: 0.00721, g: 0.1452, b: 0.38323, a: 0.9}
-    - _FogDistanceLimitX_Y_: {r: 1, g: 0.9, b: 0, a: 0}
-    - _FogGradientFactorZ_: {r: 0.00391, g: -0.0625, b: 1, a: 1}
+    - _FogDistanceColorBlend: {r: 0.00208, g: 0.23016, b: 0.33588, a: 0.00017}
     - _FogMainColor: {r: 0.09966, g: 0.37807, b: 0.79386, a: 1}
-    - _MoonPos_maybe_Pos: {r: -1638.7793, g: 0, b: 2659.1758, a: 1}
-    - _SkyFogDistanceScaleW_: {r: 0.02258, g: 0.01951, b: -0.08341, a: 0}
-    - _TerrainDistanceXYSO_ZW_DistanceSO_XY_: {r: 1, g: 0, b: -0.01, a: 2.5}
-    - _TerrainYSO_XY_TerrainDistanceSO_ZW_: {r: 0.00393, g: -0.79396, b: 0.00042, a: -0.00671}
+    - _MainDistanceSO: {r: -0.001, g: 9, b: 0, a: 0}
+    - _MainHeightSO: {r: -0.001, g: 1.20191, b: 0, a: 0}
+    - _SimpleDistanceSO_HeightSO_: {r: -0.001, g: 9, b: -0.001, a: 1.20191}
+    - _SkyHeightSubColor: {r: 0.02258, g: 0.01951, b: -0.08341, a: 0}
   m_BuildTextureStacks: []
