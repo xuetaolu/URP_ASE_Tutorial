@@ -21,12 +21,12 @@ Shader "genship/postprocessfog_box_v3"
             _FogHeightDampingScaleA ("_FogHeightDampingScaleA", Range(0, 0.1)) = 0.045 
             _FogDistanceDampingScaleA ("_FogDistanceDampingScaleA", Range(0, 0.01)) = 0.00376
         
-        [Header(AdditionColor)]
-            _FogColorAddition ("_FogColorAddition", Color) = (1.00, 1.00, 1.00, 1.00)
-            _AdditionFogDistanceSO_1_2 ("_AdditionFogDistanceSO_1_2", Vector) = (1.00, 0.00, -0.01, 2.50)
-            _FogHeightFactorB ("_FogHeightFactorB", Range(0.01, 3)) = 1
-            _FogHeightDampingScaleB ("_FogHeightDampingScaleB", Range(0, 0.1)) = 0.00 
-            _FogDistanceDampingScaleB ("_FogDistanceDampingScaleB", Range(0, 0.01)) = 0.00
+//        [Header(AdditionColor)]
+//            _FogColorAddition ("_FogColorAddition", Color) = (1.00, 1.00, 1.00, 1.00)
+//            _AdditionFogDistanceSO_1_2 ("_AdditionFogDistanceSO_1_2", Vector) = (1.00, 0.00, -0.01, 2.50)
+//            _FogHeightFactorB ("_FogHeightFactorB", Range(0.01, 3)) = 1
+//            _FogHeightDampingScaleB ("_FogHeightDampingScaleB", Range(0, 0.1)) = 0.00 
+//            _FogDistanceDampingScaleB ("_FogDistanceDampingScaleB", Range(0, 0.01)) = 0.00
         
         [Header(Misc)]
             _FogDiscardDistance ("_FogDiscardDistance", Range(0, 100)) = 16
@@ -75,13 +75,13 @@ Shader "genship/postprocessfog_box_v3"
 
             
 
-            // /* addition 次要的，原神抓帧没生效的
-            float3 _FogColorAddition; //_64._m11.xyz // float4(1.00, 1.00, 1.00, 16.00              )
-            float4 _AdditionFogDistanceSO_1_2; // float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
-            float _FogHeightFactorB; //_64._m13.z
-            float _FogHeightDampingScaleB;  //_64._m4.z
-            float _FogDistanceDampingScaleB;//_64._m4.w
-            // -------------------------- */
+            // // /* addition 次要的，原神抓帧没生效的
+            // float3 _FogColorAddition; //_64._m11.xyz // float4(1.00, 1.00, 1.00, 16.00              )
+            // float4 _AdditionFogDistanceSO_1_2; // float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
+            // float _FogHeightFactorB; //_64._m13.z
+            // float _FogHeightDampingScaleB;  //_64._m4.z
+            // float _FogDistanceDampingScaleB;//_64._m4.w
+            // // -------------------------- */
             
 
 
@@ -258,39 +258,40 @@ Shader "genship/postprocessfog_box_v3"
                     _fogFactorMain = _fogFactorSimple * _fogFactorComplex;
                 }
                 
-                float _fogFactorAddition;
-                {
-                    float _terrainDistanceAffectByDamping2;
-                    {
-                        float _terrainHeightDiff_expDamping2 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _FogHeightDampingScaleB/*_ExpDampingScaleXZ_AffectYW.z*/, _FogHeightFactorB/*_ExpDampingStartXZ_.z*/);
-                        float _tmp_55;
-                        _tmp_55 = _terrainToCamera_length * _FogDistanceDampingScaleB/*_ExpDampingScaleXZ_AffectYW.w*/;
-                        _tmp_55 = _tmp_55 * (-_terrainHeightDiff_expDamping2);
-                        _tmp_55 = 1.0 - exp2(_tmp_55);
-                        _tmp_55 = max(_tmp_55, 0.0);
-                        _terrainDistanceAffectByDamping2 = _tmp_55;
-                    }
-
-                    float _terrainToCamera_length_SOC = saturate(_terrainToCamera_length * _AdditionFogDistanceSO_1_2.x + _AdditionFogDistanceSO_1_2.y);
-
-                    float _terrainToCamera_length_SOC_smooth = _terrainToCamera_length_SOC * (2.0 - _terrainToCamera_length_SOC);
-                    
-                    float _fogDistanceFactor = _terrainDistanceAffectByDamping2 * _terrainToCamera_length_SOC_smooth;
-
-                    float _fogDistanceFactor_2 = min(_fogDistanceFactor, _FogDistanceLimitY_);
-
-                    float _terrainToCameraXZ_length_SO = saturate(_terrainToCameraXZ_length * _AdditionFogDistanceSO_1_2.z + _AdditionFogDistanceSO_1_2.w);
-                    
-                    _fogFactorAddition = _terrainToCameraXZ_length_SO * _fogDistanceFactor_2;
-                }
+                // 原神抓帧昼夜实际这部分没有作用
+                // float _fogFactorAddition;
+                // {
+                //     float _terrainDistanceAffectByDamping2;
+                //     {
+                //         float _terrainHeightDiff_expDamping2 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _FogHeightDampingScaleB/*_ExpDampingScaleXZ_AffectYW.z*/, _FogHeightFactorB/*_ExpDampingStartXZ_.z*/);
+                //         float _tmp_55;
+                //         _tmp_55 = _terrainToCamera_length * _FogDistanceDampingScaleB/*_ExpDampingScaleXZ_AffectYW.w*/;
+                //         _tmp_55 = _tmp_55 * (-_terrainHeightDiff_expDamping2);
+                //         _tmp_55 = 1.0 - exp2(_tmp_55);
+                //         _tmp_55 = max(_tmp_55, 0.0);
+                //         _terrainDistanceAffectByDamping2 = _tmp_55;
+                //     }
+                //
+                //     float _terrainToCamera_length_SOC = saturate(_terrainToCamera_length * _AdditionFogDistanceSO_1_2.x + _AdditionFogDistanceSO_1_2.y);
+                //
+                //     float _terrainToCamera_length_SOC_smooth = _terrainToCamera_length_SOC * (2.0 - _terrainToCamera_length_SOC);
+                //     
+                //     float _fogDistanceFactor = _terrainDistanceAffectByDamping2 * _terrainToCamera_length_SOC_smooth;
+                //
+                //     float _fogDistanceFactor_2 = min(_fogDistanceFactor, _FogDistanceLimitY_);
+                //
+                //     float _terrainToCameraXZ_length_SO = saturate(_terrainToCameraXZ_length * _AdditionFogDistanceSO_1_2.z + _AdditionFogDistanceSO_1_2.w);
+                //     
+                //     _fogFactorAddition = _terrainToCameraXZ_length_SO * _fogDistanceFactor_2;
+                // }
 
                 float3 _mainColor = lerp(_distanceColor_3, _FogMainColor, _fogFactorMain);
 
-                float3 _additionColor = _FogColorAddition * _fogFactorAddition;
+                // float3 _additionColor = _FogColorAddition * _fogFactorAddition;
                 
-                float3 _outputColor = _mainColor + _additionColor;
+                float3 _outputColor = _mainColor /*+ _additionColor*/;
 
-                float _outputAlpha = (1.0 - _fogXZDistance_pow_limit1) * (1.0 - _fogFactorAddition) * (1.0 - _fogFactorMain);
+                float _outputAlpha = (1.0 - _fogXZDistance_pow_limit1) /** (1.0 - _fogFactorAddition)*/ * (1.0 - _fogFactorMain);
 
                 Output_0.xyz = _outputColor;
                 Output_0.w = _outputAlpha;
