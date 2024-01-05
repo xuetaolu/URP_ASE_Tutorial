@@ -1,4 +1,19 @@
 VS
+uniform11
+_child0                                                        0       struct6[32]
+_child0[0]                                                   0       struct6
+_child0                                                    0       float4[4]
+_child0[0] 4849.17432, -1206.20605, -3321.23096, 0.00      0       float4
+_child0[1] -3361.22192, -3314.02588, -3703.97461, 0.00     16      float4
+_child0[2] -1089.81433, 4854.10254, -3354.10229, 0.00      32      float4
+_child0[3] -1.82556, 500.00, 3.505, 1.00                   48      float4
+_child1                                                    64      float4[4]
+_child1[0] 0.00013, -0.00009, -0.00003, 0.00               64      float4
+_child1[1] -0.00003, -0.00009, 0.00013, 0.00               80      float4
+_child1[2] -0.00009, -0.0001, -0.00009, 0.00               96      float4
+_child1[3] 0.01732, 0.04622, -0.06715, 1.00                112     float4
+
+
 uniform42
 _child0    0.00, 0.08546, 0.00, 0.20387          0   float4
 _child1    0.00, 0.18747, 0.00, 0.36436          16  float4
@@ -19,23 +34,23 @@ _child9    1.00, 1.00, 0.00, 0.00                192 float4
 
 PS
 uniforms34
-_child0 84.2623, 1685.24597, 3370.49194, 5055.73779 0 float4
-_child1 0.00, 0.74265, 0.03585, 1.00              16 float4
-_child2 1.00, 0.40, 0.00, 0.00                    32 float4
-_child3 -0.005                                    48 float
-_child4 0.38                                      52 float
-_child5 10.82                                     56 float
-_child6 1.00, 1.00, 0.00, 0.00                    64 float4
-_child7 3.50, 1.00, 0.00, 0.00                    80 float4
-_child8 0.005                                     96 float
-_child9 0.23                                      100 float
-_child10 4.35, 1.10, 0.00, 0.00                    112 float4
-_child11 -0.05                                     128 float
-_child12 1.60                                      132 float
-_child13 700.00                                    136 float
-_child14 8.00, 6.00, 0.00, 0.00                    144 float4
-_child15 1.00, 0.00, 0.00, 1.00                    160 float4
-_child16 0.14706, 0.40, 1.00, 1.00                 176 float4
-_child17 5.00                                      192 float
-_child18 0.00                                      196 float
-_child19 18.00                                     200 float
+_child0 84.2623, 1685.24597, 3370.49194, 5055.73779 0   float4
+_child1 0.00, 0.74265, 0.03585, 1.00                16  float4
+_child2 1.00, 0.40, 0.00, 0.00                      32  float4
+_child3 -0.005                                      48  float
+_child4 0.38                                        52  float
+_child5 10.82                                       56  float
+_child6 1.00, 1.00, 0.00, 0.00                      64  float4
+_child7 3.50, 1.00, 0.00, 0.00                      80  float4
+_child8 0.005                                       96  float
+_child9 0.23                                        100 float
+_child10 4.35, 1.10, 0.00, 0.00                     112 float4
+_child11 -0.05                                      128 float
+_child12 1.60                                       132 float
+_child13 700.00                                     136 float
+_child14 8.00, 6.00, 0.00, 0.00                     144 float4
+_child15 1.00, 0.00, 0.00, 1.00                     160 float4
+_child16 0.14706, 0.40, 1.00, 1.00                  176 float4
+_child17 5.00                                       192 float
+_child18 0.00                                       196 float
+_child19 18.00                                      200 float

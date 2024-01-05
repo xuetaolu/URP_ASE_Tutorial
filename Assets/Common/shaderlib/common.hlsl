@@ -64,5 +64,12 @@ float4 ReconstructWorldPositionFromDepth(float2 _screenPos01, float _rawDepth)
     return _worldPos;
 }
 
+// 输入的图片是 sRGB，亮度偏高的，需要做一遍 GammaToLinearSpace 压低
+float4 tex2DsRGB(sampler2D _sampler2D, float2 uv)
+{
+    float4 res = tex2D(_sampler2D, uv);
+    res.rgb = GammaToLinearSpace(res.rgb);
+    return res;
+}
 
 #endif
