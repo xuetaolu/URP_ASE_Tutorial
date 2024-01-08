@@ -28,16 +28,13 @@ Shader "Unlit/genship_galaxy"
         _BesideBandNoise_Speed ("_BesideBandNoise_Speed", Range(-0.1, 0)) = -0.005
         _BesideBandNoise_Bias ("_BesideBandNoise_Bias", Range(0, 1)) = 0.38
         
-        
         [Header(__BesideStar__)]
         _StarDotMap ("_StarDotMap", 2D) = "white" {}
         [HideInInspector]_StarDotMap_ST ("_StarDotMap_ST", Vector) = (8.00, 6.00, 0.00, 0.00   )
         _StarDotIntensity ("_StarDotIntensity", Range(0, 2000)) = 700.00
-
-        
         
         [Header(__Misc__)]
-        _GalaxyHidden ("_GalaxyHidden", Range(0, 1)) = 0.00
+        _GalaxyAlpha ("_GalaxyAlpha", Range(0, 1)) = 1.00
     }
     SubShader
     {
@@ -133,8 +130,8 @@ Shader "Unlit/genship_galaxy"
             float4 _BesideColorAddition; // float4(0.14706, 0.40, 1.00, 1.00) // _34._m16
             // #define _BesideColorAddition_Intensity (5.00 ) // _34._m17
             float _BesideColorAddition_Intensity; // (5.00 ) // _34._m17
-            // #define _GalaxyHidden (0.00 ) // _34._m18
-            float _GalaxyHidden; // (0.00 ) // _34._m18
+            // #define _GalaxyAlpha (0.00 ) // _34._m18
+            float _GalaxyAlpha; // (0.00 ) // _34._m18
             // #define _CenterColor_Intensity (18.00) // _34._m19
             float _CenterColor_Intensity; // (18.00) // _34._m19
             
@@ -183,7 +180,8 @@ Shader "Unlit/genship_galaxy"
 
                 float3 _color3 = (_besideBandArea * _BesideColorAddition.xyz * _BesideColorAddition_Intensity) + _color2;
 
-                float3 _color4 = lerp(_color3, 0.0, _GalaxyHidden);
+                // float3 _color4 = lerp(_color3, 0.0, _GalaxyAlpha); // 原神这里原本是 0 表示显示，1 表示隐藏
+                float3 _color4 = _color3 * _GalaxyAlpha;
                 Output_0.xyz = _color4;
                 Output_0.w = 1.0;
 
