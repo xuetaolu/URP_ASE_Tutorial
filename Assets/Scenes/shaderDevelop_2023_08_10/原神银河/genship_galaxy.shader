@@ -96,7 +96,7 @@ Shader "Unlit/genship_galaxy"
                 return o;
             }
 
-            #define _Time float4(84.2623, 1685.24597, 3370.49194, 5055.73779)// _34._m0
+            // #define _Time float4(84.2623, 1685.24597, 3370.49194, 5055.73779)// _34._m0
             // #define _BesideColor float4(0.00, 0.74265, 0.03585, 1.00               )// _34._m1
             float4 _BesideColor;
             // #define _BesideBandNoise_ST float4(1.00, 0.40, 0.00, 0.00                     )// _34._m2
