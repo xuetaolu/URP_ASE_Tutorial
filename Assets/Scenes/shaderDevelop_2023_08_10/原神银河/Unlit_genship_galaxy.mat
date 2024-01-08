@@ -51,7 +51,7 @@ Material:
     - _CenterColor_Intensity: 18
     - _ColorMaskDisturbNoise_Speed: 0.005
     - _ColorMask_Disturb: 0.23
-    - _GalaxyAlpha: 0
+    - _GalaxyAlpha: 0.802
     - _GalaxyHidden: 0
     - _StarDotIntensity: 700
     m_Colors:
