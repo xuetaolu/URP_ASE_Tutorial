@@ -10,8 +10,7 @@ Material:
   m_Name: Unlit_ProcedualRock 1
   m_Shader: {fileID: 4800000, guid: 1d35da70669cd004f9c28b760fc0fb16, type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _SHOWNOISE_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -26,10 +25,13 @@ Material:
     - _DiffuseStrength: 1
     - _EnviromentStrength: 1
     - _EnvironmentStrength: 1
-    - _ShowNoise: 1
+    - _Noise3DWorldPosScale: 1
+    - _NormalDisturb: 1
+    - _ShowNoise: 0
     - _SpecularStrength: 1
     m_Colors:
     - _BaseColor: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 1}
     - _BaseColor2: {r: 0.51, g: 0.41, b: 0.32, a: 1}
+    - _NoiseSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _SandColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 1}
   m_BuildTextureStacks: []
