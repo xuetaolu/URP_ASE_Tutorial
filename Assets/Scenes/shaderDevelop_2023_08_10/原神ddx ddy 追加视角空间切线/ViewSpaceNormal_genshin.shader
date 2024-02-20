@@ -85,46 +85,86 @@ Shader "Unlit/ViewSpaceNormal_genshin"
 
             	
 
-				float2 _normalMapUV_dx = ddx(_normalMapUV);
-			    float2 _normalMapUV_dy = ddy(_normalMapUV);
+				float2 _ddx_uv = ddx(_normalMapUV); // ddx(uv)
+			    float2 _ddy_uv = ddy(_normalMapUV); // ddy(uv)
 				
 				float3 _worldPos = i.worldPos;
 
 				float3 _viewSpacePos = i.viewSpacePos;
             	
 
-				float3 _viewDir_dx = ddx(_viewSpacePos);
-				float3 _viewDir_dy = ddy(_viewSpacePos);
+				float3 _viewDir_dx = ddx(_viewSpacePos); // v0
+				float3 _viewDir_dy = ddy(_viewSpacePos); // v1
+
+
+            	// 叉乘推导方式(cross 函数编译解析)：
+            	// a×b = float3( a.y*b.z - b.y*a.z, -(a.x*b.z - b.x*a.z), a.x*b.y - b.x*a.y );
+            	//     = float3( a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z   , a.x*b.y - a.y*b.x );
+            	//     = float3( a.y*b.z, a.z*b.x, a.x*b.y ) - float3( a.z*b.y, a.x*b.z, a.y*b.x )
+            	//     = a.yzx * b.zxy - a.zxy * b.yzx
+            	// 所以 cross(a, b) = a.yzx * b.zxy - a.zxy * b.yzx;
             	
-				float3 _UK_x = (_viewSpaceNormal.zxy * _viewDir_dy.yzx) - (_viewSpaceNormal.yzx * _viewDir_dy.zxy);
             	
-				float3 _UK_y = (_viewSpaceNormal.yzx * _viewDir_dx.zxy) - (_viewSpaceNormal.zxy * _viewDir_dx.yzx);
+				// float3 _As_U = (_viewDir_dy.yzx * _viewSpaceNormal.zxy) - (_viewDir_dy.zxy * _viewSpaceNormal.yzx);
+            	                                     // v1         // N
+            	float3 _viewDyCrossNormal_AsU = cross(_viewDir_dy, _viewSpaceNormal);
+            	// 预计就是 正常的右方方向，UV 的 U 方向
             	
-			    float3 _59 = (_UK_x * _normalMapUV_dx.xxx) + _UK_y * _normalMapUV_dy.xxx;
+				// float3 _As_V = (_viewSpaceNormal.yzx * _viewDir_dx.zxy) - (_viewSpaceNormal.zxy * _viewDir_dx.yzx);
+            	                                     // N          // v0
+            	float3 _normalCorssViewDx_AsV = cross(_viewSpaceNormal, _viewDir_dx);
+            	// 预计就是 正常的上方方向，UV 的 V 方向
 
-			    float3 _49 = (_UK_x * _normalMapUV_dx.yyy) + _UK_y * _normalMapUV_dy.yyy;
+            	// 在 uv 坐标中，向量 u' 方向为 (1, 0)， 向量 v' 方向为 (0, 1)
+            	// 存在线性组合
+            	//   ddx(uv).x * u' + ddx(uv).y * v' = ddx(uv)
+            	//   ddy(uv).x * u' + ddy(uv).y * v' = ddy(uv)
+            	// 假设在视角空间，对齐 uv 坐标方向的朝向分别为 U', V'
+            	// 也有线性组合
+            	//   ddx(uv).x * U' + ddx(uv).y * V' = U = ddx(_viewSpacePos)
+            	//   ddy(uv).x * U' + ddy(uv).y * V' = V = ddy(_viewSpacePos)
+            	// 写成矩阵的形式为
+            	//   [ ddx(uv).x  ddx(uv).y ]     [ U']    [ U ]
+            	//   [ ddy(uv).x  ddy(uv).y ]  *  [ V'] =  [ V ]
+            	// 简单假设左边矩阵为正交单位矩阵，其逆矩阵为其转置，则有
+            	//   [ U']   [ ddx(uv).x  ddy(uv).x ]   [ U ]
+            	//   [ V'] = [ ddx(uv).y  ddy(uv).y ] * [ V ]
+            	// 分开写则是：
+            	//      U' = U * ddx(uv).x + V * ddy(uv).x
+            	//      V' = U * ddx(uv).y + V * ddy(uv).y
+            	
+            	
+            	                       // U                   // ddx(uv).x   // V                   // ddy(uv).x
+			    float3 _normalX_dir = (_viewDyCrossNormal_AsU * _ddx_uv.x) + _normalCorssViewDx_AsV * _ddy_uv.x;
+                                       // U                   // ddx(uv).y   // V                   // ddy(uv).y
+			    float3 _normalY_dir = (_viewDyCrossNormal_AsU * _ddx_uv.y) + _normalCorssViewDx_AsV * _ddy_uv.y;
 
 
-			    float _90 = dot(_59, _59);
-			    float _93 = dot(_49, _49);
-			    _90 = max(_90, _93);
-			    _90 = sqrt(_90);
-			    _90 = 1.0 / _90;
 
-			    float3 _52 = (_90) * _59;
-				_49 = (_90) * _49;
+    //         	float _maxLength_rcp;
+				// {
+				//     float _90 = dot(_normalX_dir, _normalX_dir);
+				//     float _93 = dot(_normalY_dir, _normalY_dir);
+				//     _90 = max(_90, _93);
+				//     _90 = sqrt(_90);
+				//     _90 = 1.0 / _90;
+				// 	_maxLength_rcp = _90;
+				// }
+            	
+			    // float3 _normalX = (_maxLength_rcp) * _normalX_dir;
+				// float3 _normalY = (_maxLength_rcp) * _normalY_dir;
 
+            	// 因为后续做单位化所以没必要提前约束长度。
+            	float3 _normalX = _normalX_dir;
+            	float3 _normalY = _normalY_dir;
 
-				_52 = normalize(_52); // normalMap X
-
-
-				_49 = normalize(_49); // normalMap Y
-
+				_normalX = normalize(_normalX); // normalMap X
+				_normalY = normalize(_normalY); // normalMap Y
 				
-			    // _92 = 0.9900000095367431640625 >= _normalMapNormalize.z; // ����û�ã�Ӧ�������ж�������ƽ�ĵط�
+			    // _92 = 0.9900000095367431640625 >= _normalMapNormalize.z; // 这里没用，应该用来判断是完整平的地方
             	
-				float3 _viewSpaceNormalFix = _normalMapNormalize.x * _52 
-					+ _normalMapNormalize.y * _49 
+				float3 _viewSpaceNormalFix = _normalMapNormalize.x * _normalX 
+					+ _normalMapNormalize.y * _normalY 
 					+ _normalMapNormalize.z * _viewSpaceNormal;
             	
             	
@@ -137,12 +177,14 @@ Shader "Unlit/ViewSpaceNormal_genshin"
 				float3 _fixWorldNormal = mul(_outputViewSpaceNormal, (float3x3)UNITY_MATRIX_V);
             	
                 float3 _lighting = 0;
-                float n = _outputViewSpaceNormal;
-            	float l = _viewSpaceLightDir;
-            	float3 e = -normalize(_WorldSpaceCameraPos - _worldPos);
-                _lighting += float3(diffuse(n,l,1.0) * _LightColor0.xyz/*WHITE*/) * _DiffuseStrength;
-                _lighting += float3(specular(n,l,e,8.0) * _LightColor0.xyz/*WHITE*/ * 1.5 ) * _SpecularStrength;
-            	_lighting += ShadeSH9(half4(_fixWorldNormal, 1.0)) * _EnvironmentStrength;
+				{
+	                float n = _outputViewSpaceNormal;
+            		float l = _viewSpaceLightDir;
+            		float3 e = -normalize(_WorldSpaceCameraPos - _worldPos);
+	                _lighting += float3(diffuse(n,l,1.0) * _LightColor0.xyz/*WHITE*/) * _DiffuseStrength;
+	                _lighting += float3(specular(n,l,e,8.0) * _LightColor0.xyz/*WHITE*/ * 1.5 ) * _SpecularStrength;
+            		_lighting += ShadeSH9(half4(_fixWorldNormal, 1.0)) * _EnvironmentStrength;
+				}
             	col.xyz = _lighting;
 
             	// col.xyz = _fixWorldNormal;
