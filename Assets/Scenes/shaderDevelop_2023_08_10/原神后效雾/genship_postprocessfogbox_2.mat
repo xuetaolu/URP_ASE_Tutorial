@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: genship_postprocessfogbox_2
+  m_Shader: {fileID: 4800000, guid: 400da505c6592d04985908ed13f92917, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _7:
+        m_Texture: {fileID: 8400000, guid: 82f5edc548a7bf743b34547f06ebdd84, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _64__m21: 0
+    - _FogDistancePow: 1.08365
+    - _FogVisibleDistanceW: 15
+    - _MoonPos_maybe_W: 0
+    m_Colors:
+    - _64__m10: {r: -0.00033, g: 2.44722, b: -0.001, a: 1.17958}
+    - _64__m20: {r: 0, g: 0, b: 0, a: 0}
+    - _ColorA2: {r: 1, g: 1, b: 1, a: 0.07213}
+    - _ExpDampingScaleXZ_AffectYW: {r: 0.09159, g: 0.02426, b: 0.04, a: 0}
+    - _ExpDampingStartXZ_: {r: 0.12955, g: -2.04365, b: 0.03779, a: -3.27578}
+    - _FogColorC: {r: 0.46001, g: 0.42273, b: 0.46656, a: 0.00017}
+    - _FogColorXYZ: {r: 0.32624, g: 0.22609, b: 0.19079, a: 15}
+    - _FogDistanceColor: {r: 0.05654, g: 0.13585, b: 0.35222, a: 0.92}
+    - _FogDistanceLimitX_Y_: {r: 1, g: 1, b: 0, a: 0}
+    - _FogGradientFactorZ_: {r: 0.00839, g: -0.12581, b: 1, a: 1}
+    - _FogMainColor: {r: 0.77914, g: 0.60906, b: 0.52263, a: 1.08365}
+    - _MoonPos_maybe_Pos: {r: 89.90182, g: 0, b: 656.74915, a: 1}
+    - _SkyFogDistanceScaleW_: {r: -0.00127, g: 0.0048, b: -0.13633, a: 0}
+    - _TerrainDistanceXYSO_ZW_DistanceSO_XY_: {r: 0.002, g: 0, b: -0.0005, a: 1.07681}
+    - _TerrainYSO_XY_TerrainDistanceSO_ZW_: {r: 0.00147, g: -0.26394, b: 0.00047, a: -0.00707}
+  m_BuildTextureStacks: []
