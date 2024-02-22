@@ -35,7 +35,7 @@ Material:
     - _BasicPowDistanceSO: {r: 0.00042, g: -0.0067, b: 0, a: 0}
     - _ComplexCalcFogDistanceSO: {r: 0.00839, g: -0.12581, b: 0, a: 0}
     - _FogDistanceColor: {r: 0.00721, g: 0.1452, b: 0.38323, a: 0.9}
-    - _FogDistanceColorBlend: {r: 0.5372549, g: 0.5000385, b: 0.4392157, a: 0}
+    - _FogDistanceColorBlend: {r: 1, g: 0, b: 0.2920928, a: 0}
     - _FogMainColor: {r: 0.73419225, g: 0.78039217, b: 0.52156866, a: 1}
     - _MainDistanceSO: {r: -0.001, g: 9, b: 0, a: 0}
     - _MainHeightSO: {r: -0.001, g: 1.20191, b: 0, a: 0}
