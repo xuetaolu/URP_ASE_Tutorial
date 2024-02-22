@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: genship_postprocessfogbox_2
+  m_Name: genship_postprocessfogbox_v3
   m_Shader: {fileID: 4800000, guid: 400da505c6592d04985908ed13f92917, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

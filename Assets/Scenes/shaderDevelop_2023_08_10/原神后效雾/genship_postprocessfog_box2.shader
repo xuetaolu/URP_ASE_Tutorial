@@ -2,72 +2,120 @@ Shader "genship/postprocessfog_box2"
 {
     Properties
     {
-        _7 ("_7", 2D) = "white" {}
+        [Header(Basic)]
+        /*_m6 Âèòxyz */ _FogDistanceColor ("_FogDistanceColor", Color) = (0.05654, 0.13585, 0.35222, 0.92)
+        /*_m9 Âèòxyz */ _FogDistanceColorBlend ("_FogDistanceColorBlend", Color) = (0.46001, 0.42273, 0.46656, 0.00017)
+        /*_m9.w     */ _FogDistanceColorBlendA ("_FogDistanceColorBlendA", Range(0, 0.001)) = 0.00017
+        /*_m7 Âèòxyz */ _SkyHeightSubColor ("_SkyHeightSubColor", Vector) = (-0.00127, 0.0048, -0.13633, 0.00)
         
-        /*_m3 ±‰xyz */ _FogMainColor ("_FogMainColor", Color) = (0.09966, 0.37807, 0.79386, 1.0) 
-        /*_m3 ±‰w   */ _FogDistancePow ("_FogDistancePow", Range(0, 2)) = 1.1879
-        /*_m4 ±‰y   */ _ExpDampingScaleXZ_AffectYW ("_ExpDampingScaleXZ_AffectYW", Vector) = (0.045, 0.00376, 0.00, 0.00) 
-        _FogGradientFactorZ_ ("_FogGradientFactorZ_", Vector) = (0.00391, -0.0625, 1.00, 1.00)
-        /*_m6 ±‰xyz */ _FogDistanceColor ("_FogDistanceColor", Color) = (0.00721, 0.1452, 0.38323, 0.90)
-        /*_m7 ±‰xyz */ _SkyFogDistanceScaleW_ ("_SkyFogDistanceScaleW_", Vector) = (0.02258, 0.01951, -0.08341, 0.00)
-        /*_m8 ±‰xy  */ _TerrainYSO_XY_TerrainDistanceSO_ZW_ ("_TerrainYSO_XY_TerrainDistanceSO_ZW_", Vector) = (0.00393, -0.79396, 0.00042, -0.00671)
-        /*_m9 ±‰xyz */ _FogColorC ("_FogColorC", Color) = (0.00208, 0.23016, 0.33588, 0.00017)
-        /*_m10±‰w   */ _64__m10 ("_64__m10", Vector) = (-0.001, 9.00, -0.001, 1.20191)
-        _FogColorXYZ ("_FogColorXYZ", Color) = (1.00, 1.00, 1.00, 1.00)
-        _FogVisibleDistanceW ("_FogVisibleDistanceW", Range(0, 32)) = 16
-        _TerrainDistanceXYSO_ZW_DistanceSO_XY_ ("_TerrainDistanceXYSO_ZW_DistanceSO_XY_", Vector) = (1.00, 0.00, -0.01, 2.50)
-        /*_m13±‰xy  */ _ExpDampingStartXZ_ ("_ExpDampingStartXZ_", Vector) = (1.28117, 0.24777, 1.00, 0.00)
-        _FogDistanceLimitX_Y_ ("_FogDistanceLimitX_Y_", Vector) = (1.00, 0.90, 0.00, 0.00)
+        /*_m3 Âèòw   */ _FogDistancePow ("_FogDistancePow", Range(0, 2)) = 1.08365
         
-        _64__m20 ("_64__m20", Vector) = (0.00, 0.00, 0.00, 0.00)
-        _ColorA2 ("_ColorA2", Color) = (1.00, 1.00, 1.00, 0.07213)
-        _MoonPos_maybe_Pos ("_MoonPos_maybe_Pos", Vector) = (-1638.7793, 0.00, 2659.17578)
-        _MoonPos_maybe_W ("_MoonPos_maybe_W", Range(0, 1)) = 0
+        /*_m8 Âèòxy  */ //_TerrainYSO_XY_TerrainDistanceSO_ZW_ ("_TerrainYSO_XY_TerrainDistanceSO_ZW_", Vector) = (0.00147, -0.26394, 0.00047, -0.00707)
+                       _BasicPowDistanceSO ("_FogPowDistanceSO", Vector) = (0.00047, -0.00707, 0, 0)
+                       _BasicHeightSO ("_BasicHeightSO", Vector) = (0.00147, -0.26394, 0, 0)
         
-        [Toggle]_64__m21 ("_64__m21", float) = 0.0
+        
+        [Header(MainColor)]
+        /*_m3 Âèòxyz */ _FogMainColor ("_FogMainColor", Color) = (0.77914, 0.60906, 0.52263, 1.08365) 
+        /*_m10Âèòw   */ // _64__m10 ("_64__m10", Vector) = (-0.00033, 2.44722, -0.001, 1.17958)
+                       _MainDistanceSO ("_MainDistanceSO", Vector) = (-0.00033, 2.44722, 0, 0)
+                       _MainHeightSO ("_MainHeightSO", Vector) = (-0.001, 1.17958, 0, 0)
+        
+        /*_m13Âèòxy  */ // _ExpDampingStartXZ_ ("_ExpDampingStartXZ_", Vector) = (0.12955, -2.04365, 0.03779, -3.27578)
+        /*_m13.x    */ _FogHeightFactorA ("_FogHeightFactorA", Range(0.01, 3)) = 0.12955
+        
+        /*_m4 Âèòy   */ // _ExpDampingScaleXZ_AffectYW ("_ExpDampingScaleXZ_AffectYW", Vector) = (0.09159, 0.02426, 0.04, 0.00) 
+        /*_m4.x     */ _FogHeightDampingScaleA ("_FogHeightDampingScaleA", Range(0, 0.1)) = 0.09159
+        /*_m4.y     */ _FogDistanceDampingScaleA ("_FogDistanceDampingScaleA", Range(0, 0.01)) = 0.02426
+        
+        
+//        [Header(AdditionColor)]
+//                       _FogColorAddition ("_FogColorAddition", Color) = (0.32624, 0.22609, 0.19079, 15.00)
+//                       _AdditionFogDistanceSO_1_2 ("_AdditionFogDistanceSO_1_2", Vector) = (0.002, 0.00, -0.0005, 1.07681)
+//        /*_m13.z    */ _FogHeightFactorB ("_FogHeightFactorB", Range(0.01, 3)) = 0.03779
+//        /*_m4.z     */ _FogHeightDampingScaleB ("_FogHeightDampingScaleB", Range(0, 0.1)) = 0.04
+//        /*_m4.w     */ _FogDistanceDampingScaleB ("_FogDistanceDampingScaleB", Range(0, 0.01)) = 0.00
+        
+        [Header(Misc)]
+                       _FogDiscardDistance ("_FogDiscardDistance", Range(0, 32)) = 15.00
+
+        /*_m5       */ //_FogGradientFactorZ_ ("_FogGradientFactorZ_", Vector) = (0.00839, -0.12581, 1.00, 1.00)
+        /*_m5.xy    */ _ComplexCalcFogDistanceSO ("_ComplexCalcFogDistanceSO", Vector) = (0.00839, -0.12581, 0, 0)
+        
+        
+        /*_m14      */ // _FogDistanceLimitX_Y_ ("_FogDistanceLimitX_Y_", Vector) = (1.00, 1.00, 0.00, 0.00)
+        /*_m14.x    */ _FogDistanceLimitX_ ("_FogDistanceLimitX_", Range(0, 1)) = 1
+        /*_m14.y    */ _FogDistanceLimitY_ ("_FogDistanceLimitY_", Range(0, 1)) = 1
+
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
         LOD 100
 
         Pass
         {
             Blend One SrcAlpha
             Cull Front
-            Cull Off
             ZWrite Off
             ZTest Always
             
             CGPROGRAM
-            float3 _FogMainColor;
-            float _FogDistancePow;
-            float4 _ExpDampingScaleXZ_AffectYW;
-            float4 _FogGradientFactorZ_;
+            // /* basic Âü∫Á°ÄÁöÑÈ´òÂ∫¶ Ë∑ùÁ¶ªÂÅèÁßªÊéßÂà∂ÁùÄËâ≤
             float4 _FogDistanceColor;
-            float4 _SkyFogDistanceScaleW_;
-            float4 _TerrainYSO_XY_TerrainDistanceSO_ZW_;
-            float4 _FogColorC;
-            float4 _64__m10;
-            float3 _FogColorXYZ;
-            float _FogVisibleDistanceW;
-            float4 _TerrainDistanceXYSO_ZW_DistanceSO_XY_;
-            float4 _ExpDampingStartXZ_;
-            float4 _FogDistanceLimitX_Y_;
-            float4 _ColorA2;
-
-            float3 _MoonPos_maybe_Pos;
-            float _MoonPos_maybe_W;
+            float3 _FogDistanceColorBlend;
+            float _FogDistanceColorBlendA;
+            float4 _SkyHeightSubColor;
+            
+            float _FogDistancePow;
+            
+            // float4 _TerrainYSO_XY_TerrainDistanceSO_ZW_;
+                float2 _BasicPowDistanceSO;
+                float2 _BasicHeightSO;
+            // -------------------------- */
 
 
-            float4 _64__m20;
+            
+            // /* main ‰∏ªË¶ÅÁöÑÔºå‰ºöÂèòÁöÑÔºåÊåáÊï∞Ë°∞ÂáèÁöÑÈõæÊïà
+            float3 _FogMainColor;
+            float2 _MainDistanceSO;
+            float2 _MainHeightSO;
+            
+            float _FogHeightFactorA;
+            float _FogHeightDampingScaleA;
+            float _FogDistanceDampingScaleA;
+            // -------------------------- */
 
-            float _64__m21;
+            
+
+            // // /* addition Ê¨°Ë¶ÅÁöÑ
+            // float3 _FogColorAddition;
+            // float4 _AdditionFogDistanceSO_1_2;
+            // float _FogHeightFactorB;
+            // float _FogHeightDampingScaleB;
+            // float _FogDistanceDampingScaleB;
+            // // -------------------------- */
+
+
+
+            // /* misc ÂÖ∂‰ªñ
+            float _FogDiscardDistance;
+
+            // float4 _FogGradientFactorZ_;
+                float2 _ComplexCalcFogDistanceSO; // x y
+                #define _ComplexCalcFog (1.0) // z
+                #define _FogGradientFactorZ_W (1.0) // w
+
+            // float4 _FogDistanceLimitX_Y_;
+                float _FogDistanceLimitX_;
+                float _FogDistanceLimitY_;
+            // // -------------------------- */
+            
+            sampler2D _CameraDepthTexture;
+            
+            
             #pragma vertex vert
             #pragma fragment frag
-
-            // sampler2D _7;
-            // #define _CameraDepthTexture _7
 
             #include "UnityCG.cginc"
             #include "Assets/Common/shaderlib/common.hlsl"
@@ -86,100 +134,40 @@ Shader "genship/postprocessfog_box2"
                 float4 Varying_ScreenPos : TEXCOORD1;
             };
             
-            // static matrix _23__m2 = {
-            //     2.00, 0.00, 0.00, 0.00    ,
-            //     0.00, 2.00, 0.00, 0.00    ,
-            //     0.00, 0.00, -0.00033, 0.00,
-            //     -1.00, -1.00, -1.00, 1.00 ,
-            // }; //_23._m2
             
             v2f vert (appdata v)
             {
                 v2f o;
 
                 float4 Vertex_Position = v.vertex;
-                // float3 Vertex_FarPlaneConner = float3(v.uv.xy, v.uv2.x);
                 
-                // float4 _clipPos;
-                //     _clipPos = Vertex_Position.yyyy * _23__m2[1u];
-                //     _clipPos = (_23__m2[0u] * Vertex_Position.xxxx) + _clipPos;
-                //     _clipPos = (_23__m2[2u] * Vertex_Position.zzzz) + _clipPos;
-                //     _clipPos = (_23__m2[3u] * Vertex_Position.wwww) + _clipPos;
-
-                // o.vertex = GlslToDxClipPos(_clipPos);
                 float4 _clipPos = UnityObjectToClipPos(v.vertex);
                 
                 float4 _screenPos = ComputeNonStereoScreenPos(_clipPos);
 
                 o.Varying_ScreenPos = _screenPos.xyzw;
-                // o.Varying_FarPlaneConner = Vertex_FarPlaneConner;
+                
                 o.vertex = _clipPos;
                 
                 return o;
             }
+            
 
-
-            // #define _WorldSpaceCameraPos  float3(4.72038, 196.40625, -8.97445)          // _64._m0
-            // #define _ProjectionParams  float4(-1.00, 0.25, 6000.00, 0.00017         ) //_64._m1
-            // #define _64__m2  _ZBufferParams// float4(-23999.00, 24000.00, -3.99983, 4.00  ) //_64._m2
-            // #define _FogMainColorA  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
-            #define _FogMainColorA float4(_FogMainColor.xyz, _FogDistancePow.x) // _64._m3 // ±‰xyzw
-            // #define _ExpDampingScaleXZ_AffectYW  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4 // ±‰y
-            // #define _FogGradientFactorZ_  float4(0.00391, -0.0625, 1.00, 1.00         ) //_64._m5
-            // #define _FogDistanceColor  float4(0.00721, 0.1452, 0.38323, 0.90       ) //_64._m6 // ±‰xyz
-            // #define _SkyFogDistanceScaleW_  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7 // ±‰xyz
-            // #define _TerrainYSO_XY_TerrainDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8 // ±‰xy
-            // #define _FogColorC  float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9 // ±‰xyz
-            // #define _64__m10 float4(-0.001, 9.00, -0.001, 1.20191        ) //_64._m10 // ±‰w
-            // #define _FogColorXYZ_FogVisibleDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
-            #define _FogColorXYZ_FogVisibleDistanceW_ float4(_FogColorXYZ.xyz, _FogVisibleDistanceW.x              ) //_64._m11
-            // #define _TerrainDistanceXYSO_ZW_DistanceSO_XY_ float4(1.00, 0.00, -0.01, 2.50              ) //_64._m12
-            // #define _ExpDampingStartXZ_ float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13 ±‰xy
-            // #define _FogDistanceLimitX_Y_ float4(1.00, 0.90, 0.00, 0.00               ) //_64._m14
-            #define _MoonPos_maybe float4(_MoonPos_maybe_Pos.xyz, _MoonPos_maybe_W.x   ) //_64._m15
-            // #define _ColorA2 float4(1.00, 1.00, 1.00, 0.07213            ) //_64._m16
-            #define _64__m17 float4(1.00, -1.00, 10000.00, 0.00          ) //_64._m17
-            #define _64__m18 float4(1.00, 1.00, 1.00, -16.00             ) //_64._m18
-            #define _FogColorB float4(0.00, 0.00, 0.00, 0.00               ) //_64._m19
-            // #define _64__m20 float4(0.00, 0.00, 0.00, 0.00               ) //_64._m20
-            // #define _64__m21 0.00                                          // _64._m21
-            #define _64__m22 float3(0.00, 0.00, 0.00)                      //_64._m22
-            #define _64__m23 float4(0.00, 0.00, 0.00, 0.00 )               // _64._m23
-            #define _64__m24 float4(0.00, 0.00, 0.00, 0.00 )               // _64._m24
-            #define _64__m25 0.00                                          // _64._m25
-
-            sampler2D _CameraDepthTexture;
+            
             fixed4 frag (v2f i) : SV_Target
             {
 
                 fixed4 col = fixed4(0, 0, 0, 1);
 
                 float4 Output_0;
-                float4 Output_1;
-                
-                float3 _24;
-                bool _26;
-                float3 _27;
-                float _30;
-                float3 _31;
-                float4 _33;
-                float _34;
-                bool3 _37;
-                float3 _41;
-                float3 _43;
-                bool _49;
-                float _50;
-                bool _57;
-
-                float _59;
                 
                 float2 _screenPos01 = i.Varying_ScreenPos.xy / i.Varying_ScreenPos.w;
 
                 float _rawDepth = tex2D(_CameraDepthTexture, _screenPos01).x;
 
                 float _terrainLinear01Depth = Linear01Depth(_rawDepth);
-                // ◊¢£∫opengl œ¬
-                //   _rawDepth 0 .. 1 £¨ ∂‘”¶ _terrainLinear01Depth near/far .. 1£¨≤ªª·Œ™ 0
+                // Ê≥®Ôºöopengl ‰∏ã
+                //   _rawDepth 0 .. 1 Ôºå ÂØπÂ∫î _terrainLinear01Depth near/far .. 1Ôºå‰∏ç‰ºö‰∏∫ 0
 
                 // float3 _terrainWorldPos = (_terrainLinear01Depth * i.Varying_FarPlaneConner) + _WorldSpaceCameraPos;
                 // float3 _terrainWorldPos_relativeToCamera = (_terrainLinear01Depth) * i.Varying_FarPlaneConner;
@@ -188,204 +176,130 @@ Shader "genship/postprocessfog_box2"
 
                 float _terrainEyeDepth = _terrainLinear01Depth * _ProjectionParams.z; // far plane
 
-                // ◊¢£∫opengl œ¬
-                //   _terrainLinear01Depth near/far .. 1£¨∂‘”¶ _terrainEyeDepth near .. far£¨≤ªª·Œ™ 0
+                bool _isSky = _terrainEyeDepth >= _ProjectionParams.z * 0.9999; // Ê≤°ÊúâÊ∑±Â∫¶‰∫ÜÔºåÂ§™Ëøú‰∫ÜÔºåÊòØÂ§©Á©∫
+
+                // Ê≥®Ôºöopengl ‰∏ã
+                //   _terrainLinear01Depth near/far .. 1ÔºåÂØπÂ∫î _terrainEyeDepth near .. farÔºå‰∏ç‰ºö‰∏∫ 0
                 float _terrainToCamera_length = length(_terrainWorldPos_relativeToCamera);
-
-                // #define _FogColorXYZ_FogVisibleDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
-                if (_terrainToCamera_length < _FogColorXYZ_FogVisibleDistanceW_.w)
-                {
-                    // discard;
-                }
-                // _29 = 0.01 < _MoonPos_maybe.w;
-                // #define _MoonPos_maybe float4(-1638.7793, 0.00, 2659.17578, 0.00   ) //_64._m15
-                float _if_output1;
-                float _if_output2;
-                if (0.01 < _MoonPos_maybe.w)
-                {
-                    // _29 = _64__m20.y < 0.5;
-                    // #define _64__m20 float4(0.00, 0.00, 0.00, 0.00               ) //_64._m20
-                    if (_64__m20.y < 0.5)
-                    {
-                        _27 = _terrainWorldPos + (-_MoonPos_maybe.xyz);
-                        _24.x = dot(_27, _27);
-                        _24.x = sqrt(_24.x);
-                        _24.x = (_24.x * _64__m17.z) + _64__m17.w;
-                        _24.x = clamp(_24.x, 0.0, 1.0);
-                        _24.x = (-_24.x) + 1.0;
-                        _31.x = _24.x * _24.x;
-                    }
-                    else
-                    {
-                        _24.x = _terrainWorldPos.y + (-_MoonPos_maybe.y);
-                        _50 = 1.0 / _MoonPos_maybe.w;
-                        _24.x = _50 * _24.x;
-                        _24.x = clamp(_24.x, 0.0, 1.0);
-                        _50 = (_24.x * (-2.0)) + 3.0;
-                        _24.x *= _24.x;
-                        _30 = _24.x * _50;
-                        _31.x = _30;
-                    }
-                    // #define _64__m20 float4(0.00, 0.00, 0.00, 0.00               ) //_64._m20
-                    _26 = _64__m20.x >= 0.05;
-                    _24.x = float(_26);
-                    _24.x *= _31.x;
-                    // _29 = 0.95 >= _64__m20.x;
-                    _27.x = float(0.95 >= _64__m20.x);
-                    _27.x *= _31.x;
-                    _if_output1 = _24.x;
-                    _if_output2 = _27.x;
-                }
-                else
-                {
-                    _if_output1 = 0.0;
-                    _if_output2 = 0.0;
-                }
-                // _if_output1 = 0.5;
-                // _if_output2 = 0.5;
-                
-
-                // #define _TerrainYSO_XY_TerrainDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
-                float _terrainToCamera_length_SO1 = saturate(_terrainToCamera_length * _TerrainYSO_XY_TerrainDistanceSO_ZW_.z + _TerrainYSO_XY_TerrainDistanceSO_ZW_.w);
-
-                float _terrainToCamera_length_SO2 = saturate(_terrainToCamera_length * _64__m18.z + _64__m18.w);
-
-                float _terrainToCamera_length_SO = lerp( _terrainToCamera_length_SO1, _terrainToCamera_length_SO2, _if_output1 );
-                
-                // smooth –Œ Ω 0~1 øÏÀŸ…œ…˝∫Û∆Ωª∫µΩ1
-                float _terrainToCamera_length_SO_smooth01 = (2.0-_terrainToCamera_length_SO) * _terrainToCamera_length_SO;
-
                 float _terrainToCameraXZ_length = length(_terrainWorldPos_relativeToCamera.xz);
 
-                float _terrainToCameraXZ_length_SO1 = saturate(_terrainToCameraXZ_length * _64__m10.x + _64__m10.y);
-
-                float _WorldSpaceCameraPosY_SO = saturate(_WorldSpaceCameraPos.y * _64__m10.z + _64__m10.w);
-
-                bool _isSky = _terrainEyeDepth >= _ProjectionParams.z * 0.9999; // √ª”–…Ó∂»¡À£¨Ã´‘∂¡À£¨ «ÃÏø’
-
-                // #define _SkyFogDistanceScaleW_  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7
-                float _fogXZDistance = _isSky ? _terrainToCamera_length_SO_smooth01 * _SkyFogDistanceScaleW_.w : _terrainToCamera_length_SO_smooth01;
-
-                float _fogFactor = _isSky ? _WorldSpaceCameraPosY_SO : _terrainToCameraXZ_length_SO1;
-
-                // #define _FogMainColorA  float4(0.09966, 0.37807, 0.79386, 1.1879    ) //_64._m3
-                // #define _FogColorB float4(0.00, 0.00, 0.00, 0.00               ) //_64._m19
-                float _colorw = lerp( _FogMainColorA.w, _FogColorB.w, _if_output1 );
-
-                float _fogXZDistance_pow = pow(_fogXZDistance + 1e-04, _colorw);
-
-                float _fogXZDistance_pow_limit1 = min(_fogXZDistance_pow, min(_FogDistanceColor.w * _FogDistanceLimitX_Y_.x, 1.0));
-
-                float _terrainWorldPosY_SO = saturate(_terrainWorldPos.y * _TerrainYSO_XY_TerrainDistanceSO_ZW_.x + _TerrainYSO_XY_TerrainDistanceSO_ZW_.y);
-                float _terrainWorldPosY_SO_smooth01 = _terrainWorldPosY_SO * (2.0 - _terrainWorldPosY_SO);
-
-                float3 _fogColor = (_terrainWorldPosY_SO_smooth01 * _SkyFogDistanceScaleW_.xyz) + _FogDistanceColor.xyz;
-
-                float3 _fogColor_2 = lerp(_fogColor, _FogColorB.xyz, _if_output1);
-
-                float _terrainToCamera_length_OS = clamp((_terrainToCamera_length - _FogGradientFactorZ_.w) * _FogColorC.w, 0.0, 1.0);
-
-                float3 _fogColor_3 = lerp(_fogColor_2, _FogColorC.xyz, _terrainToCamera_length_OS);
-
-                float _terrainToCameraXZ_length_SO = saturate(_terrainToCameraXZ_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.z + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.w);
-
-                float _lerp_55 = lerp(_ExpDampingScaleXZ_AffectYW.y, _ColorA2.w, _if_output2);
-
-                // _ExpDampingStartXZ_.y = log(_ExpDampingStartXZ_.x)
-                // in_pre_compute_a  « log(_ExpDampingStartXZ_.x)
-                //             “≤ø…“‘ « _ExpDampingStartXZ_.y
-                // #define _ExpDampingScaleXZ_AffectYW  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4
-                // #define _ExpDampingStartXZ_ float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13
-                float _terrainHeightDiff_expDamping1 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.x, _ExpDampingStartXZ_.x);
-                float _terrainHeightDiff_expDamping2 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _ExpDampingScaleXZ_AffectYW.z, _ExpDampingStartXZ_.z);
-
-                float _terrainDistanceAffectByDamping1;
+                // #define _FogColorXYZ_FogVisibleDistanceW_ float4(1.00, 1.00, 1.00, 16.00              ) //_64._m11
+                if (_terrainToCamera_length < _FogDiscardDistance)
                 {
-                    float _tmp_48;
-                    // float _lerp_55 = lerp(_ExpDampingScaleXZ_AffectYW.y, _ColorA2.w, _if_output2)
-                    _tmp_48 = _terrainToCamera_length * _lerp_55;
-                    _tmp_48 = _tmp_48 * (-_terrainHeightDiff_expDamping1);
-                    _tmp_48 = 1.0 - exp2(_tmp_48);
-                    _tmp_48 = max(_tmp_48, 0.0);
-                    _terrainDistanceAffectByDamping1 = _tmp_48;
+                    discard;
                 }
                 
-                float _terrainToCamera_length_SOB_1 = saturate(_terrainToCamera_length * _FogGradientFactorZ_.x + _FogGradientFactorZ_.y);
-
-                float _terrainToCamera_length_SOB_2 = saturate(_terrainToCamera_length * _64__m17.x + _64__m17.y);
-
-                float _terrainToCamera_length_SOB = lerp(_terrainToCamera_length_SOB_1, _terrainToCamera_length_SOB_2, _if_output2);
-
-                float _fogGradientFactor = lerp(_FogGradientFactorZ_.z, _64__m18.x, _if_output2);
-
-                float _terrainToCamera_length_SOB_smooth = _terrainToCamera_length_SOB * (-_terrainToCamera_length_SOB + 2.0);
-
-                float _fogFactorB = lerp(1.0, _terrainToCamera_length_SOB_smooth, _fogGradientFactor);
-
-                float _fogFactorB_2 = _fogFactorB * _terrainDistanceAffectByDamping1;
-                float _fogFactorB_3 = min(_fogFactorB_2, _FogDistanceColor.w);
-                float _terrainDistanceAffectByDamping2;
+                float _fogXZDistance_pow_limit1;
                 {
-                    float _tmp_55;
-                    _tmp_55 = _terrainToCamera_length * _ExpDampingScaleXZ_AffectYW.w;
-                    _tmp_55 = _tmp_55 * (-_terrainHeightDiff_expDamping2);
-                    _tmp_55 = 1.0 - exp2(_tmp_55);
-                    _tmp_55 = max(_tmp_55, 0.0);
-                    _terrainDistanceAffectByDamping2 = _tmp_55;
+                    // #define _TerrainYSO_XY_TerrainDistanceSO_ZW_  float4(0.00393, -0.79396, 0.00042, -0.00671 ) //_64._m8
+                    float _terrainToCamera_length_SO = saturate(_terrainToCamera_length * _BasicPowDistanceSO.x + _BasicPowDistanceSO.y);
+                    // smooth ÂΩ¢Âºè 0~1 Âø´ÈÄü‰∏äÂçáÂêéÂπ≥ÁºìÂà∞1
+                    float _terrainToCamera_length_SO_smooth01 = (2.0-_terrainToCamera_length_SO) * _terrainToCamera_length_SO;
+                    // #define _SkyHeightSubColor  float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7
+                    float _fogXZDistance = _isSky ? _terrainToCamera_length_SO_smooth01 * _SkyHeightSubColor.w : _terrainToCamera_length_SO_smooth01;
+                    float _fogXZDistance_pow = pow(_fogXZDistance + 1e-04, _FogDistancePow);
+
+                    _fogXZDistance_pow_limit1 = min(_fogXZDistance_pow, min(_FogDistanceColor.w * _FogDistanceLimitX_, 1.0));
                 }
 
-                float _terrainToCamera_length_SOC = saturate(_terrainToCamera_length * _TerrainDistanceXYSO_ZW_DistanceSO_XY_.x + _TerrainDistanceXYSO_ZW_DistanceSO_XY_.y);
+                float3 _distanceColor_3;
+                {
+                    float _terrainWorldPosY_SO = saturate(_terrainWorldPos.y * _BasicHeightSO.x + _BasicHeightSO.y);
+                    float _terrainWorldPosY_SO_smooth01 = _terrainWorldPosY_SO * (2.0 - _terrainWorldPosY_SO);
 
-                float _terrainToCamera_length_SOC_smooth = _terrainToCamera_length_SOC * (2.0 - _terrainToCamera_length_SOC);
+                    float3 _skyHeightColor = (_terrainWorldPosY_SO_smooth01 * _SkyHeightSubColor.xyz) + _FogDistanceColor.xyz;
+
+                    float _terrainToCamera_length_OS = clamp((_terrainToCamera_length - _FogGradientFactorZ_W) * _FogDistanceColorBlendA, 0.0, 1.0);
+
+                    float3 _distanceColor_2 = lerp(_skyHeightColor, _FogDistanceColorBlend.xyz, _terrainToCamera_length_OS);
+                    
+                    _distanceColor_3 = _fogXZDistance_pow_limit1 * _distanceColor_2;
+                }
                 
-                float _fogDistanceFactor = _terrainDistanceAffectByDamping2 * _terrainToCamera_length_SOC_smooth;
-
-                float _fogDistanceFactor_2 = min(_fogDistanceFactor, _FogDistanceLimitX_Y_.y);
-
-                float _fogFactorC = _fogFactor * _fogFactorB_3;
-
-                float _fogFactorD = _terrainToCameraXZ_length_SO * _fogDistanceFactor_2;
-
-                float3 _colorA = lerp(_FogMainColorA.xyz, _ColorA2.xyz, _if_output2);
-
-                float3 _outputColor1 = _fogXZDistance_pow_limit1 * _fogColor_3;
-
-                float3 _outputColor2 = (-_fogColor_3 * _fogXZDistance_pow_limit1) + _colorA;
-
-                float3 _outputColor3 = (_fogFactorC * _outputColor2) + _outputColor1;
-
-                _31 = (_FogColorXYZ_FogVisibleDistanceW_.xyz * _fogFactorD) + _outputColor3;
-
-                float _outputAlpha = (1.0 - _fogXZDistance_pow_limit1) * (1.0 - _fogFactorD) * (1.0 - _fogFactorC);
-
-                if (_64__m21)
+                float _fogFactorMain;
                 {
-                    _43.x = dot(-_WorldSpaceCameraPos, -_WorldSpaceCameraPos);
-                    _43.x = sqrt(_43.x);
-                    _49 = 10000.0 >= _43.x;
-                    _37 = ((_64__m25) == float4(0.0, 2.0, 1.0, 0.0)).xyz;
-                    _57 = _37.y && _37.x;
-                    _34 = dot(_31, float3(0.2125000059604644775390625, 0.7153999805450439453125, 0.07209999859333038330078125));
-                    float3 _822 = float3(_34 * _64__m22.x, _34 * _64__m22.y, _34 * _64__m22.z);
-                    _33 = float4(_822.x, _822.y, _33.z, _822.z);
-                    _41 = lerp(_31, _33.xyw, (_37.z));
-                    _41 = lerp(_41, _31, (_57));
-                    _33.x = (-_64__m23.z) + 1.0;
-                    _43.x = ((-_33.x) * 10000.0) + _43.x;
-                    _33.x = (_64__m23.z * 10000.0) + 9.9999997473787516355514526367188e-05;
-                    _43.x /= _33.x;
-                    _43.x = clamp(_43.x, 0.0, 1.0);
-                    _59 = (_43.x * (-_64__m24.x)) + _64__m24.x;
-                    _59 = clamp(_59, 0.0, 1.0);
-                    _41 = (-_31) + _41;
-                    _41 = ((_59) * _41) + _31;
-                    _41 = lerp(_41, _31, (_57));
-                    _31 = lerp(_31, _41, (_49));
+                    // ÁÆÄÊòìÈ´òÂ∫¶Áº©ÊîæÂíåË∑ùÁ¶ªÁº©Êîæ
+                    float _fogFactorSimple;
+                    {
+                        float _terrainToCameraXZ_length_SO1 = saturate(_terrainToCameraXZ_length * _MainDistanceSO.x + _MainDistanceSO.y);
+
+                        float _WorldSpaceCameraPosY_SO = saturate(_WorldSpaceCameraPos.y * _MainHeightSO.x + _MainHeightSO.y);
+                        
+                        _fogFactorSimple = _isSky ? _WorldSpaceCameraPosY_SO : _terrainToCameraXZ_length_SO1;
+                    }
+
+                    // ËæìÂá∫Ôºö_terrainDistanceAffectByDamping1
+                    //   Ë∑ùÁ¶ªÊéßÂà∂ÁöÑÈõæÂº∫Â∫¶ÔºåËøë 0ÔºåËøúÊé•Ëøë 1ÔºåÂÖàÂø´ÈÄü‰∏äÂçáÂêéÂπ≥ÁºìÂà∞ 1
+                    // ÂèòÈáèÔºö
+                    //   1. _terrainHeightDiff_expDamping1:
+                    //      Âõ†È´òÂ∫¶ÂºïËµ∑ÁöÑÊúÄÁªà 1 ‰∏ãË∞ÉÔºåÈ´òÂ∫¶Ë∂äÈ´òÔºåÊúÄÁªàË∂ä‰∏çËÉΩÊé•Ëøë‰∫é 1 (ÂèòÊàê 0)
+                    // ËØ¶ËßÅÔºö
+                    //   show_distance_affectbydamping.hip
+                    float _terrainDistanceAffectByDamping1;
+                    {
+                        // _ExpDampingStartXZ_.y = log(_ExpDampingStartXZ_.x)
+                        // in_pre_compute_a ÊòØ log(_ExpDampingStartXZ_.x)
+                        //             ‰πüÂèØ‰ª•ÊòØ _ExpDampingStartXZ_.y
+                        // #define _ExpDampingScaleXZ_AffectYW  float4(0.045, 0.00376, 0.00, 0.00           ) //_64._m4
+                        // #define _ExpDampingStartXZ_ float4(1.28117, 0.24777, 1.00, 0.00         ) //_64._m13
+                        float _terrainHeightDiff_expDamping1 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _FogHeightDampingScaleA, _FogHeightFactorA);
+                        float _tmp_48;
+                        _tmp_48 = _terrainToCamera_length * _FogDistanceDampingScaleA;
+                        _tmp_48 = _tmp_48 * (-_terrainHeightDiff_expDamping1);
+                        _tmp_48 = 1.0 - exp2(_tmp_48);
+                        _tmp_48 = max(_tmp_48, 0.0);
+                        _terrainDistanceAffectByDamping1 = _tmp_48;
+                    }
+
+                    float _terrainToCamera_length_SOB = saturate(_terrainToCamera_length * _ComplexCalcFogDistanceSO.x + _ComplexCalcFogDistanceSO.y);
+                    float _terrainToCamera_length_SOB_smooth = _terrainToCamera_length_SOB * (-_terrainToCamera_length_SOB + 2.0);
+                    
+                    float _terrainDistanceAffectByDamping1Factor = lerp(1.0, _terrainToCamera_length_SOB_smooth, _ComplexCalcFog);
+
+                    float _terrainDistanceAffectByDamping1Fix = _terrainDistanceAffectByDamping1Factor * _terrainDistanceAffectByDamping1;
+                    
+                    float _fogFactorComplex = min(_terrainDistanceAffectByDamping1Fix, _FogDistanceColor.w);
+                    
+                    _fogFactorMain = _fogFactorSimple * _fogFactorComplex;
                 }
-                Output_0 = float4(_31.x, _31.y, _31.z, Output_0.w);
+
+                // ÂéüÁ•ûÊäìÂ∏ßÊòºÂ§úÂÆûÈôÖËøôÈÉ®ÂàÜÊ≤°Êúâ‰ΩúÁî®
+                // float _fogFactorAddition;
+                // {
+                //     float _terrainDistanceAffectByDamping2;
+                //     {
+                //         float _terrainHeightDiff_expDamping2 = ExpDamping(_terrainWorldPos_relativeToCamera.y * _FogHeightDampingScaleB, _FogHeightFactorB);
+                //         float _tmp_55;
+                //         _tmp_55 = _terrainToCamera_length * _FogDistanceDampingScaleB;
+                //         _tmp_55 = _tmp_55 * (-_terrainHeightDiff_expDamping2);
+                //         _tmp_55 = 1.0 - exp2(_tmp_55);
+                //         _tmp_55 = max(_tmp_55, 0.0);
+                //         _terrainDistanceAffectByDamping2 = _tmp_55;
+                //     }
+                //
+                //     float _terrainToCamera_length_SOC = saturate(_terrainToCamera_length * _AdditionFogDistanceSO_1_2.x + _AdditionFogDistanceSO_1_2.y);
+                //
+                //     float _terrainToCamera_length_SOC_smooth = _terrainToCamera_length_SOC * (2.0 - _terrainToCamera_length_SOC);
+                //     
+                //     float _fogDistanceFactor = _terrainDistanceAffectByDamping2 * _terrainToCamera_length_SOC_smooth;
+                //
+                //     float _fogDistanceFactor_2 = min(_fogDistanceFactor, _FogDistanceLimitY_);
+                //
+                //     float _terrainToCameraXZ_length_SO = saturate(_terrainToCameraXZ_length * _AdditionFogDistanceSO_1_2.z + _AdditionFogDistanceSO_1_2.w);
+                //     
+                //     _fogFactorAddition = _terrainToCameraXZ_length_SO * _fogDistanceFactor_2;
+                // }
+                
+                float3 _mainColor = lerp(_distanceColor_3, _FogMainColor, _fogFactorMain);
+
+                // float3 _additionColor = _FogColorAddition * _fogFactorAddition;
+                
+                float3 _outputColor = _mainColor /*+ _additionColor*/;
+
+                float _outputAlpha = (1.0 - _fogXZDistance_pow_limit1) /** (1.0 - _fogFactorAddition)*/ * (1.0 - _fogFactorMain);
+  
+                Output_0.xyz = _outputColor;
                 Output_0.w = _outputAlpha;
-                Output_1 = float4(_31.x, _31.y, _31.z, Output_1.w);
-                Output_1.w = _outputAlpha;
 
                 col = Output_0;
 
@@ -421,3 +335,4 @@ Shader "genship/postprocessfog_box2"
         }
     }
 }
+
