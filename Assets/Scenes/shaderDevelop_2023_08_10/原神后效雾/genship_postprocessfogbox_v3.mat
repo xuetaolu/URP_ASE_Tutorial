@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: genship_postprocessfogbox_v3
-  m_Shader: {fileID: 4800000, guid: 400da505c6592d04985908ed13f92917, type: 3}
+  m_Shader: {fileID: 4800000, guid: 13183e74542f4c24a969d67ee277358c, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -22,36 +22,22 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _64__m21: 0
-    - _FogDiscardDistance: 15
-    - _FogDistanceDampingScaleA: 0.02426
-    - _FogDistanceDampingScaleB: 0
-    - _FogDistanceLimitX_: 1
+    - _FogDiscardDistance: 16
+    - _FogDistanceColorBlendA: 0.000328
+    - _FogDistanceDampingScaleA: 0.00615
+    - _FogDistanceLimitX_: 0.9
     - _FogDistanceLimitY_: 1
-    - _FogDistancePow: 1.08365
-    - _FogHeightDampingScaleA: 0.09159
-    - _FogHeightDampingScaleB: 0.04
-    - _FogHeightFactorA: 0.17
-    - _FogHeightFactorB: 0.03779
-    - _FogVisibleDistanceW: 15
-    - _MoonPos_maybe_W: 0
+    - _FogDistancePow: 1.1879
+    - _FogHeightDampingScaleA: 0.0824
+    - _FogHeightFactorA: 0.21
     m_Colors:
-    - _64__m20: {r: 0, g: 0, b: 0, a: 0}
-    - _AdditionFogDistanceSO_1_2: {r: 0.002, g: 0, b: -0.0005, a: 1.07681}
-    - _BasicHeightSO: {r: 0.00147, g: -0.26394, b: 0, a: 0}
-    - _BasicPowDistanceSO: {r: 0.00047, g: -0.00707, b: 0, a: 0}
-    - _ColorA2: {r: 1, g: 1, b: 1, a: 0.07213}
-    - _ComplexCalcFogDistanceSO: {r: 0.00391, g: -0.12581, b: 0, a: 0}
-    - _FogColorAddition: {r: 0.32624, g: 0.22609, b: 0.19079, a: 15}
-    - _FogColorXYZ: {r: 0.32624, g: 0.22609, b: 0.19079, a: 15}
-    - _FogDistanceColor: {r: 0.05654, g: 0.13585, b: 0.35222, a: 0.92}
-    - _FogDistanceColorBlend: {r: 0.46001, g: 0.42273, b: 0.46656, a: 0}
-    - _FogDistanceLimitX_Y_: {r: 1, g: 1, b: 0, a: 0}
-    - _FogGradientFactorZ_: {r: 0.00839, g: -0.12581, b: 1, a: 1}
-    - _FogMainColor: {r: 0.77914, g: 0.60906, b: 0.52263, a: 1.08365}
-    - _MainDistanceSO: {r: -0.00033, g: 2.44722, b: 0, a: 0}
-    - _MainHeightSO: {r: -0.001, g: 1.17958, b: 0, a: 0}
-    - _MoonPos_maybe_Pos: {r: 89.90182, g: 0, b: 656.74915, a: 1}
-    - _SkyHeightSubColor: {r: -0.00127, g: 0.0048, b: -0.13633, a: 0}
-    - _TerrainDistanceXYSO_ZW_DistanceSO_XY_: {r: 0.002, g: 0, b: -0.0005, a: 1.07681}
+    - _BasicHeightSO: {r: 0.00393, g: -0.79396, b: 0, a: 0}
+    - _BasicPowDistanceSO: {r: 0.00042, g: -0.0067, b: 0, a: 0}
+    - _ComplexCalcFogDistanceSO: {r: 0.00839, g: -0.12581, b: 0, a: 0}
+    - _FogDistanceColor: {r: 0.00721, g: 0.1452, b: 0.38323, a: 0.9}
+    - _FogDistanceColorBlend: {r: 0.5372549, g: 0.5000385, b: 0.4392157, a: 0}
+    - _FogMainColor: {r: 0.73419225, g: 0.78039217, b: 0.52156866, a: 1}
+    - _MainDistanceSO: {r: -0.001, g: 9, b: 0, a: 0}
+    - _MainHeightSO: {r: -0.001, g: 1.20191, b: 0, a: 0}
+    - _SkyHeightSubColor: {r: 0.02258, g: 0.01951, b: -0.08341, a: 0}
   m_BuildTextureStacks: []

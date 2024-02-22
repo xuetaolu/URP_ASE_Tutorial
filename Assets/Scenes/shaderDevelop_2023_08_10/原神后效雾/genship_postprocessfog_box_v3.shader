@@ -5,6 +5,7 @@ Shader "genship/postprocessfog_box_v3"
         [Header(Basic)]
             _FogDistanceColor ("_FogDistanceColor", Color) = (0.00721, 0.1452, 0.38323, 0.90)
             _FogDistanceColorBlend ("_FogDistanceColorBlend", Color) = (0.00208, 0.23016, 0.33588, 0.00017)
+            _FogDistanceColorBlendA ("_FogDistanceColorBlendA", Range(0, 0.001)) = 0.00017
             _SkyHeightSubColor ("_SkyHeightSubColor", Vector) = (0.02258, 0.01951, -0.08341, 0.00)
             
             _FogDistancePow ("_FogDistancePow", Range(0, 2)) = 1.1879
@@ -37,7 +38,7 @@ Shader "genship/postprocessfog_box_v3"
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
         LOD 100
 
         Pass
@@ -52,7 +53,8 @@ Shader "genship/postprocessfog_box_v3"
 
             // /* basic 基础的高度 距离偏移控制着色
             float4 _FogDistanceColor; // float4(0.00721, 0.1452, 0.38323, 0.90       ) //_64._m6 // 变xyz
-            float4 _FogDistanceColorBlend; // float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9 // 变xyz
+            float3 _FogDistanceColorBlend; // float4(0.00208, 0.23016, 0.33588, 0.00017   ) //_64._m9 // 变xyz
+            float _FogDistanceColorBlendA;
             float4 _SkyHeightSubColor; // float4(0.02258, 0.01951, -0.08341, 0.00     ) //_64._m7 // 变xyz
             
             float _FogDistancePow; // _64._m3.w // 变
@@ -209,7 +211,7 @@ Shader "genship/postprocessfog_box_v3"
 
                     float3 _skyHeightColor = (_terrainWorldPosY_SO_smooth01 * _SkyHeightSubColor.xyz) + _FogDistanceColor.xyz;
 
-                    float _terrainToCamera_length_OS = clamp((_terrainToCamera_length - _FogGradientFactorZ_W) * _FogDistanceColorBlend.w, 0.0, 1.0);
+                    float _terrainToCamera_length_OS = clamp((_terrainToCamera_length - _FogGradientFactorZ_W) * _FogDistanceColorBlendA, 0.0, 1.0);
 
                     float3 _distanceColor_2 = lerp(_skyHeightColor, _FogDistanceColorBlend.xyz, _terrainToCamera_length_OS);
                     
