@@ -7,6 +7,38 @@ float4 GlslToDxClipPos(float4 clipPos) {
     return clipPos;
 }
 
+float4 DxToGlslClipPos(float4 clipPos) {
+    clipPos.y = -clipPos.y;
+    clipPos.z = -2*clipPos.z + clipPos.w;
+    return clipPos;
+}
+
+float4 DX_DoOpenglD24LossPrecision(float4 clipPos)
+{
+    const int MAX_PRECISSION = 0x7FFFFF; // D24 应该对应 0x7FFFFFF 但这里测试失多1bit精度
+    
+    // dx clippos 转到 opengl 的 clippos
+    float4 _openglClipPos;
+        _openglClipPos.xy = clipPos.xz;
+        _openglClipPos.z = -2*clipPos.z + clipPos.w;
+        _openglClipPos.w  = clipPos.w;
+
+    // opengl 上的 clipPos.z remap 到 ndc z01
+    float _z01 = (_openglClipPos.z / _openglClipPos.w) * 0.5 + 0.5;
+
+    // * float(MAX_PRECISSION) 后 ceil 一下
+    float _lossPrecisionZ01 = (floor(_z01 * float(MAX_PRECISSION) + 0.5) - 0.5) / float(MAX_PRECISSION); 
+
+    // opengl 上 ndc z01 remap 到 clipPos.z 
+    float _openglClipPos2_z = (_lossPrecisionZ01 * 2 - 1) * _openglClipPos.w;
+
+    // opengl clippos 转到 dx 的 clippos
+    float _clipPos2_z = -0.5*_openglClipPos2_z + 0.5*clipPos.w;
+    
+    return float4(clipPos.xy, _clipPos2_z, clipPos.w);
+
+}
+
 float Remap(float In, float InMin, float InMax, float OutMin, float OutMax)
 {
     return OutMin + (In - InMin) * (OutMax - OutMin) / (InMax - InMin);
