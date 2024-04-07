@@ -3,6 +3,7 @@
 // @desc:
 
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -15,6 +16,18 @@ namespace Common.bridge
         private static List<AnimationClip> s_EmptyList = new List<AnimationClip>();
 
         public AnimationClip clip;
+
+        private static MethodInfo s_GetAllAnimationWindowsMethod;
+        private static List<AnimationWindow> GetAllAnimationWindows()
+        {
+            // return AnimationModeBridge.GetAllAnimationWindows();
+            
+            if (s_GetAllAnimationWindowsMethod == null)
+                s_GetAllAnimationWindowsMethod = typeof(AnimationWindow).GetMethod("GetAllAnimationWindows",
+                    BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+
+            return s_GetAllAnimationWindowsMethod.Invoke(null, null) as List<AnimationWindow>;
+        }
 
         public void GetAnimationClips(List<AnimationClip> results)
         {
@@ -32,7 +45,7 @@ namespace Common.bridge
         public static void SyncAnimationWindow()
         {
             AnimationWindow previewingTarget = null;
-            foreach (AnimationWindow animationWindow in AnimationModeBridge.GetAllAnimationWindows())
+            foreach (AnimationWindow animationWindow in GetAllAnimationWindows())
             {
                 if (animationWindow.previewing)
                 {
@@ -45,7 +58,7 @@ namespace Common.bridge
             if (previewingTarget == null)
                 return;
             
-            foreach (AnimationWindow other in AnimationModeBridge.GetAllAnimationWindows())
+            foreach (AnimationWindow other in GetAllAnimationWindows())
             {
                 if (other == previewingTarget)
                     continue;
@@ -79,7 +92,7 @@ namespace Common.bridge
 
         public static float GetPreviewingTime()
         {
-            foreach (AnimationWindow myAnimationWindow in AnimationModeBridge.GetAllAnimationWindows())
+            foreach (AnimationWindow myAnimationWindow in GetAllAnimationWindows())
             {
                 if (myAnimationWindow.previewing)
                 {
