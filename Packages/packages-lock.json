@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "034998f4a8791fc8bd48577fb73e6e50720f0693"
     },
+    "com.greenbamboogames.playablegraphmonitor": {
+      "version": "2.5.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.limworks.urpssrpackage": {
       "version": "file:Unity-ScreenSpaceReflections-URP",
       "depth": 0,
