@@ -3,73 +3,72 @@
 // @desc:
 
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
 namespace Common.bridge
 {
-    public class DummyAnimationClipSource : MonoBehaviour, IAnimationClipSource, IAnimationWindowPreview
+    public class DummyAnimationClipSource : MonoBehaviour
+        #if UNITY_EDITOR
+        , IAnimationClipSource, IAnimationWindowPreview
+        #endif
     {
         private static List<AnimationClip> s_EmptyList = new List<AnimationClip>();
 
         public AnimationClip clip;
 
+        public string clipAssetFolder;
+
+        // private AnimationClip _actualClip;
+        
+        private AnimationClip _getAnimationClip()
+        {
+            if (clip != null)
+                return clip;
+            
+            #if UNITY_EDITOR
+            AnimationClip _clip = UnityEditor.AssetDatabase.LoadAssetAtPath<AnimationClip>(Path.Combine(clipAssetFolder, gameObject.name) + ".anim");
+
+            if (_clip != null)
+            {
+                return _clip;
+            }
+            #endif
+
+            return null;
+        }
+        
+
+        #if UNITY_EDITOR
+
+        #region GetAllAnimationWindows
+
         private static MethodInfo s_GetAllAnimationWindowsMethod;
-        private static List<AnimationWindow> GetAllAnimationWindows()
+        private static List<UnityEditor.AnimationWindow> GetAllAnimationWindows()
         {
             // return AnimationModeBridge.GetAllAnimationWindows();
             
             if (s_GetAllAnimationWindowsMethod == null)
-                s_GetAllAnimationWindowsMethod = typeof(AnimationWindow).GetMethod("GetAllAnimationWindows",
+                s_GetAllAnimationWindowsMethod = typeof(UnityEditor.AnimationWindow).GetMethod("GetAllAnimationWindows",
                     BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
 
-            return s_GetAllAnimationWindowsMethod.Invoke(null, null) as List<AnimationWindow>;
+            return s_GetAllAnimationWindowsMethod.Invoke(null, null) as List<UnityEditor.AnimationWindow>;
         }
-
+        
+        #endregion
+        
+        #region IAnimationClipSource
         public void GetAnimationClips(List<AnimationClip> results)
         {
-            if (clip != null)
-                results.Add(clip);
+            AnimationClip _clip = _getAnimationClip();
+            if (_clip != null)
+                results.Add(_clip);
         }
 
-        #if UNITY_EDITOR
-        [InitializeOnLoadMethod]
-        public static void InitializeOnLoad()
-        {
-            EditorApplication.update += SyncAnimationWindow;
-        }
-
-        public static void SyncAnimationWindow()
-        {
-            AnimationWindow previewingTarget = null;
-            foreach (AnimationWindow animationWindow in GetAllAnimationWindows())
-            {
-                if (animationWindow.previewing)
-                {
-                    previewingTarget = animationWindow;
-                    break;
-                }
-
-            }
-
-            if (previewingTarget == null)
-                return;
-            
-            foreach (AnimationWindow other in GetAllAnimationWindows())
-            {
-                if (other == previewingTarget)
-                    continue;
-                if (!Mathf.Approximately(other.time, previewingTarget.time))
-                {
-                    other.time = previewingTarget.time;
-                    other.Repaint();
-                }
-            }
-        }
-        #endif
+        #endregion
         
         #region IAnimationWindowPreview
 
@@ -92,7 +91,7 @@ namespace Common.bridge
 
         public static float GetPreviewingTime()
         {
-            foreach (AnimationWindow myAnimationWindow in GetAllAnimationWindows())
+            foreach (UnityEditor.AnimationWindow myAnimationWindow in GetAllAnimationWindows())
             {
                 if (myAnimationWindow.previewing)
                 {
@@ -109,7 +108,7 @@ namespace Common.bridge
             foreach (PlayableGraph playableGraph in otherPreviewGraphs)
             {
                 float time = GetPreviewingTime();
-                AnimationMode.SamplePlayableGraph(playableGraph, 0, time);
+                UnityEditor.AnimationMode.SamplePlayableGraph(playableGraph, 0, time);
             }
         }
 
@@ -138,7 +137,9 @@ namespace Common.bridge
 
         public bool OnOtherCallBuildPreviewGraph(ref PlayableGraph playableGraph)
         {
-            if (clip == null)
+            AnimationClip _clip = _getAnimationClip();
+            
+            if (_clip == null)
                 return false;
             
             Animator animator = GetComponent<Animator>();
@@ -149,7 +150,7 @@ namespace Common.bridge
 
             playableGraph = PlayableGraph.Create($"PreviewGraph-{gameObject.name}");
 
-            AnimationClipPlayable clipPlayable = AnimationClipPlayable.Create(playableGraph, clip);
+            AnimationClipPlayable clipPlayable = AnimationClipPlayable.Create(playableGraph, _clip);
             
             AnimationLayerMixerPlayable mixerPlayable = AnimationLayerMixerPlayable.Create(playableGraph, 1);
 
@@ -166,5 +167,45 @@ namespace Common.bridge
         }
 
         #endregion
+        
+        #region InitializeOnLoadMethod
+
+        [UnityEditor.InitializeOnLoadMethod]
+        public static void InitializeOnLoad()
+        {
+            UnityEditor.EditorApplication.update += SyncAnimationWindow;
+        }
+
+        public static void SyncAnimationWindow()
+        {
+            UnityEditor.AnimationWindow previewingTarget = null;
+            foreach (UnityEditor.AnimationWindow animationWindow in GetAllAnimationWindows())
+            {
+                if (animationWindow.previewing)
+                {
+                    previewingTarget = animationWindow;
+                    break;
+                }
+
+            }
+
+            if (previewingTarget == null)
+                return;
+            
+            foreach (UnityEditor.AnimationWindow other in GetAllAnimationWindows())
+            {
+                if (other == previewingTarget)
+                    continue;
+                if (!Mathf.Approximately(other.time, previewingTarget.time))
+                {
+                    other.time = previewingTarget.time;
+                    other.Repaint();
+                }
+            }
+        }
+        
+        #endregion
+        
+        #endif
     }
 }
