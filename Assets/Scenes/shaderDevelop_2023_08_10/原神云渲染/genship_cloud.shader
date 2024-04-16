@@ -47,9 +47,9 @@ Shader "genship/genship_cloud"
         _DisturbanceNoiseOffset ("云扰动贴图偏移值", float) = 262.33862 // _58._m26
         _DisturbanceScale ("云扰动贴图缩放", float) = 0.0123
         
-//        _affectWidthColorB ("_affectWidthColorB", Range(0, 1)) = 0.09804
-//        _affectWidthColorAlpha ("_affectWidthColorAlpha", Range(0, 1)) = 0.09804
-//        _w_input ("_w_input", Range(0, 1)) = 0.09804
+//        _FeatherFactor ("边缘羽化", Range(0, 1)) = 0.09804
+//        _FeatherFactorA ("边缘羽化A", Range(0, 1)) = 0.09804
+//        _DisappearFactor ("_DisappearFactor", Range(0, 1)) = 0.09804
         
         
         
@@ -67,6 +67,7 @@ Shader "genship/genship_cloud"
 
         Cull Off
         Blend SrcAlpha OneMinusSrcAlpha
+        ZWrite Off
         
         Pass
         {

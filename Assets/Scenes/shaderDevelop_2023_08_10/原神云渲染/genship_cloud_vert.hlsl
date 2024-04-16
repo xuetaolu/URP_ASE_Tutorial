@@ -72,18 +72,21 @@ v2f vert (appdata v)
     float4 Vertex_Position = v.vertex;
 
     // Vertex_1.y = {0, 0.28235, 0.42745, 0.56863, 0.8549, 1.0}
-    float4 Vertex_GridIndexY_ = v.color;
+    // Vertex_GridIndexY_FeatherZW.x = ? 无效
+    // Vertex_GridIndexY_FeatherZW.y = {0, 0.28235, 0.42745, 0.56863, 0.8549, 1.0}  即 { 0/7, 1/7, 2/7, 3/7, 5/7, 6/7, 7/7 }  表示在哪个图集网格内
+    // Vertex_GridIndexY_FeatherZW.zw 一样，表示边缘羽化参数
+    float4 Vertex_GridIndexY_FeatherZW = v.color;
     
     float4 Vertex_uv = float4( v.uv, 0,0 ) ;
     
-    // Vertex_DensityParamsXYZW.x = 104.096           |  171.435
-    // Vertex_DensityParamsXYZW.y = 4.70795 ~ 102.966 |  17.8982 ~ 153.264
+    // Vertex_AnimParams.x = 104.096           |  171.435           动画总时长
+    // Vertex_AnimParams.y = 4.70795 ~ 102.966 |  17.8982 ~ 153.264 当前动画时间
 
-    // Vertex_DensityParamsXYZW.y / Vertex_DensityParamsXYZW.x = {0.04, 0.12 0.13, 0.15, 0.23, 0.25, 0.37, 0.42, 0.49, 0.52, 0.53, ..., 0.989}
+    // Vertex_AnimParams.y / Vertex_AnimParams.x = {0.04, 0.12 0.13, 0.15, 0.23, 0.25, 0.37, 0.42, 0.49, 0.52, 0.53, ..., 0.989} 动画时间百分比
     
-    // Vertex_DensityParamsXYZW.z = 0.4
-    // Vertex_DensityParamsXYZW.w = 0.6
-    float4 Vertex_DensityParamsXYZW = fixed4( v.uv2, v.uv3 );
+    // Vertex_AnimParams.z = 0.4  动画时间百分比 0.4 处完全淡入
+    // Vertex_AnimParams.w = 0.6  动画时间百分比 0.6 处完全淡出
+    float4 Vertex_AnimParams = fixed4( v.uv2, v.uv3 );
     v2f o;
     
     
@@ -149,7 +152,7 @@ v2f vert (appdata v)
         // Vertex_1.y         = {0,     0.28235, 0.42745, 0.56863, 0.8549, 1.0}
         // Vertex_1.y * 7     = {0,     1.97645, 2.99215, 3.98041, 5.9843, 7.0}
         // floor(_gridIndex_0_7 + 0.5)  = {0,     2,       3,       4,       6,      7}
-        _gridIndex_0_7 = (Vertex_GridIndexY_.y * _gridIndex_0_7); // 0~7
+        _gridIndex_0_7 = (Vertex_GridIndexY_FeatherZW.y * _gridIndex_0_7); // 0~7
         _gridIndex_0_7 = floor(_gridIndex_0_7 + 0.5);
         
         
@@ -175,17 +178,19 @@ v2f vert (appdata v)
     // o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX
     {
         // #define _CloudMoreBright 0.8299      // _58._m34
-        o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.x = _VDotSunRemap01 * _CloudMoreBright;
+        // 
+        o.Varying_LDotDir01FixX_FeatherYZ_DisappearFactorW.x = _VDotSunRemap01 * _CloudMoreBright;
 
-        o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.yz = Vertex_GridIndexY_.zw;
+        o.Varying_LDotDir01FixX_FeatherYZ_DisappearFactorW.yz = Vertex_GridIndexY_FeatherZW.zw;
         
         // #define _58__m33 1.00        // _58._m33
         // #define _58__m38 1.00        // _58._m38
-        float _Vertex_y_present_fix = Vertex_DensityParamsXYZW.y / max(Vertex_DensityParamsXYZW.x, 1.0e-05) * _58__m33 * _58__m38;
+        float _Vertex_y_present_fix = Vertex_AnimParams.y / max(Vertex_AnimParams.x, 1.0e-05) * _58__m33 * _58__m38;
 
         // 1.0 - smoothstep(0, 0.4, x) * (1.0 - smoothstep(0.6, 1.0, x))
         // o.Varying_2.w 是 _Vertex_y_present_fix 01 映射到 1 \ 0 / 1 的平滑图案，其中 0.4 处达到最低位 0, 0.6 处离开最低位 0
-        o.Varying_DesityRefW_ColorzwYZ_LDotDir01FixX.w = 1.0 - smoothstep(0, Vertex_DensityParamsXYZW.z, _Vertex_y_present_fix) * (1.0 - smoothstep(Vertex_DensityParamsXYZW.w, 1.0, _Vertex_y_present_fix));
+        // 动画时间百分比 0.4 处完全淡入，0.6 处完全淡出
+        o.Varying_LDotDir01FixX_FeatherYZ_DisappearFactorW.w = 1.0 - smoothstep(0, Vertex_AnimParams.z, _Vertex_y_present_fix) * (1.0 - smoothstep(Vertex_AnimParams.w, 1.0, _Vertex_y_present_fix));
     }
 
     

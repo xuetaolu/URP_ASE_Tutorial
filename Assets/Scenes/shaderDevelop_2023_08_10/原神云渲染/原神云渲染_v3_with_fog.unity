@@ -2408,8 +2408,8 @@ MonoBehaviour:
   _LDotV_damping_factor_cloud: 0.2860512
   _CloudMoreBright: 0.481812
   _DisturbanceNoiseOffset: 55.26278
-  _sun_dir: {x: 0.45836028, y: -0.17020318, z: -0.8723169}
-  _moon_dir: {x: -0.58203745, y: 0.05647761, z: -0.8111983}
+  _sun_dir: {x: 0, y: -0.9975028, z: -0.07062716}
+  _moon_dir: {x: 0, y: 0.3090171, z: -0.9510565}
   _sunTransform: {fileID: 1010256899}
   _moonTransform: {fileID: 125463795}
   _skyRenderers:
@@ -2869,7 +2869,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2986861172770176876}
-  m_Mesh: {fileID: 9005852911811730538, guid: 9e07ec1b7f9a5cb4ba75edd4a494fc6a, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!33 &1656196411616268151
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2877,7 +2877,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3035416138689632872}
-  m_Mesh: {fileID: -817564778058547306, guid: 1e50d50e5b712b146ab4d72b39ce8fa6, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!4 &2401586599736705234
 Transform:
   m_ObjectHideFlags: 0
@@ -2919,6 +2919,7 @@ GameObject:
   - component: {fileID: 2465904164361676246}
   - component: {fileID: 1555849980992825971}
   - component: {fileID: 3635401165991108281}
+  - component: {fileID: 3635401165991108282}
   m_Layer: 0
   m_Name: cloud1
   m_TagString: Untagged
@@ -2937,6 +2938,7 @@ GameObject:
   - component: {fileID: 2401586599736705234}
   - component: {fileID: 1656196411616268151}
   - component: {fileID: 3539559468859325373}
+  - component: {fileID: 3539559468859325374}
   m_Layer: 0
   m_Name: cloud
   m_TagString: Untagged
@@ -2986,6 +2988,76 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3539559468859325374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3035416138689632872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9485cfa8a51e4dfea838d4b041ba00a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseCloudCount: 20
+  baseCloudHeight: 500
+  baseCloudDistance: 5000
+  appendTopCount: 0
+  minScale: 1.05
+  maxScale: 1.75
+  baseFaiNoise: 18
+  topFaiNoise: 36
+  topTheta: 8
+  topThetaNoise: 4
+  animDuration: 10
+  animFadeDuration: 4
+  animSpeed: 1
+  enableDebugAnimTime01: 0
+  debugAnimTime01: 0
+  edgeFeatherCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.001
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.999
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  alwayRebuild: 0
 --- !u!23 &3635401165991108281
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3028,6 +3100,76 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3635401165991108282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2986861172770176876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9485cfa8a51e4dfea838d4b041ba00a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseCloudCount: 6
+  baseCloudHeight: 500
+  baseCloudDistance: 5000
+  appendTopCount: 1
+  minScale: 1.13
+  maxScale: 1.45
+  baseFaiNoise: 18
+  topFaiNoise: 36
+  topTheta: 8
+  topThetaNoise: 4
+  animDuration: 10
+  animFadeDuration: 4
+  animSpeed: 1
+  enableDebugAnimTime01: 0
+  debugAnimTime01: 0
+  edgeFeatherCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.001
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.999
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  alwayRebuild: 0
 --- !u!33 &5025386630304784851
 MeshFilter:
   m_ObjectHideFlags: 0
