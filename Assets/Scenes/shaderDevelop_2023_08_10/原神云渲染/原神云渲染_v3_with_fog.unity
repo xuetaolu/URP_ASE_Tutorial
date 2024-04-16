@@ -1263,6 +1263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 855604503}
+  - component: {fileID: 855604504}
   m_Layer: 0
   m_Name: moon
   m_TagString: Untagged
@@ -1285,6 +1286,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &855604504
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855604502}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &902199563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2387,8 +2408,8 @@ MonoBehaviour:
   _LDotV_damping_factor_cloud: 0.2860512
   _CloudMoreBright: 0.481812
   _DisturbanceNoiseOffset: 55.26278
-  _sun_dir: {x: 0, y: -0.9975028, z: -0.07062716}
-  _moon_dir: {x: 0.026518952, y: 0.3090171, z: -0.9506867}
+  _sun_dir: {x: 0.45836028, y: -0.17020318, z: -0.8723169}
+  _moon_dir: {x: -0.58203745, y: 0.05647761, z: -0.8111983}
   _sunTransform: {fileID: 1010256899}
   _moonTransform: {fileID: 125463795}
   _skyRenderers:
