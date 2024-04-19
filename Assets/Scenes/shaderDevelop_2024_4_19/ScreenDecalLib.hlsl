@@ -1,7 +1,7 @@
 #ifndef SCREEN_DECAL_LIB_INCLUDED
 #define SCREEN_DECAL_LIB_INCLUDED
 
-// viewRay.w ÊÇ surfEyeDepth
+// viewRay.w æ˜¯ surfEyeDepth
 void VertexViewRayParams(in float3 pos, out float4 viewRay, out float3 viewRayStartPos)
 {
 	float4x4 ViewToObjectMatrix = mul(GetWorldToObjectMatrix(), UNITY_MATRIX_I_V);
@@ -12,23 +12,27 @@ void VertexViewRayParams(in float3 pos, out float4 viewRay, out float3 viewRaySt
 }
 
 float4x4 _WorldToLocalMatrix;
-// viewRay.w ÊÇ surfEyeDepth
-// ×¢ particle system µÄ UNITY_MATRIX_M ÓĞĞı×ª£¬µ«Ã»ÓĞËõ·Å£¬²»Ò»¶¨ÓĞÎ»ÒÆ
+// viewRay.w æ˜¯ surfEyeDepth
+// æ³¨ particle system çš„ UNITY_MATRIX_M æœ‰æ—‹è½¬ï¼Œä½†æ²¡æœ‰ç¼©æ”¾ï¼Œä¸ä¸€å®šæœ‰ä½ç§»
 void VertexViewRayParams(in float3 vertexPos, in float3 centerPos, in float3 sizeXYZ, in float3 rotation3D, out float4 viewRay, out float3 viewRayStartPos)
 {
 	float4x4 _meshPreRS_matrix_inv = _WorldToLocalMatrix;
 
-	// Á£×ÓÉú³ÉÊ±£¬Ô¤ÏÈÒÀ¾İ transform µÄ Rotation Scale Ô¤ÏÈ°Ñ Mesh ½øĞĞËõ·ÅĞı×ª£¬ÔÙ°´ rotation3D sizeXYZ centerPos ²¼¾Ö¡£
-	// ½«´ËÔ¤ÏÈµÄ Rotation Scale ¶¨ÒåÎª _meshPreRS_matrix, _meshPreRS_matrix ¾ÍÊÇ (float3x3)_LocalToWorldMatrix
-	// ËûµÄÄæ _meshPreRS_matrix_inv ¾ÍÊÇ (float3x3)_WorldToLocalMatrix
-	// _meshPreRS_matrix_inv Ö»ÓĞĞı×ªºÍËõ·Å£¬Ã»ÓĞÎ»ÒÆ
+	// ç²’å­ç”Ÿæˆæ—¶ï¼Œé¢„å…ˆä¾æ® transform çš„ Rotation Scale é¢„å…ˆæŠŠ Mesh è¿›è¡Œç¼©æ”¾æ—‹è½¬ï¼Œå†æŒ‰ rotation3D sizeXYZ centerPos å¸ƒå±€ã€‚
+	// å°†æ­¤é¢„å…ˆçš„ Rotation Scale å®šä¹‰ä¸º _meshPreRS_matrix, _meshPreRS_matrix å°±æ˜¯ (float3x3)_LocalToWorldMatrix
+	// ä»–çš„é€† _meshPreRS_matrix_inv å°±æ˜¯ (float3x3)_WorldToLocalMatrix
+	// _meshPreRS_matrix_inv åªæœ‰æ—‹è½¬å’Œç¼©æ”¾ï¼Œæ²¡æœ‰ä½ç§»
 	_meshPreRS_matrix_inv._m03_m13_m23 = 0;
+
+	float size_x_rcp = rcp(sizeXYZ.x);
+	float size_y_rcp = rcp(sizeXYZ.y);
+	float size_z_rcp = rcp(sizeXYZ.z);
 
 	// scale
 	float4x4 S_Inv = {
-	    rcp(sizeXYZ.x), 0, 0, 0,
-	    0, rcp(sizeXYZ.y), 0, 0,
-	    0, 0, rcp(sizeXYZ.z), 0,
+	    size_x_rcp, 0, 0, 0,
+	    0, size_y_rcp, 0, 0,
+	    0, 0, size_z_rcp, 0,
 	    0, 0, 0, 1
 	};
 
@@ -40,36 +44,62 @@ void VertexViewRayParams(in float3 vertexPos, in float3 centerPos, in float3 siz
 	    0, 0, 0, 1,
 	};
 
+	float cos_rot_x = cos(-rotation3D.x);
+	float sin_rot_x = sin(-rotation3D.x);
+	float cos_rot_y = cos(-rotation3D.y);
+	float sin_rot_y = sin(-rotation3D.y);
+	float cos_rot_z = cos(-rotation3D.z);
+	float sin_rot_z = sin(-rotation3D.z);
+	
 	// rotation z
 	float4x4 Rz_Inv = {
-	    cos(-rotation3D.z), sin(-rotation3D.z), 0, 0,
-	    - sin(-rotation3D.z), cos(-rotation3D.z), 0, 0,
-	    0, 0, 1, 0,
-	    0, 0, 0, 1
-	};
-	
-	// rotation x
-	float4x4 Rx_Inv = {
-	    1, 0, 0, 0,
-	    0, cos(-rotation3D.x), -sin(-rotation3D.x), 0,
-	    0, sin(-rotation3D.x), cos(-rotation3D.x), 0,
-	    0, 0, 0, 1
+	     cos_rot_z, sin_rot_z, 0, 0,
+	    -sin_rot_z, cos_rot_z, 0, 0,
+	             0,         0, 1, 0,
+	             0,         0, 0, 1
 	};
 	
 	// rotation y
 	float4x4 Ry_Inv = {
-	    cos(-rotation3D.y), 0, sin(-rotation3D.y), 0,
-	    0, 1, 0, 0,
-	    - sin(-rotation3D.y), 0, cos(-rotation3D.y), 0,
-	    0, 0, 0, 1
+	     cos_rot_y, 0, sin_rot_y, 0,
+	             0, 1,         0, 0,
+	    -sin_rot_y, 0, cos_rot_y, 0,
+	             0, 0,         0, 1
 	};
 	
-	// ÒòÎª TRS = T * Ry * Rx * Rz * S
-	// ËùÒÔ TRS_Inv = S_Inv * Rz_Inv * Ry_Inv * Rx_Inv * T_Inv;
-	float4x4 _worldToParticleIgnoreMeshPreRS_matrix;
-	_worldToParticleIgnoreMeshPreRS_matrix = mul(S_Inv, mul(Rz_Inv, mul(Ry_Inv, mul(Rx_Inv, T_Inv))));
+	// rotation x
+	float4x4 Rx_Inv = {
+	    1,         0,          0, 0,
+	    0, cos_rot_x, -sin_rot_x, 0,
+	    0, sin_rot_x,  cos_rot_x, 0,
+	    0,         0,          0, 1
+	};
 	
-	// ¼ÓÉÏ¿¼ÂÇÄæ±ä»» Mesh Ô¤ÏÈµÄ Rotation Scale£¬¼´×·¼Ó×ó³Ë _particlePreRS_matrix_inv
+
+	// // Rzyx = mul(Rz_Inv, mul(Ry_Inv, Rx_Inv));
+	// // ç›´æ¥å†™å‡ºæ­£ç¡®ç­‰ä»·çš„ç»“æœ Rzyx
+	// float4x4 Rzyx;
+	// Rzyx = float4x4 (
+	// 	 cos_rot_z*cos_rot_y,  cos_rot_z*sin_rot_y*sin_rot_x+sin_rot_z*cos_rot_x,  cos_rot_z*sin_rot_y*cos_rot_x+sin_rot_z*-sin_rot_x, 0,
+	// 	-sin_rot_z*cos_rot_y, -sin_rot_z*sin_rot_y*sin_rot_x+cos_rot_z*cos_rot_x, -sin_rot_z*sin_rot_y*cos_rot_x+cos_rot_z*-sin_rot_x, 0,
+	// 	          -sin_rot_y,                                cos_rot_y*sin_rot_x,                                 cos_rot_y*cos_rot_x, 0,
+	// 	                   0,                                                  0,                                                   0, 1
+	// );
+	
+
+	
+	// å› ä¸º TRS = T * Ry * Rx * Rz * S
+	// æ‰€ä»¥ TRS_Inv = S_Inv * Rz_Inv * Ry_Inv * Rx_Inv * T_Inv;
+	float4x4 _worldToParticleIgnoreMeshPreRS_matrix = mul(S_Inv, mul(Rz_Inv, mul(Ry_Inv, mul(Rx_Inv, T_Inv))));
+
+	// float4x4 _worldToParticleIgnoreMeshPreRS_matrix = {
+ //         size_x_rcp * cos_rot_z*cos_rot_y,               cos_rot_z*sin_rot_y*sin_rot_x+sin_rot_z*cos_rot_x,  cos_rot_z*sin_rot_y*cos_rot_x+sin_rot_z*-sin_rot_x,   cos_rot_z*cos_rot_y*-centerPos.x+cos_rot_z*sin_rot_y*sin_rot_x+sin_rot_z*cos_rot_x*-centerPos.y+cos_rot_z*sin_rot_y*cos_rot_x+sin_rot_z*-sin_rot_x*-centerPos.z,
+ //                     -sin_rot_z*cos_rot_y, size_y_rcp * -sin_rot_z*sin_rot_y*sin_rot_x+cos_rot_z*cos_rot_x, -sin_rot_z*sin_rot_y*cos_rot_x+cos_rot_z*-sin_rot_x,  -sin_rot_z*cos_rot_y*-centerPos.x+-sin_rot_z*sin_rot_y*sin_rot_x+cos_rot_z*cos_rot_x*-centerPos.y+-sin_rot_z*sin_rot_y*cos_rot_x+cos_rot_z*-sin_rot_x*-centerPos.z,
+ //                               -sin_rot_y,                                             cos_rot_y*sin_rot_x,                    size_z_rcp * cos_rot_y*cos_rot_x,  -sin_rot_y*-centerPos.x+cos_rot_y*sin_rot_x*-centerPos.y+cos_rot_y*cos_rot_x*-centerPos.z,
+ //                                        0,                                                               0,                                                   0,                                                                                        1
+	// };
+	
+	// åŠ ä¸Šè€ƒè™‘é€†å˜æ¢ Mesh é¢„å…ˆçš„ Rotation Scaleï¼Œå³è¿½åŠ å·¦ä¹˜ _particlePreRS_matrix_inv
 	float4x4 _worldToMesh_matrix = mul(_meshPreRS_matrix_inv, _worldToParticleIgnoreMeshPreRS_matrix);
 	// _worldToMesh_matrix = _worldToParticleIgnoreMeshPreRS_matrix;
 	// _worldToPartical_matrix =_worldToObject_matrix;
