@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-namespace flower_scene.dynamic_cloud
+namespace xue.dynamic_cloud
 {
     /// <summary>
     /// 维护的单个云信息

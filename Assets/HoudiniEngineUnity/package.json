@@ -1,0 +1,14 @@
+{
+  "name": "com.sidefx.houdiniengineforunity",
+  "version": "20.5.278",
+  "displayName": "Houdini Engine",
+  "unity": "2019.1",
+  "description": "Houdini Engine for Unity is a Unity plug-in that allows deep integration of Houdini technology into Unity through the use of Houdini Engine.",
+  "documentationUrl": "https://www.sidefx.com/docs/unity/",
+  "dependencies": {},
+  "author": {
+    "name": "Side FX Software",
+    "email": "support@sidefx.com",
+    "url": "https://www.sidefx.com/"
+  }
+}

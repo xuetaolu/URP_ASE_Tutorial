@@ -8,7 +8,7 @@ using Autodesk.Fbx;
 using UnityEditor;
 using UnityEngine;
 
-namespace flower_scene.fbx
+namespace xue.fbx
 {
     
     /// <summary>

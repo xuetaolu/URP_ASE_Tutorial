@@ -9,7 +9,7 @@ using Common;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace flower_scene.fbx
+namespace xue.fbx
 {
     /// <summary>
     /// 将选中的 fbx 导入unity 后的顶点数据重新按 fbx 中的结构导出

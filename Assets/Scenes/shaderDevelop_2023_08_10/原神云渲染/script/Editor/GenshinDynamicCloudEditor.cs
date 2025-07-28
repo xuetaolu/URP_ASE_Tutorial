@@ -5,7 +5,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace flower_scene.dynamic_cloud
+namespace xue.dynamic_cloud
 {
     [CustomEditor(typeof(GenshinDynamicCloud))]
     public class GenshinDynamicCloudEditor : Editor

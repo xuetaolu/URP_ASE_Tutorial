@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace flower_effect.script
+namespace xue.script
 {
     /// <summary>
     /// 粒子系统贴花补充额外信息组件

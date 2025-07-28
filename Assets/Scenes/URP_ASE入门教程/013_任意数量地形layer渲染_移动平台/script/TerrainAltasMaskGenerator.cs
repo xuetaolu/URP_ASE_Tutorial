@@ -322,7 +322,7 @@ namespace terrain_altas
         //     if (terrain != null)
         //     {
         //         Material mat = terrain.materialTemplate;
-        //         if (mat != m_terrainMaterialAsset && mat.shader.name == "flower_scene/TerrainAtlas")
+        //         if (mat != m_terrainMaterialAsset && mat.shader.name == "TerrainAtlas")
         //         {
         //             m_terrainMaterialAsset = mat;
         //         }
