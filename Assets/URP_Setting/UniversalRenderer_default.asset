@@ -13,6 +13,19 @@ MonoBehaviour:
   m_Name: GenshipSSRRenderFeature
   m_EditorClassIdentifier: 
   m_Active: 1
+--- !u!114 &-2144491489788106691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 214d8dcff77c3c741a8576a2168a7e18, type: 3}
+  m_Name: DistortedFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30,7 +43,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 6982188746394398779}
   - {fileID: -4272657534456505296}
-  m_RendererFeatureMap: 3b7091efabb7e56030dcd2239c78b4c4
+  - {fileID: -2144491489788106691}
+  m_RendererFeatureMap: 3b7091efabb7e56030dcd2239c78b4c43de8541f5a3c3de2
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

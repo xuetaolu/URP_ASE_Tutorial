@@ -275,7 +275,7 @@ Shader "genship/water_ssr_v2"
                 float4 _reflectColorAdjust = _reflectColorRGBA * _reflectInfiniteDistanceX_and_AlphaY.y;
                 Output_1.xyz = _reflectColorAdjust.xyz;
 
-                bool _bReflectColorAlphaNearlyZero = _reflectColorAdjust.w < 0.02;
+                bool _bReflectColorAlphaNearlyZero = _reflectColorAdjust.w < (0.02 - 1e-4); // Android 机器上，0.02 有时候会变成 0.01998
                 bool _meshEyeDepthLess7 = input.Varying_NotNormaizeScreenPosXYW.w < 7.0;
                 bool _bNearlyFadeoutFromScreen = _fadeToScreenEdge < 0.01;
                 

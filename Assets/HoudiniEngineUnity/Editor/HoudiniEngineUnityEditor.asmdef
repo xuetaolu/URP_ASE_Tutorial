@@ -1,0 +1,24 @@
+{
+    "name": "HoudiniEngineUnityEditor",
+    "rootNamespace": "",
+    "references": [
+        "HoudiniEngineUnity"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.splines",
+            "expression": "2.1.0",
+            "define": "UNITY_SPLINES_INSTALLED"
+        }
+    ],
+    "noEngineReferences": false
+}

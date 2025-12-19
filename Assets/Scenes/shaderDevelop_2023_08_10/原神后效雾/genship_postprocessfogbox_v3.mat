@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: genship_postprocessfogbox_v3
+  m_Shader: {fileID: 4800000, guid: 13183e74542f4c24a969d67ee277358c, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _FogDiscardDistance: 16
+    - _FogDistanceColorBlendA: 0.000328
+    - _FogDistanceDampingScaleA: 0.00615
+    - _FogDistanceLimitX_: 0.9
+    - _FogDistanceLimitY_: 1
+    - _FogDistancePow: 1.1879
+    - _FogHeightDampingScaleA: 0.0824
+    - _FogHeightFactorA: 0.21
+    m_Colors:
+    - _BasicHeightSO: {r: 0.00393, g: -0.79396, b: 0, a: 0}
+    - _BasicPowDistanceSO: {r: 0.00042, g: -0.0067, b: 0, a: 0}
+    - _ComplexCalcFogDistanceSO: {r: 0.00839, g: -0.12581, b: 0, a: 0}
+    - _FogDistanceColor: {r: 0.00721, g: 0.1452, b: 0.38323, a: 0.9}
+    - _FogDistanceColorBlend: {r: 1, g: 0, b: 0.2920928, a: 0}
+    - _FogMainColor: {r: 0.73419225, g: 0.78039217, b: 0.52156866, a: 1}
+    - _MainDistanceSO: {r: -0.001, g: 9, b: 0, a: 0}
+    - _MainHeightSO: {r: -0.001, g: 1.20191, b: 0, a: 0}
+    - _SkyHeightSubColor: {r: 0.02258, g: 0.01951, b: -0.08341, a: 0}
+  m_BuildTextureStacks: []

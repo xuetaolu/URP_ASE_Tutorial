@@ -188,7 +188,7 @@
                 {
                     float offset = offsets[i];
                     float4 tmp_col = tex2D(_MainTex, input.uv + float2(offset, 0)).rgba;
-                    if (tmp_col.a >= 0.02)
+                    if (tmp_col.a >= 0.02 - 1e-4) // Android 机器上，0.02 有时候会变成 0.01998
                     {
                         // col.a = col.a == 0 ? tmp_col.a : col.a;
                         col.a = col.a == 0 ? tmp_col.a : 0;

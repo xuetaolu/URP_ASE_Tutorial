@@ -1,0 +1,33 @@
+{
+    "name": "HoudiniEngineUnityEditor.VisualScripting",
+    "rootNamespace": "",
+    "references": [
+        "HoudiniEngineUnity",
+        "Unity.VisualScripting.Core.Editor",
+        "Unity.VisualScripting.Flow.Editor",
+        "Unity.VisualScripting.State.Editor",
+        "Unity.VisualScripting.Core",
+        "Unity.VisualScripting.Flow",
+        "Unity.VisualScripting.State",
+        "HoudiniEngineUnity.VisualScripting"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "HAS_VISUALSCRIPTING"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.visualscripting",
+            "expression": "1.5.0",
+            "define": "HAS_VISUALSCRIPTING"
+        }
+    ],
+    "noEngineReferences": false
+}
