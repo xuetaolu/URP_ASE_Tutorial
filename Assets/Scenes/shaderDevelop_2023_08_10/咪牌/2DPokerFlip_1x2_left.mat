@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 2DPokerFlip_1x2_left
+  m_Shader: {fileID: 4800000, guid: 459229dc4e8b5184c81f1e47e7687f68, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _FLIPFRONTUVX_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _FrontTex:
+        m_Texture: {fileID: 2800000, guid: a5040c7c76a6a8346b62783d4f19cb66, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: f4015536456d0ee4eabe51c043c0bc4c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CardHeight: 2
+    - _CardWidth: 1
+    - _DebugBackUV: 0
+    - _DebugFrontUV: 0
+    - _EdgeSoftness: 0.001
+    - _Flip: 1
+    - _FlipFrontUV: 0
+    - _FlipFrontUVX: 1
+    - _FlipFrontUVY: 0
+    - _ShadowDistance: 0.2
+    - _ShadowIntensity: 0.2
+    - _ShadowStrength: 0
+    m_Colors:
+    - _EndFlipUVPos: {r: 0.5, g: 0.75, b: 0, a: 0}
+    - _StartFlipUVPos: {r: 0, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
